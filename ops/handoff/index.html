@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="チャット引き継ぎ専用ページ">
+  <title>引き継ぎシート（運用ルール）</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Meiryo", sans-serif;
+      background: #fafafa;
+      color: #333;
+      line-height: 1.8;
+      padding: 1.5rem 1rem 3rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #222;
+    }
+    .sub {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+    pre {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 1.25rem 1rem;
+      font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Meiryo", sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: #333;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: hidden;
+    }
+  </style>
+</head>
+<body>
+  <h1>引き継ぎシート（運用ルール）</h1>
+  <p class="sub">このページはチャット引き継ぎ専用。更新日を必ず書き換える。</p>
+  <pre>
+更新日：REPLACE_YYYY-MM-DD
+
+【0. 今回のゴール】
+- REPLACE（例：GBP整備／LP改善／地域ページ追加 など）
+
+【1. 事業・ブランド軸（固定）】
+- ターゲット：子育て家庭（沖縄南部）
+- ブランド：安心で勝つ
+- 強み：業界経験17年／丁寧な説明と養生／仕上がり確認
+- 導線：Instagram → LP → LINE
+
+【2. サイト情報（固定）】
+- 本番URL：https://teruya1229.github.io/
+- 検証URL：https://teruya1229.github.io/cursor-test/
+- 重要ページ：REPLACE（料金、予約、地域など）
+
+【3. サイト制作・運用ルール（固定）】
+- LP編集は「Cursor用プロンプト」に統一（Readdy.AIは使わない）
+- 可能な作業は「全部プロンプト化」で提示（commit/push手順・差し替え指示込み）
+- 迷ったらこのページを正として更新し、前提を固定して進める
+
+【4. Search Console 運用ルール（固定）】
+- 見るのはルートプロパティ（https://teruya1229.github.io/）のみ
+- 送るサイトマップは /sitemap.xml のみ
+- /cursor-test/sitemap.xml は送信しない（混乱の元）
+- URL検査・インデックス登録リクエストは実URL（/cursor-test/配下）で行う
+
+【5. 計測（GA4）運用ルール（固定）】
+- GA4テスト：公開URLに ?debug=1 → CTAクリック → 「計測OK」を確認
+- REPLACE（イベント名・CTA位置など追記があればここに）
+
+【6. 料金・商品（変動）】
+- 南部限定：8,000円おまかせプラン（200世帯達成まで）
+- リピート：感謝価格（表記）
+- ライト/スタンダード/プレミアム：REPLACE
+- オプション：REPLACE（例：抗菌・防カビコーティング 等）
+- 口コミ目標：1ヶ月で15件
+
+【7. 現在の重点テーマ（変動）】
+- REPLACE（例：Googleビジネスプロフィール充実。商品はまずエアコンクリーニングから、子育て家庭×安心を前面）
+
+【8. 直近の状況（変動）】
+- Done：REPLACE
+- Next：REPLACE（3つまで）
+
+【9. context used対策（固定）】
+- Cursorの「context used」が高い時は、新スレ/新Agentに分割して続行する
+- 分割時は「最小の引き継ぎプロンプト」を作って開始する
+
+【10. 禁止・注意（事故防止）】
+- 過去ログの前提を優先し、勝手に方針変更しない
+- 推測で広げない。必要ならスクショ・URL・該当テキストを根拠に進める
+- 変更が発生したら、このページ（引き継ぎシート）を先に更新してから作業する
+
+---
+
+使い方（新チャット1発目にこれだけ）
+前提はこのページ固定で進めて：
+https://teruya1229.github.io/ops/handoff/
+  </pre>
+</body>
+</html>
