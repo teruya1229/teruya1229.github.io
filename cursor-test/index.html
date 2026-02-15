@@ -128,14 +128,10 @@
       background:#1F2A44 !important;
       color:#fff !important;
     }
-    /* カードが小さくて隠れるのを防止（セクション内だけ） */
-    #osouji-ac .ac-plan,
-    #osouji-ac .plan-card,
-    #osouji-ac .price-card,
-    #osouji-ac .osouji-card,
-    #osouji-ac .mini-card{
+    /* カードが小さくて中身が隠れるのを防止（セクション内だけ） */
+    #osouji-ac .osouji-card{
       height:auto !important;
-      min-height:220px !important;
+      min-height:240px !important;
       overflow:visible !important;
       display:flex !important;
       flex-direction:column !important;
@@ -144,7 +140,7 @@
       padding-bottom:16px !important;
     }
     @media(max-width:600px){
-      #osouji-ac .ac-plan{min-height:auto !important;padding:16px !important;}
+      #osouji-ac .osouji-card{min-height:auto !important;padding:16px !important;}
       #osouji-ac a.line-cta{max-width:100% !important;}
     }
   </style>
@@ -311,7 +307,7 @@
           <h3 class="pricing-block-title">お掃除機能付きエアコン</h3>
           <p class="pricing-block-lead">お掃除機能付きは内部構造が複雑で、分解・組み立てに時間がかかるため別料金です。<br>台数が多い機種なので、ここから直接予約できるようにしました。</p>
           <div class="ac-plans">
-            <div class="ac-plan ac-plan--popular">
+            <div class="ac-plan ac-plan--popular osouji-card">
               <p class="ac-plan-badge">南部応援</p>
               <p class="ac-plan-name">南部エリア</p>
               <p class="ac-plan-price">15,000<span>円（税込）</span></p>
@@ -321,7 +317,7 @@
                  data-cta="line" data-cta-location="price-osouji-nanbu">200世帯達成前に予約する</a>
               <p style="font-size:.75rem;color:#888;margin-top:6px;">※ LINEでお気軽にご相談ください</p>
             </div>
-            <div class="ac-plan">
+            <div class="ac-plan osouji-card">
               <p class="ac-plan-name">その他エリア</p>
               <p class="ac-plan-price">16,000<span>円（税込）</span></p>
               <p style="font-size:.85rem;color:#555;margin:8px 0 0;line-height:1.6;">通常価格でのご案内です。</p>
