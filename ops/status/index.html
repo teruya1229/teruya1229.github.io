@@ -61,19 +61,13 @@
 - GBP：基本情報の入力完了
 - GBP：写真は約20枚掲載済み
 - 口コミ導線：作業後にQRまたはSMSで送付する運用に決定（テンプレ文用意済み）
-- GA4：現状、LINEクリック等のイベントが読み取りづらく、DebugViewでも確認できていない（改善が必要）
-
-【今日やること（1つ）】
-- GA4/LP計測の実装（LP側でCTAクリック計測＋debug表示を入れて、クリックで「計測OK」が出る状態にする）
-
-【完了条件（何ができたら終わりか）】
-- 公開URLを ?debug=1 で開き、LINEボタン（CTA）をクリックすると画面右下に「計測OK」が表示される
-  確認URL：https://teruya1229.github.io/cursor-test/?debug=1
+- LP（/cursor-test/）にCTAクリック計測（cta_click）＋debug=1で「計測OK」トーストを実装・公開
+- GA4：リアルタイムで cta_click の計測を確認（計測OK）
 
 【Next（次の3つ）】
-1) LP（/cursor-test/）にCTAクリック計測（cta_click）＋debug=1トースト「計測OK」を実装→Commit&Push
-2) GA4リアルタイムで cta_click を確認（イベント名を確定）
-3) GA4イベント一覧で cta_click をキーイベント化
+1) GA4：イベント一覧で cta_click をキーイベント化（★ON）
+2) 口コミ送付をルーティン化（作業後すぐに送る／★4-5は口コミ／★1-3は改善ヒアリング）
+3) 週2投稿を継続（火：ビフォーアフター／金：不安解消）＋週1でGBPパフォーマンス確認→改善反映
 
 【重要メモ（再提案防止）】
 - 前提は handoff を正として固定：https://teruya1229.github.io/ops/handoff/
