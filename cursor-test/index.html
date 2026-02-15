@@ -101,22 +101,33 @@
     .case-img img{display:block;width:100%;height:auto;border-radius:12px;}
     .case-badge{position:absolute;left:12px;top:12px;background:rgba(0,0,0,.75);color:#fff;font-weight:700;font-size:14px;padding:6px 10px;border-radius:8px;letter-spacing:.04em;}
 
-    /* ===== #osouji-ac : お掃除機能付きエアコン カード拡大 ===== */
-    #osouji-ac .ac-plans{display:flex;gap:16px;}
-    #osouji-ac .ac-plan{
-      flex:1;display:flex;flex-direction:column;align-items:center;
-      padding:24px 20px;min-height:260px;box-sizing:border-box;
+    /* ===== #osouji-ac : お掃除機能付きエアコン カード強制表示 ===== */
+    #osouji-ac .ac-plans{
+      display:flex !important;gap:16px !important;
     }
-    #osouji-ac .ac-plan .line-cta{
-      display:block;width:100%;max-width:260px;
-      margin-top:auto;padding:12px 16px;
-      font-size:.9rem;text-align:center;
-      white-space:normal;line-height:1.3;box-sizing:border-box;
+    #osouji-ac .ac-plan{
+      flex:1 !important;
+      display:flex !important;flex-direction:column !important;
+      align-items:center !important;justify-content:space-between !important;
+      height:auto !important;min-height:260px !important;
+      overflow:visible !important;
+      padding:24px 20px !important;box-sizing:border-box !important;
+      gap:10px !important;
+    }
+    #osouji-ac a.line-cta{
+      display:block !important;visibility:visible !important;
+      opacity:1 !important;position:static !important;
+      transform:none !important;pointer-events:auto !important;
+      width:100% !important;max-width:280px !important;
+      margin-top:auto !important;padding:12px 16px !important;
+      font-size:.9rem !important;text-align:center !important;
+      white-space:normal !important;line-height:1.3 !important;
+      box-sizing:border-box !important;
     }
     @media(max-width:600px){
-      #osouji-ac .ac-plans{flex-direction:column;}
-      #osouji-ac .ac-plan{min-height:auto;padding:20px 16px;}
-      #osouji-ac .ac-plan .line-cta{max-width:100%;}
+      #osouji-ac .ac-plans{flex-direction:column !important;}
+      #osouji-ac .ac-plan{min-height:auto !important;padding:20px 16px !important;}
+      #osouji-ac a.line-cta{max-width:100% !important;}
     }
   </style>
 </head>
