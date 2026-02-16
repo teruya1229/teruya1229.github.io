@@ -72,11 +72,14 @@
 - 見るのはルートプロパティ（https://teruya1229.github.io/）のみ
 - 送るサイトマップは /sitemap.xml のみ
 - /cursor-test/sitemap.xml は送信しない（混乱の元）
+- HTMLページ（/cursor-test/◯◯.html）をサイトマップ欄に入れるのは禁止（必ず失敗する）
 - URL検査・インデックス登録リクエストは実URL（/cursor-test/配下）で行う
+- GSCが不安定な場合は追わない → 入口URL検査＋内部リンクで前進する
 
 【5. 計測（GA4）運用ルール（固定）】
-- GA4テスト：公開URLに ?debug=1 → CTAクリック → 「計測OK」を確認
-- REPLACE（イベント名・CTA位置など追記があればここに）
+- GA4テスト：公開URLに ?debug=1 → CTAクリック → 「計測OK」表示を確認
+- GA4リアルタイムで cta_click イベントを確認（確認済み）
+- 次ステップ：cta_click をキーイベント化（★ON）
 
 【LINEリンク管理（正／旧）】
 - 現行（正）：https://lin.ee/tsilra6
@@ -100,6 +103,7 @@
   - 内部リンク強化：cursor-test/index.html に「対応エリア」テキストリンク（naha/nanjo/yaese/haebaru/itoman/tomigusuku/yonabaru + south）を追加し、Googleが辿れる導線を完成
   - URL検査：/cursor-test/ のインデックス登録リクエストが OK（前進確認）
   - LPのCTA/導線は現行LINE（https://lin.ee/tsilra6）に統一済み
+  - commit: b85636e "Add root sitemap.xml (cursor-test pages)"
   - commit: 6c94d9d "Add internal links to area pages"
 - Next（3つまで）：
   1) （運用）新規/更新時は「入口（/cursor-test/ or south）をURL検査→インデックス登録リクエスト」を基本にする
@@ -113,6 +117,7 @@
 【10. 禁止・注意（事故防止）】
 - 過去ログの前提を優先し、勝手に方針変更しない
 - 推測で広げない。必要ならスクショ・URL・該当テキストを根拠に進める
+- URL（特に lin.ee や @ID）は推測で新規作成しない。名刺/公式で確認済みのURLのみ正として扱う
 - 変更が発生したら、このページ（引き継ぎシート）を先に更新してから作業する
 
 ---
