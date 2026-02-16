@@ -89,6 +89,37 @@
 - URL（lin.ee/@ID）は推測で作らない。名刺/公式で確認済みのみ正
 - GSC：HTMLをサイトマップ欄に入れない（必ず失敗する）／不安定時は入口URL検査で前進
 - 新規/更新時は「入口（/cursor-test/ or south）をURL検査→インデックス登録リクエスト」が基本
+
+---
+
+【2026-02-16 作業終了時点】
+
+■ 本日やったこと
+・root /sitemap.xml を正しい urlset（10URL）に復旧（200 OK / application/xml）
+・cursor-test/index.html に「対応エリア」セクション追加（7エリア＋south内部リンク導線）
+・/cursor-test/ のURL検査→インデックス登録リクエスト実行（OK）
+・LPのCTA/導線を現行LINE（lin.ee/tsilra6）に統一確認
+・Googleフォーム分岐設計完成（満足→口コミ／改善→ヒアリング完全分離）
+・口コミリンクを送信後メッセージに移動（押し忘れ対策）
+・口コミ後LINE感謝テンプレ完成
+・紹介制度テンプレ確定＋紹介キーワード自動返信設定
+・handoff/status にLINEリンク正/旧・GSC/GA4ルール・進捗を反映
+・commit: b85636e "Add root sitemap.xml (cursor-test pages)"
+・commit: 6c94d9d "Add internal links to area pages"
+
+■ 現在の状態
+・/sitemap.xml は正常稼働中（200 OK / application/xml / urlset 10URL）
+・GSCは「読み込めませんでした」が出ることがある（UI側要因。サイト側は正常）
+・内部リンク導線は実装済み（index.html → 7エリア＋south）
+・GA4 cta_click 計測は実装済み・確認済み（キーイベント化は未対応）
+・紹介循環モデルは80%完成（フォーム→口コミ→感謝→紹介）
+・LINE導線は現行URL（lin.ee/tsilra6）に統一済み。旧URL（lin.ee/22lwU7U）は使用禁止
+・handoff/status の固定ルール（LINE正/旧・URL推測禁止・GSC運用）は明文化済み
+
+■ 次回やること
+・GA4：cta_click をキーイベント化（★ON）
+・紹介循環：残り20%の仕上げ（実運用テスト→微調整→本番稼働）
+・GBP：週次の投稿＆パフォーマンス確認（継続）
   </pre>
 </body>
 </html>
