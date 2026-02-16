@@ -78,6 +78,11 @@
 - GA4テスト：公開URLに ?debug=1 → CTAクリック → 「計測OK」を確認
 - REPLACE（イベント名・CTA位置など追記があればここに）
 
+【LINEリンク管理（正／旧）】
+- 現行（正）：https://lin.ee/tsilra6
+- 旧（使用禁止）：https://lin.ee/22lwU7U
+- ルール：今後は現行（正）だけを使う。旧URLは一切使わない。推測でURLを作らない。
+
 【6. 料金・商品（変動）】
 - 南部限定：8,000円おまかせプラン（200世帯達成まで）
 - リピート：感謝価格（表記）
@@ -94,6 +99,7 @@
   - GSC側で「サイトマップを読み込めませんでした」が出ることがある（UI/取得側要因）。サイト側は正常のため、以後は "入口URL検査→インデックス登録" を優先運用
   - 内部リンク強化：cursor-test/index.html に「対応エリア」テキストリンク（naha/nanjo/yaese/haebaru/itoman/tomigusuku/yonabaru + south）を追加し、Googleが辿れる導線を完成
   - URL検査：/cursor-test/ のインデックス登録リクエストが OK（前進確認）
+  - LPのCTA/導線は現行LINE（https://lin.ee/tsilra6）に統一済み
   - commit: 6c94d9d "Add internal links to area pages"
 - Next（3つまで）：
   1) （運用）新規/更新時は「入口（/cursor-test/ or south）をURL検査→インデックス登録リクエスト」を基本にする
