@@ -47,7 +47,7 @@
   <h1>引き継ぎシート（運用ルール）</h1>
   <p class="sub">このページはチャット引き継ぎ専用。更新日を必ず書き換える。</p>
   <pre>
-更新日：REPLACE_YYYY-MM-DD
+更新日：2026-02-16
 
 【0. 今回のゴール】
 - REPLACE（例：GBP整備／LP改善／地域ページ追加 など）
@@ -89,8 +89,16 @@
 - REPLACE（例：Googleビジネスプロフィール充実。商品はまずエアコンクリーニングから、子育て家庭×安心を前面）
 
 【8. 直近の状況（変動）】
-- Done：REPLACE
-- Next：REPLACE（3つまで）
+- Done（2026-02-16）：
+  - GSCサイトマップ：/sitemap.xml は 200 OK + application/xml + 正しい urlset（10URL）で返る状態に復旧済み
+  - GSC側で「サイトマップを読み込めませんでした」が出ることがある（UI/取得側要因）。サイト側は正常のため、以後は "入口URL検査→インデックス登録" を優先運用
+  - 内部リンク強化：cursor-test/index.html に「対応エリア」テキストリンク（naha/nanjo/yaese/haebaru/itoman/tomigusuku/yonabaru + south）を追加し、Googleが辿れる導線を完成
+  - URL検査：/cursor-test/ のインデックス登録リクエストが OK（前進確認）
+  - commit: 6c94d9d "Add internal links to area pages"
+- Next（3つまで）：
+  1) （運用）新規/更新時は「入口（/cursor-test/ or south）をURL検査→インデックス登録リクエスト」を基本にする
+  2) （GA4）cta_click をキーイベント化（★ON）
+  3) （口コミ導線）送付ルーティン化（★4-5→口コミ / ★1-3→改善）
 
 【9. context used対策（固定）】
 - Cursorの「context used」が高い時は、新スレ/新Agentに分割して続行する
