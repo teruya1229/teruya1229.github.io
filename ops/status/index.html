@@ -48,7 +48,7 @@
   <h1>進捗ボード</h1>
   <p class="sub">このページは進捗引き継ぎ専用。更新日を必ず書き換える。</p>
   <pre>
-更新日：2026-02-16
+更新日：2026-02-17
 
 【今週のゴール（1行）】
 - GBP→LP→LINEの集客導線を「計測で見える化」し、運用改善できる状態にする
@@ -72,11 +72,15 @@
 - 口コミ後LINE感謝テンプレ＋紹介制度テンプレ確定
 - 紹介キーワード自動返信設定済み
 - 紹介循環モデル80%完成（フォーム→口コミ→感謝→紹介の一連フロー構築済み）
+- LP用ファビコン（BCロゴ）新規作成・ルート直下に配置
+- 全HTMLページ（index＋地域ページ＋ブログ記事＋FAQ＋ops）にfavicon設定追加
+- 親HPとファビコンを分離（ブランド明確化）
+- commit: ea608fe "Add BC favicon to root and all HTML pages"
 
 【Next（次の3つ）】
-1) （GA4）cta_click をキーイベント化（★ON）
-2) （紹介循環）残り20%の仕上げ（実運用テスト→微調整→本番稼働）
-3) （GBP）週次の投稿＆パフォーマンス確認（継続）
+1) Google検索結果での表示確認（ファビコン／タイトル）
+2) Instagramリール構成3本設計
+3) 紹介エンジンの効率化検討
 
 【重要メモ（再提案防止）】
 - 前提は handoff を正として固定：https://teruya1229.github.io/ops/handoff/
@@ -90,6 +94,30 @@
 - URL（lin.ee/@ID）は推測で作らない。名刺/公式で確認済みのみ正
 - GSC：HTMLをサイトマップ欄に入れない（必ず失敗する）／不安定時は入口URL検査で前進
 - 新規/更新時は「入口（/cursor-test/ or south）をURL検査→インデックス登録リクエスト」が基本
+
+---
+
+【2026-02-17 作業終了時点】
+
+■ 本日やったこと
+・LP用ファビコン（BCロゴ）新規作成
+・favicon.ico をリポジトリルート直下に配置
+・cursor-test/index.html に &lt;link rel="icon" href="/favicon.ico"&gt; を追加
+・cursor-test/ 配下の全HTMLページ（地域ページ・ブログ記事・FAQ計25ファイル）にfavicon設定追加
+・ops/handoff・ops/status にもfavicon設定追加（統一）
+・親HPとファビコンを分離（ブランド明確化）
+・commit: ea608fe "Add BC favicon to root and all HTML pages"
+
+■ 現在の状態
+・ブランド分離完了（LP独自のBCファビコンがタブに表示される状態）
+・SEO評価は維持状態
+・口コミ→アンケート→紹介導線完成
+・Instagram強化フェーズへ移行可能
+
+■ 次回やること
+・Google検索結果での表示確認（ファビコン／タイトル）
+・Instagramリール構成3本設計
+・紹介エンジンの効率化検討
 
 ---
 
