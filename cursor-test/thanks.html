@@ -186,6 +186,51 @@
       color: var(--muted);
       text-align: center;
     }
+    .ba-main {
+      margin-top: 14px;
+      padding-top: 4px;
+    }
+    .ba-main h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      line-height: 1.45;
+    }
+    .ba-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width:768px){
+      .ba-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .ba-grid figure{
+      margin:0;
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 6px 18px rgba(0,0,0,.08);
+    }
+    .ba-grid img{
+      width:100%;
+      aspect-ratio:4/3;
+      object-fit:cover;
+      display:block;
+    }
+    .label{
+      font-size:12px;
+      font-weight:700;
+      padding:8px 12px;
+      background:rgba(255,215,0,.15);
+    }
+    .ba-more {
+      margin-top: 10px;
+    }
+    .ba-more summary{
+      cursor:pointer;
+      font-weight:600;
+      padding:10px 0;
+    }
   </style>
 </head>
 <body>
@@ -216,16 +261,50 @@
       </div>
 
       <p class="note">無理におすすめしません。必要な方だけご相談ください。</p>
-    </section>
 
-    <section class="card">
-      <h2 style="margin:0 0 8px;font-size:1.05rem;">ビフォーアフター画像</h2>
-      <!-- 画像未配置: ./assets/thanks/ba_main_before.jpg -->
-      <!-- 画像未配置: ./assets/thanks/ba_main_after.jpg -->
-      <!-- 画像未配置: ./assets/thanks/ba_sub1_before.jpg -->
-      <!-- 画像未配置: ./assets/thanks/ba_sub1_after.jpg -->
-      <!-- 画像未配置: ./assets/thanks/ba_sub2_before.jpg -->
-      <!-- 画像未配置: ./assets/thanks/ba_sub2_after.jpg -->
+      <section class="ba-main">
+        <h3>📸 完全分解のビフォーアフター</h3>
+
+        <div class="ba-grid">
+          <figure>
+            <div class="label">施工前</div>
+            <img src="./assets/thanks/ba_main_before.jpg" loading="lazy" alt="エアコン完全分解 施工前">
+          </figure>
+
+          <figure>
+            <div class="label">施工後</div>
+            <img src="./assets/thanks/ba_main_after.jpg" loading="lazy" alt="エアコン完全分解 施工後">
+          </figure>
+        </div>
+
+        <p class="note">※汚れ具合や機種により変動します。</p>
+      </section>
+
+      <details class="ba-more">
+        <summary>他の施工事例を見る</summary>
+
+        <div class="ba-grid">
+          <figure>
+            <div class="label">施工前</div>
+            <img src="./assets/thanks/ba_sub1_before.jpg" loading="lazy" alt="エアコン施工前 事例1">
+          </figure>
+
+          <figure>
+            <div class="label">施工後</div>
+            <img src="./assets/thanks/ba_sub1_after.jpg" loading="lazy" alt="エアコン施工後 事例1">
+          </figure>
+
+          <figure>
+            <div class="label">施工前</div>
+            <img src="./assets/thanks/ba_sub2_before.jpg" loading="lazy" alt="エアコン施工前 事例2">
+          </figure>
+
+          <figure>
+            <div class="label">施工後</div>
+            <img src="./assets/thanks/ba_sub2_after.jpg" loading="lazy" alt="エアコン施工後 事例2">
+          </figure>
+        </div>
+      </details>
     </section>
 
     <section class="card">
