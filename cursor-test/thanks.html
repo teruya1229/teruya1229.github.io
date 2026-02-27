@@ -203,6 +203,35 @@
       font-weight:700;
       margin-bottom:6px;
     }
+    .cta-strong{
+      position: relative;
+      transform: translateZ(0);
+      box-shadow: 0 10px 24px rgba(16, 185, 129, .25);
+      border: 1px solid rgba(16, 185, 129, .35);
+      letter-spacing: .2px;
+    }
+
+    .cta-strong:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(16, 185, 129, .28);
+    }
+
+    .cta-strong:active{
+      transform: translateY(0px);
+      box-shadow: 0 8px 18px rgba(16, 185, 129, .22);
+    }
+
+    .cta-strong{
+      border-radius: 14px;
+    }
+
+    .cta-note{
+      margin: 10px 0 0;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(0,0,0,.62);
+    }
     .copy-btn:active { transform: translateY(1px); }
     .cta-box { margin-top: 14px; }
     .cta {
@@ -396,7 +425,8 @@
       </div>
 
       <div class="cta-box">
-        <a id="cta-reserve" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="cta cta-primary line-cta" data-cta="line" data-cta-location="thanks-reserve">LINEで予約する（「予約」と送る）</a>
+        <a id="cta-reserve" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="cta cta-primary line-cta cta-strong" data-cta="line" data-cta-location="thanks-reserve">LINEで予約する（「予約」と送る）</a>
+        <p class="cta-note">✅ 予約はこのままLINEで完結（相談だけでもOK）</p>
         <a id="cta-checklist" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="cta cta-sub line-cta" data-cta="line" data-cta-location="thanks-checklist">チェックリストを受け取る（「チェックリスト」と送る）</a>
       </div>
 
