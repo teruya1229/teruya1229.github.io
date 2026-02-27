@@ -63,6 +63,22 @@
       font-size: 1rem;
       text-align: center;
     }
+    .limited-badge{
+      background: linear-gradient(135deg,#d4af37,#f7e7a9);
+      color:#333;
+      padding:14px;
+      border-radius:14px;
+      font-weight:700;
+      text-align:center;
+      margin-bottom:18px;
+      box-shadow:0 6px 18px rgba(0,0,0,.08);
+    }
+    .limited-badge span{
+      display:block;
+      font-size:12px;
+      font-weight:500;
+      margin-top:4px;
+    }
     .card {
       background: var(--card);
       border-radius: 16px;
@@ -124,6 +140,24 @@
       margin: 6px 0 0;
       font-size: 0.88rem;
       color: var(--muted);
+    }
+    .price-highlight{
+      text-align:center;
+      padding:12px 0;
+    }
+    .old-price{
+      text-decoration:line-through;
+      color:#888;
+      font-size:14px;
+    }
+    .new-price{
+      font-size:28px;
+      font-weight:800;
+      color:#e63946;
+    }
+    .save{
+      font-size:12px;
+      color:#555;
     }
     .note {
       margin-top: 10px;
@@ -190,6 +224,12 @@
       margin-top: 14px;
       padding-top: 4px;
     }
+    .impact-copy{
+      text-align:center;
+      font-weight:700;
+      margin:18px 0 12px;
+      font-size:16px;
+    }
     .ba-main h3 {
       margin: 0 0 10px;
       font-size: 1.05rem;
@@ -236,6 +276,10 @@
 <body>
   <main class="wrap">
     <div class="banner">🎉 LINE友だち追加ありがとうございます</div>
+    <div class="limited-badge">
+      🎁 LINE登録者限定オファー
+      <span>先着順 / 予告なく終了する場合があります</span>
+    </div>
 
     <section class="card">
       <h1>このページを見た方限定のご案内です</h1>
@@ -245,7 +289,11 @@
       <div class="offer-grid">
         <article class="offer">
           <h2>オファー① 完全分解（プレミアム）</h2>
-          <p><span class="price">13,000円</span><span class="old">通常14,000円</span></p>
+          <div class="price-highlight">
+            <div class="old-price">通常 14,000円</div>
+            <div class="new-price">13,000円</div>
+            <div class="save">LINE限定特別価格</div>
+          </div>
           <p class="sub">送風ファンまで取り外して洗浄します。</p>
         </article>
 
@@ -261,6 +309,10 @@
       </div>
 
       <p class="note">無理におすすめしません。必要な方だけご相談ください。</p>
+
+      <p class="impact-copy">
+        ここまで分解するから、ここまで変わる。
+      </p>
 
       <section class="ba-main">
         <h3>📸 完全分解のビフォーアフター</h3>
