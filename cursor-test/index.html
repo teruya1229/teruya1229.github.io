@@ -869,15 +869,20 @@
   <!-- GA4 section visibility tracking (price / premium) -->
   <script>
   (function() {
+    var params = new URLSearchParams(location.search);
+    var isDebug = params.get('debug') === '1' || params.get('debug_mode') === 'true';
+
     function observeOnce(target, eventName) {
       if (!target || typeof IntersectionObserver !== 'function') return;
       var fired = false;
       var observer = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
           if (fired || !entry.isIntersecting) return;
+          if (typeof window.gtag !== 'function') return;
           fired = true;
-          if (typeof window.gtag === 'function') {
-            gtag('event', eventName);
+          gtag('event', eventName);
+          if (isDebug) {
+            console.log('[GA4 section_view]', eventName);
           }
           observer.disconnect();
         });
