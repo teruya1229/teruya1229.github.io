@@ -94,7 +94,13 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-X8LKLFDL3G');
+    var params = new URLSearchParams(location.search);
+    var isDebug = params.get('debug') === '1' || params.get('debug_mode') === 'true';
+    if (isDebug) {
+      gtag('config', 'G-X8LKLFDL3G', { debug_mode: true });
+    } else {
+      gtag('config', 'G-X8LKLFDL3G');
+    }
   </script>
   <link rel="stylesheet" href="style.css">
   <style>
@@ -745,11 +751,6 @@
     /* ===== [A] debug判定 ===== */
     var params = new URLSearchParams(location.search);
     var isDebug = params.get('debug') === '1' || params.get('debug_mode') === 'true';
-
-    /* ===== [B] GA4に debug_mode を付与 ===== */
-    if (isDebug && typeof window.gtag === 'function') {
-      gtag('set', 'debug_mode', true);
-    }
 
     /* ===== [D] 計測OKトースト（debug時のみ・右下表示・1.5秒で消える） ===== */
     function showDebugToast() {

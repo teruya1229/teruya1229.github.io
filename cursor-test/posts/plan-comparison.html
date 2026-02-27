@@ -20,7 +20,13 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-X8LKLFDL3G');
+    var params = new URLSearchParams(location.search);
+    var isDebug = params.get('debug') === '1' || params.get('debug_mode') === 'true';
+    if (isDebug) {
+      gtag('config', 'G-X8LKLFDL3G', { debug_mode: true });
+    } else {
+      gtag('config', 'G-X8LKLFDL3G');
+    }
   </script>
   <!-- 構造化データ: BlogPosting -->
   <script type="application/ld+json">
