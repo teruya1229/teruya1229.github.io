@@ -216,7 +216,7 @@
     <section class="section section-light">
       <div class="container">
         <h2 class="section-title">南風原町 子育て家庭応援価格</h2>
-        <div class="plan-compare plan-compare--single">
+        <div id="price-section" class="plan-compare plan-compare--single">
           <div class="plan-card plan-card--featured">
             <p class="plan-card-badge">応援価格</p>
             <h3 class="plan-card-heading">🌿 南部エリア限定｜応援価格</h3>
@@ -233,7 +233,7 @@
                   <li>防カビ仕上げ</li>
                 </ul>
               </section>
-              <section class="plan-detail-card plan-detail-card--secondary">
+              <section id="premium-section" class="plan-detail-card plan-detail-card--secondary">
                 <h4 class="plan-detail-title">【完全分解（根リセット施工）】</h4>
                 <p class="plan-detail-price plan-detail-price--sub">税込 14,000円</p>
                 <ul class="plan-detail-list">
@@ -246,7 +246,7 @@
               <p class="plan-detail-note">※どちらも200世帯達成までの感謝価格です。</p>
             </div>
             <p class="plan-card-repeat">リピートのお客様は感謝価格8,000円で対応いたします。</p>
-            <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta plan-card-btn" data-cta="line" data-cta-location="haebaru-price">🌿 200世帯達成前に予約する</a>
+            <a id="cta-200" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta plan-card-btn" data-cta="line" data-cta-location="haebaru-price">🌿 200世帯達成前に予約する</a>
             <p class="plan-card-sub-note">南部限定8,000円は200世帯達成まで。</p>
           </div>
         </div>
@@ -414,5 +414,41 @@
       <span class="fixed-line-cta-text">南部エアコン応援価格<br><strong>8,000円で予約する</strong></span>
     </a>
   </div>
+  <!-- GA4 section visibility tracking -->
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    function ensureIdBySelector(selector, id) {
+      if (document.getElementById(id)) return;
+      var el = document.querySelector(selector);
+      if (el && !el.id) el.id = id;
+    }
+
+    ensureIdBySelector(".plan-compare", "price-section");
+    ensureIdBySelector(".plan-detail-card--secondary", "premium-section");
+    ensureIdBySelector("a.line-cta.plan-card-btn[data-cta-location*='price']", "cta-200");
+
+    function observeAndSend(id, eventName) {
+      var el = document.getElementById(id);
+      if (!el) return;
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            if (typeof gtag === "function") {
+              gtag("event", eventName);
+            }
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.4 });
+
+      observer.observe(el);
+    }
+
+    observeAndSend("price-section", "price_section_view");
+    observeAndSend("premium-section", "premium_section_view");
+    observeAndSend("cta-200", "cta_visible");
+  });
+  </script>
 </body>
 </html>
