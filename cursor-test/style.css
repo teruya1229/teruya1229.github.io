@@ -2163,6 +2163,83 @@ img {
   flex: 1;
 }
 
+.plan-detail-stack {
+  margin: 0 0 16px;
+  text-align: left;
+}
+
+.plan-detail-card {
+  margin: 0;
+  padding: 14px 14px 12px;
+  border-radius: 12px;
+  border: 1px solid #d8e0e6;
+  background: #f9fbfd;
+}
+
+.plan-detail-card + .plan-detail-card {
+  margin-top: 10px;
+}
+
+.plan-detail-card--primary {
+  border-color: #cad8e3;
+  background: #f4f8fb;
+}
+
+.plan-detail-card--secondary {
+  border-color: #dfe4ea;
+  background: #fbfcfd;
+}
+
+.plan-detail-title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--brand-dark);
+  line-height: 1.5;
+}
+
+.plan-detail-price {
+  margin: 4px 0 8px;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--brand);
+  line-height: 1.4;
+}
+
+.plan-detail-price--sub {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #445b70;
+}
+
+.plan-detail-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-detail-list li {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  position: relative;
+  padding-left: 1em;
+}
+
+.plan-detail-list li::before {
+  content: "・";
+  position: absolute;
+  left: 0;
+  color: #5f7285;
+}
+
+.plan-detail-note {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
 .plan-card-btn {
   margin-top: auto;
   width: 100%;
@@ -2218,6 +2295,14 @@ img {
 
   .plan-card-price {
     font-size: 1.75rem;
+  }
+
+  .plan-detail-card {
+    padding: 12px 12px 10px;
+  }
+
+  .plan-detail-list li {
+    font-size: 0.8rem;
   }
 }
 
