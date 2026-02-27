@@ -203,33 +203,39 @@
       font-weight:700;
       margin-bottom:6px;
     }
-    .cta-strong{
+    /* 強制的に効かせる（既存より優先） */
+    a.cta-strong, button.cta-strong{
       position: relative;
-      transform: translateZ(0);
-      box-shadow: 0 10px 24px rgba(16, 185, 129, .25);
-      border: 1px solid rgba(16, 185, 129, .35);
-      letter-spacing: .2px;
+      border-radius: 14px !important;
+      box-shadow: 0 14px 30px rgba(16,185,129,.30) !important;
+      border: 1px solid rgba(16,185,129,.45) !important;
+      font-weight: 800 !important;
+      letter-spacing: .2px !important;
     }
 
-    .cta-strong:hover{
-      transform: translateY(-1px);
-      box-shadow: 0 14px 30px rgba(16, 185, 129, .28);
+    /* “特別感”の光彩（やりすぎない） */
+    a.cta-strong::after, button.cta-strong::after{
+      content:"";
+      position:absolute;
+      inset: -2px;
+      border-radius: 16px;
+      pointer-events:none;
+      box-shadow: 0 0 0 0 rgba(16,185,129,.0);
     }
 
-    .cta-strong:active{
-      transform: translateY(0px);
-      box-shadow: 0 8px 18px rgba(16, 185, 129, .22);
-    }
-
-    .cta-strong{
-      border-radius: 14px;
+    /* hover可能環境だけ少し浮かす */
+    @media (hover:hover){
+      a.cta-strong:hover, button.cta-strong:hover{
+        transform: translateY(-1px);
+        box-shadow: 0 18px 36px rgba(16,185,129,.34) !important;
+      }
     }
 
     .cta-note{
       margin: 10px 0 0;
       text-align: center;
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       color: rgba(0,0,0,.62);
     }
     .copy-btn:active { transform: translateY(1px); }
@@ -418,7 +424,8 @@
       <div class="decision-box">
         <p class="decision-title">迷っている方へ</p>
         <p>
-          今シーズンはご予約が集中します。<br>
+          毎年、夏前からご予約が集中します。<br>
+          特に完全分解は枠が限られています。<br>
           「やっぱりやっておけば良かった」となる前に、<br>
           まずは日程だけ確保しておくのがおすすめです。
         </p>
