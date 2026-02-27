@@ -2102,6 +2102,11 @@ img {
   flex-direction: column;
 }
 
+.plan-card--standard {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
 .plan-card--featured {
   border: 2px solid var(--brand);
   box-shadow: 0 6px 20px rgba(28, 61, 90, 0.12);
@@ -2257,6 +2262,13 @@ img {
   text-align: center;
 }
 
+.plan-choice-note {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
 .plan-card-btn--sub {
   background: var(--brand);
   box-shadow: 0 2px 8px rgba(28, 61, 90, 0.2);
@@ -2291,6 +2303,11 @@ img {
 
   .plan-card {
     padding: 24px 20px;
+  }
+
+  .plan-card--standard {
+    padding-top: 22px;
+    padding-bottom: 22px;
   }
 
   .plan-card-price {
