@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LINE登録ありがとうございます｜限定オファー</title>
+  <meta name="description" content="LINE友だち追加ありがとうございます。はじめての方限定オファーと、予約・チェックリスト受け取りのご案内ページです。">
+  <meta name="robots" content="noindex,nofollow">
+  <meta property="og:title" content="LINE登録ありがとうございます｜限定オファー">
+  <meta property="og:description" content="このページを見た方限定のご案内です。必要な方だけ、お気軽にLINEでご相談ください。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://teruya1229.github.io/cursor-test/thanks.html">
+  <link rel="icon" href="favicon.ico">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8LKLFDL3G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var params = new URLSearchParams(location.search);
+    var isDebug = params.get('debug') === '1' || params.get('debug_mode') === 'true';
+    if (isDebug) {
+      gtag('config', 'G-X8LKLFDL3G', { debug_mode: true });
+    } else {
+      gtag('config', 'G-X8LKLFDL3G');
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --brand: #14b85a;
+      --brand-dark: #0f8f46;
+      --gold-bg: #fff9e8;
+      --gold-bd: #f0d78c;
+      --gold-tx: #735a17;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #f6f8fb 0%, #eef3f8 100%);
+      line-height: 1.65;
+    }
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 16px 14px 40px;
+    }
+    .banner {
+      margin: 6px 0 14px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: var(--gold-bg);
+      border: 1px solid var(--gold-bd);
+      color: var(--gold-tx);
+      font-weight: 700;
+      font-size: 1rem;
+      text-align: center;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      border: 1px solid rgba(31, 41, 55, 0.08);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      padding: 18px 16px;
+      margin-top: 12px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+      line-height: 1.45;
+    }
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .limited {
+      display: inline-block;
+      margin: 10px 0 0;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #eef8ff;
+      color: #245a7f;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+    .offer-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .offer {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(31, 41, 55, 0.08);
+      background: #fbfcfe;
+    }
+    .offer h2 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+    .price {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0f4f83;
+    }
+    .old {
+      margin-left: 8px;
+      font-size: 0.85rem;
+      color: #8b94a3;
+      text-decoration: line-through;
+      font-weight: 500;
+    }
+    .sub {
+      margin: 6px 0 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .note {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #4b5563;
+    }
+    .code-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    code {
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: #f3f6fa;
+      border: 1px solid #dde5ee;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .copy-btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: #e7edf5;
+      color: #1f2937;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.82rem;
+    }
+    .copy-btn:active { transform: translateY(1px); }
+    .cta-box { margin-top: 14px; }
+    .cta {
+      display: block;
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 12px;
+      padding: 14px 14px;
+      font-weight: 800;
+      font-size: 1rem;
+      line-height: 1.35;
+      margin-top: 10px;
+    }
+    .cta-primary {
+      background: var(--brand);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(20, 184, 90, 0.26);
+    }
+    .cta-primary:hover { background: var(--brand-dark); }
+    .cta-sub {
+      background: #1f2a44;
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(31, 42, 68, 0.26);
+    }
+    .quiet {
+      margin: 12px 0 0;
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="banner">🎉 LINE友だち追加ありがとうございます</div>
+
+    <section class="card">
+      <h1>このページを見た方限定のご案内です</h1>
+      <p class="lead">はじめての方限定で、必要な方だけ使える特別オファーをご用意しました。</p>
+      <span class="limited">はじめての方限定</span>
+
+      <div class="offer-grid">
+        <article class="offer">
+          <h2>オファー① 完全分解（プレミアム）</h2>
+          <p><span class="price">13,000円</span><span class="old">通常14,000円</span></p>
+          <p class="sub">送風ファンまで取り外して洗浄します。</p>
+        </article>
+
+        <article class="offer">
+          <h2>オファー② 2台目 1,000円引き</h2>
+          <p class="sub">同日施工の2台目は、通常料金から1,000円引きでご案内します。</p>
+        </article>
+
+        <article class="offer">
+          <h2>特典 抗菌コート無料</h2>
+          <p class="sub">作業後に無料施工（希望者のみ）で、カビ・ニオイ対策をサポートします。</p>
+        </article>
+      </div>
+
+      <p class="note">無理におすすめしません。必要な方だけご相談ください。</p>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:0 0 8px;font-size:1.05rem;">LINEへ送る文言</h2>
+      <p class="lead">このままLINEへ戻って、下の文言を送るだけでOKです。</p>
+
+      <div class="code-row">
+        <code id="reserve-text">予約</code>
+        <button class="copy-btn" type="button" data-copy-target="reserve-text" data-copy-type="reserve">コピー</button>
+      </div>
+      <div class="code-row">
+        <code id="checklist-text">チェックリスト</code>
+        <button class="copy-btn" type="button" data-copy-target="checklist-text" data-copy-type="checklist">コピー</button>
+      </div>
+
+      <div class="cta-box">
+        <a id="cta-reserve" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="cta cta-primary line-cta" data-cta="line" data-cta-location="thanks-reserve">LINEで予約する（「予約」と送る）</a>
+        <a id="cta-checklist" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="cta cta-sub line-cta" data-cta="line" data-cta-location="thanks-checklist">チェックリストを受け取る（「チェックリスト」と送る）</a>
+      </div>
+
+      <p class="quiet">このページはLINEご登録者向けのご案内です。</p>
+    </section>
+  </main>
+
+  <!-- GA4 CTA click tracking + debug toast -->
+  <script>
+  (function() {
+    var params = new URLSearchParams(location.search);
+    var isDebug = params.get('debug') === '1' || params.get('debug_mode') === 'true';
+
+    function showDebugToast(text) {
+      if (!isDebug) return;
+      var el = document.createElement('div');
+      el.className = 'ga-debug-toast';
+      el.textContent = text || '計測OK';
+      el.style.cssText = 'position:fixed;bottom:16px;right:16px;padding:12px 20px;font-size:14px;font-weight:700;border-radius:8px;background:rgba(0,0,0,.82);color:#fff;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .2s ease;pointer-events:none;';
+      document.body.appendChild(el);
+      requestAnimationFrame(function() { el.style.opacity = '1'; });
+      setTimeout(function() {
+        el.style.opacity = '0';
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 300);
+      }, 1500);
+    }
+
+    function detectLocation(anchor) {
+      var explicit = anchor.getAttribute('data-cta-location');
+      if (explicit) return explicit;
+      var node = anchor;
+      while (node && node !== document.body) {
+        var id = (node.id || '').toLowerCase();
+        var cls = (typeof node.className === 'string' ? node.className : '').toLowerCase();
+        if (/\bthanks\b/.test(id + ' ' + cls)) return 'thanks';
+        node = node.parentElement;
+      }
+      return 'unknown';
+    }
+
+    function detectCtaType(href) {
+      if (!href) return null;
+      if (href.indexOf('https://lin.ee/') === 0) return 'line';
+      if (href.indexOf('tel:') === 0) return 'tel';
+      if (href.indexOf('mailto:') === 0) return 'mail';
+      return null;
+    }
+
+    function getLabel(anchor) {
+      var text = (anchor.textContent || '').replace(/\s+/g, ' ').trim();
+      if (text) return text.substring(0, 100);
+      return anchor.getAttribute('aria-label') || anchor.getAttribute('title') || '';
+    }
+
+    function navigateTo(anchor, href) {
+      if (anchor.getAttribute('target') === '_blank') {
+        window.open(href, '_blank', 'noopener,noreferrer');
+      } else {
+        location.href = href;
+      }
+    }
+
+    document.addEventListener('click', function(e) {
+      var anchor = e.target.closest('a');
+      if (!anchor) return;
+
+      var href = anchor.getAttribute('href') || '';
+      var ctaType = detectCtaType(href);
+      if (!ctaType) return;
+
+      var eventData = {
+        cta_type: ctaType,
+        cta_label: getLabel(anchor),
+        cta_href: href,
+        cta_location: detectLocation(anchor),
+        debug_flag: isDebug
+      };
+
+      if (typeof window.gtag === 'function') {
+        if (isDebug) {
+          e.preventDefault();
+          var navigated = false;
+          gtag('event', 'cta_click', {
+            cta_type: eventData.cta_type,
+            cta_label: eventData.cta_label,
+            cta_href: eventData.cta_href,
+            cta_location: eventData.cta_location,
+            debug_flag: eventData.debug_flag,
+            event_callback: function() {
+              if (!navigated) { navigated = true; navigateTo(anchor, href); }
+            }
+          });
+          setTimeout(function() {
+            if (!navigated) { navigated = true; navigateTo(anchor, href); }
+          }, 200);
+        } else {
+          gtag('event', 'cta_click', {
+            cta_type: eventData.cta_type,
+            cta_label: eventData.cta_label,
+            cta_href: eventData.cta_href,
+            cta_location: eventData.cta_location,
+            debug_flag: eventData.debug_flag,
+            transport_type: 'beacon'
+          });
+        }
+      }
+
+      showDebugToast('計測OK');
+    }, true);
+
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.copy-btn');
+      if (!btn) return;
+      var id = btn.getAttribute('data-copy-target');
+      var copyType = btn.getAttribute('data-copy-type') || 'unknown';
+      var target = document.getElementById(id);
+      if (!target) return;
+      var text = target.textContent || '';
+
+      navigator.clipboard.writeText(text).then(function() {
+        if (typeof window.gtag === 'function') {
+          gtag('event', 'thanks_copy_text', { copy_type: copyType });
+        }
+        showDebugToast('コピーしました');
+      }).catch(function() {
+        showDebugToast('コピーに失敗しました');
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
