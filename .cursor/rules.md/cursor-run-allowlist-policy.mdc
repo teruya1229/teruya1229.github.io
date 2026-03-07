@@ -1,0 +1,41 @@
+---
+description: Cursor Run確認のAllowlist安全運用ポリシー
+alwaysApply: true
+---
+
+# Cursor Run Allowlist ポリシー
+
+## 目的
+- Run確認を減らし、安全な確認系コマンドのみ自動実行可能にする
+
+## Allowlist対象コマンド
+- `git status`
+- `git add`
+- `git commit`
+- `git push`
+- `git diff`
+- `git log`
+- `ls`
+- `pwd`
+- `Get-ChildItem`
+- `Get-Location`
+
+## 運用ルール
+- CursorのRun確認が表示された場合、上記の安全コマンドのみAllowlistを選択する
+- 上記以外のコマンドは都度内容を確認し、不要なAllowlist登録を行わない
+
+## Allowlist禁止コマンド
+- `rm`
+- `del`
+- `sudo`
+- `git reset --hard`
+- `git clean`
+- `git checkout -- .`
+- `git restore .`
+- `git restore --source`
+- `git reset --mixed`
+- `git reset --soft`
+
+## 補足
+- 本ポリシーは「Git状態確認」「Git履歴確認」「フォルダ確認」の安全運用を目的とする
+- ファイル削除や履歴破壊につながるコマンドはAllowlistしない
