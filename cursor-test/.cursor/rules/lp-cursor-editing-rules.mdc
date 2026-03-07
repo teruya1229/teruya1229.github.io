@@ -1,0 +1,53 @@
+---
+description: LP project safety editing rules for Cursor AI
+alwaysApply: true
+---
+
+# Cursor Editing Rules
+
+
+## 編集ポリシー
+
+変更は必ず最小差分
+
+1回の変更は1ファイルのみ
+
+既存コード構造を確認してから編集
+
+不要なリファクタリングは禁止
+
+
+
+## LP構造
+
+LP構造は以下の順序
+
+1 ファーストビュー  
+2 相談の流れ（3ステップ）  
+3 料金  
+4 クリーニング前のエアコン内部  
+5 洗浄で出た汚水  
+6 Google口コミ  
+7 代表プロフィール  
+8 LINE CTA  
+9 実施内容  
+
+この順序は変更しない。
+
+
+
+## 編集禁止
+
+セクション削除禁止
+
+大きなレイアウト変更禁止
+
+CSS構造変更禁止
+
+
+
+## CTA
+
+LINE公式URL
+
+https://lin.ee/tsilra6
