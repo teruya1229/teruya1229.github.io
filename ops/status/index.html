@@ -661,6 +661,47 @@ LPはここで固定
 
 ■ 確認
 ・公開URLで表示崩れがないことを確認し作業完了とする
+
+---
+
+【2026-03-07 作業終了時点】
+
+■ 本日やったこと
+・LPプロジェクトを OneDrive 管理外へ移動
+・ローカル開発環境を C:\dev\teruya1229-github-io に整理
+・Cursor で LPプロジェクトを正しいルートから開ける状態にした
+・LPプロジェクト用の安全ルール整備を実施
+・rules.md / context.md / README.md / .cursor/rules 整備方針を確定
+・Cursor Run Allowlist ポリシーを rules.md に追記する方針を確定
+・Allowlist対象コマンドと禁止コマンドを固定
+・LPは改修フェーズから検証フェーズへ移行する方針を再確認
+・LINE公式アカウント認証済みを確認
+・LPの導線順修正完了を確認済み
+
+■ Cursor Run Allowlist（固定）
+・対象コマンド
+  git status / git add / git commit / git push
+  git diff / git log
+  ls / pwd
+  Get-ChildItem / Get-Location
+・禁止コマンド
+  rm / del / sudo / git reset --hard / git clean
+  git checkout -- . / git restore . / git restore --source
+  git reset --mixed / git reset --soft
+
+■ 現在の状態
+・LP主要改修は完了
+・現在は検証フェーズ
+・これ以上のLP改修は原則行わず、反応確認を優先
+・Cursor開発環境はローカルへ移行済み
+・今後はLPプロジェクトのみを前提に進める
+・電工プロジェクトの文脈は切り離し済み
+
+■ 次にやること
+・動画作成
+・動画導線での流入検証
+・LINE反応確認
+・GBP / SNS / 動画経由の問い合わせ検証
   </pre>
 </body>
 </html>

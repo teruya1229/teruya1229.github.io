@@ -142,6 +142,16 @@ push
 - URL（特に lin.ee や @ID）は推測で新規作成しない。名刺/公式で確認済みのURLのみ正として扱う
 - 変更が発生したら、このページ（引き継ぎシート）を先に更新してから作業する
 
+【11. 追加前提（2026-03-07）】
+- LPプロジェクトのローカル開発場所は C:\dev\teruya1229-github-io を正とする
+- 今後は LPプロジェクト単体で扱う（電工プロジェクト文脈は切り離し）
+- 現在は検証フェーズのため、原則として大きなLP改修は行わない
+- Cursor Run Allowlist 方針を固定前提にする
+- Allowlist対象：
+  git status / git add / git commit / git push / git diff / git log / ls / pwd / Get-ChildItem / Get-Location
+- Allowlist禁止：
+  rm / del / sudo / git reset --hard / git clean / git checkout -- . / git restore . / git restore --source / git reset --mixed / git reset --soft
+
 ---
 
 使い方（新チャット1発目にこれだけ）
