@@ -41,3 +41,37 @@ Run確認が表示された際、以下のみAllowlistを選択する。
 ## 運用
 1. Cursor Run確認が表示された際、Allowlist対象コマンドのみAllowlistを選択する。
 2. 禁止コマンドはAllowlistしない。
+
+---
+
+# Cursor Run Allowlist Policy
+
+Allowlist対象コマンド
+
+git status
+git add
+git commit
+git push
+
+git diff
+git log
+
+ls
+pwd
+
+Get-ChildItem
+Get-Location
+
+
+Allowlist禁止コマンド
+
+rm
+del
+sudo
+git reset --hard
+git clean
+git checkout -- .
+git restore .
+git restore --source
+git reset --mixed
+git reset --soft
