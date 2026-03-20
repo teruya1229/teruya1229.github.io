@@ -49,6 +49,25 @@
       }
     }
   </style>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8LKLFDL3G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var paramsGA = new URLSearchParams(location.search);
+    var isDebugGA = paramsGA.get('debug') === '1' || paramsGA.get('debug_mode') === 'true';
+    var gaCfg = { send_page_view: false };
+    if (isDebugGA) gaCfg.debug_mode = true;
+    gtag('config', 'G-X8LKLFDL3G', gaCfg);
+    gtag('event', 'page_view', {
+      page_title: document.title,
+      page_location: window.location.href,
+      page_path: window.location.pathname + window.location.search,
+      page_type: 'business_lp',
+      page_slug: '/business-cleaning/'
+    });
+  </script>
 </head>
 <body>
   <header class="header">
@@ -185,5 +204,125 @@
       </div>
     </section>
   </main>
+  <!-- GA4 CTA click tracking + debug toast -->
+  <script>
+  (function() {
+    var params = new URLSearchParams(location.search);
+    var isDebug = params.get('debug') === '1' || params.get('debug_mode') === 'true';
+    var PAGE_TYPE = 'business_lp';
+    var PAGE_SLUG = '/business-cleaning/';
+
+    function showDebugToast() {
+      if (!isDebug) return;
+      var el = document.createElement('div');
+      el.className = 'ga-debug-toast';
+      el.textContent = '\u8A08\u6E2COK';
+      el.style.cssText = 'position:fixed;bottom:16px;right:16px;padding:12px 20px;font-size:14px;font-weight:700;border-radius:8px;background:rgba(0,0,0,.82);color:#fff;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .2s ease;pointer-events:none;';
+      document.body.appendChild(el);
+      requestAnimationFrame(function() { el.style.opacity = '1'; });
+      setTimeout(function() {
+        el.style.opacity = '0';
+        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 300);
+      }, 1500);
+    }
+
+    function detectLocation(anchor) {
+      var cls0 = (typeof anchor.className === 'string' ? anchor.className : '').toLowerCase();
+      if (/\bheader-tel\b/.test(cls0)) return 'mid';
+      var node = anchor;
+      while (node && node !== document.body) {
+        var id = (node.id || '').toLowerCase();
+        var cls = (typeof node.className === 'string' ? node.className : '').toLowerCase();
+        var combined = id + ' ' + cls;
+        if (/\bhero\b/.test(combined)) return 'hero';
+        if (/\bbiz-cta-text\b/.test(combined)) return 'bottom';
+        node = node.parentElement;
+      }
+      return 'unknown';
+    }
+
+    function detectCtaType(href) {
+      if (!href) return null;
+      if (href.indexOf('https://lin.ee/') === 0) return 'line';
+      if (href.indexOf('tel:') === 0) return 'tel';
+      if (href.indexOf('mailto:') === 0) return 'mail';
+      return null;
+    }
+
+    function getLabel(anchor) {
+      var text = (anchor.textContent || '').replace(/\s+/g, ' ').trim();
+      if (text) return text.substring(0, 100);
+      return anchor.getAttribute('aria-label') || anchor.getAttribute('title') || '';
+    }
+
+    function navigateTo(anchor, href) {
+      var target = anchor.getAttribute('target');
+      if (target === '_blank') {
+        window.open(href, '_blank', 'noopener,noreferrer');
+      } else {
+        location.href = href;
+      }
+    }
+
+    document.addEventListener('click', function(e) {
+      var anchor = e.target.closest('a');
+      if (!anchor) return;
+
+      var href = anchor.getAttribute('href') || '';
+      var ctaType = detectCtaType(href);
+      if (!ctaType) return;
+
+      var eventData = {
+        cta_type: ctaType,
+        cta_target: ctaType,
+        cta_label: getLabel(anchor),
+        cta_href: href,
+        cta_location: detectLocation(anchor),
+        page_type: PAGE_TYPE,
+        page_slug: PAGE_SLUG,
+        debug_flag: isDebug
+      };
+
+      if (typeof window.gtag === 'function') {
+        if (isDebug) {
+          e.preventDefault();
+          var navigated = false;
+          gtag('event', 'cta_click', {
+            cta_type: eventData.cta_type,
+            cta_target: eventData.cta_target,
+            cta_label: eventData.cta_label,
+            cta_href: eventData.cta_href,
+            cta_location: eventData.cta_location,
+            page_type: eventData.page_type,
+            page_slug: eventData.page_slug,
+            debug_flag: eventData.debug_flag,
+            event_callback: function() {
+              if (!navigated) { navigated = true; navigateTo(anchor, href); }
+            }
+          });
+          setTimeout(function() {
+            if (!navigated) { navigated = true; navigateTo(anchor, href); }
+          }, 200);
+        } else {
+          gtag('event', 'cta_click', {
+            cta_type: eventData.cta_type,
+            cta_target: eventData.cta_target,
+            cta_label: eventData.cta_label,
+            cta_href: eventData.cta_href,
+            cta_location: eventData.cta_location,
+            page_type: eventData.page_type,
+            page_slug: eventData.page_slug,
+            debug_flag: eventData.debug_flag,
+            transport_type: 'beacon'
+          });
+        }
+      } else {
+        console.log('[GA4 CTA]', eventData);
+      }
+
+      showDebugToast();
+    }, true);
+  })();
+  </script>
 </body>
 </html>
