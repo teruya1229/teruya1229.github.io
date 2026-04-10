@@ -243,6 +243,31 @@
       gap:12px !important;
       padding-bottom:16px !important;
     }
+    /* 完全分解LPへ：主CTAより弱いサブCTA（#premium-section のみ） */
+    #premium-section .premium-detail-subcta{
+      margin: 22px 0 16px;
+      text-align: center;
+    }
+    #premium-section .premium-detail-subcta a{
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px 16px;
+      font-size: clamp(0.95rem, 2.8vw, 1.0625rem);
+      font-weight: 700;
+      line-height: 1.35;
+      text-align: center;
+      text-decoration: none;
+      color: var(--brand);
+      background: rgba(255,255,255,.88);
+      border: 2px solid rgba(0,0,0,.1);
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+    #premium-section .premium-detail-subcta a:hover{
+      border-color: rgba(0,0,0,.14);
+      background: #fff;
+    }
     @media(max-width:600px){
       main{gap:0;}
       .consultation-flow .flow-lead{font-size:0.9rem;line-height:1.7;}
@@ -499,7 +524,7 @@
               <p class="plan-detail-note">⚠️ 完全分解は1日対応できる台数が限られます</p>
               <p class="plan-detail-note">※機種・設置状況により対応できない場合があります。</p>
             </div>
-            <p class="plan-card-desc" style="text-align:center;margin-bottom:12px;"><a href="https://teruya1229.github.io/complete-disassembly/?from=home_lp_kansetubunkai" target="_blank" rel="noopener noreferrer" style="color:var(--brand);font-weight:600;text-decoration:underline;">完全分解の施工内容を詳しく見る</a></p>
+            <p class="premium-detail-subcta"><a href="https://teruya1229.github.io/complete-disassembly/?from=home_lp_kansetubunkai" target="_blank" rel="noopener noreferrer">完全分解の施工内容を詳しく見る</a></p>
             <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta plan-card-btn" data-cta="line" data-cta-location="price-premium">完全分解について相談・予約する</a>
             <p class="plan-card-sub-note">ご相談だけでも大丈夫です。<br>返信は原則24時間以内に行います。</p>
           </div>
