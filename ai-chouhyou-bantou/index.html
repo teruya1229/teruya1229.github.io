@@ -434,19 +434,38 @@
       color: #93c5fd;
     }
 
-    /* ===== DEMO IMAGE PLACEHOLDER ===== */
-    .demo-img-placeholder {
-      background: var(--bg-light);
-      border: 2px dashed var(--border);
+    /* ===== DEMO IMAGES ===== */
+    .demo-img {
+      display: block;
+      width: 100%;
       border-radius: var(--radius);
-      padding: 32px 20px;
-      text-align: center;
-      color: var(--text-light);
-      font-size: 0.85rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
       margin-top: 20px;
-      line-height: 1.7;
     }
-    .demo-img-placeholder-icon { font-size: 2rem; margin-bottom: 8px; }
+    .demo-img-caption {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      text-align: center;
+      margin-top: 6px;
+    }
+    .demo-sub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 24px;
+    }
+    @media(max-width:480px){ .demo-sub-grid { grid-template-columns: 1fr; } }
+    .demo-sub-item { text-align: center; }
+    .demo-sub-label {
+      display: inline-block;
+      background: var(--bg-blue-light);
+      color: var(--brand-blue);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 6px;
+    }
 
     /* ===== FOOTER ===== */
     .footer {
@@ -694,12 +713,24 @@
             最終確認は人間が行うので、金額ミスや請求漏れもチェックしやすくなります。
             「AIが勝手に送る」のではなく、「AIが下書きを作り、人間が確認して送る」安全設計です。
           </p>
-          <div class="demo-img-placeholder">
-            <div class="demo-img-placeholder-icon">🖼</div>
-            <p><strong>実例イメージ（準備中）</strong></p>
-            <p style="margin-top:6px;">元請けごとの請求一覧や、月末の作業明細をAIで整理。<br>日付・名前・金額・小計・消費税・合計まで、確認しやすい形に整えます。</p>
+          <img src="./images/ai-bantou-demo-main.png" alt="散らばった案件情報を受付票・請求データ・売上一覧へ整理するAI帳票番頭のデモ画像" class="demo-img" loading="lazy">
+          <p class="demo-img-caption">▲ AI帳票番頭 全体デモ：案件情報の整理から請求データ作成まで</p>
+          <img src="./images/ai-bantou-invoice-20.png" alt="20件以上の請求書をAIで短時間に下書き化するイメージ画像" class="demo-img" loading="lazy" style="margin-top:16px;">
+          <p class="demo-img-caption">▲ 20件以上の請求書整理をAIで下書き化したイメージ</p>
+          <p style="margin-top:12px;font-size:0.78rem;color:var(--text-light);">※ 実際の運用では、個人情報や金額を確認したうえで使用します。</p>
+        </div>
+
+        <div class="demo-sub-grid">
+          <div class="demo-sub-item">
+            <span class="demo-sub-label">受付票化</span>
+            <img src="./images/ai-bantou-reception-form.png" alt="現場案件情報を受付票テンプレに整理したイメージ" class="demo-img" loading="lazy" style="margin-top:0;">
+            <p class="demo-img-caption">受付票テンプレ例</p>
           </div>
-          <p style="margin-top:10px;font-size:0.78rem;color:var(--text-light);">※ 実際の運用では、個人情報や金額を確認したうえで使用します。</p>
+          <div class="demo-sub-item">
+            <span class="demo-sub-label">売上一覧化</span>
+            <img src="./images/ai-bantou-sales-list.png" alt="案件・金額・請求状況をGoogleスプレッドシートで売上一覧化したイメージ" class="demo-img" loading="lazy" style="margin-top:0;">
+            <p class="demo-img-caption">売上一覧（スプレッドシート）例</p>
+          </div>
         </div>
       </div>
     </section>
