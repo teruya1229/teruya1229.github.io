@@ -1220,20 +1220,26 @@
     var params = new URLSearchParams(location.search);
     var isDebug = params.get('debug') === '1' || params.get('debug_mode') === 'true';
 
-    /* ===== [D] 計測OKトースト（debug時のみ・右下表示・1.5秒で消える） ===== */
+    /* ===== [D] 計測OKトースト（debug時のみ・右下表示・1.8秒で消える） ===== */
+    var debugToastTimer = null;
     function showDebugToast() {
       if (!isDebug) return;
+      if (debugToastTimer) clearTimeout(debugToastTimer);
+      var prev = document.querySelector('.ga-debug-toast');
+      if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
       var el = document.createElement('div');
       el.className = 'ga-debug-toast';
       el.textContent = '\u8A08\u6E2COK';
-      el.style.cssText = 'position:fixed;bottom:16px;right:16px;padding:12px 20px;font-size:14px;font-weight:700;border-radius:8px;background:rgba(0,0,0,.82);color:#fff;z-index:99999;box-shadow:0 4px 12px rgba(0,0,0,.3);opacity:0;transition:opacity .2s ease;pointer-events:none;';
+      el.setAttribute('role', 'status');
+      el.setAttribute('aria-live', 'polite');
+      el.style.cssText = 'position:fixed;bottom:16px;right:16px;padding:10px 14px;font-size:14px;font-weight:700;border-radius:999px;background:#16a34a;color:#fff;z-index:99999;box-shadow:0 8px 20px rgba(0,0,0,.18);pointer-events:none;';
       document.body.appendChild(el);
-      requestAnimationFrame(function() { el.style.opacity = '1'; });
-      setTimeout(function() {
-        el.style.opacity = '0';
-        setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 300);
-      }, 1500);
+      debugToastTimer = setTimeout(function() {
+        if (el.parentNode) el.parentNode.removeChild(el);
+        debugToastTimer = null;
+      }, 1800);
     }
+    window.__bcShowDebugToast = showDebugToast;
 
     /* ===== [C] cta_location 推定 ===== */
     function detectLocation(anchor) {
@@ -1321,7 +1327,7 @@
           /* event_callback が呼ばれない場合のフォールバック 200ms */
           setTimeout(function() {
             if (!navigated) { navigated = true; navigateTo(anchor, href); }
-          }, 200);
+          }, isDebug ? 600 : 200);
         } else {
           /* 通常時は遅延なし（UX優先） */
           gtag('event', 'cta_click', {
@@ -1339,10 +1345,34 @@
       } else {
         /* gtagが無い場合は console.log で同内容を出す */
         console.log('[GA4 CTA]', eventData);
+        if (isDebug) {
+          e.preventDefault();
+          setTimeout(function() { navigateTo(anchor, href); }, 600);
+        }
       }
-
-      showDebugToast();
     }, true);
+  })();
+  </script>
+
+  <!-- GA4 debug: CTAクリック時の「計測OK」表示（?debug=1 のみ） -->
+  <script>
+  (function() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get('debug') !== '1' && params.get('debug_mode') !== 'true') return;
+
+    function bindDebugCtaToasts() {
+      document.querySelectorAll('a[href*="lin.ee/tsilra6"], a[href*="airrsv.net/bc-servicesokinawa/calendar"]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (typeof window.__bcShowDebugToast === 'function') window.__bcShowDebugToast();
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindDebugCtaToasts);
+    } else {
+      bindDebugCtaToasts();
+    }
   })();
   </script>
 
