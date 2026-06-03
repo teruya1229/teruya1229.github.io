@@ -88,6 +88,80 @@
   }
   </script>
 
+  <!-- 構造化データ: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "エアコンクリーニングはどのくらいの頻度がおすすめですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ご家庭の使用状況によりますが、一般的には1〜2年に1回がおすすめです。小さなお子様やペットがいるご家庭、使用頻度が高いご家庭は早めのクリーニングをご検討ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "お掃除機能付きエアコンも対応できますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "対応可能です。メーカーや機種によって作業内容や料金が異なるため、写真を送っていただければ事前にご案内いたします。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "完全分解クリーニングとは何ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "通常分解では外せない部品まで取り外し、内部の汚れをしっかり洗浄するクリーニング方法です。通常分解では落としきれない汚れが気になる方におすすめです。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "作業時間はどのくらいかかりますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "機種や汚れ具合によりますが、ノーマルエアコンは約1〜2時間、お掃除機能付きは約2〜3時間が目安です。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "作業中は家にいた方がいいですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "作業開始時と完了確認時だけ立ち会っていただければ大丈夫です。途中は別室でお過ごしいただいても問題ありません。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "赤ちゃんや小さな子どもがいても大丈夫ですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "はい。ご家庭への配慮を大切にしながら作業を行っています。気になることがあれば事前にご相談ください。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "料金は追加になることがありますか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "機種・設置状況・汚れ具合によって変わる場合がありますが、作業前にご説明し、ご納得いただいてから作業を行います。"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "対応エリアはどこですか？",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "主に南城市、八重瀬町、豊見城市、糸満市、那覇市、南風原町、与那原町で対応しています。その他地域もお気軽にご相談ください。"
+        }
+      }
+    ]
+  }
+  </script>
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8LKLFDL3G"></script>
   <script>
@@ -891,32 +965,61 @@
       </div>
     </section>
 
-    <!-- よくある質問（差し替え時は .faq-item ごとに dt / dd を編集） -->
-    <section class="section faq section-light">
+    <!-- よくある質問 -->
+    <section class="section faq section-light" id="faq">
       <div class="container">
         <h2 class="section-title">よくある質問</h2>
-        <dl class="faq-list plan-compare--single">
-          <div class="faq-item card">
-            <dt class="faq-q">追加料金はかかりますか？</dt>
-            <dd class="faq-a">事前にお伝えした見積もり内容の範囲内であれば追加料金はいただきません。作業中に範囲が変わる場合は、その都度ご説明してから進めます。</dd>
-          </div>
-          <div class="faq-item card">
-            <dt class="faq-q">作業時間はどれくらいですか？</dt>
-            <dd class="faq-a">内容によって異なります。エアコン1台で約1時間、ハウスクリーニングはお部屋の広さにより1〜3時間程度が目安です。お見積もり時に目安をお伝えします。</dd>
-          </div>
-          <div class="faq-item card">
-            <dt class="faq-q">当日は立ち会いが必要ですか？</dt>
-            <dd class="faq-a">鍵の受け渡しや入室のご確認のため、ご在宅またはご同席いただく場合があります。ご都合が悪い場合は事前にご相談ください。</dd>
-          </div>
-          <div class="faq-item card">
-            <dt class="faq-q">駐車場がない場合はどうなりますか？</dt>
-            <dd class="faq-a">近隣のコインパーキング等をご案内いただくか、お近くの駐車可能な場所を教えていただければ対応します。事前にLINEやお電話でご相談ください。</dd>
-          </div>
-          <div class="faq-item card">
-            <dt class="faq-q">対応エリア外でもお願いできますか？</dt>
-            <dd class="faq-a">基本は沖縄県本島全域ですが、エリア外もご相談に応じます。まずはお気軽にLINEやお電話でお問い合わせください。</dd>
-          </div>
-        </dl>
+        <p class="faq-page-intro">初めての方からよくいただく質問をまとめました。沖縄南部のエアコンクリーニング・完全分解クリーニングをご検討の子育て家庭の方に、家族が吸う空気にも配慮した内容をわかりやすくまとめています。</p>
+        <div class="faq-list plan-compare--single">
+          <details class="faq-details">
+            <summary>エアコンクリーニングはどのくらいの頻度がおすすめですか？</summary>
+            <div class="faq-details-body">
+              <p>ご家庭の使用状況によりますが、一般的には1〜2年に1回がおすすめです。小さなお子様やペットがいるご家庭、使用頻度が高いご家庭は早めのクリーニングをご検討ください。</p>
+            </div>
+          </details>
+          <details class="faq-details">
+            <summary>お掃除機能付きエアコンも対応できますか？</summary>
+            <div class="faq-details-body">
+              <p>対応可能です。メーカーや機種によって作業内容や料金が異なるため、写真を送っていただければ事前にご案内いたします。</p>
+            </div>
+          </details>
+          <details class="faq-details">
+            <summary>完全分解クリーニングとは何ですか？</summary>
+            <div class="faq-details-body">
+              <p>通常分解では外せない部品まで取り外し、内部の汚れをしっかり洗浄するクリーニング方法です。通常分解では落としきれない汚れが気になる方におすすめです。</p>
+            </div>
+          </details>
+          <details class="faq-details">
+            <summary>作業時間はどのくらいかかりますか？</summary>
+            <div class="faq-details-body">
+              <p>機種や汚れ具合によりますが、ノーマルエアコンは約1〜2時間、お掃除機能付きは約2〜3時間が目安です。</p>
+            </div>
+          </details>
+          <details class="faq-details">
+            <summary>作業中は家にいた方がいいですか？</summary>
+            <div class="faq-details-body">
+              <p>作業開始時と完了確認時だけ立ち会っていただければ大丈夫です。途中は別室でお過ごしいただいても問題ありません。</p>
+            </div>
+          </details>
+          <details class="faq-details">
+            <summary>赤ちゃんや小さな子どもがいても大丈夫ですか？</summary>
+            <div class="faq-details-body">
+              <p>はい。ご家庭への配慮を大切にしながら作業を行っています。気になることがあれば事前にご相談ください。</p>
+            </div>
+          </details>
+          <details class="faq-details">
+            <summary>料金は追加になることがありますか？</summary>
+            <div class="faq-details-body">
+              <p>機種・設置状況・汚れ具合によって変わる場合がありますが、作業前にご説明し、ご納得いただいてから作業を行います。</p>
+            </div>
+          </details>
+          <details class="faq-details">
+            <summary>対応エリアはどこですか？</summary>
+            <div class="faq-details-body">
+              <p>主に南城市、八重瀬町、豊見城市、糸満市、那覇市、南風原町、与那原町で対応しています。その他地域もお気軽にご相談ください。</p>
+            </div>
+          </details>
+        </div>
         <p class="faq-cta">その他のご質問は<a href="faq.html">FAQ一覧</a>または<a href="#contact">お問い合わせ</a>からどうぞ。</p>
       </div>
     </section>
