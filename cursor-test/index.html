@@ -363,6 +363,34 @@
       font-size:0.82rem;
       line-height:1.65;
     }
+    .home-case-photos {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+    @media (min-width: 768px) {
+      .home-case-photos {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+    }
+    .home-case-photo-item {
+      text-align: center;
+      margin: 0;
+    }
+    .home-case-photo-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+    .home-case-photo-caption {
+      font-size: 0.78rem;
+      color: #6b7280;
+      margin-top: 6px;
+    }
     @media(max-width:600px){
       main{gap:0;}
       .consultation-flow .flow-lead{font-size:0.9rem;line-height:1.7;}
@@ -1036,19 +1064,27 @@
           <p class="commitment-text">一台一台を分解し、見えない内部まで丁寧に。<br>エアコンの構造を理解しているからこそできる、徹底したクリーニングを行っています。</p>
         </div>
 
-        <!-- 施工事例（Before / After） -->
+        <!-- 施工事例（現場写真） -->
         <div class="commitment-inner" style="margin-top:40px;">
-          <h3 style="font-size:1.25rem;font-weight:700;text-align:center;margin-bottom:12px;">施工事例（Before / After）</h3>
-          <p class="commitment-text">洗浄前は熱交換器にホコリや黒ずみが付着し、臭いの原因になりやすい状態でした。<br>洗浄後は汚れを除去し、風量・衛生面の改善を確認しています。</p>
-          <div class="commitment-images case-images">
-            <div class="case-img">
-              <span class="case-badge">BEFORE</span>
-              <img src="images/case1-aircon-before.jpg" alt="那覇市のエアコンクリーニング施工事例（洗浄前）熱交換器の汚れ" width="800" height="500" loading="lazy">
-            </div>
-            <div class="case-img">
-              <span class="case-badge">AFTER</span>
-              <img src="images/case1-aircon-after.jpg" alt="那覇市のエアコンクリーニング施工事例（洗浄後）熱交換器の改善" width="800" height="500" loading="lazy">
-            </div>
+          <h3 style="font-size:1.25rem;font-weight:700;text-align:center;margin-bottom:12px;">施工事例（現場写真）</h3>
+          <p class="commitment-text">洗浄前の内部の汚れから、分解・洗浄、汚水の状態、施工後の仕上がりまで、現場の流れがわかる写真を掲載しています。</p>
+          <div class="home-case-photos" aria-label="施工事例写真">
+            <figure class="home-case-photo-item">
+              <img src="case-studies/2026-06-03-sample/before.jpg" alt="エアコンクリーニング施工前" width="600" height="400" loading="lazy">
+              <figcaption class="home-case-photo-caption">施工前</figcaption>
+            </figure>
+            <figure class="home-case-photo-item">
+              <img src="case-studies/2026-06-03-sample/parts.jpg" alt="エアコン完全分解作業中" width="600" height="400" loading="lazy">
+              <figcaption class="home-case-photo-caption">分解中</figcaption>
+            </figure>
+            <figure class="home-case-photo-item">
+              <img src="case-studies/2026-06-03-sample/dirty-water.jpg" alt="エアコンクリーニング洗浄後の汚水" width="600" height="400" loading="lazy">
+              <figcaption class="home-case-photo-caption">汚水</figcaption>
+            </figure>
+            <figure class="home-case-photo-item">
+              <img src="case-studies/2026-06-03-sample/after.jpg" alt="エアコンクリーニング施工後" width="600" height="400" loading="lazy">
+              <figcaption class="home-case-photo-caption">施工後</figcaption>
+            </figure>
           </div>
         </div>
       </div>
