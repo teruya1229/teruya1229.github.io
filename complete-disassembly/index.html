@@ -50,6 +50,83 @@
       .sec-reason li.card:last-child {
         margin-bottom: 0;
       }
+
+      .sec-case-studies .case-study-card {
+        max-width: 680px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    .sec-case-studies .case-study-lead {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--text-sub, #4b5563);
+      margin-bottom: 20px;
+    }
+
+    .case-study-card {
+      padding: 18px 16px;
+    }
+
+    .case-study-meta {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .case-study-meta dt {
+      font-weight: 700;
+      color: var(--brand, #1a56db);
+      margin: 0;
+    }
+
+    .case-study-meta dd {
+      margin: 0 0 4px;
+    }
+
+    .case-study-comment {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      margin-bottom: 16px;
+    }
+
+    .case-study-photos {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    @media (min-width: 600px) {
+      .case-study-photos {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .case-study-photo-item {
+      text-align: center;
+    }
+
+    .case-study-photo-placeholder {
+      aspect-ratio: 4 / 3;
+      background: #f3f4f6;
+      border: 1px dashed #d1d5db;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: #6b7280;
+      padding: 8px;
+      line-height: 1.4;
+    }
+
+    .case-study-photo-caption {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 6px;
     }
   </style>
   <!-- Google tag (gtag.js) -->
@@ -190,6 +267,52 @@
           <p><strong>お掃除機能付き完全分解 23,000円</strong></p>
           <p>※内部までしっかり洗いたい方向けの料金です。設置状況や機種により追加対応が必要な場合があります</p>
         </div>
+      </div>
+    </section>
+
+    <section class="section sec-case-studies">
+      <div class="container">
+        <h2 class="section-title">完全分解クリーニングの施工事例</h2>
+        <p class="case-study-lead">
+          沖縄・南城市をはじめ、沖縄南部の現場で行ったエアコンクリーニングの事例です。実際の現場写真とあわせて、どのような汚れがあり、完全分解クリーニングでどのように改善したかを紹介します。お掃除機能付きエアコン以外のノーマル機種でも、通常分解では落ちない汚れまで、家族が吸う空気のために内部まで丁寧に洗浄しています。
+        </p>
+        <article class="card case-study-card" data-case-id="2026-06-03-sample">
+          <dl class="case-study-meta">
+            <dt>地域</dt>
+            <dd>南城市</dd>
+            <dt>機種</dt>
+            <dd>ダイキン ノーマルエアコン</dd>
+            <dt>作業</dt>
+            <dd>完全分解クリーニング</dd>
+            <dt>相談内容</dt>
+            <dd>通常分解では落ちない奥の汚れが気になる</dd>
+            <dt>作業時間</dt>
+            <dd>約2時間</dd>
+            <dt>料金目安</dt>
+            <dd>14,000円</dd>
+          </dl>
+          <p class="case-study-comment">
+            通常分解では見えにくい内部の汚れを確認しながら、ドレンパン・ファン周辺まで丁寧に洗浄しました。小さなお子様がいるご家庭でも安心して相談しやすいよう、作業前後の状態を写真で確認できる形にしています。
+          </p>
+          <div class="case-study-photos" aria-label="施工写真">
+            <figure class="case-study-photo-item">
+              <div class="case-study-photo-placeholder" role="img" aria-label="施工前写真">施工前写真</div>
+              <figcaption class="case-study-photo-caption">施工前</figcaption>
+            </figure>
+            <figure class="case-study-photo-item">
+              <div class="case-study-photo-placeholder" role="img" aria-label="分解中写真">分解中写真</div>
+              <figcaption class="case-study-photo-caption">分解中</figcaption>
+            </figure>
+            <figure class="case-study-photo-item">
+              <div class="case-study-photo-placeholder" role="img" aria-label="汚水写真">汚水写真</div>
+              <figcaption class="case-study-photo-caption">汚水</figcaption>
+            </figure>
+            <figure class="case-study-photo-item">
+              <div class="case-study-photo-placeholder" role="img" aria-label="施工後写真">施工後写真</div>
+              <figcaption class="case-study-photo-caption">施工後</figcaption>
+            </figure>
+          </div>
+        </article>
       </div>
     </section>
 
