@@ -294,6 +294,32 @@
     .biz-consult-cases-cta .line-cta {
       display: inline-block;
     }
+
+    .biz-estimate-checklist-lead {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: var(--text-sub, #4b5563);
+      margin-bottom: 20px;
+    }
+
+    .biz-estimate-checklist-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 768px) {
+      .biz-estimate-checklist-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .biz-estimate-checklist-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
   </style>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8LKLFDL3G"></script>
@@ -474,6 +500,45 @@
         <div class="biz-consult-cases-cta">
           <p>エラー表示・水漏れ・清掃範囲が分からない場合も、まずは写真や型番をLINEで送ってご相談ください。</p>
           <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="biz-consult-cases">LINEで業務用エアコン清掃を相談する</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light biz-estimate-checklist">
+      <div class="container">
+        <h2 class="section-title">見積り相談の前に送っていただきたい情報</h2>
+        <p class="biz-estimate-checklist-lead">
+          業務用エアコン清掃や店舗・事務所清掃は、機種・台数・設置状況・作業範囲によって作業内容や料金が変わります。LINEで事前に写真や情報を送っていただけると、現場確認や見積りの目安をスムーズにお伝えしやすくなります。
+        </p>
+        <div class="biz-estimate-checklist-grid">
+          <article class="card biz-consult-card">
+            <h3>エアコン本体と設置場所の写真</h3>
+            <p>天井埋込型・天井吊下型・壁掛け型など、エアコンの形状が分かる写真を送ってください。脚立や養生が必要か、周囲に什器や棚があるかも確認しやすくなります。</p>
+          </article>
+          <article class="card biz-consult-card">
+            <h3>型番・メーカーが分かる写真</h3>
+            <p>本体の型番シールやリモコン、エラー表示が分かる写真があると、対応可否や部品確認、フロートスイッチなどの相談時にも確認しやすくなります。</p>
+          </article>
+          <article class="card biz-consult-card">
+            <h3>台数と設置場所</h3>
+            <p>清掃したい台数、設置されている場所、天井高、作業スペースの有無を教えてください。複数台の場合は、作業順序や所要時間の目安を整理しやすくなります。</p>
+          </article>
+          <article class="card biz-consult-card">
+            <h3>水漏れ・エラー・においなどの症状</h3>
+            <p>水漏れ、ドレン詰まり、エラー停止、風のにおい、吹き出し口の汚れなど、気になる症状があれば事前に教えてください。清掃で確認できる範囲か、部品交換や別対応が必要かを整理しやすくなります。</p>
+          </article>
+          <article class="card biz-consult-card">
+            <h3>床清掃や追加作業の有無</h3>
+            <p>エアコン清掃とあわせて床清掃も相談したい場合は、床材・広さ・汚れの状態が分かる写真を送ってください。別々の業者に頼む手間を減らしたい場合も、まとめて相談できます。</p>
+          </article>
+          <article class="card biz-consult-card">
+            <h3>希望時期・作業可能時間</h3>
+            <p>営業前・営業後・定休日など、作業しやすい時間帯があれば教えてください。店舗営業や来客予定に合わせて、できるだけ無理のない段取りを確認します。</p>
+          </article>
+        </div>
+        <div class="biz-consult-cases-cta">
+          <p>写真がすべて揃っていなくても大丈夫です。分かる範囲で送っていただければ、確認に必要な情報をこちらからご案内します。</p>
+          <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="biz-estimate-checklist">LINEで写真を送って見積り相談する</a>
         </div>
       </div>
     </section>
