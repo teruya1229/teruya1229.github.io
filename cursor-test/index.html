@@ -15,76 +15,106 @@
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- 構造化データ: LocalBusiness -->
+  <!-- 構造化データ: LocalBusiness / Service / BreadcrumbList -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "BCサービス",
-    "description": "沖縄南部（南城市・八重瀬町・南風原町・与那原町・豊見城市・糸満市）の子育て家庭向けエアコンクリーニング専門サービス",
-    "url": "https://teruya1229.github.io/cursor-test/",
-    "telephone": "050-1724-1338",
-    "email": "bc.teruya@gmail.com",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "大里稲嶺2127-34",
-      "addressLocality": "南城市",
-      "addressRegion": "沖縄県",
-      "postalCode": "901-1204",
-      "addressCountry": "JP"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 26.1708667,
-      "longitude": 127.7433793
-    },
-    "founder": {
-      "@type": "Person",
-      "name": "照屋 昴",
-      "jobTitle": "代表",
-      "description": "6児の父。清掃業界17年。第二種電気工事士。"
-    },
-    "areaServed": [
-      { "@type": "City", "name": "南城市" },
-      { "@type": "City", "name": "八重瀬町" },
-      { "@type": "City", "name": "南風原町" },
-      { "@type": "City", "name": "与那原町" },
-      { "@type": "City", "name": "豊見城市" },
-      { "@type": "City", "name": "糸満市" },
-      { "@type": "City", "name": "那覇市" }
-    ],
-    "priceRange": "¥8,000〜",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.65",
-      "reviewCount": "55"
-    },
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "エアコンクリーニング",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "エアコンクリーニング（南部応援価格）",
-            "description": "内部のカビ・ホコリを徹底洗浄。子育て家庭応援の南部限定価格。"
-          },
-          "price": "8000",
-          "priceCurrency": "JPY"
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://teruya1229.github.io/#bc-service",
+        "name": "BCサービス",
+        "url": "https://teruya1229.github.io/cursor-test/",
+        "image": "https://teruya1229.github.io/cursor-test/images/logo-bc.png",
+        "founder": {
+          "@type": "Person",
+          "name": "照屋 昴"
         },
-        {
+        "address": {
+          "@type": "PostalAddress",
+          "postalCode": "901-1204",
+          "addressRegion": "沖縄県",
+          "addressLocality": "南城市",
+          "streetAddress": "大里稲嶺2127-34",
+          "addressCountry": "JP"
+        },
+        "telephone": "050-1724-1338",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday"
+            ],
+            "opens": "09:00",
+            "closes": "18:00"
+          }
+        ],
+        "priceRange": "¥8,000〜",
+        "areaServed": [
+          "南城市",
+          "八重瀬町",
+          "豊見城市",
+          "糸満市",
+          "那覇市",
+          "南風原町",
+          "与那原町"
+        ],
+        "sameAs": [
+          "https://www.instagram.com/bcservicenanjyo/"
+        ]
+      },
+      {
+        "@type": "Service",
+        "@id": "https://teruya1229.github.io/cursor-test/#service",
+        "name": "沖縄南部のエアコンクリーニング",
+        "description": "BCサービスは、南城市を拠点に沖縄南部のご家庭へ伺うエアコンクリーニングサービスです。通常分解クリーニングを中心に、エアコンの風のにおいや吹き出し口の汚れが気になるご家庭向けに、LINE相談や仮予約に対応しています。",
+        "serviceType": "エアコンクリーニング",
+        "provider": {
+          "@id": "https://teruya1229.github.io/#bc-service"
+        },
+        "areaServed": [
+          "南城市",
+          "八重瀬町",
+          "豊見城市",
+          "糸満市",
+          "那覇市",
+          "南風原町",
+          "与那原町"
+        ],
+        "url": "https://teruya1229.github.io/cursor-test/",
+        "offers": {
           "@type": "Offer",
-          "itemOffered": {
-            "@type": "Service",
-            "name": "お掃除機能付きエアコンクリーニング",
-            "description": "内部構造が複雑なお掃除機能付きエアコンの分解洗浄。"
-          },
-          "price": "15000",
-          "priceCurrency": "JPY"
+          "priceCurrency": "JPY",
+          "price": "8000",
+          "description": "通常分解クリーニング 8,000円〜",
+          "availability": "https://schema.org/InStock"
         }
-      ]
-    }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://teruya1229.github.io/cursor-test/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "ホーム",
+            "item": "https://teruya1229.github.io/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "沖縄南部のエアコンクリーニング",
+            "item": "https://teruya1229.github.io/cursor-test/"
+          }
+        ]
+      }
+    ]
   }
   </script>
 

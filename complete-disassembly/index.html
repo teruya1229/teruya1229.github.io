@@ -211,6 +211,134 @@
     }
   </style>
 
+  <!-- 構造化データ: LocalBusiness / Service / BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://teruya1229.github.io/#bc-service",
+        "name": "BCサービス",
+        "url": "https://teruya1229.github.io/cursor-test/",
+        "image": "https://teruya1229.github.io/cursor-test/images/logo-bc.png",
+        "founder": {
+          "@type": "Person",
+          "name": "照屋 昴"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "postalCode": "901-1204",
+          "addressRegion": "沖縄県",
+          "addressLocality": "南城市",
+          "streetAddress": "大里稲嶺2127-34",
+          "addressCountry": "JP"
+        },
+        "telephone": "050-1724-1338",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday"
+            ],
+            "opens": "09:00",
+            "closes": "18:00"
+          }
+        ],
+        "priceRange": "¥8,000〜",
+        "areaServed": [
+          "南城市",
+          "八重瀬町",
+          "豊見城市",
+          "糸満市",
+          "那覇市",
+          "南風原町",
+          "与那原町"
+        ],
+        "sameAs": [
+          "https://www.instagram.com/bcservicenanjyo/"
+        ]
+      },
+      {
+        "@type": "Service",
+        "@id": "https://teruya1229.github.io/complete-disassembly/#service",
+        "name": "エアコン完全分解クリーニング",
+        "description": "BCサービスは、沖縄南部のご家庭向けにエアコン完全分解クリーニングを行っています。通常分解では届きにくい内部汚れや、送風ファン・ドレンパン周辺の汚れが気になる方向けに、機種や設置状況を確認しながら作業内容を案内しています。",
+        "serviceType": "エアコン完全分解クリーニング",
+        "provider": {
+          "@id": "https://teruya1229.github.io/#bc-service"
+        },
+        "areaServed": [
+          "南城市",
+          "八重瀬町",
+          "豊見城市",
+          "糸満市",
+          "那覇市",
+          "南風原町",
+          "与那原町"
+        ],
+        "url": "https://teruya1229.github.io/complete-disassembly/",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "エアコン完全分解クリーニング料金",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "ノーマルエアコン完全分解クリーニング"
+              },
+              "priceCurrency": "JPY",
+              "price": "14000",
+              "description": "ノーマルエアコン完全分解クリーニング 14,000円〜"
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "お掃除機能付きエアコン完全分解クリーニング"
+              },
+              "priceCurrency": "JPY",
+              "price": "23000",
+              "description": "お掃除機能付きエアコン完全分解クリーニング 23,000円〜"
+            }
+          ]
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://teruya1229.github.io/complete-disassembly/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "ホーム",
+            "item": "https://teruya1229.github.io/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "エアコンクリーニング",
+            "item": "https://teruya1229.github.io/cursor-test/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "完全分解クリーニング",
+            "item": "https://teruya1229.github.io/complete-disassembly/"
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
   <!-- 構造化データ: FAQPage -->
   <script type="application/ld+json">
   {
