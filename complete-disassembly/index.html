@@ -142,6 +142,39 @@
       margin-top: 6px;
     }
 
+    .sec-case-studies .case-study-card + .case-study-card {
+      margin-top: 24px;
+    }
+
+    .case-study-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      line-height: 1.4;
+      color: var(--text-main, #111827);
+    }
+
+    .case-study-note {
+      font-size: 0.78rem;
+      color: #6b7280;
+      margin-top: 12px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .instagram-embed-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      overflow: hidden;
+      max-width: 100%;
+    }
+
+    .instagram-embed-wrap .instagram-media {
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
     .related-link {
       font-size: 0.88rem;
       line-height: 1.75;
@@ -418,6 +451,22 @@
             </figure>
           </div>
         </article>
+
+        <article class="card case-study-card" data-case-id="instagram-reel-dvvg1">
+          <h3>Instagramで見る完全分解クリーニングの施工事例</h3>
+          <p class="case-study-comment">
+            実際のエアコン完全分解クリーニングの様子をInstagramリールで紹介しています。分解した部品や内部の汚れ、洗浄後の変化を動画で確認できるため、写真だけでは伝わりにくい作業の流れを見たい方にも参考になります。沖縄南部でエアコンの風のにおいや内部汚れが気になる方は、完全分解クリーニングの検討材料としてご覧ください。
+          </p>
+          <div class="instagram-embed-wrap">
+            <blockquote class="instagram-media"
+              data-instgrm-captioned
+              data-instgrm-permalink="https://www.instagram.com/reel/DVvg1-tCP9I/?utm_source=ig_embed&amp;utm_campaign=loading"
+              data-instgrm-version="14"
+              style="background:#FFF; border:0; border-radius:12px; margin:0 auto; max-width:540px; min-width:280px; width:100%;">
+            </blockquote>
+          </div>
+          <p class="case-study-note">※Instagramの投稿が表示されない場合は、Instagramアプリまたはブラウザでご確認ください。</p>
+        </article>
       </div>
     </section>
 
@@ -661,5 +710,7 @@
     }
   })();
   </script>
+
+  <script async src="//www.instagram.com/embed.js"></script>
 </body>
 </html>
