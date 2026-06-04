@@ -195,6 +195,45 @@
       flex-shrink: 0;
     }
 
+    /* ===== DIAGNOSIS / DELIVERABLES ===== */
+    .section-lead {
+      font-size: 0.92rem;
+      color: var(--text-sub);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .item-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 520px) {
+      .item-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .item-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+    .item-card--send { border-left: 4px solid var(--brand-blue); }
+    .item-card--deliver { border-left: 4px solid var(--brand-green); }
+    .item-note {
+      margin-top: 16px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      line-height: 1.7;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+    .section-light .item-note { background: #fff; }
+
     /* ===== FEATURES ===== */
     .feature-grid {
       display: grid;
@@ -707,6 +746,49 @@
         <p style="margin-top:16px;font-size:0.88rem;color:var(--text-sub);line-height:1.7;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;">
           いきなり契約ではなく、まずは"どこをラクにできるか"を一緒に確認します。
         </p>
+      </div>
+    </section>
+
+    <!-- ⑥-1 無料診断で送ってほしいもの -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">無料診断で送ってほしいもの</h2>
+        <p class="section-lead">
+          無料診断では、今のやり方を確認したうえで、どこをAI帳票番頭でラクにできるかを見ます。
+          完璧な資料を用意する必要はありません。普段使っている請求書やメモの一部だけでも大丈夫です。
+        </p>
+        <div class="item-grid">
+          <div class="item-card item-card--send">今使っている請求書</div>
+          <div class="item-card item-card--send">受付表や作業メモ</div>
+          <div class="item-card item-card--send">売上一覧やExcel</div>
+          <div class="item-card item-card--send">LINE・SMS・メールで届く案件情報の例</div>
+          <div class="item-card item-card--send">カレンダーや予約管理の流れ</div>
+          <div class="item-card item-card--send">月末請求で困っていること</div>
+        </div>
+        <p class="item-note">個人情報やお客様情報は、隠した状態で送っていただいて大丈夫です。</p>
+      </div>
+    </section>
+
+    <!-- ⑥-2 導入後にお渡しするもの -->
+    <section class="section section-light">
+      <div class="container">
+        <h2 class="section-title">導入後にお渡しするもの</h2>
+        <p class="section-lead">
+          AI帳票番頭は、ツールを渡して終わりではなく、今の業務に合わせて使える形に整える導入支援です。
+          まずは手動＋AIで小さく始め、必要に応じて自動化につなげます。
+        </p>
+        <div class="item-grid">
+          <div class="item-card item-card--deliver">受付票テンプレート</div>
+          <div class="item-card item-card--deliver">請求書用データ表</div>
+          <div class="item-card item-card--deliver">売上一覧テンプレート</div>
+          <div class="item-card item-card--deliver">ChatGPT用の整理プロンプト</div>
+          <div class="item-card item-card--deliver">使い方の説明</div>
+          <div class="item-card item-card--deliver">運用ルールの整理</div>
+          <div class="item-card item-card--deliver">必要に応じたMake・Googleフォーム・Airtable連携案</div>
+        </div>
+        <div class="plan-note" style="margin-top:16px;">
+          最初から完全自動化を目指すのではなく、まずは請求漏れ・転記作業・売上整理の負担を減らすところから始めます。
+        </div>
       </div>
     </section>
 
