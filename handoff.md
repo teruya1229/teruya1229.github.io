@@ -1,54 +1,89 @@
-更新日: 2026-04-15
+更新日: 2026-06-04
 
 ## 前提（読む順）
-- status.md と併せて読む
-- 完全分解LPの正URL: `https://teruya1229.github.io/complete-disassembly/`
 
-## 本日やったこと（2026-04-15）
-- 家庭LPで電話問い合わせ過多への対応として、電話導線を一時停止してLINE優先受付へ切替（`cursor-test/index.html` のみ、1439153）
-- 停止箇所は、ヘッダー右上電話リンク（`header-tel`）、会社概要テーブルの電話行、フッター電話リンク（いずれもコメントアウト）
-- ファーストビューの主LINE CTA「LINEで無料相談する」直下に、LINE優先受付案内を追加
-- 追加文言: 「お問い合わせが集中しているため、現在はLINEでのお問い合わせを優先しております。確認後、順番にご返信いたします。」
-- 家庭LPのLINE URLは変更なし
-- 親HP側も手動で、家庭LP導線強化とLINE優先案内への調整を実施済み
-- 業務LPは未変更
-- 未追跡 `business-cleaning/business-clean-parts-optimized.jpg` は未操作
+1. **status.md**（進捗の正本）を先に読む
+2. 本ファイル（handoff / 引継ぎの正本）で次の1手を確認
+3. 公開版参照（任意）：`https://teruya1229.github.io/ops/status/` / `https://teruya1229.github.io/ops/handoff/`
 
-## 直近の実施履歴（2026-04-10）
-- 家庭用LPの「完全分解（根リセット）」に、完全分解LPへの比較・納得導線を追加（文言「完全分解の施工内容を詳しく見る」、URL `?from=home_lp_kansetubunkai`、254e36a）
-- 詳細リンクを本文からサブCTA風に調整（緑主CTAは未変更、39e2a89）
-- 家庭用LPヘッダーナビに「完全分解」を追加（URL `?from=home_header`、77b0f1a）
-- 実機確認で家庭用LP → 完全分解LP の遷移は正常
-- 「子育て家庭応援プロジェクト」を 7世帯達成 / 目標200世帯 / 残り193世帯 に更新（81f3585）
-- 業務LPは未変更
-- 未追跡 `business-cleaning/business-clean-parts-optimized.jpg` は未操作
+## フェーズ
 
-## 現在の状態
-- 主線は **親HP → 家庭LP → 完全分解LP → LINE問い合わせ / 予約** で整理
-- 補助導線として **親HP → LINE直問い合わせ** も機能
-- 家庭LP → 完全分解LP は、セクション内サブCTAとヘッダーの2か所で接続済み
-- 問い合わせ窓口は、受け皿拡大より対応可能な窓口整理を優先し、LINE優先運用
-- 業務LPは未成熟のため、現時点では主入口化しない
+- **LP実装は一区切り**（家庭 / 完全分解 / 施工事例一覧 / FAQ / 南部まとめ / 業務LP の SEO・構造化データ・導線は push 済み）
+- **次フェーズ**：Search Console・公開URL確認・外部導線（Instagram / note / GBP）整理
+- 新規 LP コード修正は、公開確認で問題が出た場合のみ
 
-## 次回やること
-- しばらく様子見して、電話減少・LINE増加・対応負荷の変化を確認する
-- 次の予約時に、入口と問い合わせ経路の感触を見て判断する
-- 親HP側で「LINE、メール」表現が残る箇所は、必要に応じてLINE優先へ文言統一する
+## 固定URL（変更禁止）
+
+- LINE（正）：`https://lin.ee/tsilra6`
+- Airリザーブ：`https://airrsv.net/bc-servicesokinawa/calendar`
+- 完全分解LP（正）：`https://teruya1229.github.io/complete-disassembly/`
+- 業務LP：`https://teruya1229.github.io/business-cleaning/`
+- 施工事例一覧：`https://teruya1229.github.io/cursor-test/cases.html`
+
+## 現在の状態（要約）
+
+| ページ | パス | 状態 |
+|--------|------|------|
+| 家庭LP | `cursor-test/index.html` | FAQ9 + JSON-LD、AIまとめ、Instagram事例、cases導線、構造化データ済み。LINE優先・電話一時停止は維持 |
+| 完全分解LP | `complete-disassembly/index.html` | 写真4枚、Instagramリール、FAQ8、AIまとめ、cases導線、構造化データ済み |
+| 施工事例一覧 | `cursor-test/cases.html` | 新規。リール4件+写真4枚、CollectionPage JSON-LD、sitemap登録済み |
+| FAQ一覧 | `cursor-test/faq.html` | cases・業務LP導線、構造化データ確認済み |
+| 南部まとめ | `cursor-test/south.html` | cases・業務LP導線、構造化データ確認済み |
+| 業務LP | `business-cleaning/index.html` | FAQ7、相談事例・見積り前・料金セクション、Instagram1件（`DMh62EjPcNu`）、構造化データ・sitemap済み |
+
+**検証結果（2026-06-04時点）**
+
+- リッチリザルト / Schema Validator：主要ページでエラーなし
+- 警告：LocalBusiness の `image` 任意のみ → 現時点修正不要
+
+**sitemap**
+
+- `business-cleaning/`、`cursor-test/cases.html`、`faq.html`、`south.html` 登録済み
+
+## 本日の主な commit（参照用）
+
+`81d671e` `aad1d9d` `48f0fd5` `5f571f5` `fb5e390` `2e3770a` `3b8456d` `b39244a` `6a68ea9` `ae3cd14` `3d9fde3` `e578881` `339be47` `01fbad5` `c6f0653`  
+詳細は status.md の作業ログ表を参照。
+
+## 次回やること（優先順）
+
+1. Search Console で以下を URL検査・インデックス登録リクエスト
+   - `https://teruya1229.github.io/business-cleaning/`
+   - `https://teruya1229.github.io/cursor-test/cases.html`
+   - `https://teruya1229.github.io/cursor-test/faq.html`
+   - `https://teruya1229.github.io/cursor-test/south.html`
+2. 業務LPの Instagram 埋め込み表示を公開URLで確認（`business-cleaning/`）
+3. Search Console の反映状況を確認
+4. 業務用施工事例の実写真が増えたら、業務LPまたは別ページ追加を検討
+5. Instagramプロフィール / note / Googleビジネスプロフィール → LP 導線を整理
 
 ## 次にやるべき1手
-- 親HPの家庭向け入口と問い合わせ導線を、LINE優先運用に沿って整理する
-- 業務LPの公開見え方は別軸で、必要なときだけ確認する
+
+- **Search Console** で業務LP（`business-cleaning/`）の URL検査 → インデックス登録リクエストから開始
 
 ## 判断基準
-- 画像の並び
-- 現場感
-- BtoBらしい見え方
-- CTAまでの流れ
-- に違和感がなければ完了扱い
+
+- LP本文・CSS・JS・sitemap・Instagram埋め込みは **触らない**（問題が出たときのみ最小修正）
+- 沖縄全域対応・必ず直る・最安No.1 などの断定表現は禁止（既存LPルール維持）
+- 業務LPは BtoB 文脈維持。民泊清掃を主役にしない
+- 未追跡 `business-cleaning/business-clean-parts-optimized.jpg` は add / commit しない
+
+## Search Console 運用（固定）
+
+- ルートプロパティ `https://teruya1229.github.io/` を正とする
+- 送るサイトマップは `/sitemap.xml` のみ
+- URL検査は実URL（`/cursor-test/` 配下・`/business-cleaning/` など）で行う
 
 ## 注意点
-- 完全分解LPは原則いったん触らない（正URLは `https://teruya1229.github.io/complete-disassembly/`）
-- 業務LPは沖縄本島対応・BtoB文脈維持
-- 価格は固定せず現地確認後見積り
-- 予備画像2枚は今回は未使用のためコミット対象に含めない
+
+- ローカル正本パス：`C:\dev\bc-service\teruya1229-github-io`
 - 電工プロジェクト文脈は混ぜない
+- 破壊系 git コマンド禁止（rm / del / git reset / git clean / git restore など）
+- 2026-04-15 の家庭LP「LINE優先・電話一時停止」はそのまま維持
+
+## 使い方（新チャット1発目）
+
+```
+前提は status.md → handoff.md の順で読んで進めてください。
+LPコードは一区切り。次は Search Console と外部導線整理が優先です。
+```
