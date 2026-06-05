@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>現場業の受付票テンプレートに入れるべき項目｜請求漏れを減らすための整理方法</title>
+  <meta name="description" content="現場業や一人親方の方向けに、受付票テンプレートに入れるべき項目を解説します。LINE・メモ・写真で届く案件情報を受付票に整理し、請求書用データ・売上一覧につなげることで、請求漏れや転記作業を減らしやすくなります。">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://teruya1229.github.io/ai-chouhyou-bantou/column/reception-form-template.html">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand-blue: #1a56db;
+      --brand-green: #057a55;
+      --accent-yellow: #fef3c7;
+      --accent-yellow-border: #f59e0b;
+      --text-main: #111827;
+      --text-sub: #4b5563;
+      --text-light: #6b7280;
+      --bg-light: #f9fafb;
+      --bg-blue-light: #eff6ff;
+      --border: #e5e7eb;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: -apple-system, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      color: var(--text-main);
+      background: #fff;
+      font-size: 1rem;
+      line-height: 1.85;
+    }
+
+    a { color: var(--brand-blue); text-decoration: underline; font-weight: 600; }
+    a.btn-primary, a.btn-line, a.related-link { text-decoration: none; }
+
+    .header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .header-logo {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--brand-blue);
+      line-height: 1.3;
+      text-decoration: none;
+    }
+    .header-cta {
+      background: var(--brand-green);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 8px;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .breadcrumb {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 14px 20px 0;
+      font-size: 0.78rem;
+      color: var(--text-light);
+    }
+    .breadcrumb a { color: var(--text-sub); font-weight: 500; text-decoration: none; }
+
+    .article-header {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 20px 32px;
+    }
+    .article-eyebrow {
+      display: inline-block;
+      background: var(--bg-blue-light);
+      color: var(--brand-blue);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .article-title {
+      font-size: 1.35rem;
+      font-weight: 900;
+      line-height: 1.55;
+      margin-bottom: 16px;
+    }
+    @media (min-width: 600px) {
+      .article-title { font-size: 1.55rem; }
+    }
+    .article-lead {
+      font-size: 0.95rem;
+      color: var(--text-sub);
+      line-height: 1.9;
+    }
+    .article-lead p { margin-bottom: 14px; }
+    .article-lead p:last-child { margin-bottom: 0; }
+
+    .article-body {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px 48px;
+    }
+    .article-section {
+      margin-bottom: 40px;
+    }
+    .article-section h2 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      line-height: 1.45;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--brand-blue);
+    }
+    .article-section h3 {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 16px 0 10px;
+    }
+    .article-section p {
+      font-size: 0.94rem;
+      color: var(--text-sub);
+      margin-bottom: 14px;
+    }
+    .article-section p:last-child { margin-bottom: 0; }
+
+    .highlight-box {
+      background: var(--accent-yellow);
+      border: 1px solid var(--accent-yellow-border);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      margin-bottom: 16px;
+    }
+    .highlight-box p {
+      font-size: 0.92rem;
+      color: #78350f;
+      margin-bottom: 10px;
+    }
+    .highlight-box ul {
+      margin: 0;
+      padding-left: 1.2em;
+      font-size: 0.9rem;
+      color: #78350f;
+      line-height: 1.75;
+    }
+    .highlight-box li { margin-bottom: 4px; }
+
+    .check-list, .step-list {
+      margin: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+    .check-list li {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--brand-blue);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .step-list { counter-reset: step; }
+    .step-list li {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 14px 14px 52px;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      position: relative;
+      counter-increment: step;
+    }
+    .step-list li::before {
+      content: counter(step);
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 26px;
+      height: 26px;
+      background: var(--brand-blue);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 800;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-list li strong {
+      display: block;
+      color: var(--text-main);
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .industry-box {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 14px;
+      margin-bottom: 12px;
+    }
+    .industry-box h3 {
+      margin-top: 0;
+      font-size: 0.92rem;
+      color: var(--brand-blue);
+    }
+    .industry-box ul {
+      margin: 0;
+      padding-left: 1.2em;
+      font-size: 0.86rem;
+      color: var(--text-sub);
+      line-height: 1.7;
+    }
+    .industry-box li { margin-bottom: 3px; }
+
+    .example-box {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      margin-top: 12px;
+    }
+    .example-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--brand-blue);
+      margin-bottom: 8px;
+    }
+    .example-box pre {
+      font-family: inherit;
+      font-size: 0.86rem;
+      color: var(--text-sub);
+      line-height: 1.75;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin-bottom: 14px;
+    }
+    .example-box pre:last-child { margin-bottom: 0; }
+    .example-note {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      margin-top: 12px;
+    }
+
+    .related-box {
+      background: var(--bg-blue-light);
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius);
+      padding: 18px 16px;
+    }
+    .related-box p {
+      font-size: 0.92rem;
+      color: var(--text-sub);
+      margin-bottom: 12px;
+    }
+    .related-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .related-link {
+      display: inline-block;
+      background: #fff;
+      color: var(--brand-blue);
+      border: 1px solid #93c5fd;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      padding: 10px 16px;
+    }
+
+    .cta-box {
+      background: var(--bg-blue-light);
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .cta-box p {
+      font-size: 0.92rem;
+      color: var(--text-sub);
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    .cta-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: stretch;
+    }
+    @media (min-width: 480px) {
+      .cta-buttons { flex-direction: row; justify-content: center; flex-wrap: wrap; }
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--brand-blue);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 800;
+      padding: 12px 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .btn-line {
+      display: inline-block;
+      background: #06C755;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 800;
+      padding: 12px 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .faq-list { display: grid; gap: 12px; }
+    .faq-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .faq-q {
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: var(--brand-blue);
+      margin-bottom: 8px;
+    }
+    .faq-a {
+      font-size: 0.88rem;
+      color: var(--text-sub);
+      line-height: 1.75;
+    }
+
+    .footer {
+      background: #111827;
+      color: #9ca3af;
+      text-align: center;
+      padding: 28px 20px;
+      font-size: 0.78rem;
+      line-height: 1.8;
+    }
+    .footer a { color: #6b7280; text-decoration: none; font-weight: 400; }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://teruya1229.github.io/ai-chouhyou-bantou/column/reception-form-template.html#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "AI帳票番頭",
+            "item": "https://teruya1229.github.io/ai-chouhyou-bantou/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "現場業の受付票テンプレート",
+            "item": "https://teruya1229.github.io/ai-chouhyou-bantou/column/reception-form-template.html"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://teruya1229.github.io/ai-chouhyou-bantou/column/reception-form-template.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "受付票は紙でも大丈夫ですか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "紙でも大丈夫ですが、請求書用データや売上一覧につなげるなら、Googleスプレッドシートなどで管理すると後から確認しやすくなります。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "受付票にはどこまで細かく書くべきですか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "最低限、顧客名・住所・作業日・作業内容・金額・請求状況・入金状況は残しておくと、月末請求や売上整理で確認しやすくなります。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "LINEやメモの情報から受付票を作れますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "可能です。情報が不足している場合は、「要確認」として分けておくと、後から確認しやすくなります。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "業種ごとに受付票の項目は変わりますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "はい。エアコンクリーニング、電気工事、水道修理、便利屋、リフォームなど、業種によって必要な項目は変わります。今の業務に合わせて作ることが大事です。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "受付票を作るだけで請求漏れは減りますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "受付票だけで完全になくなるわけではありませんが、請求書用データや売上一覧とつなげることで、未請求や入金待ちを確認しやすくなります。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <a href="../" class="header-logo">AI帳票番頭</a>
+      <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="header-cta">無料相談</a>
+    </div>
+  </header>
+
+  <nav class="breadcrumb" aria-label="パンくず">
+    <a href="../">AI帳票番頭</a> ／ 現場業の受付票テンプレート
+  </nav>
+
+  <article>
+    <header class="article-header">
+      <p class="article-eyebrow">現場業向けコラム</p>
+      <h1 class="article-title">現場業の受付票テンプレートは、請求書と売上一覧につながる形で作るのが大事です</h1>
+      <div class="article-lead">
+        <p>この記事では、現場業の受付票テンプレートに入れるべき項目と、請求漏れを減らす整理方法を解説します。</p>
+        <p>現場業では、仕事の依頼がLINE・電話・メモ・写真・カレンダーなどに散らばりやすくなります。そのままにしておくと、月末請求のときに住所・作業内容・金額・請求状況を探すことになります。受付票は、単なる作業メモではなく、請求書用データや売上一覧につなげるための入口になります。</p>
+      </div>
+    </header>
+
+    <div class="article-body">
+
+      <section class="article-section">
+        <h2>受付票は「作業前のメモ」ではなく「請求できる状態に整える入口」です</h2>
+        <div class="highlight-box">
+          <p>受付票テンプレートを作るうえで、次の考え方が大切です。</p>
+          <ul>
+            <li>受付票には、作業に必要な情報だけでなく、請求に必要な情報も入れる</li>
+            <li>作業内容・金額・依頼元・請求状況まで残すと、月末確認がラクになる</li>
+            <li>LINEやメモの情報を受付票に移すことで、抜け漏れに気づきやすくなる</li>
+            <li>最初から完璧なシステムにせず、まずはスプレッドシートや簡単な表で十分</li>
+            <li>大事なのは、受付票 → 請求書用データ → 売上一覧へつながる流れを作ること</li>
+          </ul>
+        </div>
+        <p>受付票テンプレートは、転記作業や請求漏れを減らすための土台です。請求書を書く前に、案件情報を請求できる状態へ整える入口として使います。</p>
+      </section>
+
+      <section class="article-section">
+        <h2>受付票がないと、月末請求で困りやすい理由</h2>
+        <ul class="check-list">
+          <li>LINEのトークをさかのぼって日程や住所を探す</li>
+          <li>作業内容と金額が別々のメモに分かれている</li>
+          <li>依頼元ごとの売上が分かりにくい</li>
+          <li>請求済み・未請求・入金済みが混ざる</li>
+          <li>電話で聞いた内容が残らない</li>
+          <li>写真はあるが、どの案件の写真か分からなくなる</li>
+          <li>スタッフや家族と共有しにくい</li>
+          <li>月末に請求書を作るとき、確認作業が増える</li>
+        </ul>
+      </section>
+
+      <section class="article-section">
+        <h2>現場業の受付票に入れたい基本項目</h2>
+        <p>受付票テンプレートには、最低限次の項目を入れておくと、請求書用データや売上一覧につなげやすくなります。</p>
+        <ul class="check-list">
+          <li>依頼元</li>
+          <li>顧客名</li>
+          <li>住所</li>
+          <li>電話番号</li>
+          <li>受付日</li>
+          <li>作業予定日</li>
+          <li>作業時間</li>
+          <li>作業内容</li>
+          <li>台数・数量</li>
+          <li>金額</li>
+          <li>支払い方法</li>
+          <li>請求先</li>
+          <li>請求状況</li>
+          <li>入金状況</li>
+          <li>写真の有無</li>
+          <li>駐車場や注意点</li>
+          <li>補足メモ</li>
+        </ul>
+      </section>
+
+      <section class="article-section">
+        <h2>業種によって追加したい受付票項目</h2>
+        <p>現場業でも業種によって必要な項目は変わります。今の業務に合わせて、受付票テンプレートに追加してください。</p>
+
+        <div class="industry-box">
+          <h3>ハウスクリーニング・エアコンクリーニング</h3>
+          <ul>
+            <li>エアコン台数</li>
+            <li>お掃除機能の有無</li>
+            <li>室外機の有無</li>
+            <li>完全分解の有無</li>
+            <li>抗菌コートの有無</li>
+            <li>駐車場</li>
+            <li>設置状況</li>
+            <li>写真の有無</li>
+          </ul>
+        </div>
+
+        <div class="industry-box">
+          <h3>電気工事</h3>
+          <ul>
+            <li>工事内容</li>
+            <li>ブレーカー・分電盤情報</li>
+            <li>使用部材</li>
+            <li>現調の有無</li>
+            <li>追加確認事項</li>
+            <li>作業後写真</li>
+            <li>請求先</li>
+          </ul>
+        </div>
+
+        <div class="industry-box">
+          <h3>水道修理・便利屋・リフォーム</h3>
+          <ul>
+            <li>症状や依頼内容</li>
+            <li>現場写真</li>
+            <li>見積状況</li>
+            <li>部材費</li>
+            <li>追加作業</li>
+            <li>作業後確認</li>
+            <li>入金状況</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="article-section">
+        <h2>LINE・メモ・写真の情報を受付票に整理する流れ</h2>
+        <ol class="step-list">
+          <li><strong>LINEや電話で受けた内容をそのまま残す</strong>元のやり取りは記録として残します。</li>
+          <li><strong>必要な項目だけ受付票に移す</strong>請求に必要な情報を受付票テンプレートの形に整理します。</li>
+          <li><strong>不足情報は「要確認」として残す</strong>金額未確定などは、そのまま分けておきます。</li>
+          <li><strong>作業後に内容・金額・追加作業を確定する</strong>現場で分かった内容を追記します。</li>
+          <li><strong>請求書用データへつなげる</strong>月末請求のときに転記しやすい形で残します。</li>
+          <li><strong>売上一覧に反映する</strong>請求状況・入金状況も含めて一覧で見られるようにします。</li>
+          <li><strong>月末に請求済み・未請求・入金状況を確認する</strong>請求漏れがないか、最後に人間が確認します。</li>
+        </ol>
+      </section>
+
+      <section class="article-section">
+        <h2>AIは、受付票への整理と抜け漏れ確認に向いています</h2>
+        <p>AIを使う場合も、最初からすべて任せる必要はありません。現場業では、次の進め方が安全で現実的です。</p>
+        <ul class="check-list">
+          <li>AIにLINEやメモの文章を貼り付け、受付票形式に整理する</li>
+          <li>顧客名・住所・日程・作業内容・金額を分ける</li>
+          <li>不足している情報は「要確認」として出す</li>
+          <li>作業内容コードや分類に変換する</li>
+          <li>請求書用データや売上一覧に使える形へ整える</li>
+          <li>最終確認・請求・送信は人間が行う</li>
+        </ul>
+        <p>AIは受付票への整理と下書きを担当し、金額や請求内容の最終確認は人間が行う。これが転記作業を減らしつつ、請求漏れの確認もしやすくする運用です。</p>
+      </section>
+
+      <section class="article-section">
+        <h2>たとえば、こんな案件情報を受付票に整理できます</h2>
+        <div class="example-box">
+          <p class="example-label">案件情報（架空の例）</p>
+          <pre>6/15午前、南城市のA様。エアコン2台で、1台はお掃除機能付き。室外機はなし。LINEで写真あり。金額は前回と同じくらい。駐車場は家の前。</pre>
+          <p class="example-label">受付票に整理後</p>
+          <pre>依頼元：LINE
+顧客名：A様
+エリア：南城市
+作業予定日：6/15
+作業時間：午前
+作業内容：エアコン2台
+補足：1台はお掃除機能付き
+室外機：なし
+写真：あり
+金額：要確認
+駐車場：家の前
+請求状況：未請求
+確認事項：正式な金額確認</pre>
+          <p class="example-note">※個人情報は架空例です。実在の個人情報は使用していません。</p>
+        </div>
+      </section>
+
+      <section class="article-section">
+        <h2>LINE案件管理・請求書管理の考え方も確認する</h2>
+        <div class="related-box">
+          <p>受付票は、LINEで届いた案件情報と、月末の請求書管理をつなぐ役割があります。LINE案件管理や請求書管理全体の考え方は、こちらの記事にもまとめています。</p>
+          <div class="related-links">
+            <a href="./line-case-management.html" class="related-link">LINEで届く案件情報の整理方法を読む</a>
+            <a href="./hitori-oyakata-invoice-management.html" class="related-link">一人親方・現場業の請求書管理の記事を読む</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="article-section">
+        <h2>今の受付票や請求書に合わせて、整理の型を作る</h2>
+        <p><a href="../">AI帳票番頭</a>は、LINE・メモ・写真・カレンダーなどに散らばった案件情報を、受付票・請求書用データ・売上一覧に整理するための導入支援です。今使っている請求書や受付表に合わせて、まずは手動＋AIで小さく始め、必要に応じてMake・Googleフォーム・Airtableなどの連携も検討できます。</p>
+        <p>考え方をもう少し読みたい方は、<a href="https://note.com/subaru3361" target="_blank" rel="noopener noreferrer">note</a>でも現場業のAI活用についてまとめています。</p>
+        <div class="cta-box" style="margin-top:20px;">
+          <p>今の受付票や請求書を見ながら、どこをラクにできるか確認したい方は、無料診断からご相談ください。</p>
+          <div class="cta-buttons">
+            <a href="../" class="btn-primary">AI帳票番頭のLPを見る</a>
+            <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-line">LINEで無料診断する</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="article-section" id="faq">
+        <h2>よくある質問</h2>
+        <div class="faq-list">
+          <div class="faq-item">
+            <p class="faq-q">受付票は紙でも大丈夫ですか？</p>
+            <p class="faq-a">紙でも大丈夫ですが、請求書用データや売上一覧につなげるなら、Googleスプレッドシートなどで管理すると後から確認しやすくなります。</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q">受付票にはどこまで細かく書くべきですか？</p>
+            <p class="faq-a">最低限、顧客名・住所・作業日・作業内容・金額・請求状況・入金状況は残しておくと、月末請求や売上整理で確認しやすくなります。</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q">LINEやメモの情報から受付票を作れますか？</p>
+            <p class="faq-a">可能です。情報が不足している場合は、「要確認」として分けておくと、後から確認しやすくなります。</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q">業種ごとに受付票の項目は変わりますか？</p>
+            <p class="faq-a">はい。エアコンクリーニング、電気工事、水道修理、便利屋、リフォームなど、業種によって必要な項目は変わります。今の業務に合わせて作ることが大事です。</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q">受付票を作るだけで請求漏れは減りますか？</p>
+            <p class="faq-a">受付票だけで完全になくなるわけではありませんが、請求書用データや売上一覧とつなげることで、未請求や入金待ちを確認しやすくなります。</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </article>
+
+  <footer class="footer">
+    <p><a href="../">AI帳票番頭</a> ｜ BCサービス</p>
+    <p style="margin-top:10px;">
+      <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer">LINE</a>
+      &nbsp;／&nbsp;
+      <a href="https://note.com/subaru3361" target="_blank" rel="noopener noreferrer">note</a>
+    </p>
+  </footer>
+
+</body>
+</html>
