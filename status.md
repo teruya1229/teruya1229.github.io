@@ -1,6 +1,40 @@
-更新日: 2026-06-04
+更新日: 2026-06-09
 
 ## 本日やったこと
+
+### 2026-06-09（沖縄中部家庭LP 新規作成・公開準備・運用ルール更新）
+
+沖縄中部エリア向け家庭LP `cursor-test/central.html` を新規作成し、公開確認・sitemap登録・南部LPからの内部リンク・本番向け微調整・共通ルール更新まで実施。すべて push 済み。
+
+**実施内容（時系列）**
+
+1. `cursor-test/central.html` を新規作成（南部家庭LP `index.html` を参考、既存南部LPには影響なし）
+2. 中部LPを公開確認し、スマホ固定CTA・build表示・南城市表現・ヘッダーナビ・料金表（中部/その他同額の整理）を調整
+3. `cursor-test/sitemap.xml` に `central.html` を追加（テスト用サイトマップ）
+4. Search Console 送信正本は **ルート `https://teruya1229.github.io/sitemap.xml`** であることを再確認し、ルート `sitemap.xml` に `central.html` を追加
+5. 南部家庭LP `cursor-test/index.html` から中部LPへの内部リンクを2箇所追加（対応エリアセクション・AI検索用まとめ）
+6. 本番向け調整：南部LP・中部LP双方で `COMMIT: REPLACE_ME` の build 表示削除、電気工事士表記更新（第二種電気工事士・認定電気工事従事者講習受講済み）、中部固定CTA文言調整
+7. ルート `rules.md` に最新3分類ルール（ゴール達成型 / ピンポイント修正型 / /goal診断型）を正本として反映。`ops/rules.md` / `handoff.md` / `cursor-test/rules.md` 等は参照のみ
+
+**主な commit（作業ログ）**
+
+| commit | 内容 |
+|--------|------|
+| `8c43e5a` | 中部LP `central.html` 新規作成 |
+| `19f6934` | 中部LP公開前調整（スマホCTA・ナビ・料金表・南城市表現など） |
+| `461e87d` | `cursor-test/sitemap.xml` に `central.html` 追加 |
+| `6741002` | ルート `sitemap.xml` に `central.html` 追加 |
+| `7d7a552` | 南部LPから中部LPへの内部リンク追加 |
+| `8b18a8a` | debug build表示削除・資格表記更新・中部固定CTA文言調整 |
+| `bca0a9c` | 共通ルール最新化（3分類・ゴール達成型優先） |
+
+**Search Console 運用（再確認）**
+
+- 送信するサイトマップは **`https://teruya1229.github.io/sitemap.xml`** のみ（正本）
+- `/cursor-test/sitemap.xml` は Search Console 送信対象にしない
+- 中部LP URL：`https://teruya1229.github.io/cursor-test/central.html`
+
+---
 
 ### 2026-06-04（LP実装フェーズ一区切り・docs反映）
 
@@ -55,9 +89,9 @@
 
 ### 方針
 
-- **LPコード追加は一区切り**。追加実装より Search Console と外部導線整理を優先
+- **中部家庭LP `central.html` 公開準備完了**。次は Search Console でインデックス確認
 - 新規コード修正は、公開確認で問題が出た場合のみ
-- 正本：本ファイル（status）＋ `handoff.md`。メモリには保存しない
+- 正本：本ファイル（status）＋ `handoff.md` + 問題対応ルール `rules.md`。メモリには保存しない
 
 ### 固定URL（変更なし）
 
@@ -74,6 +108,16 @@
 - 施工事例一覧 `cases.html` への導線追加済み
 - LocalBusiness / Service / BreadcrumbList 構造化データ追加済み
 - 2026-04-15 時点の LINE優先受付・電話導線一時停止は維持
+- 2026-06-09：中部LP `central.html` への内部リンク2箇所追加済み（対応エリア・AIまとめ）
+
+### 1b. 中部家庭LP（`cursor-test/central.html`）
+
+- 2026-06-09 新規作成・公開前調整済み
+- 対応エリア：沖縄市 / うるま市 / 北谷町 / 嘉手納町 / 読谷村 / 宜野湾市 / 北中城村 / 中城村
+- FAQ9件 + FAQPage JSON-LD、LocalBusiness / Service / BreadcrumbList 構造化データ実装済み
+- GA4：`page_type: central_lp` / `page_slug: /cursor-test/central.html`
+- ルート `sitemap.xml` 登録済み（Search Console 正本）
+- 南部LP `index.html` から内部リンク2箇所あり
 
 ### 2. 完全分解LP（`complete-disassembly/index.html`）
 
@@ -123,12 +167,16 @@
 - 家庭LP / 完全分解LP / 施工事例一覧 / FAQ一覧 / 南部まとめへの導線あり
 - 主要ページから業務LPへの控えめ導線あり
 
-### 7. sitemap（`sitemap.xml`）
+### 7. sitemap（ルート `sitemap.xml` ※Search Console 正本）
 
+- 送信URL：`https://teruya1229.github.io/sitemap.xml`
+- `https://teruya1229.github.io/cursor-test/central.html` 登録済み（`6741002`）
 - `https://teruya1229.github.io/business-cleaning/` 登録済み
 - `https://teruya1229.github.io/cursor-test/cases.html` 登録済み
 - `faq.html` / `south.html` 登録済み
 - XML崩れなし
+
+**補足：** `cursor-test/sitemap.xml` にも `central.html` あり（`461e87d`）。Search Console には送らない。
 
 ### 未追跡・未コミット（意図的に除外）
 
@@ -140,12 +188,17 @@
 ## 次回やること
 
 1. **Search Console** で URL検査・インデックス登録リクエスト
+   - `https://teruya1229.github.io/cursor-test/central.html`（**最優先・本日追加**）
+   - ルート sitemap `https://teruya1229.github.io/sitemap.xml` を再送信
    - `https://teruya1229.github.io/business-cleaning/`
    - `https://teruya1229.github.io/cursor-test/cases.html`
    - `https://teruya1229.github.io/cursor-test/faq.html`
    - `https://teruya1229.github.io/cursor-test/south.html`
-2. **業務LP** の Instagram 投稿表示を公開URLで再確認
+2. **中部LP** の375px固定CTA・公開URL表示を実機確認
+   - `https://teruya1229.github.io/cursor-test/central.html`
+3. **業務LP** の Instagram 投稿表示を公開URLで再確認
    - `https://teruya1229.github.io/business-cleaning/`
-3. Search Console 反映状況の確認
-4. 実写真・業務用施工事例が増えたら、業務LPまたは別ページへ追加検討
-5. Instagramプロフィール / note / Googleビジネスプロフィールから LP 導線を整理
+4. Search Console 反映状況の確認
+5. 実写真・業務用施工事例が増えたら、業務LPまたは別ページへ追加検討
+6. Instagramプロフィール / note / Googleビジネスプロフィールから LP 導線を整理
+7. 中部LP側から南部LPへの相互リンク要否を検討（別タスク）
