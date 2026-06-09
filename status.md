@@ -187,18 +187,19 @@
 
 ## 次回やること
 
-1. **Search Console** で URL検査・インデックス登録リクエスト
-   - `https://teruya1229.github.io/cursor-test/central.html`（**最優先・本日追加**）
-   - ルート sitemap `https://teruya1229.github.io/sitemap.xml` を再送信
-   - `https://teruya1229.github.io/business-cleaning/`
-   - `https://teruya1229.github.io/cursor-test/cases.html`
-   - `https://teruya1229.github.io/cursor-test/faq.html`
-   - `https://teruya1229.github.io/cursor-test/south.html`
-2. **中部LP** の375px固定CTA・公開URL表示を実機確認
-   - `https://teruya1229.github.io/cursor-test/central.html`
+1. **Search Console：反映待ち確認**（sitemap再送信・URL検査の再実行は不要）
+   - 数時間〜翌日以降に `https://teruya1229.github.io/cursor-test/central.html` のインデックス反映状況を確認
+   - 未反映・エラー表示があれば、その時点で URL検査を再実行
+   - ルート sitemap `https://teruya1229.github.io/sitemap.xml` の読み取り状況もあわせて確認
+2. **中部LPの実機最終確認**
+   - 375px固定CTA・公開URL表示：`https://teruya1229.github.io/cursor-test/central.html`
 3. **業務LP** の Instagram 投稿表示を公開URLで再確認
    - `https://teruya1229.github.io/business-cleaning/`
-4. Search Console 反映状況の確認
-5. 実写真・業務用施工事例が増えたら、業務LPまたは別ページへ追加検討
-6. Instagramプロフィール / note / Googleビジネスプロフィールから LP 導線を整理
-7. 中部LP側から南部LPへの相互リンク要否を検討（別タスク）
+4. Instagramプロフィール / note / Googleビジネスプロフィールから LP 導線を整理
+
+**次の実作業候補（急がない）**
+
+- 中部LPを親にした市町村別ページ量産
+- 沖縄市ページ / 宜野湾市ページ / うるま市ページの検討
+- 既存LPとの内部リンク設計（例：中部LP → 南部LP 相互リンク）
+- 焦って市町村別ページを作らず、**まず中部LPの反応・表示確認を優先**
