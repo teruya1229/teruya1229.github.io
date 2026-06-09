@@ -74,7 +74,7 @@
         "@type": "Service",
         "@id": "https://teruya1229.github.io/cursor-test/central.html#service",
         "name": "沖縄中部のエアコンクリーニング",
-        "description": "BCサービスは、南城市を拠点に沖縄中部のご家庭へ伺うエアコンクリーニングサービスです。通常分解クリーニングを中心に、エアコンの風のにおいや吹き出し口の汚れが気になるご家庭向けに、LINE相談や仮予約に対応しています。",
+        "description": "BCサービスは、沖縄市・宜野湾市・うるま市など中部エリアのご家庭向けにエアコンクリーニングをご案内しています。南城市から丁寧にお伺いし、通常分解クリーニングを中心に、エアコンの風のにおいや吹き出し口の汚れが気になるご家庭向けに、LINE相談や仮予約に対応しています。",
         "serviceType": "エアコンクリーニング",
         "provider": {
           "@id": "https://teruya1229.github.io/#bc-service"
@@ -504,6 +504,45 @@
       #osouji-ac .osouji-card{min-height:auto !important;padding:16px !important;}
       #osouji-ac a.line-cta{max-width:100% !important;}
     }
+    .header-nav-current{
+      font-size:0.875rem;
+      font-weight:700;
+      color:var(--brand);
+      padding:6px 10px;
+      border-radius:8px;
+      background:rgba(31,42,68,.08);
+      white-space:nowrap;
+    }
+    .header-nav a.header-nav-sub{
+      font-size:0.8125rem;
+      font-weight:500;
+      color:#6b7280;
+    }
+    .pricing-area-note{
+      max-width:680px;
+      margin:12px auto 0;
+      text-align:center;
+      font-size:0.875rem;
+      line-height:1.65;
+      color:#4b5563;
+    }
+    @media(max-width:767px){
+      .header-nav{gap:8px;}
+      .header-nav-current{font-size:0.8125rem;padding:5px 8px;}
+      .header-nav a.header-nav-sub{font-size:0.75rem;}
+      .fixed-line-cta-link{
+        gap:10px;
+        padding:12px 14px;
+      }
+      .fixed-line-cta-text{
+        font-size:0.8125rem;
+        line-height:1.2;
+        white-space:nowrap;
+      }
+      .fixed-line-cta-text strong{
+        font-size:0.875rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -513,7 +552,8 @@
         <img src="images/logo-bc.png" alt="ＢＣサービス" class="logo-img">
       </a>
       <nav class="header-nav">
-        <a href="south.html">南部エリア</a>
+        <span class="header-nav-current" aria-current="page">中部エリア</span>
+        <a href="south.html" class="header-nav-sub">南部も見る</a>
         <a href="https://teruya1229.github.io/complete-disassembly/?from=home_header">完全分解</a>
         <a href="cases.html">施工事例</a>
         <a href="faq.html">FAQ</a>
@@ -536,7 +576,7 @@
       <div class="hero-inner">
         <h1 class="hero-title">沖縄中部の子育て家庭に<br>寄り添う<br>エアコンクリーニング</h1>
         <p class="hero-lead">まずはLINEで写真を送るだけ。17年経験の職人が料金目安をお伝えします。</p>
-        <p class="hero-intro">BCサービスは、南城市を拠点に沖縄中部のご家庭へ伺うエアコンクリーニングサービスです。赤ちゃんや小さなお子さまがいるご家庭でも相談しやすいよう、作業内容や料金目安を事前にわかりやすくお伝えしています。</p>
+        <p class="hero-intro">沖縄市・宜野湾市・うるま市など、中部エリアのご家庭向けにエアコンクリーニングをご案内しています。南城市から丁寧にお伺いし、赤ちゃんや小さなお子さまがいるご家庭でも相談しやすいよう、作業内容や料金目安を事前にわかりやすくお伝えしています。</p>
         <p class="hero-price-badge">追加料金なし・事前に料金目安を案内 <strong>9,000円〜</strong>（税込）</p>
         <p style="font-size: 0.85em; color: #666; margin-bottom: 0.5em;">
   料金目安や追加料金の有無は、LINEで先に確認できます。
@@ -720,7 +760,7 @@
     <!-- 料金表 -->
     <section id="pricing" class="section pricing section-light">
       <div class="container">
-        <h2 class="section-title">中部子育て家庭応援（200世帯限定）</h2>
+        <h2 class="section-title">中部向けエアコンクリーニング料金</h2>
 
         <!-- 2列比較カード -->
         <div id="price-section" class="plan-compare">
@@ -729,7 +769,7 @@
           <div id="premium-section" class="plan-card plan-card--featured">
             <p class="plan-card-badge">⭐おすすめ</p>
             <h3 class="plan-card-heading">完全分解（根リセット）</h3>
-            <p class="plan-card-price">中部 15,000<span>円（税込）</span><br>その他 15,000<span>円（税込）</span></p>
+            <p class="plan-card-price">中部エリア 15,000<span>円（税込）</span></p>
             <p class="plan-card-desc">目安：2〜3年安心して使える完全分解クリーニング</p>
             <p class="plan-card-desc">送風ファンまで取り外して内部パーツを完全分解。<br>汚れの原因まで除去するため、2〜3年安心して使いたい方におすすめです。</p>
             <p class="plan-card-desc">最近は、カビの再発防止のため完全分解を選ばれるご家庭が増えています。</p>
@@ -738,16 +778,6 @@
                 <h4 class="plan-detail-title">【中部エリア】</h4>
                 <p class="plan-detail-price">税込 15,000円</p>
                 <p>送風ファンまで取り外して内部パーツを完全分解し、汚れの原因まで徹底洗浄します。<br>2〜3年安心して使いたい方におすすめのプレミアム施工です。</p>
-                <ul class="plan-detail-list">
-                  <li>送風ファンまで取り外して洗浄</li>
-                  <li>見えない部分まで徹底清掃</li>
-                  <li>数年単位で安心して使いたい方向け</li>
-                </ul>
-              </section>
-              <section class="plan-detail-card plan-detail-card--secondary">
-                <h4 class="plan-detail-title">【その他エリア】</h4>
-                <p class="plan-detail-price plan-detail-price--sub">税込 15,000円</p>
-                <p>中部エリア以外のお客様向けの通常料金です。<br>施工内容は中部と同じで、送風ファンまで外して“原因まで”徹底洗浄します。</p>
                 <ul class="plan-detail-list">
                   <li>送風ファンまで取り外して洗浄</li>
                   <li>見えない部分まで徹底清掃</li>
@@ -767,24 +797,14 @@
           <!-- 通常分解（比較用） -->
           <div class="plan-card plan-card--standard">
             <h3 class="plan-card-heading">通常分解（スタンダード）</h3>
-            <p class="plan-card-price">中部 9,000<span>円（税込）</span><br>その他 9,000<span>円（税込）</span></p>
+            <p class="plan-card-price">中部エリア 9,000<span>円（税込）〜</span></p>
             <p class="plan-card-desc">目安：1年間安心して使えるクリーニング</p>
             <p class="plan-card-desc">内部までしっかり洗浄する標準クリーニングです。<br>カビや汚れを除去し、1年間安心して使える状態に整えます。</p>
             <div class="plan-detail-stack" aria-label="通常分解プラン詳細">
               <section class="plan-detail-card plan-detail-card--primary">
                 <h4 class="plan-detail-title">【中部エリア】</h4>
-                <p class="plan-detail-price">税込 9,000円</p>
+                <p class="plan-detail-price">税込 9,000円〜</p>
                 <p>エアコンを分解し、内部まで高圧洗浄でクリーニングします。<br>カビや汚れをしっかり除去し、1年間安心して使える状態に整えます。</p>
-                <ul class="plan-detail-list">
-                  <li>分解洗浄</li>
-                  <li>内部高圧洗浄</li>
-                  <li>防カビ仕上げ</li>
-                </ul>
-              </section>
-              <section class="plan-detail-card plan-detail-card--secondary">
-                <h4 class="plan-detail-title">【その他エリア】</h4>
-                <p class="plan-detail-price plan-detail-price--sub">税込 9,000円</p>
-                <p>中部エリア以外のお客様向けの通常料金です。<br>施工内容は中部と同じで、分解洗浄＋内部高圧洗浄まで行います。</p>
                 <ul class="plan-detail-list">
                   <li>分解洗浄</li>
                   <li>内部高圧洗浄</li>
@@ -798,30 +818,24 @@
           </div>
 
         </div>
-        <p class="pricing-note" style="margin-top: 12px; text-align: center;">子育て家庭向け料金（中部 9,000円 / 完全分解 15,000円）をご案内しています。</p>
+        <p class="pricing-note" style="margin-top: 12px; text-align: center;">中部エリア向け料金（通常分解 9,000円〜 / 完全分解 15,000円）をご案内しています。</p>
+        <p class="pricing-area-note">※ 中部エリア以外は距離・設置状況により料金が異なる場合があります。お気軽にご相談ください。</p>
 
         <!-- ▼ お掃除機能付きエアコン（予約ボタン追加 2026-02-15） -->
         <div id="osouji-ac" class="pricing-block">
           <h3 class="pricing-block-title">お掃除機能付きエアコン</h3>
-          <p class="osouji-build" style="margin:.25rem 0 0;font-size:.75rem;opacity:.6;">更新確認：osouji-cta-v2 ✅</p>
           <p class="pricing-block-lead">お掃除機能付きは内部構造が複雑で、分解・組み立てに時間がかかるため別料金です。<br>台数が多い機種なので、ここから直接予約できるようにしました。</p>
           <div class="ac-plans">
             <div class="ac-plan ac-plan--popular osouji-card">
               <p class="ac-plan-badge">中部対応</p>
               <p class="ac-plan-name">中部エリア</p>
-              <p class="ac-plan-price">16,000<span>円（税込）</span></p>
+              <p class="ac-plan-price">16,000<span>円（税込）〜</span></p>
               <p style="font-size:.85rem;color:#555;margin:8px 0 0;line-height:1.6;">お掃除機能付きエアコンの標準料金です。</p>
               <a class="line-cta plan-card-btn" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" aria-label="LINEで予約する（お掃除機能付き・中部エリア）" data-cta="line" data-cta-location="price-osouji-chubu" style="display:block;width:100%;margin-top:12px;padding:12px 18px;border-radius:12px;font-weight:700;text-align:center;text-decoration:none;line-height:1.2;background:#14B85A;color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.12);">LINEで予約する</a>
               <p style="margin:.35rem 0 0;font-size:.8rem;opacity:.7;">※ LINEでお気軽にご相談ください</p>
             </div>
-            <div class="ac-plan osouji-card">
-              <p class="ac-plan-name">その他エリア</p>
-              <p class="ac-plan-price">16,000<span>円（税込）</span></p>
-              <p style="font-size:.85rem;color:#555;margin:8px 0 0;line-height:1.6;">通常価格でのご案内です。</p>
-              <a class="line-cta plan-card-btn plan-card-btn--sub" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" aria-label="LINEで予約する（お掃除機能付き・その他エリア）" data-cta="line" data-cta-location="price-osouji-standard" style="display:block;width:100%;margin-top:12px;padding:12px 18px;border-radius:12px;font-weight:700;text-align:center;text-decoration:none;line-height:1.2;background:#1F2A44;color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.12);">通常価格で予約する</a>
-              <p style="margin:.35rem 0 0;font-size:.8rem;opacity:.7;">※ 見積もりだけでもOKです</p>
-            </div>
           </div>
+          <p class="pricing-area-note">※ 機種・設置状況により料金が前後する場合があります。写真を送っていただければ事前にご案内します。</p>
         </div>
         <!-- ▲ お掃除機能付きエアコン -->
 
@@ -1020,7 +1034,7 @@
       <div class="container">
         <h2 class="section-title">沖縄中部でエアコンクリーニングを検討している方へ</h2>
         <p>
-          BCサービスは、南城市を拠点に沖縄中部のご家庭へ伺うエアコンクリーニングサービスです。対応エリアは、沖縄市 / うるま市 / 北谷町 / 嘉手納町 / 読谷村 / 宜野湾市 / 北中城村 / 中城村を中心としています。
+          BCサービスは、沖縄市・宜野湾市・うるま市など中部エリアのご家庭向けにエアコンクリーニングをご案内しています。南城市から丁寧にお伺いし、対応エリアは、沖縄市 / うるま市 / 北谷町 / 嘉手納町 / 読谷村 / 宜野湾市 / 北中城村 / 中城村を中心としています。
         </p>
         <p>
           通常分解クリーニングは、カバーやフィルター周辺を分解して洗浄する基本メニューです。エアコンの風のにおい、吹き出し口の黒い汚れ、使用前後のメンテナンスが気になるご家庭に向いています。
@@ -1351,7 +1365,7 @@
   <div class="fixed-line-cta">
     <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="fixed-line-cta-link line-cta" data-cta="line">
       <span class="fixed-line-cta-icon">LINE</span>
-      <span class="fixed-line-cta-text">中部エアコンクリーニング<br><strong>9,000円で予約する</strong></span>
+      <span class="fixed-line-cta-text">中部 <strong>9,000円〜 予約</strong></span>
     </a>
   </div>
 
@@ -1551,10 +1565,6 @@
     });
   })();
   </script>
-
-  <div class="build-ver" style="position:fixed;left:8px;bottom:8px;font-size:11px;opacity:.55;z-index:9999;">
-    build: 2026-02-15-01 (COMMIT: REPLACE_ME)
-  </div>
 
   <script async src="//www.instagram.com/embed.js"></script>
 </body>
