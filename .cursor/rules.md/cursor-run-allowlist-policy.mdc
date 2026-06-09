@@ -3,6 +3,8 @@ description: Cursor Run確認のAllowlist安全運用ポリシー
 alwaysApply: true
 ---
 
+> 問題対応の全体ルール（ゴール達成型優先・3分類）はリポジトリルート [`rules.md`](../../rules.md) を正本とする。
+
 # Cursor Run Allowlist ポリシー
 
 ## 目的
