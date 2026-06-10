@@ -257,6 +257,9 @@ body {
   font-size: 0.9rem;
   padding: 0 4px;
 }
+.ab-preflight-note {
+  margin: 4px 0 8px;
+}
 .ab-check {
   display: flex;
   align-items: flex-start;

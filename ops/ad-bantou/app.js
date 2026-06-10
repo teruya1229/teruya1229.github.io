@@ -309,13 +309,12 @@
   var PREFLIGHT_OK = '広告開始OK';
   var PREFLIGHT_NG = '広告開始前に要確認';
 
-  var HOME_LP_KEYS = ['pageOk', 'lineCtaOk', 'phoneCtaOk', 'airReserveCtaOk', 'layoutOk'];
+  var HOME_LP_KEYS = ['pageOk', 'lineCtaOk', 'airReserveCtaOk', 'layoutOk'];
   var COMPLETE_LP_KEYS = ['pageOk', 'lineCtaOk', 'phoneCtaOk', 'layoutOk'];
 
   var HOME_LP_LABELS = {
     pageOk: 'ページ表示OK',
     lineCtaOk: 'LINE CTA 計測OK',
-    phoneCtaOk: '電話CTA 計測OK',
     airReserveCtaOk: 'Airリザーブ CTA 計測OK',
     layoutOk: '表示崩れなし'
   };
@@ -371,7 +370,6 @@
       homeLp: {
         pageOk: document.getElementById('pf-home-pageOk').checked,
         lineCtaOk: document.getElementById('pf-home-lineCtaOk').checked,
-        phoneCtaOk: document.getElementById('pf-home-phoneCtaOk').checked,
         airReserveCtaOk: document.getElementById('pf-home-airReserveCtaOk').checked,
         layoutOk: document.getElementById('pf-home-layoutOk').checked
       },
