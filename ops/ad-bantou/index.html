@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>広告番頭｜内部確認用（Google広告 日次入力・判定）</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="ab-header">
+    <div class="ab-container">
+      <h1 class="ab-title">広告番頭</h1>
+      <p class="ab-subtitle">Google広告の費用・クリック・CTA・問い合わせ・成約を整理して、継続 / 改善 / 停止を判断する画面</p>
+      <p class="ab-internal-badge">内部確認用ページ（noindex）｜顧客名・住所・電話番号などの個人情報は入力しないでください</p>
+    </div>
+  </header>
+
+  <main class="ab-container">
+
+    <!-- Claude in Chrome 作業手順 -->
+    <details class="ab-steps" id="claude-steps">
+      <summary>Claude in Chrome 作業手順（毎日ここから始める）</summary>
+      <ol>
+        <li>Google広告を開く</li>
+        <li>期間を「昨日」にする</li>
+        <li>キャンペーン別に「費用・表示回数・クリック数・平均クリック単価」を確認する</li>
+        <li>GA4 または LP計測画面で「CTAクリック数」を確認する</li>
+        <li>LINE・電話・Airリザーブ・Googleカレンダーから「問い合わせ数・成約数」を確認する</li>
+        <li>下の「今日の入力」フォームに上から順に入力する</li>
+        <li>判定が「停止候補」または「改善」なら、メモに理由を書く（個人情報は書かない）</li>
+        <li>最後に「日別ログ」と「LP別集計」を確認する</li>
+      </ol>
+    </details>
+
+    <!-- 今日の入力 -->
+    <section class="ab-section" id="input-section">
+      <h2 class="ab-section-title">今日の入力</h2>
+      <form id="entry-form" autocomplete="off">
+
+        <div class="ab-field">
+          <label for="f-date">日付 <span class="req">必須</span></label>
+          <p class="ab-hint">Claude用：広告データの対象日（通常は昨日）を選択してください。</p>
+          <input type="date" id="f-date" required>
+        </div>
+
+        <div class="ab-field">
+          <label for="f-lp-type">LP種別 <span class="req">必須</span></label>
+          <p class="ab-hint">Claude用：この広告が誘導しているLPを選択してください。</p>
+          <select id="f-lp-type" required>
+            <option value="">選択してください</option>
+            <option value="家庭LP">家庭LP</option>
+            <option value="完全分解LP">完全分解LP</option>
+            <option value="業務LP">業務LP</option>
+            <option value="現場業プラスワン研究会LP">現場業プラスワン研究会LP</option>
+            <option value="その他">その他</option>
+          </select>
+        </div>
+
+        <div class="ab-field">
+          <label for="f-campaign">キャンペーン名</label>
+          <p class="ab-hint">Claude用：Google広告のキャンペーン名をそのまま入力してください。</p>
+          <input type="text" id="f-campaign" placeholder="例：中部エアコン_検索">
+        </div>
+
+        <div class="ab-grid">
+          <div class="ab-field">
+            <label for="f-cost">広告費（円）</label>
+            <p class="ab-hint">Claude用：Google広告の「費用」を入力してください。</p>
+            <input type="number" id="f-cost" min="0" step="1" value="0">
+          </div>
+
+          <div class="ab-field">
+            <label for="f-impressions">表示回数</label>
+            <p class="ab-hint">Claude用：Google広告の「表示回数（インプレッション）」を入力してください。</p>
+            <input type="number" id="f-impressions" min="0" step="1" value="0">
+          </div>
+
+          <div class="ab-field">
+            <label for="f-clicks">クリック数</label>
+            <p class="ab-hint">Claude用：Google広告の「クリック数」を入力してください。</p>
+            <input type="number" id="f-clicks" min="0" step="1" value="0">
+          </div>
+
+          <div class="ab-field">
+            <label for="f-avg-cpc">平均クリック単価（円）</label>
+            <p class="ab-hint">Claude用：Google広告の「平均クリック単価」を入力してください。</p>
+            <input type="number" id="f-avg-cpc" min="0" step="0.01" value="0">
+          </div>
+
+          <div class="ab-field">
+            <label for="f-cta-clicks">CTAクリック数</label>
+            <p class="ab-hint">Claude用：GA4のCTAクリック、またはLP側の計測値を入力してください。</p>
+            <input type="number" id="f-cta-clicks" min="0" step="1" value="0">
+          </div>
+
+          <div class="ab-field">
+            <label for="f-inquiries">問い合わせ数</label>
+            <p class="ab-hint">Claude用：LINE、電話、Airリザーブなどから確認できた問い合わせ数を入力してください。</p>
+            <input type="number" id="f-inquiries" min="0" step="1" value="0">
+          </div>
+
+          <div class="ab-field">
+            <label for="f-conversions">成約数</label>
+            <p class="ab-hint">Claude用：予約確定・Googleカレンダー登録済みの件数を入力してください。</p>
+            <input type="number" id="f-conversions" min="0" step="1" value="0">
+          </div>
+
+          <div class="ab-field">
+            <label for="f-revenue">売上（円）</label>
+            <p class="ab-hint">Claude用：成約した案件の予定売上を入力してください。未確定なら0でOKです。</p>
+            <input type="number" id="f-revenue" min="0" step="1" value="0">
+          </div>
+        </div>
+
+        <div class="ab-field">
+          <label for="f-memo">メモ</label>
+          <p class="ab-hint">Claude用：判定が「停止候補」「改善」のときは理由を書いてください。<strong>顧客名・住所・電話番号などの個人情報は絶対に書かないでください。</strong></p>
+          <textarea id="f-memo" rows="2" placeholder="例：CTAクリックはあるが問い合わせ0。LPの料金表示を見直す余地あり。"></textarea>
+        </div>
+
+        <button type="submit" class="ab-submit">入力内容を保存して判定する</button>
+      </form>
+    </section>
+
+    <!-- 自動計算・判定プレビュー -->
+    <section class="ab-section" id="result-section" hidden>
+      <h2 class="ab-section-title">自動計算・判定結果</h2>
+      <div class="ab-decision" id="decision-box">
+        <span class="ab-decision-label" id="decision-label">—</span>
+        <span class="ab-decision-reason" id="decision-reason"></span>
+      </div>
+      <div class="ab-metrics" id="metrics-box"></div>
+    </section>
+
+    <!-- 日別ログ -->
+    <section class="ab-section">
+      <h2 class="ab-section-title">日別ログ</h2>
+      <div class="ab-table-wrap">
+        <table class="ab-table" id="log-table">
+          <thead>
+            <tr>
+              <th>日付</th>
+              <th>LP種別</th>
+              <th>キャンペーン名</th>
+              <th>広告費</th>
+              <th>クリック数</th>
+              <th>CTAクリック数</th>
+              <th>問い合わせ数</th>
+              <th>成約数</th>
+              <th>売上</th>
+              <th>判定</th>
+              <th>メモ</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="log-tbody">
+          </tbody>
+        </table>
+      </div>
+      <p class="ab-empty" id="log-empty">まだ入力データがありません。</p>
+    </section>
+
+    <!-- LP別集計 -->
+    <section class="ab-section">
+      <h2 class="ab-section-title">LP別集計</h2>
+      <div class="ab-table-wrap">
+        <table class="ab-table" id="summary-table">
+          <thead>
+            <tr>
+              <th>LP種別</th>
+              <th>広告費合計</th>
+              <th>クリック数合計</th>
+              <th>CTAクリック数合計</th>
+              <th>問い合わせ数合計</th>
+              <th>成約数合計</th>
+              <th>売上合計</th>
+              <th>CPA</th>
+              <th>ROAS</th>
+              <th>現在の判定</th>
+            </tr>
+          </thead>
+          <tbody id="summary-tbody">
+          </tbody>
+        </table>
+      </div>
+      <p class="ab-empty" id="summary-empty">まだ集計データがありません。</p>
+    </section>
+
+    <!-- 判定基準の説明 -->
+    <details class="ab-steps">
+      <summary>判定基準（参考）</summary>
+      <ul>
+        <li><strong>継続</strong>：成約数が1以上、かつ売上が広告費を上回っている</li>
+        <li><strong>改善</strong>：クリック数・CTAクリック数はあるが、問い合わせ数または成約数が少ない</li>
+        <li><strong>停止候補</strong>：広告費・クリック数が発生しているのに、CTAクリック数が0、または問い合わせ数が0</li>
+        <li><strong>データ不足</strong>：表示回数100未満かつクリック数5未満など、判断材料が少ない</li>
+      </ul>
+    </details>
+
+    <!-- 参考リンク（広告番頭 → LP への片方向のみ） -->
+    <details class="ab-steps">
+      <summary>確認用LPリンク（参考）</summary>
+      <ul>
+        <li><a href="https://teruya1229.github.io/cursor-test/" target="_blank" rel="noopener">家庭LP（南部）</a></li>
+        <li><a href="https://teruya1229.github.io/cursor-test/central.html" target="_blank" rel="noopener">家庭LP（中部）</a></li>
+        <li><a href="https://teruya1229.github.io/complete-disassembly/" target="_blank" rel="noopener">完全分解LP</a></li>
+        <li><a href="https://teruya1229.github.io/business-cleaning/" target="_blank" rel="noopener">業務LP</a></li>
+      </ul>
+    </details>
+
+  </main>
+
+  <footer class="ab-footer">
+    <p>広告番頭 MVP｜内部確認用｜データはこのブラウザの localStorage にのみ保存されます</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
