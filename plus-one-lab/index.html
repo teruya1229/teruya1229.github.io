@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="ja" id="top">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>現場業プラスワン研究会｜現場仕事にもう1つ売上の柱を足す実務コミュニティ｜BCサービス</title>
+  <meta name="description" content="塗装・内装・建築・リフォーム・便利屋・設備など、すでに現場仕事をしている方向けの実務コミュニティ。第一弾テーマはエアコンクリーニング。道具・養生・洗浄・料金設定・接客・集客まで現場目線で共有します。沖縄発・少人数の研究会。">
+  <link rel="canonical" href="https://teruya1229.github.io/plus-one-lab/">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta property="og:title" content="現場業プラスワン研究会｜現場仕事にもう1つ売上の柱を足す実務コミュニティ">
+  <meta property="og:description" content="塗装・内装・建築・リフォーム・便利屋・設備など、すでに現場仕事をしている方へ。第一弾テーマはエアコンクリーニング。道具・養生・洗浄・料金設定・接客・集客まで実務目線で学ぶ研究会です。">
+  <meta property="og:url" content="https://teruya1229.github.io/plus-one-lab/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary">
+  <style>
+    :root{
+      --brand:#1F2A44;
+      --accent:#c2410c;
+      --line-green:#06C755;
+      --text-main:#1f2937;
+      --text-sub:#4b5563;
+      --bg-light:#f5f7fa;
+      --border:#dbe2ea;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{
+      font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+      color:var(--text-main);
+      background:#fff;
+      line-height:1.8;
+      padding-bottom:84px; /* 固定CTAぶんの余白 */
+    }
+    img{max-width:100%;height:auto;display:block;}
+    a{color:var(--brand);}
+
+    .container{
+      max-width:760px;
+      margin:0 auto;
+      padding:0 18px;
+    }
+    .section{padding:48px 0;}
+    .section-light{background:var(--bg-light);}
+    .section-title{
+      font-size:clamp(1.25rem,4.5vw,1.6rem);
+      font-weight:700;
+      text-align:center;
+      margin-bottom:24px;
+      color:var(--brand);
+      line-height:1.5;
+    }
+    .section-lead{
+      font-size:0.95rem;
+      color:var(--text-sub);
+      text-align:center;
+      margin-bottom:24px;
+      line-height:1.85;
+    }
+    .card{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:16px 18px;
+    }
+
+    /* ヘッダー */
+    .header{
+      border-bottom:1px solid var(--border);
+      background:#fff;
+    }
+    .header-inner{
+      max-width:960px;
+      margin:0 auto;
+      padding:12px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .header-brand{
+      font-weight:700;
+      color:var(--brand);
+      text-decoration:none;
+      font-size:1rem;
+    }
+    .header-tag{
+      font-size:0.75rem;
+      color:var(--text-sub);
+    }
+
+    /* ヒーロー */
+    .hero{
+      background:linear-gradient(160deg,#1F2A44 0%,#2c3e63 60%,#3a4f7a 100%);
+      color:#fff;
+      padding:56px 0 48px;
+      text-align:center;
+    }
+    .hero-badge{
+      display:inline-block;
+      background:rgba(255,255,255,0.14);
+      border:1px solid rgba(255,255,255,0.35);
+      border-radius:999px;
+      padding:6px 16px;
+      font-size:0.82rem;
+      font-weight:600;
+      letter-spacing:0.06em;
+      margin-bottom:18px;
+    }
+    .hero-title{
+      font-size:clamp(1.7rem,6.5vw,2.4rem);
+      font-weight:800;
+      line-height:1.4;
+      margin-bottom:14px;
+      letter-spacing:0.02em;
+    }
+    .hero-copy{
+      font-size:clamp(1rem,3.6vw,1.15rem);
+      font-weight:600;
+      margin-bottom:18px;
+      line-height:1.7;
+    }
+    .hero-sub{
+      font-size:0.92rem;
+      line-height:1.9;
+      color:rgba(255,255,255,0.92);
+      max-width:560px;
+      margin:0 auto 22px;
+      text-align:left;
+      background:rgba(0,0,0,0.18);
+      border-radius:12px;
+      padding:14px 16px;
+    }
+    .hero-theme{
+      display:inline-block;
+      background:#fff;
+      color:var(--brand);
+      font-weight:700;
+      font-size:clamp(0.95rem,3.4vw,1.1rem);
+      border-radius:10px;
+      padding:10px 20px;
+      margin-bottom:24px;
+    }
+    .hero-note{
+      font-size:0.85rem;
+      color:rgba(255,255,255,0.95);
+      background:rgba(194,65,12,0.25);
+      border:1px solid rgba(255,255,255,0.4);
+      border-radius:10px;
+      padding:10px 14px;
+      max-width:520px;
+      margin:0 auto 24px;
+      font-weight:600;
+    }
+
+    /* CTAボタン */
+    .line-cta{
+      display:block;
+      width:100%;
+      max-width:400px;
+      margin:0 auto;
+      background:var(--line-green);
+      color:#fff;
+      font-weight:700;
+      font-size:1.05rem;
+      text-align:center;
+      text-decoration:none;
+      padding:15px 20px;
+      border-radius:12px;
+      line-height:1.35;
+      box-shadow:0 8px 18px rgba(0,0,0,0.15);
+    }
+    .line-cta:hover{opacity:0.9;}
+    .sub-cta{
+      display:block;
+      width:100%;
+      max-width:400px;
+      margin:12px auto 0;
+      background:#fff;
+      color:var(--brand);
+      font-weight:700;
+      font-size:0.95rem;
+      text-align:center;
+      text-decoration:none;
+      padding:12px 20px;
+      border-radius:12px;
+      border:2px solid var(--border);
+      line-height:1.35;
+    }
+    .cta-note{
+      text-align:center;
+      font-size:0.82rem;
+      margin-top:12px;
+      color:var(--text-sub);
+    }
+    .hero .cta-note{color:rgba(255,255,255,0.85);}
+    .hero .sub-cta{border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.95);}
+
+    /* リスト系 */
+    .check-list{
+      list-style:none;
+      display:grid;
+      gap:12px;
+    }
+    .check-list li{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:14px 16px 14px 44px;
+      position:relative;
+      font-size:0.95rem;
+      line-height:1.7;
+    }
+    .check-list li::before{
+      content:"✓";
+      position:absolute;
+      left:16px;
+      top:14px;
+      color:var(--line-green);
+      font-weight:700;
+    }
+
+    /* 対象業種タグ */
+    .target-tags{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:8px;
+      margin-bottom:24px;
+    }
+    .target-tags span{
+      background:var(--bg-light);
+      border:1px solid var(--border);
+      border-radius:999px;
+      padding:6px 14px;
+      font-size:0.85rem;
+      font-weight:600;
+      color:var(--brand);
+    }
+
+    /* 相性ポイント */
+    .reason-grid{
+      display:grid;
+      gap:12px;
+    }
+    .reason-grid .card strong{
+      display:block;
+      color:var(--brand);
+      margin-bottom:4px;
+      font-size:1rem;
+    }
+    .reason-grid .card p{
+      font-size:0.9rem;
+      color:var(--text-sub);
+      line-height:1.7;
+    }
+
+    /* テーマグリッド */
+    .theme-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+    }
+    .theme-grid .theme-item{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:14px 8px;
+      text-align:center;
+      font-weight:700;
+      font-size:0.9rem;
+      color:var(--brand);
+    }
+    .theme-note{
+      margin-top:16px;
+      font-size:0.88rem;
+      color:var(--text-sub);
+      line-height:1.8;
+      text-align:center;
+    }
+
+    /* 対象外 */
+    .ng-list{
+      list-style:none;
+      display:grid;
+      gap:10px;
+      max-width:560px;
+      margin:0 auto;
+    }
+    .ng-list li{
+      background:#fff;
+      border:1px solid #e8d5cc;
+      border-radius:12px;
+      padding:13px 16px 13px 42px;
+      position:relative;
+      font-size:0.93rem;
+      color:var(--text-main);
+    }
+    .ng-list li::before{
+      content:"✕";
+      position:absolute;
+      left:16px;
+      top:13px;
+      color:var(--accent);
+      font-weight:700;
+    }
+    .ng-note{
+      max-width:560px;
+      margin:18px auto 0;
+      background:#fff7f0;
+      border:1px solid #f0c8a8;
+      border-radius:10px;
+      padding:12px 16px;
+      font-size:0.9rem;
+      font-weight:600;
+      color:#7c2d12;
+      text-align:center;
+      line-height:1.7;
+    }
+
+    /* 主催者 */
+    .profile-card{
+      max-width:560px;
+      margin:0 auto;
+      text-align:center;
+      padding:24px 20px;
+    }
+    .profile-name{
+      font-size:1.15rem;
+      font-weight:700;
+      color:var(--brand);
+      margin-bottom:4px;
+    }
+    .profile-role{
+      font-size:0.85rem;
+      color:var(--text-sub);
+      margin-bottom:14px;
+    }
+    .profile-creds{
+      list-style:none;
+      display:grid;
+      gap:6px;
+      margin-bottom:14px;
+    }
+    .profile-creds li{
+      font-size:0.9rem;
+      color:var(--text-main);
+      background:var(--bg-light);
+      border-radius:8px;
+      padding:8px 12px;
+    }
+    .profile-msg{
+      font-size:0.92rem;
+      color:var(--text-sub);
+      line-height:1.9;
+      text-align:left;
+    }
+
+    /* 最終CTA */
+    .final-cta{
+      background:var(--brand);
+      color:#fff;
+      text-align:center;
+      padding:52px 0;
+    }
+    .final-cta .section-title{color:#fff;}
+    .final-cta p{
+      font-size:0.95rem;
+      line-height:1.9;
+      margin-bottom:20px;
+    }
+    .final-cta .copy-phrase{
+      display:inline-block;
+      background:rgba(255,255,255,0.12);
+      border:1px dashed rgba(255,255,255,0.5);
+      border-radius:10px;
+      padding:12px 18px;
+      font-weight:700;
+      margin-bottom:22px;
+      font-size:0.95rem;
+    }
+
+    /* フッター */
+    .footer{
+      background:#f1f4f8;
+      padding:28px 0;
+      text-align:center;
+      font-size:0.82rem;
+      color:var(--text-sub);
+    }
+    .footer a{color:var(--brand);}
+
+    /* スマホ固定CTA */
+    .fixed-cta{
+      position:fixed;
+      left:0;right:0;bottom:0;
+      background:rgba(255,255,255,0.96);
+      border-top:1px solid var(--border);
+      padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+      z-index:1000;
+    }
+    .fixed-cta a{
+      display:block;
+      max-width:480px;
+      margin:0 auto;
+      background:var(--line-green);
+      color:#fff;
+      font-weight:700;
+      font-size:0.98rem;
+      text-align:center;
+      text-decoration:none;
+      padding:13px 16px;
+      border-radius:12px;
+      line-height:1.3;
+    }
+
+    @media(max-width:600px){
+      .section{padding:38px 0;}
+      .theme-grid{grid-template-columns:repeat(2,1fr);}
+      .hero{padding:44px 0 38px;}
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="#top" class="header-brand">BCサービス</a>
+      <span class="header-tag">現場業プラスワン研究会</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. ヒーロー -->
+    <section class="hero">
+      <div class="container">
+        <p class="hero-badge">現場経験者向け・少人数の実務研究会</p>
+        <h1 class="hero-title">現場業プラスワン研究会</h1>
+        <p class="hero-copy">本業にもう1つ、<br>現場で売れる仕事を足す。</p>
+        <p class="hero-sub">塗装・内装・建築・リフォーム・便利屋・設備など、すでに現場仕事をしている方へ。本業にもう1つ売上の柱を足すための実務コミュニティです。</p>
+        <p class="hero-theme">第一弾テーマ：エアコンクリーニング</p>
+        <p class="hero-note">※既存のエアコンクリーニング専門業者向けではありません。</p>
+        <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="hero">LINEで相談する</a>
+        <a href="#final-cta" class="sub-cta">詳細を聞く</a>
+        <p class="cta-note">「現場業プラスワン研究会に興味あります」と送るだけでOKです。</p>
+      </div>
+    </section>
+
+    <!-- 2. こんな方へ -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">こんな方へ</h2>
+        <div class="target-tags">
+          <span>塗装業</span>
+          <span>内装業</span>
+          <span>建築業</span>
+          <span>リフォーム業</span>
+          <span>便利屋</span>
+          <span>設備業</span>
+          <span>ハウスクリーニング周辺業</span>
+        </div>
+        <ul class="check-list">
+          <li>現場仕事はあるが、もう1つ売上の柱がほしい</li>
+          <li>今の仕事に追加提案できるメニューがほしい</li>
+          <li>エアコンクリーニングに興味はあるが、どこから始めるか分からない</li>
+          <li>道具・料金・接客・集客を現場目線で知りたい</li>
+          <li>いきなり高額スクールではなく、現場に近い形で学びたい</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. なぜ現場業とエアコンは相性がいいのか -->
+    <section class="section section-light">
+      <div class="container">
+        <h2 class="section-title">なぜ現場業とエアコンクリーニングは<br>相性がいいのか</h2>
+        <p class="section-lead">ゼロから新しい商売を立ち上げるのではなく、<br>いま現場で持っている信頼と技術を、そのまま活かせるからです。</p>
+        <div class="reason-grid">
+          <div class="card">
+            <strong>すでにお客様宅・現場に入る信頼がある</strong>
+            <p>新規業者がいちばん苦労する「家に上げてもらう」ハードルを、すでに越えています。</p>
+          </div>
+          <div class="card">
+            <strong>養生や道具の扱いに慣れている</strong>
+            <p>エアコンクリーニングの基本は、養生・分解・洗浄・復旧。現場仕事の延長線上にあります。</p>
+          </div>
+          <div class="card">
+            <strong>追加提案がしやすい</strong>
+            <p>塗装・内装・リフォームの現場で「ついでにエアコンも」と提案できる立場にあります。</p>
+          </div>
+          <div class="card">
+            <strong>リピート・紹介につながりやすい</strong>
+            <p>エアコンクリーニングは1〜2年ごとの定期需要。本業の顧客リストがそのまま資産になります。</p>
+          </div>
+          <div class="card">
+            <strong>季節需要がある</strong>
+            <p>夏前・梅雨前は依頼が集中します。本業の閑散期と組み合わせて、年間の売上を平準化できます。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 研究会で扱うテーマ -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">研究会で扱うテーマ</h2>
+        <p class="section-lead">机上の理論ではなく、現場で実際に使っている内容を共有します。</p>
+        <div class="theme-grid">
+          <div class="theme-item">道具</div>
+          <div class="theme-item">養生</div>
+          <div class="theme-item">洗浄</div>
+          <div class="theme-item">料金設定</div>
+          <div class="theme-item">接客</div>
+          <div class="theme-item">集客</div>
+          <div class="theme-item">失敗しやすい<br>ポイント</div>
+          <div class="theme-item">現場で使える<br>AI活用</div>
+          <div class="theme-item">LP・受付・<br>帳票整理</div>
+        </div>
+        <p class="theme-note">
+          現場まわりだけでなく、受付・帳票・LPなどの「現場の外側」も扱います。<br>
+          将来的にはAI帳票番頭やLP制作とも自然につながる内容です。
+        </p>
+      </div>
+    </section>
+
+    <!-- 5. 対象外の人 -->
+    <section class="section section-light">
+      <div class="container">
+        <h2 class="section-title">こんな方は対象外です</h2>
+        <ul class="ng-list">
+          <li>既存のエアコンクリーニング専門業者の方</li>
+          <li>ノウハウだけ抜きたい方</li>
+          <li>安売り競争だけしたい方</li>
+          <li>現場を軽く見ている方</li>
+        </ul>
+        <p class="ng-note">※既存のエアコンクリーニング専門業者向けではありません。<br>すでに現場仕事をしていて、もう1つ収益の柱を増やしたい方のための研究会です。</p>
+      </div>
+    </section>
+
+    <!-- 6. 主催者紹介 -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">主催者紹介</h2>
+        <div class="card profile-card">
+          <p class="profile-name">照屋 昴（てるや すばる）</p>
+          <p class="profile-role">BCサービス 代表（沖縄県南城市）</p>
+          <ul class="profile-creds">
+            <li>清掃業界17年</li>
+            <li>エアコンクリーニング実務経験</li>
+            <li>第二種電気工事士・認定電気工事従事者講習受講済み</li>
+            <li>現場仕事とAI活用の両方を実践中</li>
+          </ul>
+          <p class="profile-msg">
+            私自身、いまも現場でエアコンクリーニングをしている現役の職人です。<br>
+            同時に、LP制作・受付の仕組み化・帳票整理など、現場の外側のAI活用も自分の事業で実践しています。<br>
+            だからこそ、コンサルではなく「同じ現場側の人間」として、実務の中身をそのまま共有できます。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. CTA -->
+    <section class="final-cta" id="final-cta">
+      <div class="container">
+        <h2 class="section-title">まずはLINEで相談</h2>
+        <p>
+          申込フォームや決済はまだありません。<br>
+          いまは「興味がある」と言ってもらえるだけで十分です。<br>
+          内容・進め方・参加条件など、気になることはLINEで直接お答えします。
+        </p>
+        <p class="copy-phrase">「現場業プラスワン研究会に興味あります」<br>と送ってください。</p>
+        <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="bottom">LINEで相談する</a>
+        <p class="cta-note" style="color:rgba(255,255,255,0.85);">相談だけでも大丈夫です。無理な勧誘は行いません。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>BCサービス｜沖縄県南城市大里稲嶺2127-34</p>
+      <p><a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer">LINEで相談する</a>　<a href="mailto:bc.teruya@gmail.com">メール</a></p>
+      <p>&copy; ＢＣサービス</p>
+    </div>
+  </footer>
+
+  <!-- スマホ固定LINE CTA -->
+  <div class="fixed-cta">
+    <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta="line" data-cta-location="fixed">現場業プラスワン研究会に<strong>LINEで相談する</strong></a>
+  </div>
+</body>
+</html>
