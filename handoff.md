@@ -9,13 +9,15 @@
 
 ## フェーズ
 
+- **浦添市家庭LP `urasoe.html` 公開確認OK（2026-06-10）**：市町村別LPの1本目。南部・中部の橋渡しページ。内部リンク・sitemap追加済み（`a1b329b`）
+- **composer-2.5 + ゴール達成型プロンプト検証完了（2026-06-10）**：新規LP作成〜commit/pushまで再現性あり。今後のLP量産はゴール達成型を基本にする
 - **中部家庭LP `central.html` 公開準備完了**（新規作成・公開前調整・sitemap・南部LPからの内部リンク・本番微調整まで push 済み）
 - **広告番頭MVP 作成・検証完了（2026-06-10）**：Google広告開始前の採算確認用。内部確認用ページとしてLPから分離。**表示確認・入力テスト済みで運用開始可能**
 - **広告開始前チェック・LP debug CTA確認 最終確認完了（2026-06-10）**：Google広告小額テスト開始可能
 - **完全分解LP LINE相談優先文面 追加完了（2026-06-10）**：ヒーロー・PCヘッダーに補足文追加。電話番号・CTA・GA4・debugは維持（`f7a2195`）
-- **Search Console は対応済み → 反映待ち確認フェーズ**（再送信・再リクエストは不要。数時間〜翌日以降にインデックス状況を確認）
+- **Search Console は対応済み → 反映待ち確認フェーズ**（再送信・再リクエストは不要。時間を置いてインデックス状況を確認）
 - 新規 LP コード修正は、公開確認で問題が出た場合のみ
-- 市町村別ページ量産は **焦らない**。まず中部LPの実機表示・反応確認を優先
+- 市町村別ページ量産は **浦添LPの表示確認・Search Console反映・問い合わせ導線確認後** に進む
 
 ## 固定URL（変更禁止）
 
@@ -24,6 +26,7 @@
 - 家庭LP（南部）：`https://teruya1229.github.io/cursor-test/`
 - 家庭LP debug：`https://teruya1229.github.io/cursor-test/?debug=1`
 - **中部家庭LP（新）：`https://teruya1229.github.io/cursor-test/central.html`**
+- **浦添市家庭LP（新）：`https://teruya1229.github.io/cursor-test/urasoe.html`**
 - 完全分解LP（正）：`https://teruya1229.github.io/complete-disassembly/`
 - 完全分解LP debug：`https://teruya1229.github.io/complete-disassembly/?debug=1`
 - 広告番頭（内部用）：`https://teruya1229.github.io/ops/ad-bantou/`
@@ -34,8 +37,9 @@
 
 | ページ | パス | 状態 |
 |--------|------|------|
-| 家庭LP（南部） | `cursor-test/index.html` | FAQ9 + JSON-LD、AIまとめ、Instagram事例、cases導線、構造化データ済み。LINE優先・電話一時停止は維持。**中部LPへの内部リンク2箇所追加済み** |
-| **中部家庭LP** | `cursor-test/central.html` | **2026-06-09 新規作成・公開確認済み**。スマホ固定CTA / build表示 / 南城市表現 / ナビ / 料金表調整済み。FAQ9 + JSON-LD、構造化データ、GA4 `central_lp` 計測済み。ルート sitemap 登録済み |
+| 家庭LP（南部） | `cursor-test/index.html` | FAQ9 + JSON-LD、AIまとめ、Instagram事例、cases導線、構造化データ済み。LINE優先・電話一時停止は維持。**中部LPへの内部リンク2箇所・浦添LPへの内部リンク1箇所追加済み** |
+| **中部家庭LP** | `cursor-test/central.html` | **2026-06-09 新規作成・公開確認済み**。スマホ固定CTA / build表示 / 南城市表現 / ナビ / 料金表調整済み。FAQ9 + JSON-LD、構造化データ、GA4 `central_lp` 計測済み。ルート sitemap 登録済み。**浦添LPへの内部リンク1箇所追加済み** |
+| **浦添市家庭LP** | `cursor-test/urasoe.html` | **2026-06-10 新規作成・公開確認OK**（`a1b329b`、composer-2.5 + ゴール達成型）。南部・中部・那覇方面の中間エリア。市町村別LP1本目。FAQ5 + JSON-LD、構造化データ、GA4 `urasoe_lp` 計測済み。ルート sitemap 登録済み。南部LP・中部LPから導線あり |
 | 完全分解LP | `complete-disassembly/index.html` | 写真4枚、Instagramリール、FAQ8、AIまとめ、cases導線、構造化データ済み。**2026-06-10：LINE相談優先補足文追加**（ヒーロー・PCヘッダー。スマホはヒーローのみ） |
 | 施工事例一覧 | `cursor-test/cases.html` | リール4件+写真4枚、CollectionPage JSON-LD、sitemap登録済み |
 | FAQ一覧 | `cursor-test/faq.html` | cases・業務LP導線、構造化データ確認済み |
@@ -46,6 +50,20 @@
 **中部LP 対応エリア**
 
 沖縄市 / うるま市 / 北谷町 / 嘉手納町 / 読谷村 / 宜野湾市 / 北中城村 / 中城村
+
+**浦添市LP 位置づけ・料金（2026-06-10）**
+
+- 南部LPにも中部LPにも含まれない中間エリア。南部LP・中部LPの橋渡しページ
+- 料金目安：通常分解 9,000円〜 / 完全分解 15,000円〜 / お掃除機能付き 16,000円〜
+- 内部リンク：南部LP・中部LP → 浦添LP。浦添LP → 南部LP・中部LP・完全分解LP・FAQ・施工事例
+
+**composer-2.5 検証結果（2026-06-10）**
+
+- Fable 5 Highの制限後、composer-2.5で浦添LPを実装
+- 新規LP作成・内部リンク追加・sitemap追加・GA4・FAQ JSON-LD・commit/pushまで完了
+- 結論：高性能モデルだけでなく、**ゴール達成型プロンプト自体に再現性がある**
+- 今後のLP量産は、まずゴール達成型で進める方針を継続
+- note有料記事への追記候補：「composer-2.5でもゴール達成型が通用した」検証結果
 
 **広告番頭MVP 検証結果（2026-06-10）**
 
@@ -87,6 +105,7 @@
 
 - 送信URL：**`https://teruya1229.github.io/sitemap.xml`** のみ
 - `cursor-test/central.html` 登録済み（`6741002`）
+- `cursor-test/urasoe.html` 登録済み（`a1b329b`）
 - `business-cleaning/`、`cursor-test/cases.html`、`faq.html`、`south.html` 登録済み
 - `/cursor-test/sitemap.xml` は Search Console に送らない
 
@@ -100,6 +119,9 @@
 
 | commit | 内容 |
 |--------|------|
+| `a1b329b` | 浦添市家庭LP新規作成・内部リンク・sitemap追加（`feat: add Urasoe family aircon LP`） |
+| `d09681f` | AI帳票番頭LPにnote記事カード追加 |
+| `4c975f0` | 現場業プラスワン研究会LP新規作成 |
 | `f7a2195` | 完全分解LP LINE相談優先文面追加（`copy: emphasize LINE consultation on complete disassembly LP`） |
 | `c98f3d6` | 広告開始前チェック最終確認の記録（`docs: record ad preflight verification`） |
 | `78ae15c` | 広告開始前チェックとLP debug挙動の整合（`fix: align preflight CTA checks with LP behavior`） |
@@ -123,37 +145,31 @@
 
 ## 次回やること（優先順）
 
-1. **完全分解LPの公開URL表示確認**
-   - `https://teruya1229.github.io/complete-disassembly/` でヒーロー補足文を確認
-   - スマホ表示確認（ヘッダー補足非表示・ヒーロー補足表示）
-2. **Google広告の小額テスト設計**（表示確認OKなら進む）
-   - まずは完全分解LP向けにキャンペーン作成
-   - 1日500〜1,000円程度で開始
-   - 地域・キーワード・除外キーワードを絞る
-3. **広告番頭への日次入力運用**
-   - 翌日から広告番頭に数値入力（Claude in Chrome 運用）
-   - 7日分の数字で継続 / 改善 / 停止を判断
-4. **Search Console：反映待ち確認**（再送信・再リクエストは不要）
-   - 数時間〜翌日以降に `https://teruya1229.github.io/cursor-test/central.html` のインデックス反映状況を確認
-   - 未反映・エラー表示があれば、その時点で URL検査を再実行
-   - ルート sitemap の読み取り状況もあわせて確認
-5. **中部LPの実機最終確認**
-   - 375px固定CTA・公開URL表示：`https://teruya1229.github.io/cursor-test/central.html`
-6. **業務LP** の Instagram 埋め込み表示を公開URLで確認（`business-cleaning/`）
-7. Instagramプロフィール / note / Googleビジネスプロフィール → LP 導線を整理
+1. **浦添LPのSearch Console反映状況確認**（再送信・再リクエストは不要）
+   - 時間を置いて `https://teruya1229.github.io/cursor-test/urasoe.html` のインデックス反映状況を確認
+   - 中部LP `central.html` の反映状況もあわせて確認
+2. **浦添LPのスマホ実機確認**
+   - ヒーロー・固定CTA・料金カード：`https://teruya1229.github.io/cursor-test/urasoe.html`
+3. **那覇LPとの相互導線確認**（必要なら `naha.html` → 浦添LP）
+4. **市町村別LP量産の判断**（上記確認後）
+   - 問題なければ沖縄市 / 宜野湾市 / うるま市などへ進む
+   - ゴール達成型プロンプトを基本にする（composer-2.5検証で再現性確認済み）
+5. **note有料記事への追記**
+   - 「composer-2.5でもゴール達成型が通用した」検証結果を追記
+6. **Google広告の小額テスト設計**（表示確認OKなら進む）
+7. **広告番頭への日次入力運用**
 
 **次の実作業候補（急がない）**
 
 - 広告番頭：トースト表示時間の延長（必要なら）
-- 広告番頭：メモ全文表示・JSONエクスポート/インポート・upsertルール（実運用で必要になったら）
-- 中部LPを親にした市町村別ページ量産
-- 沖縄市ページ / 宜野湾市ページ / うるま市ページの検討
-- 既存LPとの内部リンク設計（例：中部LP → 南部LP 相互リンク）
-- 焦って市町村別ページを作らず、**まず中部LPの反応・表示確認を優先**
+- 沖縄市ページ / 宜野湾市ページ / うるま市ページの量産（浦添LP確認後）
+- 那覇LP `naha.html` から浦添LPへの相互導線
+- 業務LPの Instagram 埋め込み表示を公開URLで確認
+- Instagramプロフィール / note / Googleビジネスプロフィール → LP 導線を整理
 
 ## 次にやるべき1手
 
-- **完全分解LPの公開URL表示確認**（`https://teruya1229.github.io/complete-disassembly/`）。問題なければGoogle広告小額テスト設計へ
+- **浦添LPのSearch Console反映状況確認**（`https://teruya1229.github.io/cursor-test/urasoe.html`）。あわせてスマホ実機でヒーロー・固定CTA・料金カードを確認
 
 ## 判断基準
 
@@ -182,7 +198,8 @@
 
 ```
 前提は status.md → handoff.md → rules.md の順で読んで進めてください。
-中部LP central.html は公開準備完了。Search Console は反映待ち確認フェーズです。
+浦添市家庭LP urasoe.html は 2026-06-10 に公開確認OK（a1b329b）。市町村別LP1本目。
+composer-2.5 + ゴール達成型プロンプトでLP作成〜commit/pushまで再現性あり。今後の量産はゴール達成型を基本にする。
+Search Console は時間を置いて反映確認。再送信・再リクエストは不要。
 広告開始前チェック・LP debug CTA確認は 2026-06-10 に最終確認完了。Google広告小額テスト開始可能です。
-完全分解LPには 2026-06-10 にLINE相談優先の補足文を追加済み（f7a2195）。
 ```
