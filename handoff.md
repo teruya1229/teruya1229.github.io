@@ -9,6 +9,7 @@
 
 ## フェーズ
 
+- **与那原町LP `yonabaru.html` 既存刷新・公開確認OK（2026-06-10）**：新規作成ではなく既存SEO資産・内部リンク資産を活かす刷新。URL維持（`9e74947`）。FAQ表示8問とJSON-LD8問を一致（刷新前は6問表示・6問JSON-LDで一致）
 - **八重瀬町LP `yaese.html` 既存刷新・公開確認OK（2026-06-10）**：新規作成ではなく既存SEO資産・内部リンク資産を活かす刷新。URL維持（`d4c299a`）。FAQ表示8問とJSON-LD8問を一致（刷新前は13問表示・4問JSON-LDで不一致）
 - **豊見城市LP `tomigusuku.html` 既存刷新・公開確認OK（2026-06-10）**：新規作成ではなく既存SEO資産・内部リンク資産を活かす刷新。URL維持（`8322aba`）。ヒーロー見出し改行の軽微修正済み（`b73db60`）
 - **南城市LP `nanjo.html` 既存刷新・公開確認OK（2026-06-10）**：新規作成ではなく既存SEO資産・内部リンク資産を活かす刷新。URL維持（`dbc94e3`）
@@ -34,6 +35,7 @@
 - **南城市LP（刷新）：`https://teruya1229.github.io/cursor-test/nanjo.html`**
 - **豊見城市LP（刷新）：`https://teruya1229.github.io/cursor-test/tomigusuku.html`**
 - **八重瀬町LP（刷新）：`https://teruya1229.github.io/cursor-test/yaese.html`**
+- **与那原町LP（刷新）：`https://teruya1229.github.io/cursor-test/yonabaru.html`**
 - 完全分解LP（正）：`https://teruya1229.github.io/complete-disassembly/`
 - 完全分解LP debug：`https://teruya1229.github.io/complete-disassembly/?debug=1`
 - 広告番頭（内部用）：`https://teruya1229.github.io/ops/ad-bantou/`
@@ -49,6 +51,7 @@
 | **南城市LP** | `cursor-test/nanjo.html` | **2026-06-10 既存刷新・公開確認OK**（`dbc94e3`、ゴール達成型）。本拠地大里・南部応援価格8,000円/完全分解14,000円。FAQ8 + JSON-LD一致、構造化データ、GA4 `nanjo_lp` 計測済み。sitemap `lastmod` 更新のみ |
 | **豊見城市LP** | `cursor-test/tomigusuku.html` | **2026-06-10 既存刷新・公開確認OK**（`8322aba`、ゴール達成型）。軽微修正 `b73db60`。南部応援価格8,000円/完全分解14,000円/お掃除機能付き15,000円。FAQ8 + JSON-LD一致、構造化データ、GA4 `tomigusuku_lp` 計測済み。sitemap `lastmod` 更新のみ。index/south/他LP/ブログから内部リンク済み |
 | **八重瀬町LP** | `cursor-test/yaese.html` | **2026-06-10 既存刷新・公開確認OK**（`d4c299a`、ゴール達成型）。東風平・富盛・具志頭・畑・エイサー等の地域訴求を維持。南部応援価格8,000円/完全分解14,000円/お掃除機能付き15,000円。FAQ8 + JSON-LD一致（刷新前13問表示・4問JSON-LD不一致を解消）、構造化データ、GA4 `yaese_lp` 計測済み。sitemap `lastmod` 更新のみ。完全分解LP・cases・関連ブログ3本への導線あり |
+| **与那原町LP** | `cursor-test/yonabaru.html` | **2026-06-10 既存刷新・公開確認OK**（`9e74947`、ゴール達成型）。中城湾・潮風・湿気・住宅密集・マンション等の地域訴求を維持。南部応援価格8,000円/完全分解14,000円/お掃除機能付き15,000円。FAQ8 + JSON-LD一致（刷新前6問表示・6問JSON-LD一致）、構造化データ、GA4 `yonabaru_lp` 計測済み。sitemap `lastmod` 更新のみ。完全分解LP・cases・`yonabaru-sea-wind` への導線あり |
 | **浦添市家庭LP** | `cursor-test/urasoe.html` | **2026-06-10 新規作成・公開確認OK**（`a1b329b`、composer-2.5 + ゴール達成型）。南部・中部・那覇方面の中間エリア。市町村別LP1本目。FAQ5 + JSON-LD、構造化データ、GA4 `urasoe_lp` 計測済み。ルート sitemap 登録済み。南部LP・中部LPから導線あり |
 | 完全分解LP | `complete-disassembly/index.html` | 写真4枚、Instagramリール、FAQ8、AIまとめ、cases導線、構造化データ済み。**2026-06-10：LINE相談優先補足文追加**（ヒーロー・PCヘッダー。スマホはヒーローのみ） |
 | 施工事例一覧 | `cursor-test/cases.html` | リール4件+写真4枚、CollectionPage JSON-LD、sitemap登録済み |
@@ -74,6 +77,14 @@
 - ヒーロー・CTA・GA4・JSON-LD・FAQ整合・完全分解LP/cases導線を現行標準に合わせて整備
 - 公開確認OK（表示・固定CTA・LINE・Airリザーブ・FAQ・build表示なし）
 
+**与那原町LP 刷新結果（2026-06-10）**
+
+- 対象：`cursor-test/yonabaru.html`（`9e74947`）。公開URL：`https://teruya1229.github.io/cursor-test/yonabaru.html`
+- 新規作成ではなく既存刷新が正解（着手前調査の判断結果。SERP詳細は正本に残さない）
+- 与那原町固有コンテンツ（中城湾・潮風・湿気・塩分・住宅密集・結露カビ・那覇・西原アクセス・子育て世帯・マンション等）を維持しつつ、yaese/tomigusuku刷新済み標準に合わせて整備
+- FAQ：刷新前6問表示・6問JSON-LD一致 → 刷新後8問表示・8問JSON-LD一致。潮風・マンション駐車場・完全分解・LINE写真相談を整備
+- 公開確認OK（表示・固定CTA・PCヒーロー改行・LINE・Airリザーブ・FAQ・導線・build表示なし）
+
 **八重瀬町LP 刷新結果（2026-06-10）**
 
 - 対象：`cursor-test/yaese.html`（`d4c299a`）。公開URL：`https://teruya1229.github.io/cursor-test/yaese.html`
@@ -92,7 +103,7 @@
 
 **composer-2.5 / ゴール達成型 検証結果（2026-06-10）**
 
-- Fable 5 Highの制限後、composer-2.5で浦添LP新規作成〜南城市LP・豊見城市LP・八重瀬町LP既存刷新まで完了
+- Fable 5 Highの制限後、composer-2.5で浦添LP新規作成〜南城市LP・豊見城市LP・八重瀬町LP・与那原町LP既存刷新まで完了
 - 結論：高性能モデルだけでなく、**ゴール達成型プロンプト自体に再現性がある**
 - 今後のLP量産は、まずゴール達成型で進める方針を継続。市町村別は都度SEO調査して判断
 - note有料記事への追記候補：「ゴール達成型で既存LP刷新まで進められた」事例
@@ -151,6 +162,7 @@
 
 | commit | 内容 |
 |--------|------|
+| `9e74947` | 与那原町LP既存刷新（`feat: refresh Yonabaru family aircon LP`） |
 | `ef5e688` | 南城市LPヤモリ・カバー内汚れの地域気づき追記（`feat: add Nanjo gecko aircon dirt insight`） |
 | `d4c299a` | 八重瀬町LP既存刷新（`feat: refresh Yaese family aircon LP`） |
 | `b73db60` | 豊見城市LPヒーロー見出し改行の軽微修正（`fix: prevent Tomigusuku hero title awkward wrap`） |
@@ -184,19 +196,20 @@
 ## 次回やること（優先順）
 
 1. **次地域LPの着手前判断**（都度SEO調査）
-   - 次候補：**与那原町 `cursor-test/yonabaru.html`**
+   - 次候補：**南風原町 `cursor-test/haebaru.html`**
    - いきなり刷新せず、既存確認・sitemap・内部リンク・現行標準との差分を先に確認し、「既存刷新」か「新規作成」か判断
-2. **八重瀬町LPのSearch Console反映状況確認**（再送信・再リクエストは不要）
-   - 時間を置いて `yaese.html` のインデックス反映状況を確認
-3. **豊見城市LP・南城市LPのSearch Console反映状況確認**
-   - 時間を置いて `tomigusuku.html` / `nanjo.html` のインデックス反映状況を確認
-4. **浦添LP・中部LPのSearch Console反映状況確認**
-5. **市町村別LP量産の判断**（上記確認後）
+2. **与那原町LPのSearch Console反映状況確認**（再送信・再リクエストは不要）
+   - 時間を置いて `yonabaru.html` のインデックス反映状況を確認
+3. **八重瀬町LPのSearch Console反映状況確認**
+4. **豊見城市LP・南城市LPのSearch Console反映状況確認**
+   - 南城市LPヤモリ・虫追記（`ef5e688`）の公開確認も必要なら実施
+5. **浦添LP・中部LPのSearch Console反映状況確認**
+6. **市町村別LP量産の判断**（上記確認後）
    - ゴール達成型プロンプトを基本にする（新規作成・既存刷新ともに再現性確認済み）
-6. **note有料記事への追記**
+7. **note有料記事への追記**
    - 「ゴール達成型で既存LP刷新まで進められた」事例として追記候補
-7. **Google広告の小額テスト設計**（表示確認OKなら進む）
-8. **広告番頭への日次入力運用**
+8. **Google広告の小額テスト設計**（表示確認OKなら進む）
+9. **広告番頭への日次入力運用**
 
 **次の実作業候補（急がない）**
 
@@ -208,7 +221,7 @@
 
 ## 次にやるべき1手
 
-- **与那原町LP `yonabaru.html` の着手前確認**（既存ページ・sitemap・内部リンク・現行標準との差分を調査し、既存刷新か新規作成か判断）
+- **南風原町LP `haebaru.html` の着手前確認**（既存ページ・sitemap・内部リンク・現行標準との差分を調査し、既存刷新か新規作成か判断）
 
 ## 判断基準
 
@@ -237,11 +250,12 @@
 
 ```
 前提は status.md → handoff.md → rules.md の順で読んで進めてください。
-八重瀬町LP yaese.html は 2026-06-10 に既存刷新・公開確認OK（d4c299a）。新規作成ではなく既存SEO資産・内部リンク資産を活かす刷新。FAQ8問とJSON-LD一致。
+与那原町LP yonabaru.html は 2026-06-10 に既存刷新・公開確認OK（9e74947）。新規作成ではなく既存SEO資産・内部リンク資産を活かす刷新。FAQ8問とJSON-LD一致。
+八重瀬町LP yaese.html は 2026-06-10 に既存刷新・公開確認OK（d4c299a）。
 豊見城市LP tomigusuku.html は 2026-06-10 に既存刷新・公開確認OK（8322aba / b73db60）。
 南城市LP nanjo.html は 2026-06-10 に既存刷新・公開確認OK（dbc94e3）。ヤモリ・カバー内汚れの地域気づき追記済み（ef5e688）。
 浦添市家庭LP urasoe.html は 2026-06-10 に公開確認OK（a1b329b）。市町村別LP1本目。
-次地域LP候補は与那原町 yonabaru.html。着手前に既存確認・差分調査してから判断。
+次地域LP候補は南風原町 haebaru.html。着手前に既存確認・差分調査してから判断。
 市町村別LPは都度SEO調査してから判断（新規作成か既存刷新か）。SERP詳細は正本に残さない。
 ゴール達成型プロンプトで新規作成・既存刷新ともに再現性あり。Search Console は時間を置いて反映確認。
 広告開始前チェック・LP debug CTA確認は 2026-06-10 に最終確認完了。Google広告小額テスト開始可能です。
