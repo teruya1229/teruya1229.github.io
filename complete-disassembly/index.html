@@ -209,6 +209,38 @@
       font-weight: 600;
       text-decoration: underline;
     }
+
+    .header-tel-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      flex-shrink: 0;
+      max-width: 210px;
+    }
+
+    .header-tel-note {
+      margin: 4px 0 0;
+      font-size: 0.68rem;
+      line-height: 1.45;
+      color: #6b7280;
+      text-align: right;
+      font-weight: 500;
+    }
+
+    .hero-inner .cta-note--line-priority {
+      max-width: 340px;
+      margin: 10px auto 0;
+      font-size: 0.8rem;
+      line-height: 1.55;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    @media (max-width: 767px) {
+      .header-tel-note {
+        display: none;
+      }
+    }
   </style>
 
   <!-- 構造化データ: LocalBusiness / Service / BreadcrumbList -->
@@ -444,7 +476,10 @@
         <a href="../cursor-test/south.html">対応エリア</a>
         <a href="#faq">よくある質問</a>
       </nav>
-      <a href="tel:05017241338" class="header-tel">050-1724-1338</a>
+      <div class="header-tel-wrap">
+        <a href="tel:05017241338" class="header-tel">050-1724-1338</a>
+        <p class="header-tel-note">作業中は電話に出られない場合があります。写真で確認できるLINE相談がスムーズです。</p>
+      </div>
     </div>
   </header>
 
@@ -456,6 +491,7 @@
         <h1 class="hero-title">沖縄南部のエアコン<br>完全分解クリーニング<br>内部までしっかり洗える特別プラン</h1>
         <p class="hero-lead">通常洗浄では届かない内部の汚れまで、<br>部品を分解してしっかり洗浄します。</p>
         <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta">LINEで無料相談する</a>
+        <p class="cta-note cta-note--line-priority">写真を送れるLINE相談がおすすめです。<br>型番・設置状況・汚れ具合を確認してから、対応可否と目安料金をご案内します。</p>
       </div>
     </section>
 
