@@ -9,6 +9,8 @@
 
 ## フェーズ
 
+- **南城市LP `nanjo.html` 既存刷新・公開確認OK（2026-06-10）**：新規作成ではなく既存SEO資産・内部リンク資産を活かす刷新。URL維持（`dbc94e3`）
+- **市町村別LPは都度SEO調査してから判断**（新規作成か既存刷新か）。SERP詳細は長期正本に残さない
 - **浦添市家庭LP `urasoe.html` 公開確認OK（2026-06-10）**：市町村別LPの1本目。南部・中部の橋渡しページ。内部リンク・sitemap追加済み（`a1b329b`）
 - **composer-2.5 + ゴール達成型プロンプト検証完了（2026-06-10）**：新規LP作成〜commit/pushまで再現性あり。今後のLP量産はゴール達成型を基本にする
 - **中部家庭LP `central.html` 公開準備完了**（新規作成・公開前調整・sitemap・南部LPからの内部リンク・本番微調整まで push 済み）
@@ -26,7 +28,8 @@
 - 家庭LP（南部）：`https://teruya1229.github.io/cursor-test/`
 - 家庭LP debug：`https://teruya1229.github.io/cursor-test/?debug=1`
 - **中部家庭LP（新）：`https://teruya1229.github.io/cursor-test/central.html`**
-- **浦添市家庭LP（新）：`https://teruya1229.github.io/cursor-test/urasoe.html`**
+- **浦添市家庭LP：`https://teruya1229.github.io/cursor-test/urasoe.html`**
+- **南城市LP（刷新）：`https://teruya1229.github.io/cursor-test/nanjo.html`**
 - 完全分解LP（正）：`https://teruya1229.github.io/complete-disassembly/`
 - 完全分解LP debug：`https://teruya1229.github.io/complete-disassembly/?debug=1`
 - 広告番頭（内部用）：`https://teruya1229.github.io/ops/ad-bantou/`
@@ -39,6 +42,7 @@
 |--------|------|------|
 | 家庭LP（南部） | `cursor-test/index.html` | FAQ9 + JSON-LD、AIまとめ、Instagram事例、cases導線、構造化データ済み。LINE優先・電話一時停止は維持。**中部LPへの内部リンク2箇所・浦添LPへの内部リンク1箇所追加済み** |
 | **中部家庭LP** | `cursor-test/central.html` | **2026-06-09 新規作成・公開確認済み**。スマホ固定CTA / build表示 / 南城市表現 / ナビ / 料金表調整済み。FAQ9 + JSON-LD、構造化データ、GA4 `central_lp` 計測済み。ルート sitemap 登録済み。**浦添LPへの内部リンク1箇所追加済み** |
+| **南城市LP** | `cursor-test/nanjo.html` | **2026-06-10 既存刷新・公開確認OK**（`dbc94e3`、ゴール達成型）。本拠地大里・南部応援価格8,000円/完全分解14,000円。FAQ8 + JSON-LD一致、構造化データ、GA4 `nanjo_lp` 計測済み。sitemap `lastmod` 更新のみ |
 | **浦添市家庭LP** | `cursor-test/urasoe.html` | **2026-06-10 新規作成・公開確認OK**（`a1b329b`、composer-2.5 + ゴール達成型）。南部・中部・那覇方面の中間エリア。市町村別LP1本目。FAQ5 + JSON-LD、構造化データ、GA4 `urasoe_lp` 計測済み。ルート sitemap 登録済み。南部LP・中部LPから導線あり |
 | 完全分解LP | `complete-disassembly/index.html` | 写真4枚、Instagramリール、FAQ8、AIまとめ、cases導線、構造化データ済み。**2026-06-10：LINE相談優先補足文追加**（ヒーロー・PCヘッダー。スマホはヒーローのみ） |
 | 施工事例一覧 | `cursor-test/cases.html` | リール4件+写真4枚、CollectionPage JSON-LD、sitemap登録済み |
@@ -57,13 +61,19 @@
 - 料金目安：通常分解 9,000円〜 / 完全分解 15,000円〜 / お掃除機能付き 16,000円〜
 - 内部リンク：南部LP・中部LP → 浦添LP。浦添LP → 南部LP・中部LP・完全分解LP・FAQ・施工事例
 
-**composer-2.5 検証結果（2026-06-10）**
+**南城市LP 刷新結果（2026-06-10）**
 
-- Fable 5 Highの制限後、composer-2.5で浦添LPを実装
-- 新規LP作成・内部リンク追加・sitemap追加・GA4・FAQ JSON-LD・commit/pushまで完了
+- 対象：`cursor-test/nanjo.html`（`dbc94e3`）。公開URL維持
+- 新規作成ではなく既存刷新が正解（SEO調査の判断結果。SERP詳細は正本に残さない）
+- ヒーロー・CTA・GA4・JSON-LD・FAQ整合・完全分解LP/cases導線を現行標準に合わせて整備
+- 公開確認OK（表示・固定CTA・LINE・Airリザーブ・FAQ・build表示なし）
+
+**composer-2.5 / ゴール達成型 検証結果（2026-06-10）**
+
+- Fable 5 Highの制限後、composer-2.5で浦添LP新規作成〜南城市LP既存刷新まで完了
 - 結論：高性能モデルだけでなく、**ゴール達成型プロンプト自体に再現性がある**
-- 今後のLP量産は、まずゴール達成型で進める方針を継続
-- note有料記事への追記候補：「composer-2.5でもゴール達成型が通用した」検証結果
+- 今後のLP量産は、まずゴール達成型で進める方針を継続。市町村別は都度SEO調査して判断
+- note有料記事への追記候補：「ゴール達成型で既存LP刷新まで進められた」事例
 
 **広告番頭MVP 検証結果（2026-06-10）**
 
@@ -119,6 +129,8 @@
 
 | commit | 内容 |
 |--------|------|
+| `e40d4e6` | AI帳票番頭LPに魔法のプロンプトnote記事カード追加 |
+| `dbc94e3` | 南城市LP既存刷新（`feat: refresh Nanjo family aircon LP`） |
 | `a1b329b` | 浦添市家庭LP新規作成・内部リンク・sitemap追加（`feat: add Urasoe family aircon LP`） |
 | `d09681f` | AI帳票番頭LPにnote記事カード追加 |
 | `4c975f0` | 現場業プラスワン研究会LP新規作成 |
@@ -145,17 +157,16 @@
 
 ## 次回やること（優先順）
 
-1. **浦添LPのSearch Console反映状況確認**（再送信・再リクエストは不要）
-   - 時間を置いて `https://teruya1229.github.io/cursor-test/urasoe.html` のインデックス反映状況を確認
-   - 中部LP `central.html` の反映状況もあわせて確認
-2. **浦添LPのスマホ実機確認**
-   - ヒーロー・固定CTA・料金カード：`https://teruya1229.github.io/cursor-test/urasoe.html`
-3. **那覇LPとの相互導線確認**（必要なら `naha.html` → 浦添LP）
+1. **南城市LPのSearch Console反映状況確認**（再送信・再リクエストは不要）
+   - 時間を置いて `https://teruya1229.github.io/cursor-test/nanjo.html` のインデックス反映状況を確認
+   - 必要なら `?debug=1` でGA4 CTA計測確認
+2. **次地域LPの着手前判断**（都度SEO調査）
+   - 豊見城市・八重瀬町などは「新規作成か既存刷新か」を先に確認
+3. **浦添LP・中部LPのSearch Console反映状況確認**
 4. **市町村別LP量産の判断**（上記確認後）
-   - 問題なければ沖縄市 / 宜野湾市 / うるま市などへ進む
-   - ゴール達成型プロンプトを基本にする（composer-2.5検証で再現性確認済み）
+   - ゴール達成型プロンプトを基本にする（新規作成・既存刷新ともに再現性確認済み）
 5. **note有料記事への追記**
-   - 「composer-2.5でもゴール達成型が通用した」検証結果を追記
+   - 「ゴール達成型で既存LP刷新まで進められた」事例として追記候補
 6. **Google広告の小額テスト設計**（表示確認OKなら進む）
 7. **広告番頭への日次入力運用**
 
@@ -169,7 +180,7 @@
 
 ## 次にやるべき1手
 
-- **浦添LPのSearch Console反映状況確認**（`https://teruya1229.github.io/cursor-test/urasoe.html`）。あわせてスマホ実機でヒーロー・固定CTA・料金カードを確認
+- **南城市LPのSearch Console反映状況確認**（`https://teruya1229.github.io/cursor-test/nanjo.html`）。時間を置いてインデックス反映を確認
 
 ## 判断基準
 
@@ -198,8 +209,9 @@
 
 ```
 前提は status.md → handoff.md → rules.md の順で読んで進めてください。
+南城市LP nanjo.html は 2026-06-10 に既存刷新・公開確認OK（dbc94e3）。新規作成ではなく既存SEO資産を活かす刷新。
 浦添市家庭LP urasoe.html は 2026-06-10 に公開確認OK（a1b329b）。市町村別LP1本目。
-composer-2.5 + ゴール達成型プロンプトでLP作成〜commit/pushまで再現性あり。今後の量産はゴール達成型を基本にする。
-Search Console は時間を置いて反映確認。再送信・再リクエストは不要。
+市町村別LPは都度SEO調査してから判断（新規作成か既存刷新か）。SERP詳細は正本に残さない。
+ゴール達成型プロンプトで新規作成・既存刷新ともに再現性あり。Search Console は時間を置いて反映確認。
 広告開始前チェック・LP debug CTA確認は 2026-06-10 に最終確認完了。Google広告小額テスト開始可能です。
 ```
