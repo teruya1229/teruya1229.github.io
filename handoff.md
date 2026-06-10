@@ -10,7 +10,7 @@
 ## フェーズ
 
 - **中部家庭LP `central.html` 公開準備完了**（新規作成・公開前調整・sitemap・南部LPからの内部リンク・本番微調整まで push 済み）
-- **広告番頭MVP 作成完了（2026-06-10）**：Google広告開始前の採算確認用。内部確認用ページとしてLPから分離
+- **広告番頭MVP 作成・検証完了（2026-06-10）**：Google広告開始前の採算確認用。内部確認用ページとしてLPから分離。**表示確認・入力テスト済みで運用開始可能**
 - **Search Console は対応済み → 反映待ち確認フェーズ**（再送信・再リクエストは不要。数時間〜翌日以降にインデックス状況を確認）
 - 新規 LP コード修正は、公開確認で問題が出た場合のみ
 - 市町村別ページ量産は **焦らない**。まず中部LPの実機表示・反応確認を優先
@@ -36,11 +36,19 @@
 | FAQ一覧 | `cursor-test/faq.html` | cases・業務LP導線、構造化データ確認済み |
 | 南部まとめ | `cursor-test/south.html` | cases・業務LP導線、構造化データ確認済み |
 | 業務LP | `business-cleaning/index.html` | FAQ7、相談事例・見積り前・料金セクション、Instagram1件（`DMh62EjPcNu`）、構造化データ・sitemap済み |
-| **広告番頭MVP** | `ops/ad-bantou/`（index.html / style.css / app.js） | **2026-06-10 新規作成**（`0a058bb`）。日次入力・自動計算・自動判定（継続/改善/停止候補/データ不足）・日別ログ・LP別集計。localStorage（`bcAdBantouDailyLogs`）。noindex・sitemap未登録・既存LPからの導線なし |
+| **広告番頭MVP** | `ops/ad-bantou/`（index.html / style.css / app.js） | **2026-06-10 新規作成・検証完了**（`0a058bb`）。日次入力・自動計算・自動判定（継続/改善/停止候補/データ不足）・日別ログ・LP別集計。localStorage（`bcAdBantouDailyLogs`）。noindex・sitemap未登録・既存LPからの導線なし。**公開URLでの表示確認・テスト入力・再読み込み復元まで全項目OK。運用開始可能** |
 
 **中部LP 対応エリア**
 
 沖縄市 / うるま市 / 北谷町 / 嘉手納町 / 読谷村 / 宜野湾市 / 北中城村 / 中城村
+
+**広告番頭MVP 検証結果（2026-06-10）**
+
+- 確認URL：`https://teruya1229.github.io/ops/ad-bantou/`
+- ページ表示 / 注意表示 / 入力フォーム / 自動計算 / 判定 / 日別ログ / LP別集計 / localStorage 復元：すべてOK
+- テスト入力（家庭LP・広告費1,000円・成約1・売上8,000円）→ CTR 4.0% / CPA 1,000円 / ROAS 8.00 / 判定「継続」と正しく算出
+- 総合判断：重大な不具合なし。MVPとして公開・運用開始可能
+- 軽微な気になり点（必須修正ではない）：日別ログのメモ列が省略表示される程度
 
 **検証結果（2026-06-09時点）**
 
@@ -92,13 +100,11 @@
    - 375px固定CTA・公開URL表示：`https://teruya1229.github.io/cursor-test/central.html`
 3. **業務LP** の Instagram 埋め込み表示を公開URLで確認（`business-cleaning/`）
 4. Instagramプロフィール / note / Googleビジネスプロフィール → LP 導線を整理
-5. **広告番頭MVP（広告開始前の準備）**
-   - 公開URL `https://teruya1229.github.io/ops/ad-bantou/` で表示確認
-   - Claude in Chrome で日次入力テスト
-   - 必要なら JSONエクスポート/インポート機能を追加
-   - 同一日付＋同一キャンペーンの upsert ルール追加
-   - 判定しきい値・CPA/ROAS目標値の設定化
-   - GA4 `?debug=1` でCTA計測確認後、小額広告テストへ進む
+5. **広告開始準備（広告番頭MVPは検証済み・運用開始可能）**
+   - GA4 `?debug=1` で家庭LP・完全分解LPのCTA計測確認
+   - Google広告を小額で開始
+   - Claude in Chrome で広告番頭への日次入力運用を試す
+   - 実運用で必要になったら、メモ全文表示・JSONエクスポート/インポート・upsertルールを追加
 
 **次の実作業候補（急がない）**
 
