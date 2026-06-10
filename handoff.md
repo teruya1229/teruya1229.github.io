@@ -11,6 +11,7 @@
 
 - **中部家庭LP `central.html` 公開準備完了**（新規作成・公開前調整・sitemap・南部LPからの内部リンク・本番微調整まで push 済み）
 - **広告番頭MVP 作成・検証完了（2026-06-10）**：Google広告開始前の採算確認用。内部確認用ページとしてLPから分離。**表示確認・入力テスト済みで運用開始可能**
+- **広告開始前チェック・LP debug CTA確認 最終確認完了（2026-06-10）**：Google広告小額テスト開始可能
 - **Search Console は対応済み → 反映待ち確認フェーズ**（再送信・再リクエストは不要。数時間〜翌日以降にインデックス状況を確認）
 - 新規 LP コード修正は、公開確認で問題が出た場合のみ
 - 市町村別ページ量産は **焦らない**。まず中部LPの実機表示・反応確認を優先
@@ -20,8 +21,11 @@
 - LINE（正）：`https://lin.ee/tsilra6`
 - Airリザーブ：`https://airrsv.net/bc-servicesokinawa/calendar`
 - 家庭LP（南部）：`https://teruya1229.github.io/cursor-test/`
+- 家庭LP debug：`https://teruya1229.github.io/cursor-test/?debug=1`
 - **中部家庭LP（新）：`https://teruya1229.github.io/cursor-test/central.html`**
 - 完全分解LP（正）：`https://teruya1229.github.io/complete-disassembly/`
+- 完全分解LP debug：`https://teruya1229.github.io/complete-disassembly/?debug=1`
+- 広告番頭（内部用）：`https://teruya1229.github.io/ops/ad-bantou/`
 - 業務LP：`https://teruya1229.github.io/business-cleaning/`
 - 施工事例一覧：`https://teruya1229.github.io/cursor-test/cases.html`
 
@@ -36,7 +40,7 @@
 | FAQ一覧 | `cursor-test/faq.html` | cases・業務LP導線、構造化データ確認済み |
 | 南部まとめ | `cursor-test/south.html` | cases・業務LP導線、構造化データ確認済み |
 | 業務LP | `business-cleaning/index.html` | FAQ7、相談事例・見積り前・料金セクション、Instagram1件（`DMh62EjPcNu`）、構造化データ・sitemap済み |
-| **広告番頭MVP** | `ops/ad-bantou/`（index.html / style.css / app.js） | **2026-06-10 新規作成・検証完了**（`0a058bb`）。日次入力・自動計算・自動判定（継続/改善/停止候補/データ不足）・日別ログ・LP別集計。localStorage（`bcAdBantouDailyLogs`）。noindex・sitemap未登録・既存LPからの導線なし。**公開URLでの表示確認・テスト入力・再読み込み復元まで全項目OK。運用開始可能** |
+| **広告番頭MVP** | `ops/ad-bantou/`（index.html / style.css / app.js） | **2026-06-10 新規作成・検証完了**（`0a058bb`）。日次入力・自動計算・自動判定（継続/改善/停止候補/データ不足）・日別ログ・LP別集計・**広告開始前チェック**（`bcAdBantouPreflightChecks`）。localStorage（`bcAdBantouDailyLogs`）。noindex・sitemap未登録・既存LPからの導線なし。**公開URLでの表示確認・テスト入力・再読み込み復元・広告開始前チェック最終確認まで全項目OK。Google広告小額テスト開始可能** |
 
 **中部LP 対応エリア**
 
@@ -49,6 +53,18 @@
 - テスト入力（家庭LP・広告費1,000円・成約1・売上8,000円）→ CTR 4.0% / CPA 1,000円 / ROAS 8.00 / 判定「継続」と正しく算出
 - 総合判断：重大な不具合なし。MVPとして公開・運用開始可能
 - 軽微な気になり点（必須修正ではない）：日別ログのメモ列が省略表示される程度
+
+**広告開始前チェック 最終確認完了（2026-06-10）**
+
+- 確認対象：広告番頭 / 完全分解LP debug（`?debug=1`）
+- 広告番頭 表示OK / 広告開始前チェック 表示OK
+- 家庭LPチェック4項目（ページ表示 / LINE CTA / Airリザーブ CTA / 表示崩れ）正常。電話CTAは現行LP非表示のため対象外
+- 完全分解LPチェック4項目（ページ表示 / LINE CTA / 電話CTA / 表示崩れ）正常
+- 完全分解LP debug：電話CTA・LINE CTA とも外部遷移なし、「計測OK」トースト表示OK
+- 全項目ONで「広告開始OK」判定 / 保存 / 再読み込み後の履歴保持OK
+- 日次入力・日別ログ・LP別集計への影響なし
+- **総合判断：Google広告開始前の最低限チェック完了。追加修正なしで小額テスト開始可能**
+- 軽微な気になり点（必須修正ではない）：トースト表示時間が短い。必要なら後日改善
 
 **検証結果（2026-06-09時点）**
 
@@ -74,6 +90,9 @@
 
 | commit | 内容 |
 |--------|------|
+| `78ae15c` | 広告開始前チェックとLP debug挙動の整合（`fix: align preflight CTA checks with LP behavior`） |
+| `4d1654d` | 広告開始前チェック機能追加（`feat: add ad preflight checklist`） |
+| `94f0141` | GA4 debug時のCTA外部遷移停止 |
 | `0a058bb` | 広告番頭MVP 新規作成（push：`8dbbd5c..0a058bb`） |
 
 **2026-06-09**
@@ -92,22 +111,26 @@
 
 ## 次回やること（優先順）
 
-1. **Search Console：反映待ち確認**（再送信・再リクエストは不要）
+1. **Google広告の小額テスト設計**
+   - まずは完全分解LP向けにキャンペーン作成
+   - 1日500〜1,000円程度で開始
+   - 地域・キーワード・除外キーワードを絞る
+2. **広告番頭への日次入力運用**
+   - 翌日から広告番頭に数値入力（Claude in Chrome 運用）
+   - 7日分の数字で継続 / 改善 / 停止を判断
+3. **Search Console：反映待ち確認**（再送信・再リクエストは不要）
    - 数時間〜翌日以降に `https://teruya1229.github.io/cursor-test/central.html` のインデックス反映状況を確認
    - 未反映・エラー表示があれば、その時点で URL検査を再実行
    - ルート sitemap の読み取り状況もあわせて確認
-2. **中部LPの実機最終確認**
+4. **中部LPの実機最終確認**
    - 375px固定CTA・公開URL表示：`https://teruya1229.github.io/cursor-test/central.html`
-3. **業務LP** の Instagram 埋め込み表示を公開URLで確認（`business-cleaning/`）
-4. Instagramプロフィール / note / Googleビジネスプロフィール → LP 導線を整理
-5. **広告開始準備（広告番頭MVPは検証済み・運用開始可能）**
-   - GA4 `?debug=1` で家庭LP・完全分解LPのCTA計測確認
-   - Google広告を小額で開始
-   - Claude in Chrome で広告番頭への日次入力運用を試す
-   - 実運用で必要になったら、メモ全文表示・JSONエクスポート/インポート・upsertルールを追加
+5. **業務LP** の Instagram 埋め込み表示を公開URLで確認（`business-cleaning/`）
+6. Instagramプロフィール / note / Googleビジネスプロフィール → LP 導線を整理
 
 **次の実作業候補（急がない）**
 
+- 広告番頭：トースト表示時間の延長（必要なら）
+- 広告番頭：メモ全文表示・JSONエクスポート/インポート・upsertルール（実運用で必要になったら）
 - 中部LPを親にした市町村別ページ量産
 - 沖縄市ページ / 宜野湾市ページ / うるま市ページの検討
 - 既存LPとの内部リンク設計（例：中部LP → 南部LP 相互リンク）
@@ -115,7 +138,7 @@
 
 ## 次にやるべき1手
 
-- **Search Console** で `central.html` のインデックス反映状況を確認（反映待ち。未反映なら再検査）
+- **Google広告の小額テスト設計**（完全分解LP向けキャンペーン、1日500〜1,000円）
 
 ## 判断基準
 
@@ -145,4 +168,5 @@
 ```
 前提は status.md → handoff.md → rules.md の順で読んで進めてください。
 中部LP central.html は公開準備完了。Search Console は反映待ち確認フェーズです。
+広告開始前チェック・LP debug CTA確認は 2026-06-10 に最終確認完了。Google広告小額テスト開始可能です。
 ```
