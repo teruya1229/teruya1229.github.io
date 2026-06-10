@@ -1452,9 +1452,8 @@
       /* GA4イベント送信 */
       if (typeof window.gtag === 'function') {
         if (isDebug) {
-          /* [E] debug時のみ遅延して遷移（計測確実化） */
+          /* [E] debug時は計測のみ行い、外部遷移しない */
           e.preventDefault();
-          var navigated = false;
           gtag('event', 'cta_click', {
             cta_type: eventData.cta_type,
             cta_target: eventData.cta_target,
@@ -1463,15 +1462,8 @@
             cta_location: eventData.cta_location,
             page_type: eventData.page_type,
             page_slug: eventData.page_slug,
-            debug_flag: eventData.debug_flag,
-            event_callback: function() {
-              if (!navigated) { navigated = true; navigateTo(anchor, href); }
-            }
+            debug_flag: eventData.debug_flag
           });
-          /* event_callback が呼ばれない場合のフォールバック 200ms */
-          setTimeout(function() {
-            if (!navigated) { navigated = true; navigateTo(anchor, href); }
-          }, isDebug ? 600 : 200);
         } else {
           /* 通常時は遅延なし（UX優先） */
           gtag('event', 'cta_click', {
@@ -1491,7 +1483,6 @@
         console.log('[GA4 CTA]', eventData);
         if (isDebug) {
           e.preventDefault();
-          setTimeout(function() { navigateTo(anchor, href); }, 600);
         }
       }
     }, true);

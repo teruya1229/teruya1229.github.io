@@ -825,7 +825,6 @@
       if (typeof window.gtag === 'function') {
         if (isDebug) {
           e.preventDefault();
-          var navigated = false;
           gtag('event', 'cta_click', {
             cta_type: eventData.cta_type,
             cta_target: eventData.cta_target,
@@ -834,14 +833,8 @@
             cta_location: eventData.cta_location,
             page_type: eventData.page_type,
             page_slug: eventData.page_slug,
-            debug_flag: eventData.debug_flag,
-            event_callback: function() {
-              if (!navigated) { navigated = true; navigateTo(anchor, href); }
-            }
+            debug_flag: eventData.debug_flag
           });
-          setTimeout(function() {
-            if (!navigated) { navigated = true; navigateTo(anchor, href); }
-          }, isDebug ? 600 : 200);
         } else {
           gtag('event', 'cta_click', {
             cta_type: eventData.cta_type,
@@ -859,7 +852,6 @@
         console.log('[GA4 CTA]', eventData);
         if (isDebug) {
           e.preventDefault();
-          setTimeout(function() { navigateTo(anchor, href); }, 600);
         }
       }
     }, true);
