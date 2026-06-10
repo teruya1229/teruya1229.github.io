@@ -33,6 +33,100 @@
       </ol>
     </details>
 
+    <!-- 広告開始前チェック -->
+    <section class="ab-section" id="preflight-section">
+      <h2 class="ab-section-title">広告開始前チェック</h2>
+      <p class="ab-section-desc">Google広告を開始する前に、LPのCTA計測が正常か確認するためのチェック欄です。</p>
+
+      <details class="ab-steps">
+        <summary>Claude in Chrome 作業手順（広告開始前チェック）</summary>
+        <ol>
+          <li>debug確認URLを開く</li>
+          <li>CTAをクリックする</li>
+          <li>右下に「計測OK」が表示されたらOKにチェック</li>
+          <li>実際にLINE送信・電話発信・予約確定はしない</li>
+          <li>確認結果をこの広告番頭に保存する</li>
+        </ol>
+      </details>
+
+      <div class="ab-preflight-urls">
+        <p class="ab-preflight-urls-title">debug確認URL</p>
+        <ul>
+          <li>
+            <span class="ab-preflight-url-label">家庭LP debug確認URL：</span>
+            <a href="https://teruya1229.github.io/cursor-test/?debug=1" target="_blank" rel="noopener">https://teruya1229.github.io/cursor-test/?debug=1</a>
+          </li>
+          <li>
+            <span class="ab-preflight-url-label">完全分解LP debug確認URL：</span>
+            <a href="https://teruya1229.github.io/complete-disassembly/?debug=1" target="_blank" rel="noopener">https://teruya1229.github.io/complete-disassembly/?debug=1</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="ab-preflight-latest" id="preflight-latest" hidden>
+        <p class="ab-preflight-latest-title">最新のチェック結果</p>
+        <div class="ab-preflight-latest-body" id="preflight-latest-body"></div>
+      </div>
+
+      <form id="preflight-form" autocomplete="off">
+        <div class="ab-field">
+          <label for="pf-date">確認日 <span class="req">必須</span></label>
+          <p class="ab-hint">Claude用：LPのCTA計測を確認した日付を入力してください。</p>
+          <input type="date" id="pf-date" required>
+        </div>
+
+        <div class="ab-preflight-groups">
+          <fieldset class="ab-preflight-group">
+            <legend>【家庭LP】</legend>
+            <label class="ab-check"><input type="checkbox" id="pf-home-pageOk"> ページ表示OK</label>
+            <label class="ab-check"><input type="checkbox" id="pf-home-lineCtaOk"> LINE CTA 計測OK</label>
+            <label class="ab-check"><input type="checkbox" id="pf-home-phoneCtaOk"> 電話CTA 計測OK</label>
+            <label class="ab-check"><input type="checkbox" id="pf-home-airReserveCtaOk"> Airリザーブ CTA 計測OK</label>
+            <label class="ab-check"><input type="checkbox" id="pf-home-layoutOk"> 表示崩れなし</label>
+          </fieldset>
+
+          <fieldset class="ab-preflight-group">
+            <legend>【完全分解LP】</legend>
+            <label class="ab-check"><input type="checkbox" id="pf-complete-pageOk"> ページ表示OK</label>
+            <label class="ab-check"><input type="checkbox" id="pf-complete-lineCtaOk"> LINE CTA 計測OK</label>
+            <label class="ab-check"><input type="checkbox" id="pf-complete-phoneCtaOk"> 電話CTA 計測OK</label>
+            <label class="ab-check"><input type="checkbox" id="pf-complete-layoutOk"> 表示崩れなし</label>
+          </fieldset>
+        </div>
+
+        <div class="ab-field">
+          <label for="pf-memo">確認者メモ</label>
+          <p class="ab-hint">Claude用：気づいた点があれば記載してください。<strong>顧客名・住所・電話番号などの個人情報は絶対に書かないでください。</strong></p>
+          <textarea id="pf-memo" rows="2" placeholder="例：家庭LPの電話CTAで計測OKトーストを確認。完全分解LPも全CTA OK。"></textarea>
+        </div>
+
+        <div class="ab-preflight-decision" id="preflight-decision-box">
+          <span class="ab-preflight-decision-label" id="preflight-decision-label">広告開始前に要確認</span>
+          <span class="ab-preflight-decision-hint" id="preflight-decision-hint">すべてのチェック項目にチェックが入ると「広告開始OK」になります。</span>
+        </div>
+
+        <button type="submit" class="ab-submit ab-submit--secondary">チェック結果を保存する</button>
+      </form>
+
+      <h3 class="ab-subsection-title">チェック履歴</h3>
+      <div class="ab-table-wrap">
+        <table class="ab-table ab-table--preflight" id="preflight-history-table">
+          <thead>
+            <tr>
+              <th>確認日</th>
+              <th>判定</th>
+              <th>家庭LP</th>
+              <th>完全分解LP</th>
+              <th>メモ</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="preflight-history-tbody"></tbody>
+        </table>
+      </div>
+      <p class="ab-empty" id="preflight-history-empty">まだチェック履歴がありません。</p>
+    </section>
+
     <!-- 今日の入力 -->
     <section class="ab-section" id="input-section">
       <h2 class="ab-section-title">今日の入力</h2>

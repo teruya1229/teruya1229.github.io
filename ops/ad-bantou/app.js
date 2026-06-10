@@ -7,6 +7,7 @@
   'use strict';
 
   var STORAGE_KEY = 'bcAdBantouDailyLogs';
+  var PREFLIGHT_STORAGE_KEY = 'bcAdBantouPreflightChecks';
 
   /* ===== ストレージ ===== */
 
@@ -303,6 +304,192 @@
     renderAll();
   });
 
+  /* ===== 広告開始前チェック ===== */
+
+  var PREFLIGHT_OK = '広告開始OK';
+  var PREFLIGHT_NG = '広告開始前に要確認';
+
+  var HOME_LP_KEYS = ['pageOk', 'lineCtaOk', 'phoneCtaOk', 'airReserveCtaOk', 'layoutOk'];
+  var COMPLETE_LP_KEYS = ['pageOk', 'lineCtaOk', 'phoneCtaOk', 'layoutOk'];
+
+  var HOME_LP_LABELS = {
+    pageOk: 'ページ表示OK',
+    lineCtaOk: 'LINE CTA 計測OK',
+    phoneCtaOk: '電話CTA 計測OK',
+    airReserveCtaOk: 'Airリザーブ CTA 計測OK',
+    layoutOk: '表示崩れなし'
+  };
+
+  var COMPLETE_LP_LABELS = {
+    pageOk: 'ページ表示OK',
+    lineCtaOk: 'LINE CTA 計測OK',
+    phoneCtaOk: '電話CTA 計測OK',
+    layoutOk: '表示崩れなし'
+  };
+
+  var preflightForm = document.getElementById('preflight-form');
+  var preflightDecisionBox = document.getElementById('preflight-decision-box');
+  var preflightDecisionLabel = document.getElementById('preflight-decision-label');
+  var preflightDecisionHint = document.getElementById('preflight-decision-hint');
+  var preflightLatest = document.getElementById('preflight-latest');
+  var preflightLatestBody = document.getElementById('preflight-latest-body');
+  var preflightHistoryTbody = document.getElementById('preflight-history-tbody');
+  var preflightHistoryEmpty = document.getElementById('preflight-history-empty');
+
+  function loadPreflightChecks() {
+    try {
+      var raw = localStorage.getItem(PREFLIGHT_STORAGE_KEY);
+      var parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function savePreflightChecks(checks) {
+    localStorage.setItem(PREFLIGHT_STORAGE_KEY, JSON.stringify(checks));
+  }
+
+  function allChecksOk(obj, keys) {
+    return keys.every(function (k) { return obj[k] === true; });
+  }
+
+  function decidePreflight(homeLp, completeDisassemblyLp) {
+    if (allChecksOk(homeLp, HOME_LP_KEYS) && allChecksOk(completeDisassemblyLp, COMPLETE_LP_KEYS)) {
+      return PREFLIGHT_OK;
+    }
+    return PREFLIGHT_NG;
+  }
+
+  function preflightDecisionClass(decision) {
+    return decision === PREFLIGHT_OK ? 'is-preflight-ok' : 'is-preflight-ng';
+  }
+
+  function readPreflightForm() {
+    return {
+      checkedAt: document.getElementById('pf-date').value,
+      homeLp: {
+        pageOk: document.getElementById('pf-home-pageOk').checked,
+        lineCtaOk: document.getElementById('pf-home-lineCtaOk').checked,
+        phoneCtaOk: document.getElementById('pf-home-phoneCtaOk').checked,
+        airReserveCtaOk: document.getElementById('pf-home-airReserveCtaOk').checked,
+        layoutOk: document.getElementById('pf-home-layoutOk').checked
+      },
+      completeDisassemblyLp: {
+        pageOk: document.getElementById('pf-complete-pageOk').checked,
+        lineCtaOk: document.getElementById('pf-complete-lineCtaOk').checked,
+        phoneCtaOk: document.getElementById('pf-complete-phoneCtaOk').checked,
+        layoutOk: document.getElementById('pf-complete-layoutOk').checked
+      },
+      memo: document.getElementById('pf-memo').value.trim()
+    };
+  }
+
+  function renderCheckSummary(obj, keys, labels) {
+    return keys.map(function (k) {
+      var cls = obj[k] ? 'is-ok' : 'is-ng';
+      var mark = obj[k] ? 'OK' : '未';
+      return '<span class="' + cls + '">' + escapeHtml(labels[k]) + '：' + mark + '</span>';
+    }).join('<br>');
+  }
+
+  function updatePreflightPreview() {
+    var entry = readPreflightForm();
+    var decision = decidePreflight(entry.homeLp, entry.completeDisassemblyLp);
+    preflightDecisionBox.className = 'ab-preflight-decision ' + preflightDecisionClass(decision);
+    preflightDecisionLabel.textContent = decision;
+    preflightDecisionHint.textContent = decision === PREFLIGHT_OK
+      ? 'すべての必須チェックがOKです。保存して記録してください。'
+      : '未チェックまたはNGの項目があります。すべてOKになるまで確認してください。';
+  }
+
+  function renderPreflightLatest(checks) {
+    if (!checks.length) {
+      preflightLatest.hidden = true;
+      return;
+    }
+
+    var sorted = checks.slice().sort(function (a, b) {
+      return a.checkedAt < b.checkedAt ? 1 : a.checkedAt > b.checkedAt ? -1 : 0;
+    });
+    var latest = sorted[0];
+
+    preflightLatest.hidden = false;
+    preflightLatestBody.innerHTML =
+      '<div class="ab-preflight-latest-summary">' +
+        '<span class="ab-preflight-latest-date">確認日：' + escapeHtml(latest.checkedAt) + '</span>' +
+        '<span class="ab-badge ' + preflightDecisionClass(latest.decision) + '">' + escapeHtml(latest.decision) + '</span>' +
+      '</div>' +
+      '<p><strong>家庭LP：</strong></p>' +
+      '<div class="ab-preflight-check-summary">' + renderCheckSummary(latest.homeLp, HOME_LP_KEYS, HOME_LP_LABELS) + '</div>' +
+      '<p style="margin-top:8px;"><strong>完全分解LP：</strong></p>' +
+      '<div class="ab-preflight-check-summary">' + renderCheckSummary(latest.completeDisassemblyLp, COMPLETE_LP_KEYS, COMPLETE_LP_LABELS) + '</div>' +
+      (latest.memo ? '<p style="margin-top:8px;"><strong>メモ：</strong>' + escapeHtml(latest.memo) + '</p>' : '');
+  }
+
+  function renderPreflightHistory(checks) {
+    var sorted = checks.slice().sort(function (a, b) {
+      return a.checkedAt < b.checkedAt ? 1 : a.checkedAt > b.checkedAt ? -1 : 0;
+    });
+
+    preflightHistoryTbody.innerHTML = sorted.map(function (e) {
+      return '<tr>' +
+        '<td>' + escapeHtml(e.checkedAt) + '</td>' +
+        '<td style="text-align:center;"><span class="ab-badge ' + preflightDecisionClass(e.decision) + '">' + escapeHtml(e.decision) + '</span></td>' +
+        '<td><div class="ab-preflight-check-summary">' + renderCheckSummary(e.homeLp, HOME_LP_KEYS, HOME_LP_LABELS) + '</div></td>' +
+        '<td><div class="ab-preflight-check-summary">' + renderCheckSummary(e.completeDisassemblyLp, COMPLETE_LP_KEYS, COMPLETE_LP_LABELS) + '</div></td>' +
+        '<td class="memo-cell" title="' + escapeHtml(e.memo) + '">' + escapeHtml(e.memo || '—') + '</td>' +
+        '<td style="text-align:center;"><button type="button" class="ab-delete-btn ab-preflight-delete-btn" data-id="' + escapeHtml(e.id) + '">削除</button></td>' +
+        '</tr>';
+    }).join('');
+
+    preflightHistoryEmpty.style.display = sorted.length ? 'none' : 'block';
+  }
+
+  function renderPreflightAll() {
+    var checks = loadPreflightChecks();
+    renderPreflightLatest(checks);
+    renderPreflightHistory(checks);
+    updatePreflightPreview();
+  }
+
+  preflightForm.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+
+    var entry = readPreflightForm();
+    if (!entry.checkedAt) {
+      alert('確認日は必須です。');
+      return;
+    }
+
+    var decision = decidePreflight(entry.homeLp, entry.completeDisassemblyLp);
+    var record = {
+      id: 'pf-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+      checkedAt: entry.checkedAt,
+      homeLp: entry.homeLp,
+      completeDisassemblyLp: entry.completeDisassemblyLp,
+      memo: entry.memo,
+      decision: decision
+    };
+
+    var checks = loadPreflightChecks();
+    checks.push(record);
+    savePreflightChecks(checks);
+    renderPreflightAll();
+  });
+
+  preflightForm.addEventListener('change', updatePreflightPreview);
+
+  preflightHistoryTbody.addEventListener('click', function (ev) {
+    var btn = ev.target.closest('.ab-preflight-delete-btn');
+    if (!btn) return;
+    if (!confirm('このチェック履歴を削除しますか？')) return;
+    var id = btn.getAttribute('data-id');
+    var checks = loadPreflightChecks().filter(function (e) { return e.id !== id; });
+    savePreflightChecks(checks);
+    renderPreflightAll();
+  });
+
   /* ===== 初期化 ===== */
 
   (function init() {
@@ -314,6 +501,13 @@
       String(d.getDate()).padStart(2, '0');
     document.getElementById('f-date').value = iso;
 
+    var today = new Date();
+    var todayIso = today.getFullYear() + '-' +
+      String(today.getMonth() + 1).padStart(2, '0') + '-' +
+      String(today.getDate()).padStart(2, '0');
+    document.getElementById('pf-date').value = todayIso;
+
     renderAll();
+    renderPreflightAll();
   })();
 })();
