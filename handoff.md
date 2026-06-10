@@ -1,4 +1,4 @@
-更新日: 2026-06-09
+更新日: 2026-06-10
 
 ## 前提（読む順）
 
@@ -10,6 +10,7 @@
 ## フェーズ
 
 - **中部家庭LP `central.html` 公開準備完了**（新規作成・公開前調整・sitemap・南部LPからの内部リンク・本番微調整まで push 済み）
+- **広告番頭MVP 作成完了（2026-06-10）**：Google広告開始前の採算確認用。内部確認用ページとしてLPから分離
 - **Search Console は対応済み → 反映待ち確認フェーズ**（再送信・再リクエストは不要。数時間〜翌日以降にインデックス状況を確認）
 - 新規 LP コード修正は、公開確認で問題が出た場合のみ
 - 市町村別ページ量産は **焦らない**。まず中部LPの実機表示・反応確認を優先
@@ -35,6 +36,7 @@
 | FAQ一覧 | `cursor-test/faq.html` | cases・業務LP導線、構造化データ確認済み |
 | 南部まとめ | `cursor-test/south.html` | cases・業務LP導線、構造化データ確認済み |
 | 業務LP | `business-cleaning/index.html` | FAQ7、相談事例・見積り前・料金セクション、Instagram1件（`DMh62EjPcNu`）、構造化データ・sitemap済み |
+| **広告番頭MVP** | `ops/ad-bantou/`（index.html / style.css / app.js） | **2026-06-10 新規作成**（`0a058bb`）。日次入力・自動計算・自動判定（継続/改善/停止候補/データ不足）・日別ログ・LP別集計。localStorage（`bcAdBantouDailyLogs`）。noindex・sitemap未登録・既存LPからの導線なし |
 
 **中部LP 対応エリア**
 
@@ -58,7 +60,15 @@
 
 - ルート [`rules.md`](rules.md) に最新3分類ルール（ゴール達成型優先）を正本として反映済み（`bca0a9c`）
 
-## 本日の主な commit（2026-06-09）
+## 最近の主な commit
+
+**2026-06-10**
+
+| commit | 内容 |
+|--------|------|
+| `0a058bb` | 広告番頭MVP 新規作成（push：`8dbbd5c..0a058bb`） |
+
+**2026-06-09**
 
 | commit | 内容 |
 |--------|------|
@@ -70,7 +80,7 @@
 | `bca0a9c` | 共通ルール最新化（3分類） |
 | `ce8bafa` | status 更新 |
 
-詳細は status.md の 2026-06-09 作業ログを参照。
+詳細は status.md の作業ログを参照。
 
 ## 次回やること（優先順）
 
@@ -82,6 +92,13 @@
    - 375px固定CTA・公開URL表示：`https://teruya1229.github.io/cursor-test/central.html`
 3. **業務LP** の Instagram 埋め込み表示を公開URLで確認（`business-cleaning/`）
 4. Instagramプロフィール / note / Googleビジネスプロフィール → LP 導線を整理
+5. **広告番頭MVP（広告開始前の準備）**
+   - 公開URL `https://teruya1229.github.io/ops/ad-bantou/` で表示確認
+   - Claude in Chrome で日次入力テスト
+   - 必要なら JSONエクスポート/インポート機能を追加
+   - 同一日付＋同一キャンペーンの upsert ルール追加
+   - 判定しきい値・CPA/ROAS目標値の設定化
+   - GA4 `?debug=1` でCTA計測確認後、小額広告テストへ進む
 
 **次の実作業候補（急がない）**
 
@@ -101,6 +118,7 @@
 - 沖縄全域対応・必ず直る・最安No.1 などの断定表現は禁止（既存LPルール維持）
 - 業務LPは BtoB 文脈維持。民泊清掃を主役にしない
 - 未追跡 `business-cleaning/business-clean-parts-optimized.jpg` は add / commit しない
+- 広告番頭 `ops/ad-bantou/` は内部確認用。sitemap に登録しない・既存LPから導線を貼らない・個人情報を入力しない
 
 ## Search Console 運用（固定）
 

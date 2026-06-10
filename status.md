@@ -1,6 +1,43 @@
-更新日: 2026-06-09
+更新日: 2026-06-10
 
 ## 本日やったこと
+
+### 2026-06-10（広告番頭MVP 作成完了）
+
+Google広告開始前に使う広告採算確認用MVP「広告番頭」を、公開LPとは分離した内部確認用ページとして新規作成し、push 済み。コード変更はこの新規3ファイルのみで、既存LPへの影響なし。
+
+**作成ファイル・URL**
+
+- `ops/ad-bantou/index.html` / `ops/ad-bantou/style.css` / `ops/ad-bantou/app.js`（新規3ファイル）
+- 公開URL：`https://teruya1229.github.io/ops/ad-bantou/`
+
+**実装内容**
+
+- Claude in Chrome が毎日入力しやすい設計（全入力項目に「Claude用：〜」の説明文、作業手順8ステップを画面内に設置）
+- 日次入力（日付 / LP種別 / キャンペーン名 / 広告費 / 表示回数 / クリック数 / 平均CPC / CTAクリック / 問い合わせ / 成約 / 売上 / メモ）
+- 自動計算（CTR / CTA率 / 問い合わせ率 / 成約率 / CPA / ROAS / 粗利目安。0除算は「—」表示で安全処理）
+- 自動判定：**継続 / 改善 / 停止候補 / データ不足**（色＋文字ラベル＋理由文）
+- 日別ログ・LP別集計
+- 保存：localStorage（専用キー `bcAdBantouDailyLogs`、API移行しやすいJSON配列）
+- `noindex, nofollow` 付き・内部確認用ページとして分離
+- 既存LP側から広告番頭への導線は追加していない（広告番頭 → LP の片方向リンクのみ）
+- 個人情報入力禁止の注意書きを設置（メモ欄にも明記）
+
+**既存LPへの影響**
+
+- cursor-test / complete-disassembly / business-cleaning 等の既存LP変更なし
+- sitemap 変更なし
+- 既存LP側から広告番頭へのリンク追加なし
+
+**commit / push**
+
+| commit | 内容 |
+|--------|------|
+| `0a058bb` | 広告番頭MVP 新規作成（`0a058bb7c09b2664660c83298187b2189c2cfe6f`） |
+
+- push：成功 `main -> main`（`8dbbd5c..0a058bb`）
+
+---
 
 ### 2026-06-09（沖縄中部家庭LP 新規作成・公開準備・運用ルール更新）
 
@@ -178,6 +215,15 @@
 
 **補足：** `cursor-test/sitemap.xml` にも `central.html` あり（`461e87d`）。Search Console には送らない。
 
+### 8. 広告番頭MVP（`ops/ad-bantou/` ※内部確認用）
+
+- 2026-06-10 新規作成（`0a058bb`）
+- 公開URL：`https://teruya1229.github.io/ops/ad-bantou/`
+- 日次入力 / 自動計算 / 自動判定（継続・改善・停止候補・データ不足）/ 日別ログ / LP別集計
+- localStorage 保存（専用キー `bcAdBantouDailyLogs`）
+- `noindex, nofollow`。sitemap 未登録（内部用のため登録しない）
+- 既存LPからの導線なし（広告番頭 → LP の片方向のみ）
+
 ### 未追跡・未コミット（意図的に除外）
 
 - `.cursor/mcp.json`
@@ -196,6 +242,13 @@
 3. **業務LP** の Instagram 投稿表示を公開URLで再確認
    - `https://teruya1229.github.io/business-cleaning/`
 4. Instagramプロフィール / note / Googleビジネスプロフィールから LP 導線を整理
+5. **広告番頭MVP（広告開始前の準備）**
+   - 公開URL `https://teruya1229.github.io/ops/ad-bantou/` で表示確認
+   - Claude in Chrome で日次入力テスト
+   - 必要なら JSONエクスポート/インポート機能を追加
+   - 同一日付＋同一キャンペーンの upsert ルール追加
+   - 判定しきい値・CPA/ROAS目標値の設定化
+   - GA4 `?debug=1` でCTA計測確認後、小額広告テストへ進む
 
 **次の実作業候補（急がない）**
 
