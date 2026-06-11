@@ -3,14 +3,161 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI帳票番頭｜現場業者向け 受付票・請求書・売上一覧のAI整理サポート</title>
-  <meta name="description" content="LINE・メモ・写真に散らばった案件情報を、受付票・請求データ・売上一覧へ。現場仕事の月末請求・転記作業をAIで整えます。ハウスクリーニング・電気工事・水道修理など現場業者向け。">
+  <title>AI帳票番頭｜一人親方・現場業の受付票・請求書・売上一覧をAIで整理</title>
+  <meta name="description" content="LINE・電話・写真・メモに散らばった現場案件を、受付票・請求書用データ・売上一覧へ整理。今の仕事のやり方を大きく変えず、請求漏れや月末の転記作業を減らす導入支援です。">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://teruya1229.github.io/ai-chouhyou-bantou/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AI帳票番頭｜一人親方・現場業の受付票・請求書・売上一覧をAIで整理">
+  <meta property="og:description" content="LINE・電話・写真・メモに散らばった現場案件を、受付票・請求書用データ・売上一覧へ整理。今の仕事のやり方を大きく変えず、請求漏れや月末の転記作業を減らす導入支援です。">
+  <meta property="og:url" content="https://teruya1229.github.io/ai-chouhyou-bantou/">
+  <meta property="og:image" content="https://teruya1229.github.io/ai-chouhyou-bantou/images/ai-bantou-demo-main.png">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://teruya1229.github.io/#bc-service",
+        "name": "BCサービス",
+        "url": "https://teruya1229.github.io/cursor-test/",
+        "founder": {
+          "@type": "Person",
+          "@id": "https://teruya1229.github.io/ai-chouhyou-bantou/#person",
+          "name": "照屋 昴"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://teruya1229.github.io/ai-chouhyou-bantou/#person",
+        "name": "照屋 昴",
+        "jobTitle": "BCサービス代表",
+        "description": "現場業経験17年。受付・日程調整・作業・請求・売上管理を自分で回してきた現場業者として、AI帳票番頭を運営しています。"
+      },
+      {
+        "@type": "Service",
+        "@id": "https://teruya1229.github.io/ai-chouhyou-bantou/#service",
+        "name": "AI帳票番頭",
+        "description": "LINE・電話・写真・メモに散らばった現場案件を、受付票・請求書用データ・売上一覧へ整理する導入支援サービスです。",
+        "provider": { "@id": "https://teruya1229.github.io/#bc-service" },
+        "url": "https://teruya1229.github.io/ai-chouhyou-bantou/",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "AI帳票番頭 導入プラン",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "name": "無料診断",
+              "price": "0",
+              "priceCurrency": "JPY",
+              "description": "今の管理方法を確認し、どこを整理するとラクになるかを簡単にお伝えする入口。"
+            },
+            {
+              "@type": "Offer",
+              "name": "業務整理レポート",
+              "price": "19800",
+              "priceCurrency": "JPY",
+              "description": "現状ヒアリングと改善ポイントの簡易レポート。本導入前に詳しい設計を確認したい方向け。"
+            },
+            {
+              "@type": "Offer",
+              "name": "月末請求ミニ導入",
+              "price": "49800",
+              "priceCurrency": "JPY",
+              "description": "受付票テンプレートと案件整理用の指示文など、月末請求をラクにする最小構成。"
+            },
+            {
+              "@type": "Offer",
+              "name": "受付から売上まで標準導入",
+              "price": "148000",
+              "priceCurrency": "JPY",
+              "description": "受付票・請求書用データ表・売上一覧・未請求確認の仕組みまで含む標準導入。"
+            }
+          ]
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://teruya1229.github.io/ai-chouhyou-bantou/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "パソコンが苦手でも使えますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "はい。今の請求書や受付方法に合わせて作るので、難しい操作を増やしすぎない形で始めます。整理の手順も、使い方に沿って説明します。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "今使っている請求書を残せますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "はい。決まったフォーマットを押し付けるのではなく、今使っている請求書・受付票・売上一覧に合わせて設計します。必要な項目を逆算して、受付時点で残すべき情報を整理します。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "AIが勝手に請求書を送信しませんか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "しません。AIは整理と下書きを担当し、金額・作業内容・送信前の最終確認は人間が行う前提です。AIが勝手に金額を決めたり、請求書を送信したりする仕組みではありません。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "個人情報を見せる必要がありますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "お客様名や住所などの個人情報は、隠した状態で送っていただいて大丈夫です。管理の流れや項目の残し方を確認するための相談です。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "最初から自動化が必要ですか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "必要ありません。まずは手動とAIで小さく始め、慣れてから必要に応じて連携を追加する流れを推奨しています。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "MakeやAirtableを使う必要がありますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "最初から必須ではありません。まずは案件情報の整理と請求用データの残し方から始め、さらに自動化が必要になったときに追加する仕組みとして検討できます。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "一人親方でも利用できますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "はい。LINE・電話・写真・メモで案件を受けている一人親方や小規模事業者の方に向いています。受付から請求まで自分で回している方のための仕組みです。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "相談後に断ってもよいですか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "もちろん大丈夫です。無料診断は相談だけで終了しても構いません。必要な場合のみ、有料プランをご案内します。強引な営業は行いません。"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --brand-blue: #1a56db;
       --brand-green: #057a55;
+      --line-green: #06C755;
       --accent-yellow: #fef3c7;
       --accent-yellow-border: #f59e0b;
       --text-main: #111827;
@@ -20,7 +167,12 @@
       --bg-blue-light: #eff6ff;
       --border: #e5e7eb;
       --radius: 12px;
+      --max-wide: 1100px;
+      --max-narrow: 720px;
+      --fixed-cta-height: 64px;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: -apple-system, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
@@ -28,68 +180,89 @@
       background: #fff;
       font-size: 1rem;
       line-height: 1.7;
+      padding-bottom: calc(var(--fixed-cta-height) + env(safe-area-inset-bottom, 0px));
+    }
+
+    @media (min-width: 768px) {
+      body { padding-bottom: 0; }
     }
 
     a { color: inherit; text-decoration: none; }
+
+    .container-wide {
+      max-width: var(--max-wide);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .container-narrow {
+      max-width: var(--max-narrow);
+      margin: 0 auto;
+    }
 
     /* ===== HEADER ===== */
     .header {
       background: #fff;
       border-bottom: 1px solid var(--border);
-      padding: 14px 20px;
+      padding: 14px 0;
       position: sticky;
       top: 0;
       z-index: 100;
     }
     .header-inner {
-      max-width: 720px;
-      margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 16px;
     }
     .header-logo {
       font-size: 1rem;
       font-weight: 800;
       color: var(--brand-blue);
       line-height: 1.3;
+      flex-shrink: 0;
     }
     .header-logo span {
       display: block;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 500;
       color: var(--text-sub);
     }
     @media (max-width: 519px) {
       .header-logo span { display: none; }
     }
+    .header-nav {
+      display: none;
+      gap: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-sub);
+    }
+    .header-nav a:hover { color: var(--brand-blue); }
+    @media (min-width: 768px) {
+      .header-nav { display: flex; }
+    }
     .header-cta {
-      background: var(--brand-green);
+      background: var(--line-green);
       color: #fff;
       font-size: 0.82rem;
       font-weight: 700;
       padding: 8px 14px;
       border-radius: 8px;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     /* ===== SECTION BASE ===== */
-    .section {
-      padding: 48px 20px;
-    }
+    .section { padding: 56px 0; }
     .section-light { background: var(--bg-light); }
     .section-blue { background: var(--bg-blue-light); }
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-    }
     .section-title {
-      font-size: 1.25rem;
+      font-size: 1.35rem;
       font-weight: 800;
       color: var(--text-main);
       margin-bottom: 24px;
-      line-height: 1.4;
+      line-height: 1.45;
     }
     .section-title::before {
       content: '';
@@ -100,65 +273,85 @@
       border-radius: 2px;
       margin-bottom: 10px;
     }
+    .section-lead {
+      font-size: 0.95rem;
+      color: var(--text-sub);
+      line-height: 1.85;
+      margin-bottom: 24px;
+    }
+    .prose {
+      font-size: 0.95rem;
+      color: var(--text-sub);
+      line-height: 1.85;
+    }
 
     /* ===== HERO ===== */
     .hero {
-      background: linear-gradient(135deg, #1e3a8a 0%, #1a56db 60%, #0d9488 100%);
+      background: linear-gradient(135deg, #1e3a8a 0%, #1a56db 55%, #0d9488 100%);
       color: #fff;
-      padding: 52px 20px 48px;
+      padding: 48px 0 52px;
     }
-    .hero .container { max-width: 720px; margin: 0 auto; }
+    .hero-grid {
+      display: grid;
+      gap: 32px;
+      align-items: center;
+    }
+    @media (min-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+      }
+    }
     .hero-eyebrow {
       display: inline-block;
       background: rgba(255,255,255,0.15);
       color: #e0f2fe;
       font-size: 0.78rem;
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 20px;
       margin-bottom: 16px;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.02em;
+      line-height: 1.5;
     }
     .hero-title {
-      font-size: 1.5rem;
+      font-size: 1.55rem;
       font-weight: 900;
-      line-height: 1.5;
+      line-height: 1.45;
       margin-bottom: 18px;
     }
-    @media(min-width:600px){ .hero-title { font-size: 1.85rem; } }
-    .hero-title em {
-      font-style: normal;
-      background: linear-gradient(90deg, #fde68a, #fbbf24);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    @media (min-width: 600px) {
+      .hero-title { font-size: 1.9rem; }
     }
     .hero-sub {
       font-size: 0.95rem;
-      color: #bfdbfe;
-      line-height: 1.8;
-      margin-bottom: 28px;
+      color: #dbeafe;
+      line-height: 1.85;
+      margin-bottom: 24px;
     }
     .hero-cta-group {
       display: flex;
       flex-direction: column;
       gap: 12px;
+      margin-bottom: 16px;
     }
-    @media(min-width:480px){ .hero-cta-group { flex-direction: row; } }
+    @media (min-width: 480px) {
+      .hero-cta-group { flex-direction: row; flex-wrap: wrap; }
+    }
     .btn-primary {
-      display: block;
+      display: inline-block;
       text-align: center;
-      background: #06C755;
+      background: var(--line-green);
       color: #fff;
       font-size: 1rem;
       font-weight: 800;
-      padding: 15px 20px;
+      padding: 15px 22px;
       border-radius: var(--radius);
       box-shadow: 0 4px 16px rgba(0,0,0,0.2);
       letter-spacing: 0.02em;
     }
     .btn-secondary {
-      display: block;
+      display: inline-block;
       text-align: center;
       background: rgba(255,255,255,0.12);
       border: 2px solid rgba(255,255,255,0.5);
@@ -168,183 +361,422 @@
       padding: 13px 20px;
       border-radius: var(--radius);
     }
-    .hero-note {
-      margin-top: 14px;
+    .reassurance-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
       font-size: 0.78rem;
       color: #93c5fd;
+    }
+    .reassurance-list li {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .reassurance-list li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: #34d399;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Hero flow diagram */
+    .flow-diagram {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+    }
+    .flow-diagram-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #bfdbfe;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .flow-step {
+      width: 100%;
+      max-width: 260px;
+      background: #fff;
+      color: var(--text-main);
+      border-radius: 10px;
+      padding: 14px 16px;
+      text-align: center;
+      font-size: 0.88rem;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .flow-step--line { border-left: 4px solid var(--line-green); }
+    .flow-step--form { border-left: 4px solid var(--brand-blue); }
+    .flow-step--data { border-left: 4px solid var(--accent-yellow-border); }
+    .flow-arrow {
+      color: #bfdbfe;
+      font-size: 1.2rem;
+      line-height: 1;
     }
 
     /* ===== PAIN ===== */
     .pain-list {
       display: grid;
-      gap: 10px;
+      gap: 12px;
+    }
+    @media (min-width: 600px) {
+      .pain-list { grid-template-columns: repeat(2, 1fr); }
     }
     .pain-item {
       background: #fff;
       border: 1px solid var(--border);
       border-left: 4px solid var(--accent-yellow-border);
       border-radius: var(--radius);
-      padding: 14px 16px;
-      font-size: 0.95rem;
+      padding: 16px 18px;
+      font-size: 0.92rem;
       font-weight: 600;
       color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      line-height: 1.55;
     }
-    .pain-item::before {
-      content: '😩';
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-
-    /* ===== DIAGNOSIS / DELIVERABLES ===== */
-    .section-lead {
+    .pain-note {
+      margin-top: 24px;
+      padding: 18px 20px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
       font-size: 0.92rem;
       color: var(--text-sub);
       line-height: 1.8;
-      margin-bottom: 20px;
     }
-    .item-grid {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: 1fr;
-    }
-    @media (min-width: 520px) {
-      .item-grid { grid-template-columns: repeat(2, 1fr); }
-      .item-card--full { grid-column: span 2; }
-    }
-    .item-card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text-main);
-      line-height: 1.5;
-    }
-    .item-card--send { border-left: 4px solid var(--brand-blue); }
-    .item-card--deliver { border-left: 4px solid var(--brand-green); }
-    .item-note {
-      margin-top: 16px;
-      font-size: 0.85rem;
-      color: var(--text-light);
-      line-height: 1.7;
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px 14px;
-    }
-    .section-light .item-note { background: #fff; }
 
-    /* ===== FEATURES ===== */
-    .feature-grid {
+    /* ===== BEFORE / AFTER ===== */
+    .compare-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 20px;
     }
-    @media(min-width:520px){ .feature-grid { grid-template-columns: repeat(3, 1fr); } }
-    .feature-card {
-      background: #fff;
-      border: 1px solid var(--border);
+    @media (min-width: 700px) {
+      .compare-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .compare-card {
       border-radius: var(--radius);
-      padding: 16px 14px;
-      text-align: center;
+      padding: 24px 20px;
+      border: 1px solid var(--border);
     }
-    .feature-card-icon {
-      font-size: 1.6rem;
-      margin-bottom: 8px;
+    .compare-card--before {
+      background: #fff;
+      border-color: #fca5a5;
     }
-    .feature-card-title {
-      font-size: 0.88rem;
-      font-weight: 700;
+    .compare-card--after {
+      background: var(--bg-blue-light);
+      border-color: #93c5fd;
+    }
+    .compare-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+    }
+    .compare-card--before .compare-label {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+    .compare-card--after .compare-label {
+      background: #dbeafe;
       color: var(--brand-blue);
-      line-height: 1.4;
     }
-    .feature-card-desc {
-      font-size: 0.78rem;
+    .compare-sources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .compare-tag {
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 6px;
       color: var(--text-sub);
-      margin-top: 4px;
-      line-height: 1.5;
+    }
+    .compare-flow {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      line-height: 1.75;
+    }
+    .compare-flow p { margin-bottom: 6px; }
+    .compare-arrow {
+      text-align: center;
+      color: var(--text-light);
+      margin: 8px 0;
+      font-size: 1.1rem;
     }
 
-    /* ===== FLOW ===== */
-    .flow-list {
+    /* ===== SERVICE FLOW ===== */
+    .service-steps {
       display: grid;
-      gap: 12px;
-      counter-reset: flow;
+      gap: 14px;
+      counter-reset: svc;
     }
-    .flow-item {
+    .service-step {
       background: #fff;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 16px 16px 16px 56px;
+      padding: 18px 18px 18px 60px;
       position: relative;
-      font-size: 0.92rem;
-      line-height: 1.6;
-      counter-increment: flow;
+      counter-increment: svc;
     }
-    .flow-item::before {
-      content: counter(flow);
+    .service-step::before {
+      content: counter(svc);
       position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 28px;
-      height: 28px;
+      left: 18px;
+      top: 18px;
+      width: 30px;
+      height: 30px;
       background: var(--brand-blue);
       color: #fff;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 800;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .flow-item strong {
+    .service-step strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .service-step p {
+      font-size: 0.88rem;
+      color: var(--text-sub);
+      line-height: 1.7;
+    }
+    .safety-box {
+      margin-top: 24px;
+      background: var(--accent-yellow);
+      border: 2px solid var(--accent-yellow-border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+    }
+    .safety-box strong {
       display: block;
       font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 2px;
+      color: #92400e;
+      margin-bottom: 8px;
     }
-    .flow-item span {
-      color: var(--text-sub);
+    .safety-box p {
+      font-size: 0.9rem;
+      color: #78350f;
+      line-height: 1.75;
+    }
+    .term-note {
+      margin-top: 20px;
       font-size: 0.85rem;
+      color: var(--text-light);
+      line-height: 1.7;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
     }
+    .term-note dt {
+      font-weight: 700;
+      color: var(--text-sub);
+      margin-top: 8px;
+    }
+    .term-note dt:first-child { margin-top: 0; }
+    .term-note dd { margin-left: 0; }
 
-    /* ===== INDUSTRY ===== */
-    .industry-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    /* ===== DEMO ===== */
+    .demo-img {
+      display: block;
+      width: 100%;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      margin-top: 16px;
+      border: 1px solid var(--border);
     }
-    .industry-tag {
+    .demo-img-caption {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+    .demo-sub-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 28px;
+    }
+    @media (max-width: 520px) {
+      .demo-sub-grid { grid-template-columns: 1fr; }
+    }
+    .demo-sub-label {
+      display: inline-block;
       background: var(--bg-blue-light);
       color: var(--brand-blue);
-      font-size: 0.88rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      padding: 7px 14px;
+      padding: 3px 10px;
       border-radius: 20px;
-      border: 1px solid #bfdbfe;
+      margin-bottom: 6px;
+    }
+
+    /* ===== CASE STUDY ===== */
+    .case-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+    }
+
+    /* ===== PROFILE ===== */
+    .profile-card {
+      display: grid;
+      gap: 24px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+    }
+    @media (min-width: 600px) {
+      .profile-card {
+        grid-template-columns: 140px 1fr;
+        align-items: start;
+      }
+    }
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--bg-blue-light);
+      margin: 0 auto;
+      display: block;
+    }
+    .profile-name {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .profile-role {
+      font-size: 0.88rem;
+      color: var(--brand-blue);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .profile-exp {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-bottom: 14px;
+    }
+
+    /* ===== REASONS ===== */
+    .reason-list {
+      display: grid;
+      gap: 14px;
+    }
+    @media (min-width: 700px) {
+      .reason-list { grid-template-columns: repeat(3, 1fr); }
+    }
+    .reason-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      border-top: 4px solid var(--brand-blue);
+    }
+    .reason-num {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--brand-blue);
+      margin-bottom: 8px;
+    }
+    .reason-item strong {
+      display: block;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      line-height: 1.45;
+    }
+    .reason-item p {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      line-height: 1.65;
+    }
+
+    /* ===== FIT ===== */
+    .fit-grid {
+      display: grid;
+      gap: 20px;
+    }
+    @media (min-width: 700px) {
+      .fit-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .fit-card {
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      border: 1px solid var(--border);
+    }
+    .fit-card--yes {
+      background: #fff;
+      border-top: 4px solid var(--brand-green);
+    }
+    .fit-card--no {
+      background: var(--bg-light);
+      border-top: 4px solid var(--text-light);
+    }
+    .fit-card h3 {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .fit-list {
+      list-style: none;
+      font-size: 0.88rem;
+      color: var(--text-sub);
+      line-height: 1.65;
+    }
+    .fit-list li {
+      padding: 6px 0 6px 18px;
+      position: relative;
+    }
+    .fit-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 14px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand-green);
+    }
+    .fit-card--no .fit-list li::before {
+      background: var(--text-light);
     }
 
     /* ===== PLANS ===== */
     .plan-grid {
       display: grid;
-      gap: 16px;
+      gap: 18px;
     }
     .plan-card {
       background: #fff;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 22px 20px;
+      padding: 24px 22px;
     }
     .plan-card.featured {
-      border-color: var(--brand-blue);
-      border-width: 2px;
-      position: relative;
+      border: 2px solid var(--brand-blue);
+      box-shadow: 0 4px 20px rgba(26, 86, 219, 0.12);
     }
     .plan-badge {
       display: inline-block;
@@ -356,180 +788,132 @@
       border-radius: 20px;
       margin-bottom: 10px;
     }
+    .plan-badge--free { background: var(--brand-green); }
     .plan-name {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       font-weight: 800;
-      color: var(--text-main);
       margin-bottom: 4px;
     }
     .plan-price {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 900;
       color: var(--brand-blue);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .plan-price span {
       font-size: 0.85rem;
       font-weight: 500;
       color: var(--text-sub);
     }
+    .plan-for {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--brand-blue);
+      margin-bottom: 10px;
+    }
     .plan-desc {
       font-size: 0.88rem;
       color: var(--text-sub);
       line-height: 1.7;
+      margin-bottom: 12px;
     }
-    .plan-desc > p { margin-bottom: 0; }
     .plan-list {
-      margin: 12px 0 0;
+      margin: 0;
       padding-left: 1.2em;
       font-size: 0.85rem;
       line-height: 1.65;
+      color: var(--text-sub);
     }
     .plan-list li { margin-bottom: 4px; }
-    .plan-card-note {
+    .plan-scope {
       margin-top: 12px;
       font-size: 0.8rem;
       color: var(--text-light);
       line-height: 1.6;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
     }
     .plan-cta {
       display: inline-block;
       margin-top: 16px;
-      background: #06C755;
+      background: var(--line-green);
       color: #fff;
       font-size: 0.9rem;
       font-weight: 800;
       padding: 10px 18px;
       border-radius: 10px;
     }
-    .plan-badge--entry { background: var(--brand-green); }
-    .plan-card--entry {
-      border-color: var(--brand-green);
-      border-width: 2px;
-    }
     .plan-note {
-      margin-top: 16px;
+      margin-top: 20px;
       background: var(--accent-yellow);
       border: 1px solid var(--accent-yellow-border);
       border-radius: 8px;
-      padding: 12px 14px;
+      padding: 14px 16px;
       font-size: 0.82rem;
       color: #92400e;
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
-    /* ===== DEMO ===== */
-    .demo-card {
+    /* ===== DIAGNOSIS FLOW ===== */
+    .diag-steps {
+      display: grid;
+      gap: 14px;
+      counter-reset: diag;
+    }
+    .diag-step {
       background: #fff;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 24px 20px;
+      padding: 18px 18px 18px 60px;
+      position: relative;
+      counter-increment: diag;
     }
-    .demo-highlight {
-      background: var(--accent-yellow);
-      border-left: 4px solid var(--accent-yellow-border);
-      padding: 12px 16px;
-      border-radius: 0 8px 8px 0;
-      font-size: 1rem;
-      font-weight: 700;
-      color: #78350f;
-      margin-bottom: 16px;
-    }
-    .demo-body {
-      font-size: 0.92rem;
-      color: var(--text-sub);
-      line-height: 1.8;
-    }
-
-    /* ===== NOTE SECTION ===== */
-    .note-guide-card {
-      background: #fff;
-      border: 1px solid #bfdbfe;
-      border-radius: var(--radius);
-      padding: 24px 20px;
-    }
-    .note-guide-body {
-      font-size: 0.92rem;
-      color: var(--text-sub);
-      line-height: 1.8;
-    }
-    .note-guide-btn-wrap {
-      margin-top: 18px;
-    }
-    .btn-note {
-      display: inline-block;
-      background: var(--bg-blue-light);
-      color: var(--brand-blue);
-      border: 1px solid #93c5fd;
-      border-radius: 10px;
-      font-size: 0.92rem;
-      font-weight: 800;
-      padding: 10px 18px;
-    }
-    .note-guide-cta {
-      margin-top: 18px;
-      background: var(--accent-yellow);
-      border: 1px solid var(--accent-yellow-border);
-      border-radius: 10px;
-      padding: 14px 16px;
-    }
-    .note-guide-cta p {
-      font-size: 0.86rem;
-      color: #78350f;
-      line-height: 1.7;
-      margin-bottom: 12px;
-    }
-    .note-article-card {
-      margin-top: 18px;
-      background: #fff;
-      border: 1px solid #93c5fd;
-      border-radius: var(--radius);
-      padding: 18px 16px;
-    }
-    .note-article-label {
-      display: inline-block;
-      background: var(--bg-blue-light);
-      color: var(--brand-blue);
-      border: 1px solid #93c5fd;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 800;
-      padding: 4px 12px;
-      margin-bottom: 10px;
-    }
-    .note-article-title {
-      font-size: 1rem;
-      font-weight: 800;
-      color: var(--text-main);
-      line-height: 1.55;
-      margin-bottom: 10px;
-    }
-    .note-article-desc {
-      font-size: 0.88rem;
-      color: var(--text-sub);
-      line-height: 1.75;
-      margin-bottom: 14px;
-    }
-    .btn-note-line {
-      display: inline-block;
-      background: #06C755;
+    .diag-step::before {
+      content: counter(diag);
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      width: 30px;
+      height: 30px;
+      background: var(--brand-green);
       color: #fff;
-      border-radius: 10px;
       font-size: 0.9rem;
       font-weight: 800;
-      padding: 10px 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .diag-step strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .diag-step p {
+      font-size: 0.88rem;
+      color: var(--text-sub);
+      line-height: 1.7;
+    }
+    .diag-reassurance {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--brand-green);
+      padding: 16px;
+      background: #fff;
+      border: 1px solid #a7f3d0;
+      border-radius: var(--radius);
     }
 
     /* ===== FAQ ===== */
-    .faq-list {
-      display: grid;
-      gap: 12px;
-    }
+    .faq-list { display: grid; gap: 12px; }
     .faq-item {
       background: #fff;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 18px 18px;
+      padding: 18px;
     }
     .faq-q {
       font-size: 0.95rem;
@@ -551,71 +935,76 @@
     .final-cta {
       background: linear-gradient(135deg, #1e3a8a 0%, #1a56db 100%);
       color: #fff;
-      padding: 56px 20px;
+      padding: 56px 0;
       text-align: center;
     }
-    .final-cta .container { max-width: 600px; }
     .final-cta-title {
       font-size: 1.3rem;
       font-weight: 800;
       line-height: 1.5;
       margin-bottom: 14px;
     }
-    @media(min-width:600px){ .final-cta-title { font-size: 1.55rem; } }
+    @media (min-width: 600px) {
+      .final-cta-title { font-size: 1.55rem; }
+    }
     .final-cta-sub {
       font-size: 0.92rem;
       color: #bfdbfe;
       margin-bottom: 28px;
-      line-height: 1.7;
+      line-height: 1.75;
     }
     .btn-line-final {
       display: inline-block;
-      background: #06C755;
+      background: var(--line-green);
       color: #fff;
       font-size: 1.05rem;
       font-weight: 800;
       padding: 16px 32px;
       border-radius: var(--radius);
       box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-      letter-spacing: 0.02em;
-    }
-    .final-cta-note {
-      margin-top: 12px;
-      font-size: 0.78rem;
-      color: #93c5fd;
     }
 
-    /* ===== DEMO IMAGES ===== */
-    .demo-img {
-      display: block;
-      width: 100%;
-      border-radius: var(--radius);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-      margin-top: 20px;
-    }
-    .demo-img-caption {
-      font-size: 0.78rem;
-      color: var(--text-light);
-      text-align: center;
-      margin-top: 6px;
-    }
-    .demo-sub-grid {
+    /* ===== COLUMNS ===== */
+    .column-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 24px;
+      gap: 12px;
     }
-    @media(max-width:480px){ .demo-sub-grid { grid-template-columns: 1fr; } }
-    .demo-sub-item { text-align: center; }
-    .demo-sub-label {
-      display: inline-block;
-      background: var(--bg-blue-light);
-      color: var(--brand-blue);
-      font-size: 0.75rem;
+    @media (min-width: 600px) {
+      .column-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    .column-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: border-color 0.15s;
+    }
+    .column-card:hover { border-color: var(--brand-blue); }
+    .column-card-title {
+      font-size: 0.88rem;
       font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 20px;
-      margin-bottom: 6px;
+      line-height: 1.5;
+      color: var(--text-main);
+    }
+    .column-card-link {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--brand-blue);
+      margin-top: auto;
+    }
+    .note-link {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+    .note-link a {
+      color: var(--text-sub);
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
 
     /* ===== FOOTER ===== */
@@ -623,457 +1012,514 @@
       background: #111827;
       color: #9ca3af;
       text-align: center;
-      padding: 28px 20px;
+      padding: 32px 20px calc(32px + env(safe-area-inset-bottom, 0px));
       font-size: 0.78rem;
       line-height: 1.8;
     }
+    @media (max-width: 767px) {
+      .footer {
+        padding-bottom: calc(32px + var(--fixed-cta-height) + env(safe-area-inset-bottom, 0px));
+      }
+    }
     .footer a { color: #6b7280; }
+
+    /* ===== FIXED CTA ===== */
+    .fixed-cta {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: #fff;
+      border-top: 1px solid var(--border);
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+    }
+    @media (min-width: 768px) {
+      .fixed-cta { display: none; }
+    }
+    .fixed-cta a {
+      display: block;
+      text-align: center;
+      background: var(--line-green);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 800;
+      padding: 14px 20px;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- ヘッダー -->
   <header class="header">
-    <div class="header-inner">
+    <div class="container-wide header-inner">
       <div class="header-logo">
         AI帳票番頭
-        <span>現場業者向け AI請求・受付サポート</span>
+        <span>現場業の案件整理・請求サポート</span>
       </div>
-      <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="header-cta">無料相談</a>
+      <nav class="header-nav" aria-label="ページ内ナビゲーション">
+        <a href="#flow">仕組み</a>
+        <a href="#case-study">自社運用例</a>
+        <a href="#pricing">料金</a>
+        <a href="#profile">運営者</a>
+      </nav>
+      <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="header-cta">LINEで無料診断</a>
     </div>
   </header>
 
   <main>
 
-    <!-- ①ファーストビュー -->
+    <!-- ファーストビュー -->
     <section class="hero">
-      <div class="container">
-        <p class="hero-eyebrow">現場業者向け AI整理サポート</p>
-        <h1 class="hero-title">
-          LINE・メモ・写真に<br>散らばった案件情報を、<br>
-          <em>受付票・請求データ・<br>売上一覧へ。</em>
-        </h1>
-        <p class="hero-sub">
-          現場仕事のあとに残る、転記・請求書作成・売上整理。<br>
-          AI帳票番頭が、今のやり方に合わせて<br>
-          "請求できる状態"まで整えます。
-        </p>
-        <div class="hero-cta-group">
-          <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-primary">LINEで無料診断する</a>
-          <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-secondary">今の請求書で相談する</a>
+      <div class="container-wide hero-grid">
+        <div>
+          <p class="hero-eyebrow">現場経験17年の現場業者が、<br>自分の仕事のために作った仕組み</p>
+          <h1 class="hero-title">LINEに埋もれた案件を、<br>請求できる状態まで整える。</h1>
+          <p class="hero-sub">
+            電話・写真・メモ・カレンダーに散らばった<br>
+            お客様名・作業内容・金額・請求状況を一つにつなぎ、<br>
+            受付票・請求データ・売上一覧へ整理します。<br><br>
+            今使っている請求書や仕事の流れを、<br>
+            全部変える必要はありません。
+          </p>
+          <div class="hero-cta-group">
+            <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-primary">今の管理方法をLINEで見てもらう</a>
+            <a href="#demo" class="btn-secondary">実際の整理イメージを見る</a>
+          </div>
+          <ul class="reassurance-list">
+            <li>個人情報は隠した状態でOK</li>
+            <li>相談だけで終了してもOK</li>
+            <li>強引な営業はありません</li>
+          </ul>
         </div>
-        <p class="hero-note">※ 相談・診断は無料です。無理な営業はしません。</p>
+        <div class="flow-diagram" aria-hidden="true">
+          <p class="flow-diagram-title">整理の流れイメージ</p>
+          <div class="flow-steps">
+            <div class="flow-step flow-step--line">LINEメッセージ</div>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <div class="flow-step flow-step--form">受付票</div>
+            <div class="flow-arrow" aria-hidden="true">↓</div>
+            <div class="flow-step flow-step--data">請求データ・売上一覧</div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- ②こんな状態ありませんか？ -->
+    <!-- 問題提起 -->
     <section class="section section-light">
-      <div class="container">
-        <h2 class="section-title">こんな状態、ありませんか？</h2>
-        <div class="pain-list">
-          <div class="pain-item">LINEに案件情報が残ったままになっている</div>
-          <div class="pain-item">メール・SMS・写真・メモがバラバラで管理できていない</div>
-          <div class="pain-item">月末に請求書をまとめるのが面倒で後回しになる</div>
-          <div class="pain-item">作業したのに請求漏れがないか不安になる</div>
-          <div class="pain-item">売上一覧を後からまとめるのに時間がかかる</div>
-          <div class="pain-item">ExcelやメモやA4用紙で何とか回しているが限界を感じる</div>
-          <div class="pain-item">AIを使いたいけど、何から始めればいいか分からない</div>
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">仕事は終わった。<br>でも、請求は終わっていない。</h2>
+          <div class="pain-list">
+            <div class="pain-item">受付内容がLINEや電話に残ったまま</div>
+            <div class="pain-item">作業後に追加内容や金額をメモしている</div>
+            <div class="pain-item">月末にLINEやカレンダーをさかのぼっている</div>
+            <div class="pain-item">請求済み・未請求・入金済みが分かりにくい</div>
+          </div>
+          <p class="pain-note">
+            これは、忙しい人の能力不足ではありません。<br>
+            案件情報を「どこへ残すか」が決まっていないため、<br>
+            月末にもう一度集め直す必要がある状態です。
+          </p>
         </div>
       </div>
     </section>
 
-    <!-- ③できること -->
+    <!-- 導入前と導入後 -->
     <section class="section">
-      <div class="container">
-        <h2 class="section-title">AI帳票番頭でできること</h2>
-        <div class="feature-grid">
-          <div class="feature-card">
-            <div class="feature-card-icon">📋</div>
-            <div class="feature-card-title">受付票作成</div>
-            <div class="feature-card-desc">案件情報を整理し、受付票テンプレを作成</div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-card-icon">🧾</div>
-            <div class="feature-card-title">請求書用<br>データ整理</div>
-            <div class="feature-card-desc">請求書に必要な項目を整えて下書き化</div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-card-icon">📊</div>
-            <div class="feature-card-title">売上一覧化</div>
-            <div class="feature-card-desc">Googleスプレッドシートで売上を可視化</div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-card-icon">📝</div>
-            <div class="feature-card-title">見積書用<br>データ整理</div>
-            <div class="feature-card-desc">現場情報から見積もり下書きを作成</div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-card-icon">📅</div>
-            <div class="feature-card-title">月末請求<br>リスト作成</div>
-            <div class="feature-card-desc">月末にまとめて請求できる状態に整える</div>
-          </div>
-          <div class="feature-card">
-            <div class="feature-card-icon">✅</div>
-            <div class="feature-card-title">未請求<br>チェック</div>
-            <div class="feature-card-desc">請求漏れ・抜け落ちをチェックしやすく</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ④仕組み -->
-    <section class="section section-blue">
-      <div class="container">
-        <h2 class="section-title">仕組み・進め方</h2>
-        <ol class="flow-list">
-          <li class="flow-item">
-            <strong>今使っている請求書・受付方法を確認</strong>
-            <span>現状に合わせて設計するので、一から覚え直す必要はありません。</span>
-          </li>
-          <li class="flow-item">
-            <strong>必要な項目を洗い出し</strong>
-            <span>受付票・請求書・売上一覧に必要な情報を整理します。</span>
-          </li>
-          <li class="flow-item">
-            <strong>受付票テンプレを作成</strong>
-            <span>案件情報を入力しやすいテンプレートを作ります。</span>
-          </li>
-          <li class="flow-item">
-            <strong>AI整理用プロンプト / GPTs を作成</strong>
-            <span>ChatGPT（GPTs）に整理指示を出す仕組みを設定します。</span>
-          </li>
-          <li class="flow-item">
-            <strong>Googleスプレッドシートに売上一覧化</strong>
-            <span>案件・金額・請求状況を一覧で見られるようにします。</span>
-          </li>
-          <li class="flow-item">
-            <strong>月末の請求書作成をラクにする</strong>
-            <span>下書きを出力して、確認・送付するだけの流れにします。</span>
-          </li>
-        </ol>
-        <div class="plan-note" style="margin-top:18px;">
-          Make連携・Googleフォーム化・Airtable化などの自動化は必要に応じて追加可能です（別途お見積り）。
-          まずは小さく始めて、慣れたら拡張する流れを推奨しています。
-        </div>
-      </div>
-    </section>
-
-    <!-- ⑤対象業種 -->
-    <section class="section section-light">
-      <div class="container">
-        <h2 class="section-title">こんな業種の方に向いています</h2>
-        <div class="industry-tags">
-          <span class="industry-tag">ハウスクリーニング</span>
-          <span class="industry-tag">エアコンクリーニング</span>
-          <span class="industry-tag">電気工事</span>
-          <span class="industry-tag">水道修理</span>
-          <span class="industry-tag">便利屋</span>
-          <span class="industry-tag">リフォーム</span>
-          <span class="industry-tag">訪問サービス業</span>
-          <span class="industry-tag">一人親方</span>
-          <span class="industry-tag">個人事業主</span>
-          <span class="industry-tag">小規模事業者</span>
-        </div>
-        <p style="margin-top:16px;font-size:0.88rem;color:var(--text-sub);line-height:1.7;">
-          LINE・電話・写真・メモで案件管理をしている現場業者の方に特に向いています。
-          「システムを入れ替える」のではなく、「今のやり方をラクにする」を優先します。
-        </p>
-      </div>
-    </section>
-
-    <!-- ⑥-0 無料診断の流れ -->
-    <section class="section section-light">
-      <div class="container">
-        <h2 class="section-title">無料診断の流れ</h2>
-        <ol class="flow-list">
-          <li class="flow-item">
-            <strong>今使っている請求書・受付票を見せる</strong>
-            <span>特別な準備は不要です。今使っているものをそのまま見せてください。</span>
-          </li>
-          <li class="flow-item">
-            <strong>LINE・メール・メモなど普段の案件情報を確認</strong>
-            <span>どこに何が残っているかを一緒に整理します。</span>
-          </li>
-          <li class="flow-item">
-            <strong>AIで整理できる項目を洗い出す</strong>
-            <span>何をAIに任せられるか、何を人間が確認すべきかを整理します。</span>
-          </li>
-          <li class="flow-item">
-            <strong>まずは小さなテンプレから試す</strong>
-            <span>いきなり全部変えるのではなく、一番困っている部分から始めます。</span>
-          </li>
-          <li class="flow-item">
-            <strong>必要なら導入・自動化へ進む</strong>
-            <span>小さく試してから、必要に応じてプランを選んでいただけます。</span>
-          </li>
-        </ol>
-        <p style="margin-top:16px;font-size:0.88rem;color:var(--text-sub);line-height:1.7;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;">
-          いきなり契約ではなく、まずは"どこをラクにできるか"を一緒に確認します。
-        </p>
-      </div>
-    </section>
-
-    <!-- ⑥-1 無料診断で送ってほしいもの -->
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">無料診断で送ってほしいもの</h2>
-        <p class="section-lead">
-          無料診断では、今のやり方を確認したうえで、どこをAI帳票番頭でラクにできるかを見ます。
-          完璧な資料を用意する必要はありません。普段使っている請求書やメモの一部だけでも大丈夫です。
-        </p>
-        <div class="item-grid">
-          <div class="item-card item-card--send">今使っている請求書</div>
-          <div class="item-card item-card--send">受付表や作業メモ</div>
-          <div class="item-card item-card--send">売上一覧やExcel</div>
-          <div class="item-card item-card--send">LINE・SMS・メールで届く案件情報の例</div>
-          <div class="item-card item-card--send">カレンダーや予約管理の流れ</div>
-          <div class="item-card item-card--send">月末請求で困っていること</div>
-        </div>
-        <p class="item-note">個人情報やお客様情報は、隠した状態で送っていただいて大丈夫です。</p>
-      </div>
-    </section>
-
-    <!-- ⑥-2 導入後にお渡しするもの -->
-    <section class="section section-light">
-      <div class="container">
-        <h2 class="section-title">導入後にお渡しするもの</h2>
-        <p class="section-lead">
-          AI帳票番頭は、ツールを渡して終わりではなく、今の業務に合わせて使える形に整える導入支援です。
-          まずは手動＋AIで小さく始め、必要に応じて自動化につなげます。
-        </p>
-        <div class="item-grid">
-          <div class="item-card item-card--deliver">受付票テンプレート</div>
-          <div class="item-card item-card--deliver">請求書用データ表</div>
-          <div class="item-card item-card--deliver">売上一覧テンプレート</div>
-          <div class="item-card item-card--deliver">ChatGPT用の整理プロンプト</div>
-          <div class="item-card item-card--deliver">使い方の説明</div>
-          <div class="item-card item-card--deliver">運用ルールの整理</div>
-          <div class="item-card item-card--deliver item-card--full">必要に応じたMake・Googleフォーム・Airtable連携案</div>
-        </div>
-        <div class="plan-note" style="margin-top:16px;">
-          最初から完全自動化を目指すのではなく、まずは請求漏れ・転記作業・売上整理の負担を減らすところから始めます。
-        </div>
-      </div>
-    </section>
-
-    <!-- ⑥導入プラン -->
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">導入プラン</h2>
-        <div class="plan-grid">
-          <div class="plan-card">
-            <div class="plan-name">無料診断</div>
-            <div class="plan-price">¥0</div>
-            <div class="plan-desc">
-              今の請求書・受付方法を見て、AI整理できる部分と改善点を提案します。
-              導入するかどうかはその後ゆっくり決めてください。
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">導入前と導入後の流れ</h2>
+          <div class="compare-grid">
+            <div class="compare-card compare-card--before">
+              <span class="compare-label">Before</span>
+              <div class="compare-sources">
+                <span class="compare-tag">LINE</span>
+                <span class="compare-tag">電話</span>
+                <span class="compare-tag">写真</span>
+                <span class="compare-tag">カレンダー</span>
+                <span class="compare-tag">手書きメモ</span>
+              </div>
+              <div class="compare-flow">
+                <p>案件情報がバラバラの場所に残る</p>
+                <div class="compare-arrow">↓</div>
+                <p>月末に思い出しながら請求書作成</p>
+              </div>
+            </div>
+            <div class="compare-card compare-card--after">
+              <span class="compare-label">After</span>
+              <div class="compare-flow">
+                <p>受付時に案件情報を整理</p>
+                <div class="compare-arrow">↓</div>
+                <p>作業後に内容と金額を確認</p>
+                <div class="compare-arrow">↓</div>
+                <p>請求書用データへ反映</p>
+                <div class="compare-arrow">↓</div>
+                <p>未請求・売上一覧を確認</p>
+              </div>
             </div>
           </div>
-          <div class="plan-card plan-card--entry">
-            <div class="plan-badge plan-badge--entry">入口プラン</div>
-            <div class="plan-name">お試し診断プラン</div>
-            <div class="plan-price">¥19,800 <span>（税込）</span></div>
-            <div class="plan-desc">
-              <p>今使っている請求書・受付表・売上一覧を確認し、どこをAIで整理できるかをまとめる入口プランです。本導入前に現状を整理し、改善ポイントを見える化します。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI帳票番頭が行うこと -->
+    <section class="section section-blue" id="flow">
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">AI帳票番頭が行うこと</h2>
+          <p class="section-lead">「できる機能」ではなく、情報がどう流れるかを整えます。</p>
+          <div class="service-steps">
+            <div class="service-step">
+              <strong>案件情報を集める</strong>
+              <p>LINE・電話・写真・メモなど、今ある形のまま届く情報を確認します。</p>
+            </div>
+            <div class="service-step">
+              <strong>AIが受付票形式へ整理する</strong>
+              <p>お客様名・作業内容・日程・金額などを、受付票の形に整えます。</p>
+            </div>
+            <div class="service-step">
+              <strong>人間が内容と金額を確認する</strong>
+              <p>整理された内容を見て、金額や作業内容の最終確認を行います。</p>
+            </div>
+            <div class="service-step">
+              <strong>請求データ・売上一覧へ残す</strong>
+              <p>請求書作成に使えるデータと、未請求・売上の確認用一覧につなげます。</p>
+            </div>
+          </div>
+          <div class="safety-box">
+            <strong>AIが勝手に金額を決めたり、請求書を送信したりする仕組みではありません。</strong>
+            <p>AIは整理と下書きを担当し、金額・作業内容・送信前の最終確認は人間が行います。</p>
+          </div>
+          <dl class="term-note">
+            <dt>AI整理用プロンプト</dt>
+            <dd>→ ChatGPTに渡す、繰り返し使える指示文</dd>
+            <dt>Googleスプレッドシート</dt>
+            <dd>→ Excelに近い、一覧管理用の表</dd>
+            <dt>Makeなどの連携</dt>
+            <dd>→ さらに自動化が必要になったときに追加する仕組み</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- 実際の整理画面・デモ -->
+    <section class="section" id="demo">
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">実際の整理画面・デモ</h2>
+          <p class="section-lead">
+            散らばった案件情報を、受付票・請求データ・売上一覧へつなげる整理イメージです。
+            実際の運用画面ではなく、動作やテンプレートの参考例としてご覧ください。
+          </p>
+          <img src="./images/ai-bantou-demo-main.png" alt="案件情報の整理から請求データ作成までの動作イメージ" class="demo-img" loading="lazy" width="720" height="405">
+          <p class="demo-img-caption">整理イメージ：案件情報の流れを一つにつなげる考え方</p>
+          <img src="./images/ai-bantou-invoice-20.png" alt="請求書用データへの整理イメージ" class="demo-img" loading="lazy" width="720" height="405">
+          <p class="demo-img-caption">整理イメージ：請求書用データへの反映例</p>
+          <div class="demo-sub-grid">
+            <div>
+              <span class="demo-sub-label">テンプレート例</span>
+              <img src="./images/ai-bantou-reception-form.png" alt="受付票テンプレートの例" class="demo-img" loading="lazy" width="340" height="240" style="margin-top:0;">
+              <p class="demo-img-caption">受付票テンプレート例</p>
+            </div>
+            <div>
+              <span class="demo-sub-label">テンプレート例</span>
+              <img src="./images/ai-bantou-sales-list.png" alt="売上一覧テンプレートの例" class="demo-img" loading="lazy" width="340" height="240" style="margin-top:0;">
+              <p class="demo-img-caption">売上一覧（一覧管理用の表）例</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BCサービスでの自社運用例 -->
+    <section class="section section-light" id="case-study">
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">まず、自分の現場で使っています。</h2>
+          <div class="case-card">
+            <p class="prose">
+              BCサービスでは、受付・日程調整・現場作業・請求管理を<br>
+              実際の業務の中で行っています。<br><br>
+              LINEや依頼票に届く情報を整理し、<br>
+              受付票、カレンダー、請求管理につなげる仕組みを、<br>
+              自分たちの現場で試しながら改善してきました。<br><br>
+              机上で考えたシステムではなく、<br>
+              忙しい現場のあとでも続けられるかを基準に作っています。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 運営者プロフィール -->
+    <section class="section" id="profile">
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">このサービスを作った人</h2>
+          <div class="profile-card">
+            <img src="../cursor-test/images/teruya-profile.png" alt="照屋 昴" class="profile-avatar" width="120" height="120" loading="lazy">
+            <div>
+              <p class="profile-name">照屋 昴</p>
+              <p class="profile-role">BCサービス代表</p>
+              <p class="profile-exp">現場業経験17年</p>
+              <p class="prose">
+                私はシステム会社ではなく、<br>
+                現在も現場に出ている事業者です。<br><br>
+                受付、日程調整、作業、請求、売上管理を<br>
+                自分で回してきた中で、<br>
+                「仕事は終わっているのに、事務作業だけが残る」<br>
+                という状態を何度も経験してきました。<br><br>
+                だからAI帳票番頭では、<br>
+                高機能でも続けられない仕組みではなく、<br>
+                今の仕事を大きく変えずに使えることを優先しています。
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 選ばれる理由 -->
+    <section class="section section-blue">
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">選ばれる理由</h2>
+          <div class="reason-list">
+            <div class="reason-item">
+              <p class="reason-num">01</p>
+              <strong>今のやり方を全部捨てなくていい</strong>
+              <p>今使っている請求書や受付の流れに合わせて、必要な部分だけ整えます。</p>
+            </div>
+            <div class="reason-item">
+              <p class="reason-num">02</p>
+              <strong>現場業者自身が作っている</strong>
+              <p>システム会社ではなく、今も現場に出ている事業者が自分の業務のために作った仕組みです。</p>
+            </div>
+            <div class="reason-item">
+              <p class="reason-num">03</p>
+              <strong>最初は手動＋AIで小さく始められる</strong>
+              <p>いきなり全部を変えるのではなく、一番困っている部分から始められます。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 向いている方・向いていない方 -->
+    <section class="section section-light">
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">向いている方・向いていない方</h2>
+          <div class="fit-grid">
+            <div class="fit-card fit-card--yes">
+              <h3>向いている方</h3>
+              <ul class="fit-list">
+                <li>LINE・電話・写真・メモで案件を受けている</li>
+                <li>月末にまとめて請求書を作っている</li>
+                <li>請求済み・未請求を確認しづらい</li>
+                <li>今の請求書を残したまま改善したい</li>
+                <li>最初は小さく始めたい</li>
+              </ul>
+            </div>
+            <div class="fit-card fit-card--no">
+              <h3>向いていない方</h3>
+              <ul class="fit-list">
+                <li>最初から完全無人・完全自動を求めている</li>
+                <li>人間による最終確認をしたくない</li>
+                <li>すでに案件管理システムを十分使いこなしている</li>
+                <li>汎用テンプレートを最安値で購入したいだけ</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 導入プラン -->
+    <section class="section" id="pricing">
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">導入プラン</h2>
+          <div class="plan-grid">
+            <div class="plan-card">
+              <span class="plan-badge plan-badge--free">入口</span>
+              <p class="plan-name">無料診断</p>
+              <p class="plan-price">¥0</p>
+              <p class="plan-for">まず現状を確認したい方へ</p>
+              <p class="plan-desc">
+                今の管理方法を確認し、どこを整理するとラクになるかを簡単にお伝えする入口です。
+              </p>
+              <p class="plan-scope">成果物を納品する有料作業ではありません。相談だけで終了しても構いません。</p>
+            </div>
+            <div class="plan-card">
+              <p class="plan-name">業務整理レポート</p>
+              <p class="plan-price">¥19,800 <span>（税込）</span></p>
+              <p class="plan-for">自分で改善を進めたい方、本導入前に設計を確認したい方へ</p>
+              <p class="plan-desc">現状を整理し、改善ポイントを見える化するレポートプランです。</p>
               <ul class="plan-list">
                 <li>現状ヒアリング</li>
-                <li>請求書・受付表・売上一覧の確認</li>
-                <li>転記・請求漏れ・二度手間の整理</li>
+                <li>現在の受付・請求方法の整理</li>
+                <li>二度手間や抜けやすい箇所の確認</li>
                 <li>改善ポイントの簡易レポート</li>
-                <li>ChatGPTで使える簡易プロンプト1つ</li>
-                <li>本導入する場合のおすすめ構成提案</li>
+                <li>ChatGPTで使える簡易指示文1つ</li>
+                <li>導入する場合の推奨構成</li>
               </ul>
-              <p class="plan-card-note">※テンプレ作成や本格的な仕組み化は、ミニ導入・標準導入で対応します。</p>
+              <p class="plan-scope">テンプレート作成や本格的な仕組み化は、ミニ導入・標準導入で対応します。</p>
+              <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="plan-cta">業務整理レポートを相談する</a>
             </div>
-            <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="plan-cta">お試し診断を相談する</a>
-          </div>
-          <div class="plan-card featured">
-            <div class="plan-badge">人気</div>
-            <div class="plan-name">ミニ導入</div>
-            <div class="plan-price">¥49,800 <span>（税込）</span></div>
-            <div class="plan-desc">
-              受付票テンプレ＋AI整理プロンプト（ChatGPT/GPTs）の作成。
-              「まず月末請求をラクにしたい」方向けの最小構成です。
+            <div class="plan-card featured">
+              <span class="plan-badge">人気・おすすめ</span>
+              <p class="plan-name">月末請求ミニ導入</p>
+              <p class="plan-price">¥49,800 <span>（税込）</span></p>
+              <p class="plan-for">まず月末請求をラクにしたい方へ</p>
+              <p class="plan-desc">受付から請求までの流れを、最小限の構成で整えるプランです。</p>
+              <ul class="plan-list">
+                <li>受付票テンプレート</li>
+                <li>案件整理用のAI指示文</li>
+                <li>請求書用データの整理方法</li>
+                <li>基本的な使い方説明</li>
+                <li>最小限の運用ルール</li>
+              </ul>
+              <p class="plan-scope">売上一覧や未請求確認の仕組みまで含む場合は標準導入をご検討ください。</p>
+              <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="plan-cta">ミニ導入を相談する</a>
+            </div>
+            <div class="plan-card">
+              <p class="plan-name">受付から売上まで標準導入</p>
+              <p class="plan-price">¥148,000 <span>（税込）</span></p>
+              <p class="plan-for">受付から売上確認まで一通り整えたい方へ</p>
+              <p class="plan-desc">受付・請求・売上確認まで含む標準的な導入プランです。</p>
+              <ul class="plan-list">
+                <li>受付票テンプレート</li>
+                <li>請求書用データ表</li>
+                <li>売上一覧</li>
+                <li>未請求確認の仕組み</li>
+                <li>AI整理用の指示文</li>
+                <li>Googleスプレッドシート設計</li>
+                <li>使い方説明</li>
+                <li>運用ルール整理</li>
+              </ul>
+              <p class="plan-scope">さらに自動化が必要になった場合は、別途ご相談ください。</p>
+              <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="plan-cta">標準導入を相談する</a>
             </div>
           </div>
-          <div class="plan-card">
-            <div class="plan-name">標準導入</div>
-            <div class="plan-price">¥148,000 <span>（税込）</span></div>
-            <div class="plan-desc">
-              受付票＋請求書用データ整理＋Googleスプレッドシートでの売上一覧まで作成。
-              月末の請求作業をまとめてラクにしたい方向けのフルセットです。
-            </div>
+          <div class="plan-note">
+            さらに自動化が必要になったときの連携追加は、別途ご相談ください。まずはシンプルな構成で始め、必要になったタイミングで拡張する方針を推奨しています。
           </div>
-        </div>
-        <div class="plan-note">
-          ⚙️ Make連携・Googleフォーム化・Airtable化・自動化は別途お見積りとなります。
-          まずはシンプルな構成で始め、必要になったタイミングで追加する方針を推奨しています。
         </div>
       </div>
     </section>
 
-    <!-- ⑦実例・デモ訴求 -->
+    <!-- 無料診断の流れ -->
     <section class="section section-light">
-      <div class="container">
-        <h2 class="section-title">実例・デモ</h2>
-        <div class="demo-card">
-          <div class="demo-highlight">
-            20件以上の請求書整理も、AIで短時間に下書き化。
-          </div>
-          <p class="demo-body">
-            手作業なら時間がかかる月末請求も、AIに整理させることで短時間で下書き化できます。<br><br>
-            最終確認は人間が行うので、金額ミスや請求漏れもチェックしやすくなります。
-            「AIが勝手に送る」のではなく、「AIが下書きを作り、人間が確認して送る」安全設計です。
-          </p>
-          <img src="./images/ai-bantou-demo-main.png" alt="散らばった案件情報を受付票・請求データ・売上一覧へ整理するAI帳票番頭のデモ画像" class="demo-img" loading="lazy">
-          <p class="demo-img-caption">▲ AI帳票番頭 全体デモ：案件情報の整理から請求データ作成まで</p>
-          <img src="./images/ai-bantou-invoice-20.png" alt="20件以上の請求書をAIで短時間に下書き化するイメージ画像" class="demo-img" loading="lazy" style="margin-top:16px;">
-          <p class="demo-img-caption">▲ 20件以上の請求書整理をAIで下書き化したイメージ</p>
-          <p style="margin-top:12px;font-size:0.78rem;color:var(--text-light);">※ 実際の運用では、個人情報や金額を確認したうえで使用します。</p>
-        </div>
-
-        <div class="demo-sub-grid">
-          <div class="demo-sub-item">
-            <span class="demo-sub-label">受付票化</span>
-            <img src="./images/ai-bantou-reception-form.png" alt="現場案件情報を受付票テンプレに整理したイメージ" class="demo-img" loading="lazy" style="margin-top:0;">
-            <p class="demo-img-caption">受付票テンプレ例</p>
-          </div>
-          <div class="demo-sub-item">
-            <span class="demo-sub-label">売上一覧化</span>
-            <img src="./images/ai-bantou-sales-list.png" alt="案件・金額・請求状況をGoogleスプレッドシートで売上一覧化したイメージ" class="demo-img" loading="lazy" style="margin-top:0;">
-            <p class="demo-img-caption">売上一覧（スプレッドシート）例</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ⑦-1 note導線 -->
-    <section class="section section-blue">
-      <div class="container">
-        <h2 class="section-title">現場業のAI活用をnoteで読む</h2>
-        <div class="note-guide-card">
-          <p class="note-guide-body">
-            AI帳票番頭は、現場業の実務から生まれた仕組みです。<br>
-            受付・日程調整・請求書作成・売上一覧づくりなど、実際の現場で感じた困りごとや、AIを使って改善している過程をnoteにまとめています。<br><br>
-            すぐに相談する前に、「どんな考え方で作っているのか」「現場でどう使おうとしているのか」を知りたい方は、noteもご覧ください。
-          </p>
-          <article class="note-article-card">
-            <p class="note-article-label">AI活用の検証</p>
-            <h3 class="note-article-title">検証して分かった「魔法のプロンプト」の存在</h3>
-            <p class="note-article-desc">Fable 5 Highとcomposer-2.5を使ってLP制作を検証した結果、高性能モデルだけでなく「ゴールを渡してAIに走らせるプロンプトの型」に再現性があると気づいた話をまとめました。AI帳票番頭でも大事にしている、「人間がゴールと確認ポイントを決めて、AIに整理・下書き・確認補助をさせる」という考え方につながる記事です。</p>
-            <div class="note-guide-btn-wrap" style="margin-top:0;">
-              <a href="https://note.com/subaru3361/n/nc35e59b925e4" target="_blank" rel="noopener noreferrer" class="btn-note">noteで読む</a>
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">無料診断の流れ</h2>
+          <div class="diag-steps">
+            <div class="diag-step">
+              <strong>今使っているものをLINEで送る</strong>
+              <p>請求書、受付表、メモ、LINE画面など。個人情報は隠した状態で構いません。</p>
             </div>
-          </article>
-          <article class="note-article-card">
-            <p class="note-article-label">AI活用の実例</p>
-            <h3 class="note-article-title">AIに細かく指示する時代から、ゴールを渡して走らせる時代へ</h3>
-            <p class="note-article-desc">Claudeの新エージェントと「/goal」プロンプトを使って、LP2つと業務ツールを一気に形にした実例をまとめました。AI帳票番頭でも大事にしている、「人間がゴールと確認ポイントを決めて、AIに整理・下書き・確認補助をさせる」という考え方につながる記事です。</p>
-            <div class="note-guide-btn-wrap" style="margin-top:0;">
-              <a href="https://note.com/subaru3361/n/nd56103071d13" target="_blank" rel="noopener noreferrer" class="btn-note">noteで読む</a>
+            <div class="diag-step">
+              <strong>整理できる部分をご案内</strong>
+              <p>何が問題か、どこから始めるとよいかを確認します。</p>
             </div>
-          </article>
-          <div class="note-guide-btn-wrap">
-            <a href="https://note.com/subaru3361" target="_blank" rel="noopener noreferrer" class="btn-note">noteで詳しく読む</a>
+            <div class="diag-step">
+              <strong>続けるか自分で決める</strong>
+              <p>相談だけで終了しても構いません。必要な場合のみ、有料プランをご案内します。</p>
+            </div>
           </div>
-          <div class="note-guide-cta">
-            <p>記事を読んで、自分の業務でも使えそうだと思った方は、今使っている請求書や受付表を見せて無料診断をご相談ください。</p>
-            <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-note-line">無料診断を相談する</a>
+          <p class="diag-reassurance">相談だけで終わっても大丈夫です。強引な営業は行いません。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- よくある質問 -->
+    <section class="section" id="faq">
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">よくある質問</h2>
+          <div class="faq-list">
+            <div class="faq-item">
+              <p class="faq-q">パソコンが苦手でも使えますか？</p>
+              <p class="faq-a">はい。今の請求書や受付方法に合わせて作るので、難しい操作を増やしすぎない形で始めます。整理の手順も、使い方に沿って説明します。</p>
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">今使っている請求書を残せますか？</p>
+              <p class="faq-a">はい。決まったフォーマットを押し付けるのではなく、今使っている請求書・受付票・売上一覧に合わせて設計します。必要な項目を逆算して、受付時点で残すべき情報を整理します。</p>
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">AIが勝手に請求書を送信しませんか？</p>
+              <p class="faq-a">しません。AIは整理と下書きを担当し、金額・作業内容・送信前の最終確認は人間が行う前提です。AIが勝手に金額を決めたり、請求書を送信したりする仕組みではありません。</p>
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">個人情報を見せる必要がありますか？</p>
+              <p class="faq-a">お客様名や住所などの個人情報は、隠した状態で送っていただいて大丈夫です。管理の流れや項目の残し方を確認するための相談です。</p>
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">最初から自動化が必要ですか？</p>
+              <p class="faq-a">必要ありません。まずは手動とAIで小さく始め、慣れてから必要に応じて連携を追加する流れを推奨しています。</p>
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">MakeやAirtableを使う必要がありますか？</p>
+              <p class="faq-a">最初から必須ではありません。まずは案件情報の整理と請求用データの残し方から始め、さらに自動化が必要になったときに追加する仕組みとして検討できます。</p>
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">一人親方でも利用できますか？</p>
+              <p class="faq-a">はい。LINE・電話・写真・メモで案件を受けている一人親方や小規模事業者の方に向いています。受付から請求まで自分で回している方のための仕組みです。</p>
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">相談後に断ってもよいですか？</p>
+              <p class="faq-a">もちろん大丈夫です。無料診断は相談だけで終了しても構いません。必要な場合のみ、有料プランをご案内します。強引な営業は行いません。</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ⑦-2 コラム導線 -->
-    <section class="section section-light">
-      <div class="container">
-        <h2 class="section-title">現場業向けコラム</h2>
-        <div class="note-guide-card" style="margin-bottom:14px;">
-          <p class="note-guide-body">
-            LINE・メモ・写真に散らばった案件情報を、請求できる状態に整える考え方をコラムにまとめました。
-          </p>
-          <div class="note-guide-btn-wrap">
-            <a href="./column/hitori-oyakata-invoice-management.html" class="btn-note">一人親方・現場業の請求書管理の記事を読む</a>
-          </div>
-        </div>
-        <div class="note-guide-card" style="margin-bottom:14px;">
-          <p class="note-guide-body">
-            LINEで届く案件情報の整理に困っている方へ。LINEのトークに埋もれがちな住所・日程・作業内容・金額を、受付票や請求書用データに整理する考え方をコラムにまとめました。
-          </p>
-          <div class="note-guide-btn-wrap">
-            <a href="./column/line-case-management.html" class="btn-note">LINE案件情報の整理方法を読む</a>
-          </div>
-        </div>
-        <div class="note-guide-card">
-          <p class="note-guide-body">
-            受付票テンプレートで請求漏れを減らしたい方へ。現場業の受付票に入れるべき項目と、請求書用データ・売上一覧につなげる考え方をコラムにまとめました。
-          </p>
-          <div class="note-guide-btn-wrap">
-            <a href="./column/reception-form-template.html" class="btn-note">受付票テンプレートの記事を読む</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ⑧よくある質問 -->
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">よくある質問</h2>
-        <div class="faq-list">
-          <div class="faq-item">
-            <p class="faq-q">パソコンが苦手でも使えますか？</p>
-            <p class="faq-a">
-              まずは今の請求書や受付方法に合わせて作るので、難しい操作を増やしすぎない形で始めます。
-              ChatGPTの使い方から丁寧にご案内します。
-            </p>
-          </div>
-          <div class="faq-item">
-            <p class="faq-q">Makeや自動化ツールは必要ですか？</p>
-            <p class="faq-a">
-              最初から必須ではありません。まずはChatGPT/GPTsとGoogleスプレッドシートで小さく始め、
-              必要になったタイミングで自動化を追加する流れを推奨しています。
-            </p>
-          </div>
-          <div class="faq-item">
-            <p class="faq-q">請求書の金額まで自動で確定しますか？</p>
-            <p class="faq-a">
-              AIは下書き作成と整理を担当します。
-              金額や請求内容の最終確認は人間が行う前提です。
-              「AIが確定・送信する」のではなく、「AIが整えて、人間が送る」設計です。
-            </p>
-          </div>
-          <div class="faq-item">
-            <p class="faq-q">どんな業種に向いていますか？</p>
-            <p class="faq-a">
-              ハウスクリーニング、エアコンクリーニング、電気工事、水道修理、便利屋、リフォームなど、
-              LINE・電話・写真・メモで案件管理をしている現場業者の方に向いています。
-            </p>
-          </div>
-          <div class="faq-item">
-            <p class="faq-q">今使っている請求書の形に合わせられますか？</p>
-            <p class="faq-a">
-              はい。AI帳票番頭は、決まったフォーマットを押し付けるのではなく、今使っている請求書・受付票・売上一覧に合わせて設計します。
-              必要な項目を逆算して、受付時点で残すべき情報を整理します。
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ⑨最終CTA -->
+    <!-- 最終CTA -->
     <section class="final-cta">
-      <div class="container">
-        <h2 class="final-cta-title">
-          まずは今使っている<br>請求書を見せてください。
-        </h2>
-        <p class="final-cta-sub">
-          AIでラクにできる部分を無料で診断します。<br>
-          相談だけでも歓迎です。無理な営業はしません。
-        </p>
-        <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-line-final">
-          LINEで無料診断する
-        </a>
-        <p class="final-cta-note">相談・診断は無料 ／ 強引な営業は一切しません</p>
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="final-cta-title">まずは、今使っている請求書やメモを<br>そのまま見せてください。</h2>
+          <p class="final-cta-sub">
+            きれいに整理する必要はありません。<br>
+            どこに情報が散らばり、どこで二度手間が発生しているかを見るところから始めます。
+          </p>
+          <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-line-final">今の管理方法をLINEで見てもらう</a>
+          <ul class="reassurance-list" style="justify-content:center;margin-top:16px;">
+            <li>個人情報は隠してOK</li>
+            <li>相談だけでもOK</li>
+            <li>強引な営業なし</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 関連コラム -->
+    <section class="section section-light">
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">関連コラム</h2>
+          <div class="column-grid">
+            <a href="./column/hitori-oyakata-invoice-management.html" class="column-card">
+              <p class="column-card-title">一人親方・現場業の請求書管理</p>
+              <span class="column-card-link">記事を読む →</span>
+            </a>
+            <a href="./column/line-case-management.html" class="column-card">
+              <p class="column-card-title">LINE案件情報の整理方法</p>
+              <span class="column-card-link">記事を読む →</span>
+            </a>
+            <a href="./column/reception-form-template.html" class="column-card">
+              <p class="column-card-title">受付票テンプレートの記事</p>
+              <span class="column-card-link">記事を読む →</span>
+            </a>
+          </div>
+          <p class="note-link">
+            <a href="https://note.com/subaru3361" target="_blank" rel="noopener noreferrer">運営者のAI活用記録をnoteで読む</a>
+          </p>
+        </div>
       </div>
     </section>
 
@@ -1081,13 +1527,17 @@
 
   <footer class="footer">
     <p>AI帳票番頭 ｜ BCサービス</p>
-    <p style="margin-top:6px;">現場業者向け AI請求・受付サポート</p>
+    <p style="margin-top:6px;">現場業の案件整理・請求サポート</p>
     <p style="margin-top:10px;">
       <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer">LINE</a>
       &nbsp;／&nbsp;
       <a href="mailto:bc.teruya@gmail.com">bc.teruya@gmail.com</a>
     </p>
   </footer>
+
+  <div class="fixed-cta" aria-label="画面下固定CTA">
+    <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer">LINEで無料診断</a>
+  </div>
 
 </body>
 </html>
