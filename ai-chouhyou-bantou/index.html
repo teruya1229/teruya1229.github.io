@@ -1619,6 +1619,7 @@
       if (!section || typeof IntersectionObserver !== 'function') return;
       var sectionName = section.getAttribute('data-track-section');
       if (!sectionName) return;
+      var target = section.querySelector('.section-title') || section;
       var fired = false;
       var observer = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
@@ -1628,7 +1629,7 @@
           observer.disconnect();
         });
       }, { threshold: [0.5] });
-      observer.observe(section);
+      observer.observe(target);
     }
 
     function initScrollDepth() {
