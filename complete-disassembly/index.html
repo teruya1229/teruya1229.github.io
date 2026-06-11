@@ -29,11 +29,16 @@
         margin-right: auto;
       }
 
-      .sec-price .card {
+      .sec-price .price-cards-grid {
         max-width: 680px;
         margin-left: auto;
         margin-right: auto;
-        text-align: center;
+      }
+
+      .sec-case-studies .case-study-card {
+        max-width: 680px;
+        margin-left: auto;
+        margin-right: auto;
       }
 
       .sec-worries li.card,
@@ -49,12 +54,6 @@
       .sec-recommend li.card:last-child,
       .sec-reason li.card:last-child {
         margin-bottom: 0;
-      }
-
-      .sec-case-studies .case-study-card {
-        max-width: 680px;
-        margin-left: auto;
-        margin-right: auto;
       }
 
       .sec-faq .faq-list {
@@ -77,73 +76,126 @@
       margin-bottom: 20px;
     }
 
-    .case-study-card {
-      padding: 18px 16px;
+    .sec-case-studies .case-study-card {
+      padding: 16px 14px;
     }
 
-    .case-study-meta {
+    .sec-case-studies .case-study-head {
+      margin-bottom: 12px;
+      padding: 12px 14px;
+      background: #f0f7ff;
+      border: 1px solid #dbeafe;
+      border-radius: 10px;
+    }
+
+    .sec-case-studies .case-study-work-type {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin: 0 0 4px;
+      color: var(--text-main, #111827);
+    }
+
+    .sec-case-studies .case-study-price-main {
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 6px 10px;
+    }
+
+    .sec-case-studies .case-study-price-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #4b5563;
+    }
+
+    .sec-case-studies .case-study-price-amount {
+      font-size: clamp(1.75rem, 5vw, 2.25rem);
+      font-weight: 800;
+      color: var(--brand, #1a56db);
+      line-height: 1.1;
+    }
+
+    .sec-case-studies .case-study-info-grid {
       display: grid;
-      gap: 8px;
-      margin-bottom: 16px;
-      font-size: 0.9rem;
-      line-height: 1.6;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 12px;
+      margin: 0 0 10px;
+      font-size: 0.88rem;
+      line-height: 1.5;
     }
 
-    .case-study-meta dt {
+    @media (min-width: 768px) {
+      .sec-case-studies .case-study-info-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .sec-case-studies .case-study-info-item {
+      margin: 0;
+    }
+
+    .sec-case-studies .case-study-info-item--model {
+      grid-column: 1 / -1;
+    }
+
+    @media (min-width: 768px) {
+      .sec-case-studies .case-study-info-item--model {
+        grid-column: auto;
+      }
+    }
+
+    .sec-case-studies .case-study-info-item dt {
+      font-size: 0.75rem;
       font-weight: 700;
       color: var(--brand, #1a56db);
       margin: 0;
     }
 
-    .case-study-meta dd {
-      margin: 0 0 4px;
+    .sec-case-studies .case-study-info-item dd {
+      margin: 2px 0 0;
     }
 
-    .case-study-comment {
-      font-size: 0.9rem;
-      line-height: 1.75;
-      margin-bottom: 16px;
+    .sec-case-studies .case-study-consult {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin: 0 0 10px;
+      padding: 8px 10px;
+      background: #f9fafb;
+      border-radius: 6px;
     }
 
-    .case-study-photos {
+    .sec-case-studies .case-study-consult-label {
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .sec-case-studies .case-study-comment {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+
+    .sec-case-studies .case-study-photos {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
     }
 
-    @media (min-width: 600px) {
-      .case-study-photos {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    .case-study-photo-item {
+    .sec-case-studies .case-study-photo-item {
       text-align: center;
     }
 
-    .case-study-photo-item img {
+    .sec-case-studies .case-study-photo-item img {
       display: block;
       width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-
-    .case-study-photo-placeholder {
       aspect-ratio: 4 / 3;
-      background: #f3f4f6;
-      border: 1px dashed #d1d5db;
+      object-fit: cover;
       border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.78rem;
-      color: #6b7280;
-      padding: 8px;
-      line-height: 1.4;
     }
 
-    .case-study-photo-caption {
-      font-size: 0.75rem;
+    .sec-case-studies .case-study-photo-caption {
+      font-size: 0.78rem;
       color: #6b7280;
       margin-top: 6px;
     }
@@ -152,7 +204,7 @@
       margin-top: 24px;
     }
 
-    .case-study-card h3 {
+    .sec-case-studies .case-study-card h3 {
       font-size: 1.05rem;
       font-weight: 700;
       margin-bottom: 10px;
@@ -160,11 +212,63 @@
       color: var(--text-main, #111827);
     }
 
-    .case-study-note {
+    .sec-case-studies .case-study-note {
       font-size: 0.78rem;
       color: #6b7280;
       margin-top: 12px;
       line-height: 1.6;
+      text-align: center;
+    }
+
+    .sec-price .price-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    @media (min-width: 600px) {
+      .sec-price .price-cards-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .sec-price .price-card-item {
+      padding: 18px 16px;
+      text-align: center;
+      border: 1px solid #dbeafe;
+      background: #fff;
+      border-radius: 12px;
+    }
+
+    .sec-price .price-card-type {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #4b5563;
+      margin: 0 0 4px;
+    }
+
+    .sec-price .price-card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0 0 12px;
+      line-height: 1.4;
+      color: var(--text-main, #111827);
+    }
+
+    .sec-price .price-card-amount {
+      font-size: clamp(1.85rem, 5.5vw, 2.35rem);
+      font-weight: 800;
+      color: var(--brand, #1a56db);
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    .sec-price .price-card-note {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: #4b5563;
+      margin: 0;
       text-align: center;
     }
 
@@ -586,11 +690,19 @@
     <section class="section section-light sec-price">
       <div class="container">
         <h2 class="section-title">完全分解クリーニング料金</h2>
-        <div class="card">
-          <p><strong>完全分解クリーニング 14,000円</strong></p>
-          <p><strong>お掃除機能付き完全分解 23,000円</strong></p>
-          <p>※内部までしっかり洗いたい方向けの料金です。設置状況や機種により追加対応が必要な場合があります</p>
+        <div class="price-cards-grid">
+          <div class="card price-card-item">
+            <p class="price-card-type">通常エアコン</p>
+            <p class="price-card-title">完全分解クリーニング</p>
+            <p class="price-card-amount">14,000円</p>
+          </div>
+          <div class="card price-card-item">
+            <p class="price-card-type">お掃除機能付き</p>
+            <p class="price-card-title">完全分解クリーニング</p>
+            <p class="price-card-amount">23,000円</p>
+          </div>
         </div>
+        <p class="price-card-note">※内部までしっかり洗いたい方向けの料金です。設置状況や機種により追加対応が必要な場合があります</p>
       </div>
     </section>
 
@@ -601,22 +713,32 @@
           沖縄・南城市をはじめ、沖縄南部の現場で行ったエアコンクリーニングの事例です。実際の現場写真とあわせて、どのような汚れがあり、完全分解クリーニングでどのように改善したかを紹介します。お掃除機能付きエアコン以外のノーマル機種でも、通常分解では落ちない汚れまで、家族が吸う空気のために内部まで丁寧に洗浄しています。
         </p>
         <article class="card case-study-card" data-case-id="2026-06-03-sample">
-          <dl class="case-study-meta">
-            <dt>地域</dt>
-            <dd>南城市</dd>
-            <dt>機種</dt>
-            <dd>ダイキン ノーマルエアコン</dd>
-            <dt>作業</dt>
-            <dd>完全分解クリーニング</dd>
-            <dt>相談内容</dt>
-            <dd>通常分解では落ちない奥の汚れが気になる</dd>
-            <dt>作業時間</dt>
-            <dd>約2時間</dd>
-            <dt>料金目安</dt>
-            <dd>14,000円</dd>
+          <div class="case-study-head">
+            <p class="case-study-work-type">完全分解クリーニング</p>
+            <p class="case-study-price-main">
+              <span class="case-study-price-label">料金目安</span>
+              <span class="case-study-price-amount">14,000円</span>
+            </p>
+          </div>
+          <dl class="case-study-info-grid">
+            <div class="case-study-info-item">
+              <dt>地域</dt>
+              <dd>南城市</dd>
+            </div>
+            <div class="case-study-info-item case-study-info-item--model">
+              <dt>機種</dt>
+              <dd>ダイキン ノーマルエアコン</dd>
+            </div>
+            <div class="case-study-info-item">
+              <dt>時間</dt>
+              <dd>約2時間</dd>
+            </div>
           </dl>
+          <p class="case-study-consult">
+            <span class="case-study-consult-label">ご相談：</span>通常分解では落ちない奥の汚れが気になる
+          </p>
           <p class="case-study-comment">
-            通常分解では見えにくい内部の汚れを確認しながら、ドレンパン・ファン周辺まで丁寧に洗浄しました。小さなお子様がいるご家庭でも安心して相談しやすいよう、作業前後の状態を写真で確認できる形にしています。
+            通常分解では見えにくいドレンパン・送風ファン周辺まで取り外し、内部の汚れを洗浄しました。作業前後は写真でご確認いただけます。
           </p>
           <div class="case-study-photos" aria-label="施工写真">
             <figure class="case-study-photo-item">
