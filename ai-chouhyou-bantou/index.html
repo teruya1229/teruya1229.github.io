@@ -14,6 +14,17 @@
   <meta property="og:image" content="https://teruya1229.github.io/ai-chouhyou-bantou/images/ai-bantou-demo-main.png">
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8LKLFDL3G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var aiBantouGaParams = new URLSearchParams(location.search);
+    var aiBantouIsDebug = aiBantouGaParams.get('debug') === '1';
+    var aiBantouGaConfig = {};
+    if (aiBantouIsDebug) aiBantouGaConfig.debug_mode = true;
+    gtag('config', 'G-X8LKLFDL3G', aiBantouGaConfig);
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -1064,7 +1075,7 @@
         <a href="#pricing">料金</a>
         <a href="#profile">運営者</a>
       </nav>
-      <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="header-cta">LINEで無料診断</a>
+      <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="header-cta" data-track-location="header">LINEで無料診断</a>
     </div>
   </header>
 
@@ -1084,7 +1095,7 @@
             全部変える必要はありません。
           </p>
           <div class="hero-cta-group">
-            <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-primary">今の管理方法をLINEで見てもらう</a>
+            <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-primary" data-track-location="hero">今の管理方法をLINEで見てもらう</a>
             <a href="#demo" class="btn-secondary">実際の整理イメージを見る</a>
           </div>
           <ul class="reassurance-list">
@@ -1205,7 +1216,7 @@
     </section>
 
     <!-- 実際の整理画面・デモ -->
-    <section class="section" id="demo">
+    <section class="section" id="demo" data-track-section="demo">
       <div class="container-wide">
         <div class="container-narrow">
           <h2 class="section-title">実際の整理画面・デモ</h2>
@@ -1234,7 +1245,7 @@
     </section>
 
     <!-- BCサービスでの自社運用例 -->
-    <section class="section section-light" id="case-study">
+    <section class="section section-light" id="case-study" data-track-section="case_study">
       <div class="container-wide">
         <div class="container-narrow">
           <h2 class="section-title">まず、自分の現場で使っています。</h2>
@@ -1254,7 +1265,7 @@
     </section>
 
     <!-- 運営者プロフィール -->
-    <section class="section" id="profile">
+    <section class="section" id="profile" data-track-section="profile">
       <div class="container-wide">
         <div class="container-narrow">
           <h2 class="section-title">このサービスを作った人</h2>
@@ -1338,7 +1349,7 @@
     </section>
 
     <!-- 導入プラン -->
-    <section class="section" id="pricing">
+    <section class="section" id="pricing" data-track-section="pricing">
       <div class="container-wide">
         <div class="container-narrow">
           <h2 class="section-title">導入プラン</h2>
@@ -1367,7 +1378,7 @@
                 <li>導入する場合の推奨構成</li>
               </ul>
               <p class="plan-scope">テンプレート作成や本格的な仕組み化は、ミニ導入・標準導入で対応します。</p>
-              <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="plan-cta">業務整理レポートを相談する</a>
+              <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="plan-cta" data-track-location="plan_report">業務整理レポートを相談する</a>
             </div>
             <div class="plan-card featured">
               <span class="plan-badge">人気・おすすめ</span>
@@ -1383,7 +1394,7 @@
                 <li>最小限の運用ルール</li>
               </ul>
               <p class="plan-scope">売上一覧や未請求確認の仕組みまで含む場合は標準導入をご検討ください。</p>
-              <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="plan-cta">ミニ導入を相談する</a>
+              <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="plan-cta" data-track-location="plan_mini">ミニ導入を相談する</a>
             </div>
             <div class="plan-card">
               <p class="plan-name">受付から売上まで標準導入</p>
@@ -1401,7 +1412,7 @@
                 <li>運用ルール整理</li>
               </ul>
               <p class="plan-scope">さらに自動化が必要になった場合は、別途ご相談ください。</p>
-              <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="plan-cta">標準導入を相談する</a>
+              <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="plan-cta" data-track-location="plan_standard">標準導入を相談する</a>
             </div>
           </div>
           <div class="plan-note">
@@ -1436,7 +1447,7 @@
     </section>
 
     <!-- よくある質問 -->
-    <section class="section" id="faq">
+    <section class="section" id="faq" data-track-section="faq">
       <div class="container-wide">
         <div class="container-narrow">
           <h2 class="section-title">よくある質問</h2>
@@ -1487,7 +1498,7 @@
             きれいに整理する必要はありません。<br>
             どこに情報が散らばり、どこで二度手間が発生しているかを見るところから始めます。
           </p>
-          <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-line-final">今の管理方法をLINEで見てもらう</a>
+          <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-line-final" data-track-location="final">今の管理方法をLINEで見てもらう</a>
           <ul class="reassurance-list" style="justify-content:center;margin-top:16px;">
             <li>個人情報は隠してOK</li>
             <li>相談だけでもOK</li>
@@ -1503,21 +1514,21 @@
         <div class="container-narrow">
           <h2 class="section-title">関連コラム</h2>
           <div class="column-grid">
-            <a href="./column/hitori-oyakata-invoice-management.html" class="column-card">
+            <a href="./column/hitori-oyakata-invoice-management.html" class="column-card" data-track-column="hitori-oyakata-invoice-management">
               <p class="column-card-title">一人親方・現場業の請求書管理</p>
               <span class="column-card-link">記事を読む →</span>
             </a>
-            <a href="./column/line-case-management.html" class="column-card">
+            <a href="./column/line-case-management.html" class="column-card" data-track-column="line-case-management">
               <p class="column-card-title">LINE案件情報の整理方法</p>
               <span class="column-card-link">記事を読む →</span>
             </a>
-            <a href="./column/reception-form-template.html" class="column-card">
+            <a href="./column/reception-form-template.html" class="column-card" data-track-column="reception-form-template">
               <p class="column-card-title">受付票テンプレートの記事</p>
               <span class="column-card-link">記事を読む →</span>
             </a>
           </div>
           <p class="note-link">
-            <a href="https://note.com/subaru3361" target="_blank" rel="noopener noreferrer">運営者のAI活用記録をnoteで読む</a>
+            <a href="https://note.com/subaru3361" target="_blank" rel="noopener noreferrer" data-track-column="note_profile">運営者のAI活用記録をnoteで読む</a>
           </p>
         </div>
       </div>
@@ -1529,15 +1540,109 @@
     <p>AI帳票番頭 ｜ BCサービス</p>
     <p style="margin-top:6px;">現場業の案件整理・請求サポート</p>
     <p style="margin-top:10px;">
-      <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer">LINE</a>
+      <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" data-track-location="footer">LINE</a>
       &nbsp;／&nbsp;
       <a href="mailto:bc.teruya@gmail.com">bc.teruya@gmail.com</a>
     </p>
   </footer>
 
   <div class="fixed-cta" aria-label="画面下固定CTA">
-    <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer">LINEで無料診断</a>
+    <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" data-track-location="mobile_fixed">LINEで無料診断</a>
   </div>
+
+  <script>
+  (function() {
+    var isDebug = new URLSearchParams(location.search).get('debug') === '1';
+
+    function trackAiBantouEvent(eventName, params) {
+      var payload = Object.assign({ page_type: 'ai_bantou_lp' }, params || {});
+      if (isDebug) {
+        payload.debug_mode = true;
+        console.log('[AI帳票番頭 GA4]');
+        console.log(eventName);
+        console.log(payload);
+      }
+      if (typeof window.gtag === 'function') {
+        gtag('event', eventName, payload);
+      }
+    }
+
+    function getLinkText(anchor) {
+      var text = (anchor.textContent || '').replace(/\s+/g, ' ').trim();
+      if (text) return text.substring(0, 100);
+      return anchor.getAttribute('aria-label') || '';
+    }
+
+    document.addEventListener('click', function(e) {
+      var anchor = e.target.closest('a');
+      if (!anchor) return;
+
+      var lineLocation = anchor.getAttribute('data-track-location');
+      if (lineLocation && (anchor.getAttribute('href') || '').indexOf('lin.ee') !== -1) {
+        trackAiBantouEvent('ai_bantou_line_click', {
+          cta_location: lineLocation,
+          cta_text: getLinkText(anchor),
+          link_url: anchor.getAttribute('href') || ''
+        });
+        return;
+      }
+
+      var columnSlug = anchor.getAttribute('data-track-column');
+      if (columnSlug) {
+        trackAiBantouEvent('ai_bantou_column_click', {
+          article_slug: columnSlug,
+          link_url: anchor.getAttribute('href') || '',
+          link_text: getLinkText(anchor)
+        });
+      }
+    }, true);
+
+    function observeSection(section) {
+      if (!section || typeof IntersectionObserver !== 'function') return;
+      var sectionName = section.getAttribute('data-track-section');
+      if (!sectionName) return;
+      var fired = false;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (fired || entry.intersectionRatio < 0.5) return;
+          fired = true;
+          trackAiBantouEvent('ai_bantou_section_view', { section_name: sectionName });
+          observer.disconnect();
+        });
+      }, { threshold: [0.5] });
+      observer.observe(section);
+    }
+
+    function initScrollDepth() {
+      var fired = { 50: false, 75: false, 90: false };
+      var ticking = false;
+      function checkScroll() {
+        ticking = false;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        if (docHeight <= 0) return;
+        var percent = (window.scrollY / docHeight) * 100;
+        [50, 75, 90].forEach(function(threshold) {
+          if (!fired[threshold] && percent >= threshold) {
+            fired[threshold] = true;
+            trackAiBantouEvent('ai_bantou_scroll_depth', { scroll_percent: threshold });
+          }
+        });
+      }
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          ticking = true;
+          window.requestAnimationFrame(checkScroll);
+        }
+      }, { passive: true });
+      checkScroll();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('[data-track-section]').forEach(observeSection);
+      initScrollDepth();
+    });
+  })();
+  </script>
 
 </body>
 </html>
