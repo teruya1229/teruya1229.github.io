@@ -488,6 +488,922 @@
     renderPreflightAll();
   });
 
+  /* ===== Google広告 初期設定チェッカー ===== */
+
+  var CAMPAIGN_SETUP_STORAGE_KEY = 'bcAdBantouCampaignSetupChecks';
+
+  var CS_STATUS = {
+    UNCHECKED: 'unchecked',
+    OK: 'ok',
+    NG: 'ng',
+    NOT_APPLICABLE: 'not_applicable'
+  };
+
+  var CS_DECISION = {
+    COMPLETE: '初期設定完了',
+    NEEDS_FIX: '修正が必要',
+    IN_PROGRESS: '確認途中'
+  };
+
+  var CS_STATUS_LABELS = {
+    unchecked: '未確認',
+    ok: 'OK',
+    ng: 'NG',
+    not_applicable: '対象外'
+  };
+
+  var CAMPAIGN_SETUP_GROUPS = [
+    {
+      id: 'lpUrl',
+      title: '0. LP URL確認',
+      items: [
+        { id: 'lpUrlEntered', label: 'LP URLが入力されている', auto: true },
+        { id: 'lpUrlMatches', label: '最終ページURLが期待値と一致している', auto: true },
+        { id: 'sitelinkUrlCorrect', label: 'サイトリンクのURLが完全分解LPまたは関連するBCサービスのページになっている', campaigns: ['complete_disassembly'] },
+        { id: 'noAiBantouLpUrlMixed', label: 'AI帳票番頭LPのURLが混ざっていない', campaigns: ['complete_disassembly'] },
+        { id: 'noCompleteDisassemblyLpUrlMixed', label: '完全分解LPのURLが混ざっていない', campaigns: ['ai_bantou'] },
+        { id: 'onlineServiceLpUrlCorrect', label: 'オンラインサービスとしてLP URLが正しい', campaigns: ['ai_bantou'] }
+      ]
+    },
+    {
+      id: 'basic',
+      title: '1. 基本設定',
+      items: [
+        { id: 'campaignEnabled', label: 'キャンペーンが有効' },
+        { id: 'startDateCorrect', label: '開始日が正しい' },
+        { id: 'endDateCorrect', label: '終了日が意図どおり' },
+        { id: 'dailyBudgetConfirmed', label: '1日予算が確認済み' },
+        { id: 'billingNoWarning', label: '請求・支払いに警告なし' },
+        { id: 'accountNoMajorWarning', label: 'アカウントに停止・本人確認などの重大警告なし' }
+      ]
+    },
+    {
+      id: 'delivery',
+      title: '2. 配信条件',
+      items: [
+        { id: 'regionCorrect', label: '配信地域が正しい' },
+        { id: 'regionDetailCorrect', label: '地域の詳細設定が正しい' },
+        { id: 'languageJapanese', label: '言語が日本語' },
+        { id: 'adScheduleCorrect', label: '広告スケジュールが正しい' },
+        { id: 'searchNetworkEnabled', label: '検索ネットワークが有効' },
+        { id: 'noUnintendedDisplay', label: '意図しないディスプレイ配信がない' }
+      ]
+    },
+    {
+      id: 'bidding',
+      title: '3. 入札とコンバージョン',
+      items: [
+        { id: 'bidStrategyConfirmed', label: '入札戦略が確認済み' },
+        { id: 'initialBidMaximizeClicks', label: '初期配信時は「クリック数の最大化」' },
+        { id: 'noUnintendedMaxCpc', label: '上限クリック単価が意図せず設定されていない' },
+        { id: 'campaignConversionGoal', label: 'キャンペーン固有のコンバージョン目標' },
+        { id: 'correctConversionActionsOnly', label: '正しいコンバージョンアクションだけが含まれている' },
+        { id: 'noOtherLpConversionMixed', label: '別LPのコンバージョンが混ざっていない' },
+        { id: 'ga4ConnectionConfirmed', label: 'GA4との接続・イベント計測が確認済み' }
+      ]
+    },
+    {
+      id: 'keywords',
+      title: '4. キーワード',
+      items: [
+        { id: 'keywordsExist', label: 'キーワードが1件以上ある' },
+        { id: 'keywordsEnabled', label: 'ステータスが有効' },
+        { id: 'matchTypeIntention', label: '完全一致・フレーズ一致の意図を確認' },
+        { id: 'searchVolumeChecked', label: '検索ボリューム不足を確認' },
+        { id: 'noUnwantedKeywords', label: '不要なキーワードが混ざっていない' },
+        { id: 'negativeKeywordsChecked', label: '除外キーワードの有無を確認' }
+      ]
+    },
+    {
+      id: 'rsa',
+      title: '5. レスポンシブ検索広告',
+      items: [
+        { id: 'singleActiveAd', label: '広告が1件だけ有効' },
+        { id: 'noDuplicateAds', label: '重複した広告が残っていない' },
+        { id: 'adApprovedOrPending', label: '広告が承認済みまたは審査中' },
+        { id: 'finalUrlCorrect', label: '最終ページURLが正しい', auto: true },
+        { id: 'headlines15', label: '見出し15件' },
+        { id: 'descriptions4', label: '説明文4件' },
+        { id: 'assetStrengthAboveAverage', label: '広告アセットの充実度が平均以上' },
+        { id: 'noUnintendedPinning', label: '意図しないピン留めがない' }
+      ]
+    },
+    {
+      id: 'assets',
+      title: '6. 広告アセット',
+      items: [
+        { id: 'sitelinks6Plus', label: 'サイトリンク6件以上' },
+        { id: 'sitelinksHaveDescriptions', label: 'サイトリンクに説明文がある' },
+        { id: 'callouts8Plus', label: 'コールアウト8件以上' },
+        { id: 'structuredSnippetSet', label: '構造化スニペット設定済み' },
+        { id: 'businessNameSet', label: 'ビジネス名設定済み' },
+        { id: 'businessLogoSetOrPending', label: 'ビジネスロゴ設定済みまたは審査中' },
+        { id: 'assetsAttachedToCorrectCampaign', label: 'アセットの追加先が正しいキャンペーン' },
+        { id: 'noOtherCampaignAssetsMixed', label: '別キャンペーンのアセットが混ざっていない' }
+      ]
+    },
+    {
+      id: 'prelaunch',
+      title: '7. 公開前確認',
+      items: [
+        { id: 'adPreviewDiagnosisDone', label: '広告プレビューと診断を実施' },
+        { id: 'noSelfClickInSearch', label: '通常検索で自己クリックしていない' },
+        { id: 'lpDisplaysCorrectly', label: 'LPが正常表示' },
+        { id: 'ctaTrackingOk', label: 'CTA計測が正常' },
+        { id: 'noConsoleErrors', label: 'コンソールエラーなし' },
+        { id: 'noTestClicksInStats', label: 'テストクリックを実績に含めていない' }
+      ]
+    },
+    {
+      id: 'campaignSpecific',
+      title: '8. キャンペーン固有',
+      items: [
+        { id: 'phoneAssetSet', label: '電話アセットが設定済み', campaigns: ['complete_disassembly'] },
+        { id: 'callReportingEnabled', label: '通話レポートが有効', campaigns: ['complete_disassembly'] },
+        { id: 'callConversionsInGoal', label: '広告経由の通話数が目標に含まれる', campaigns: ['complete_disassembly'] },
+        { id: 'noAiBantouConversionMixed', label: 'AI帳票番頭用コンバージョンが混ざっていない', campaigns: ['complete_disassembly'] },
+        { id: 'priceAssetNotApplicable', label: '価格アセットは対象外', campaigns: ['complete_disassembly'], defaultStatus: CS_STATUS.NOT_APPLICABLE },
+        { id: 'priceAssets4Set', label: '価格アセット4件が設定済み', campaigns: ['ai_bantou'] },
+        { id: 'phoneAssetNotApplicable', label: '電話アセットは対象外', campaigns: ['ai_bantou'], defaultStatus: CS_STATUS.NOT_APPLICABLE },
+        { id: 'noCtaClickMixed', label: '完全分解用cta_clickが混ざっていない', campaigns: ['ai_bantou'] },
+        { id: 'nationwideDelivery', label: '全国配信設定になっている', campaigns: ['ai_bantou'] }
+      ]
+    }
+  ];
+
+  var CAMPAIGN_DEFAULT_NA = {
+    complete_disassembly: ['priceAssetNotApplicable'],
+    ai_bantou: ['phoneAssetNotApplicable']
+  };
+
+  var csCampaignSelect = document.getElementById('cs-campaign-select');
+  var csOtherFields = document.getElementById('cs-other-fields');
+  var csOtherCampaignName = document.getElementById('cs-other-campaign-name');
+  var csOtherExpectedLp = document.getElementById('cs-other-expected-lp');
+  var csTemplateCard = document.getElementById('cs-template-card');
+  var csProgressStats = document.getElementById('cs-progress-stats');
+  var csOverallBox = document.getElementById('cs-overall-box');
+  var csNextActionBox = document.getElementById('cs-next-action-box');
+  var csLatest = document.getElementById('cs-latest');
+  var csLatestBody = document.getElementById('cs-latest-body');
+  var csCheckGroups = document.getElementById('cs-check-groups');
+  var csLpUrl = document.getElementById('cs-lp-url');
+  var csLpCompare = document.getElementById('cs-lp-compare');
+  var csMemo = document.getElementById('cs-memo');
+  var campaignSetupForm = document.getElementById('campaign-setup-form');
+  var csHistoryTbody = document.getElementById('cs-history-tbody');
+  var csHistoryEmpty = document.getElementById('cs-history-empty');
+  var csHistoryCards = document.getElementById('cs-history-cards');
+  var csResetBtn = document.getElementById('cs-reset-btn');
+  var csLoadLatestBtn = document.getElementById('cs-load-latest-btn');
+
+  var csCurrentCampaignType = 'complete_disassembly';
+  var csFormDirty = false;
+
+  function getCampaignTemplate(campaignType) {
+    if (campaignType === 'complete_disassembly') {
+      return {
+        campaignType: 'complete_disassembly',
+        campaignName: '完全分解_南部_検索_小額テスト',
+        expectedLpUrl: 'https://teruya1229.github.io/complete-disassembly/',
+        lpFixLabel: '完全分解LP',
+        expectations: {
+          lp: 'https://teruya1229.github.io/complete-disassembly/',
+          bidStrategy: 'クリック数の最大化',
+          budget: '1日1,000円',
+          conversionGoal: '完全分解LP_問い合わせ',
+          conversionActions: ['BCサービス LP (web) cta_click', '広告経由の通話数'],
+          regions: ['南城市', '八重瀬町', '豊見城市', '糸満市', '那覇市', '南風原町', '与那原町'],
+          regionOption: '対象地域に現在いる、または定期的にいるユーザー',
+          sitelinks: '6件以上',
+          callouts: '8件以上',
+          structuredSnippet: '設定済み',
+          phoneAsset: '050-1724-1338',
+          priceAsset: '対象外'
+        }
+      };
+    }
+    if (campaignType === 'ai_bantou') {
+      return {
+        campaignType: 'ai_bantou',
+        campaignName: 'AI帳票番頭_検索_全国_初期',
+        expectedLpUrl: 'https://teruya1229.github.io/ai-chouhyou-bantou/',
+        lpFixLabel: 'AI帳票番頭LP',
+        expectations: {
+          lp: 'https://teruya1229.github.io/ai-chouhyou-bantou/',
+          bidStrategy: 'クリック数の最大化',
+          budget: '1日1,000円',
+          conversionGoal: 'AI帳票番頭LP_問い合わせ',
+          conversionActions: ['BCサービス LP (web) ai_bantou_line_click'],
+          regions: ['日本全国'],
+          regionOption: '日本に現在いる、または定期的にいるユーザー',
+          sitelinks: '6件以上',
+          callouts: '8件以上',
+          structuredSnippet: '設定済み',
+          priceAsset: '4件',
+          phoneAsset: '対象外'
+        }
+      };
+    }
+    return {
+      campaignType: 'other',
+      campaignName: '',
+      expectedLpUrl: '',
+      lpFixLabel: '期待するLP',
+      expectations: null
+    };
+  }
+
+  function normalizeCampaignLpUrl(url) {
+    if (!url || typeof url !== 'string') return null;
+    var trimmed = url.trim();
+    if (!trimmed) return null;
+    try {
+      var parsed = new URL(trimmed);
+      if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null;
+      var path = parsed.pathname;
+      if (path.length > 1 && path.charAt(path.length - 1) === '/') {
+        path = path.slice(0, -1);
+      }
+      return parsed.origin + path + (parsed.search || '');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function compareCampaignLpUrl(current, expected) {
+    var normCurrent = normalizeCampaignLpUrl(current);
+    var normExpected = normalizeCampaignLpUrl(expected);
+    if (!normCurrent || !normExpected) return false;
+    return normCurrent === normExpected;
+  }
+
+  function loadCampaignSetupChecks() {
+    try {
+      var raw = localStorage.getItem(CAMPAIGN_SETUP_STORAGE_KEY);
+      var parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveCampaignSetupChecks(checks) {
+    localStorage.setItem(CAMPAIGN_SETUP_STORAGE_KEY, JSON.stringify(checks));
+  }
+
+  function getApplicableItems(campaignType) {
+    var items = [];
+    CAMPAIGN_SETUP_GROUPS.forEach(function (group) {
+      group.items.forEach(function (item) {
+        if (!item.campaigns || item.campaigns.indexOf(campaignType) !== -1) {
+          items.push({ groupId: group.id, groupTitle: group.title, item: item });
+        }
+      });
+    });
+    return items;
+  }
+
+  function getDefaultItemStatuses(campaignType) {
+    var statuses = {};
+    var naList = CAMPAIGN_DEFAULT_NA[campaignType] || [];
+    getApplicableItems(campaignType).forEach(function (entry) {
+      var item = entry.item;
+      if (item.auto) return;
+      if (item.defaultStatus) {
+        statuses[item.id] = item.defaultStatus;
+      } else if (naList.indexOf(item.id) !== -1) {
+        statuses[item.id] = CS_STATUS.NOT_APPLICABLE;
+      } else {
+        statuses[item.id] = CS_STATUS.UNCHECKED;
+      }
+    });
+    return statuses;
+  }
+
+  function getExpectedLpUrl(campaignType) {
+    if (campaignType === 'other') {
+      return csOtherExpectedLp.value.trim();
+    }
+    return getCampaignTemplate(campaignType).expectedLpUrl;
+  }
+
+  function getCampaignDisplayName(campaignType) {
+    if (campaignType === 'other') {
+      var name = csOtherCampaignName.value.trim();
+      return name || 'その他';
+    }
+    return getCampaignTemplate(campaignType).campaignName;
+  }
+
+  function computeAutoStatuses(lpUrl, expectedLpUrl) {
+    var normalized = normalizeCampaignLpUrl(lpUrl);
+    var entered = normalized !== null;
+    var matches = entered && compareCampaignLpUrl(lpUrl, expectedLpUrl);
+    var enteredStatus = entered ? CS_STATUS.OK : CS_STATUS.NG;
+    var matchesStatus = matches ? CS_STATUS.OK : CS_STATUS.NG;
+    if (!entered) matchesStatus = CS_STATUS.NG;
+    return {
+      lpUrlEntered: enteredStatus,
+      lpUrlMatches: matchesStatus,
+      finalUrlCorrect: matchesStatus
+    };
+  }
+
+  function readManualStatusesFromDom() {
+    var statuses = {};
+    csCheckGroups.querySelectorAll('.ab-cs-status-select').forEach(function (sel) {
+      var id = sel.getAttribute('data-item-id');
+      if (id) statuses[id] = sel.value;
+    });
+    return statuses;
+  }
+
+  function readCampaignSetupForm() {
+    var campaignType = csCampaignSelect.value;
+    var template = getCampaignTemplate(campaignType);
+    var lpUrl = csLpUrl.value.trim();
+    var expectedLpUrl = getExpectedLpUrl(campaignType);
+    var autoStatuses = computeAutoStatuses(lpUrl, expectedLpUrl);
+    var manualStatuses = readManualStatusesFromDom();
+    var itemStatuses = {};
+    var applicable = getApplicableItems(campaignType);
+
+    applicable.forEach(function (entry) {
+      var item = entry.item;
+      if (item.auto) {
+        itemStatuses[item.id] = autoStatuses[item.id] || CS_STATUS.NG;
+      } else {
+        itemStatuses[item.id] = manualStatuses[item.id] || CS_STATUS.UNCHECKED;
+      }
+    });
+
+    var progress = calculateCampaignSetupProgress(itemStatuses, campaignType);
+    var overallDecision = decideCampaignSetup(progress);
+
+    return {
+      campaignType: campaignType,
+      campaignName: getCampaignDisplayName(campaignType),
+      lpUrl: lpUrl,
+      expectedLpUrl: expectedLpUrl,
+      lpUrlMatches: autoStatuses.lpUrlMatches === CS_STATUS.OK,
+      itemStatuses: itemStatuses,
+      memo: csMemo.value.trim(),
+      okCount: progress.okCount,
+      ngCount: progress.ngCount,
+      uncheckedCount: progress.uncheckedCount,
+      notApplicableCount: progress.notApplicableCount,
+      completionRate: progress.completionRate,
+      overallDecision: overallDecision
+    };
+  }
+
+  function calculateCampaignSetupProgress(itemStatuses, campaignType) {
+    var applicable = getApplicableItems(campaignType);
+    var okCount = 0;
+    var ngCount = 0;
+    var uncheckedCount = 0;
+    var notApplicableCount = 0;
+    var totalApplicable = 0;
+
+    applicable.forEach(function (entry) {
+      var status = itemStatuses[entry.item.id] || CS_STATUS.UNCHECKED;
+      if (status === CS_STATUS.NOT_APPLICABLE) {
+        notApplicableCount++;
+        return;
+      }
+      totalApplicable++;
+      if (status === CS_STATUS.OK) okCount++;
+      else if (status === CS_STATUS.NG) ngCount++;
+      else uncheckedCount++;
+    });
+
+    var completionRate = 0;
+    if (totalApplicable > 0) {
+      completionRate = Math.round((okCount / totalApplicable) * 100);
+    }
+
+    return {
+      okCount: okCount,
+      ngCount: ngCount,
+      uncheckedCount: uncheckedCount,
+      notApplicableCount: notApplicableCount,
+      totalApplicable: totalApplicable,
+      completionRate: completionRate
+    };
+  }
+
+  function decideCampaignSetup(progress) {
+    if (progress.ngCount > 0) return CS_DECISION.NEEDS_FIX;
+    if (progress.uncheckedCount > 0) return CS_DECISION.IN_PROGRESS;
+    if (progress.totalApplicable > 0 && progress.okCount === progress.totalApplicable) {
+      return CS_DECISION.COMPLETE;
+    }
+    return CS_DECISION.IN_PROGRESS;
+  }
+
+  function csDecisionClass(decision) {
+    if (decision === CS_DECISION.COMPLETE) return 'is-cs-complete';
+    if (decision === CS_DECISION.NEEDS_FIX) return 'is-cs-needs-fix';
+    return 'is-cs-in-progress';
+  }
+
+  function csOverallClass(decision) {
+    if (decision === CS_DECISION.COMPLETE) return 'is-complete';
+    if (decision === CS_DECISION.NEEDS_FIX) return 'is-needs-fix';
+    return 'is-in-progress';
+  }
+
+  function findItemLabel(itemId, campaignType) {
+    var found = null;
+    getApplicableItems(campaignType).forEach(function (entry) {
+      if (entry.item.id === itemId) found = entry.item.label;
+    });
+    return found || itemId;
+  }
+
+  function getNextCampaignSetupAction(formData) {
+    var campaignType = formData.campaignType;
+    var template = getCampaignTemplate(campaignType);
+    var auto = computeAutoStatuses(formData.lpUrl, formData.expectedLpUrl);
+
+    if (auto.lpUrlEntered === CS_STATUS.NG || auto.lpUrlMatches === CS_STATUS.NG) {
+      return {
+        type: 'lpUrl',
+        message: '最終ページURLを' + template.lpFixLabel + 'に修正してください。',
+        correctUrl: formData.expectedLpUrl
+      };
+    }
+
+    var applicable = getApplicableItems(campaignType);
+    var i;
+    for (i = 0; i < applicable.length; i++) {
+      var item = applicable[i].item;
+      if (item.auto) continue;
+      var status = formData.itemStatuses[item.id];
+      if (status === CS_STATUS.NG) {
+        return {
+          type: 'ng',
+          message: '「' + item.label + '」を修正してください。'
+        };
+      }
+    }
+    for (i = 0; i < applicable.length; i++) {
+      item = applicable[i].item;
+      if (item.auto) continue;
+      status = formData.itemStatuses[item.id];
+      if (status === CS_STATUS.UNCHECKED) {
+        return {
+          type: 'unchecked',
+          message: '「' + item.label + '」を確認してください。'
+        };
+      }
+    }
+
+    return {
+      type: 'complete',
+      message: '設定完了。配信後の数値確認へ進んでください。'
+    };
+  }
+
+  function renderCampaignSetupTemplate(campaignType) {
+    var template = getCampaignTemplate(campaignType);
+    if (!template.expectations) {
+      csTemplateCard.innerHTML = '';
+      csTemplateCard.hidden = true;
+      return;
+    }
+    csTemplateCard.hidden = false;
+    var exp = template.expectations;
+    csTemplateCard.innerHTML =
+      '<h4>期待設定（' + escapeHtml(template.campaignName) + '）</h4>' +
+      '<dl class="ab-cs-template-grid">' +
+        '<dt>LP</dt><dd>' + escapeHtml(exp.lp) + '</dd>' +
+        '<dt>入札戦略</dt><dd>' + escapeHtml(exp.bidStrategy) + '</dd>' +
+        '<dt>予算</dt><dd>' + escapeHtml(exp.budget) + '</dd>' +
+        '<dt>コンバージョン目標</dt><dd>' + escapeHtml(exp.conversionGoal) + '</dd>' +
+        '<dt>コンバージョンアクション</dt><dd><ul class="ab-cs-template-list">' +
+          exp.conversionActions.map(function (a) { return '<li>' + escapeHtml(a) + '</li>'; }).join('') +
+        '</ul></dd>' +
+        '<dt>対象地域</dt><dd><ul class="ab-cs-template-list">' +
+          exp.regions.map(function (r) { return '<li>' + escapeHtml(r) + '</li>'; }).join('') +
+        '</ul></dd>' +
+        '<dt>地域オプション</dt><dd>' + escapeHtml(exp.regionOption) + '</dd>' +
+        '<dt>サイトリンク</dt><dd>' + escapeHtml(exp.sitelinks) + '</dd>' +
+        '<dt>コールアウト</dt><dd>' + escapeHtml(exp.callouts) + '</dd>' +
+        '<dt>構造化スニペット</dt><dd>' + escapeHtml(exp.structuredSnippet) + '</dd>' +
+        (exp.phoneAsset ? '<dt>電話アセット</dt><dd>' + escapeHtml(exp.phoneAsset) + '</dd>' : '') +
+        (exp.priceAsset ? '<dt>価格アセット</dt><dd>' + escapeHtml(exp.priceAsset) + '</dd>' : '') +
+      '</dl>';
+  }
+
+  function renderStatusSelect(item, value, disabled) {
+    var options = ['unchecked', 'ok', 'ng', 'not_applicable'].map(function (v) {
+      var selected = value === v ? ' selected' : '';
+      return '<option value="' + v + '"' + selected + '>' + CS_STATUS_LABELS[v] + '</option>';
+    }).join('');
+    return '<select class="ab-cs-status-select is-' + value + '" data-item-id="' + escapeHtml(item.id) + '"' +
+      (disabled ? ' disabled' : '') + '>' + options + '</select>';
+  }
+
+  function renderAutoStatusDisplay(status) {
+    var label = status === CS_STATUS.OK ? 'OK' : (status === CS_STATUS.NG ? 'NG' : '未確認');
+    return '<div class="ab-cs-auto-status is-' + status + '" data-auto-id="' + escapeHtml(status) + '">' + label + '（自動判定）</div>';
+  }
+
+  function countGroupStats(group, itemStatuses, campaignType) {
+    var ng = 0;
+    var unchecked = 0;
+    group.items.forEach(function (item) {
+      if (item.campaigns && item.campaigns.indexOf(campaignType) === -1) return;
+      var status = itemStatuses[item.id];
+      if (!status || status === CS_STATUS.UNCHECKED) unchecked++;
+      else if (status === CS_STATUS.NG) ng++;
+    });
+    return { ng: ng, unchecked: unchecked };
+  }
+
+  function renderCampaignSetupForm(campaignType, itemStatuses) {
+    var defaults = getDefaultItemStatuses(campaignType);
+    var merged = {};
+    Object.keys(defaults).forEach(function (k) { merged[k] = defaults[k]; });
+    if (itemStatuses) {
+      Object.keys(itemStatuses).forEach(function (k) { merged[k] = itemStatuses[k]; });
+    }
+
+    var lpUrl = csLpUrl.value.trim();
+    var expectedLpUrl = getExpectedLpUrl(campaignType);
+    var autoStatuses = computeAutoStatuses(lpUrl, expectedLpUrl);
+    merged.lpUrlEntered = autoStatuses.lpUrlEntered;
+    merged.lpUrlMatches = autoStatuses.lpUrlMatches;
+    merged.finalUrlCorrect = autoStatuses.finalUrlCorrect;
+
+    csCheckGroups.innerHTML = CAMPAIGN_SETUP_GROUPS.map(function (group) {
+      var visibleItems = group.items.filter(function (item) {
+        return !item.campaigns || item.campaigns.indexOf(campaignType) !== -1;
+      });
+      if (!visibleItems.length) return '';
+
+      var stats = countGroupStats(group, merged, campaignType);
+      var itemsHtml = visibleItems.map(function (item) {
+        var status = merged[item.id] || CS_STATUS.UNCHECKED;
+        var control = item.auto
+          ? renderAutoStatusDisplay(status)
+          : renderStatusSelect(item, status, false);
+        return '<div class="ab-cs-check-item' + (item.auto ? ' is-auto' : '') + '" data-item-id="' + escapeHtml(item.id) + '">' +
+          '<span class="ab-cs-check-label">' + escapeHtml(item.label) +
+          (item.auto ? '<span class="ab-cs-auto-badge">自動</span>' : '') + '</span>' +
+          control +
+        '</div>';
+      }).join('');
+
+      return '<details class="ab-cs-check-group" data-group-id="' + escapeHtml(group.id) + '" open>' +
+        '<summary>' + escapeHtml(group.title) +
+        '<span class="ab-cs-group-badges">' +
+          (stats.ng ? '<span class="is-ng">NG ' + stats.ng + '件</span>' : '') +
+          (stats.unchecked ? '<span class="is-unchecked">／未確認 ' + stats.unchecked + '件</span>' : '') +
+        '</span></summary>' +
+        '<div class="ab-cs-check-items">' + itemsHtml + '</div>' +
+      '</details>';
+    }).join('');
+
+    renderLpCompare(lpUrl, expectedLpUrl, autoStatuses);
+  }
+
+  function renderLpCompare(lpUrl, expectedLpUrl, autoStatuses) {
+    var matchText = autoStatuses.lpUrlMatches === CS_STATUS.OK ? '一致' : '不一致';
+    var matchCls = autoStatuses.lpUrlMatches === CS_STATUS.OK ? 'is-ok' : 'is-ng';
+    csLpCompare.innerHTML =
+      '<div>期待するLP URL：<span>' + escapeHtml(expectedLpUrl || '—') + '</span></div>' +
+      '<div>URL一致判定：<span class="' + matchCls + '">' + matchText + '</span></div>';
+  }
+
+  function renderCampaignSetupProgress(formData) {
+    var p = calculateCampaignSetupProgress(formData.itemStatuses, formData.campaignType);
+    csProgressStats.innerHTML =
+      '<span class="ab-cs-stat is-ok">OK ' + p.okCount + '件</span>' +
+      '<span class="ab-cs-stat is-ng">NG ' + p.ngCount + '件</span>' +
+      '<span class="ab-cs-stat is-unchecked">未確認 ' + p.uncheckedCount + '件</span>' +
+      '<span class="ab-cs-stat is-na">対象外 ' + p.notApplicableCount + '件</span>';
+
+    csOverallBox.className = 'ab-cs-overall ' + csOverallClass(formData.overallDecision);
+    csOverallBox.innerHTML =
+      '<div class="ab-cs-overall-label">総合判定：' + escapeHtml(formData.overallDecision) + '</div>' +
+      '<div class="ab-cs-completion">完了率：' + p.completionRate + '%（' + p.okCount + ' / ' + p.totalApplicable + '）</div>';
+
+    var next = getNextCampaignSetupAction(formData);
+    var nextHtml = '<strong>次の一手：</strong>' + escapeHtml(next.message);
+    if (next.correctUrl) {
+      nextHtml += '<span class="ab-cs-correct-url">正しいURL：<br>' + escapeHtml(next.correctUrl) + '</span>';
+    }
+    csNextActionBox.innerHTML = nextHtml;
+  }
+
+  function getLatestCheckForCampaign(checks, campaignType, campaignName) {
+    var filtered = checks.filter(function (c) {
+      if (campaignType === 'other') {
+        return c.campaignType === 'other' && c.campaignName === campaignName;
+      }
+      return c.campaignType === campaignType;
+    });
+    filtered.sort(function (a, b) {
+      return (a.checkedAt || '') < (b.checkedAt || '') ? 1 : (a.checkedAt || '') > (b.checkedAt || '') ? -1 : 0;
+    });
+    return filtered.length ? filtered[0] : null;
+  }
+
+  function listNgAndUnchecked(record) {
+    var campaignType = record.campaignType || 'complete_disassembly';
+    var statuses = record.itemStatuses || {};
+    var ng = [];
+    var unchecked = [];
+    getApplicableItems(campaignType).forEach(function (entry) {
+      var status = statuses[entry.item.id];
+      if (status === CS_STATUS.NG) ng.push(entry.item.label);
+      else if (status === CS_STATUS.UNCHECKED) unchecked.push(entry.item.label);
+    });
+    return { ng: ng, unchecked: unchecked };
+  }
+
+  function renderCampaignSetupLatest(checks, campaignType) {
+    var campaignName = getCampaignDisplayName(campaignType);
+    var latest = getLatestCheckForCampaign(checks, campaignType, campaignName);
+
+    if (!latest) {
+      csLatest.hidden = false;
+      csLatestBody.innerHTML = '<p>まだ初期設定チェックの履歴がありません。</p>';
+      return;
+    }
+
+    var lists = listNgAndUnchecked(latest);
+    var lpMatchText = latest.lpUrlMatches ? '一致' : '不一致';
+    var lpMatchCls = latest.lpUrlMatches ? 'is-ok' : 'is-ng';
+
+    csLatest.hidden = false;
+    csLatestBody.innerHTML =
+      '<div class="ab-cs-latest-summary">' +
+        '<span><strong>最終確認日：</strong>' + escapeHtml(latest.checkedAt || '—') + '</span>' +
+        '<span class="ab-badge ' + csDecisionClass(latest.overallDecision) + '">' + escapeHtml(latest.overallDecision || '—') + '</span>' +
+        '<span>完了率：' + (latest.completionRate != null ? latest.completionRate : 0) + '%</span>' +
+      '</div>' +
+      '<p><strong>現在のLP URL：</strong>' + escapeHtml(latest.lpUrl || '—') + '</p>' +
+      '<p><strong>期待するLP URL：</strong>' + escapeHtml(latest.expectedLpUrl || '—') + '</p>' +
+      '<p><strong>LP URL一致判定：</strong><span class="' + lpMatchCls + '">' + lpMatchText + '</span></p>' +
+      (lists.ng.length ? '<p><strong>NG項目：</strong>' + escapeHtml(lists.ng.join('、')) + '</p>' : '<p><strong>NG項目：</strong>なし</p>') +
+      (lists.unchecked.length ? '<p><strong>未確認項目：</strong>' + escapeHtml(lists.unchecked.join('、')) + '</p>' : '<p><strong>未確認項目：</strong>なし</p>') +
+      (latest.memo ? '<p><strong>メモ：</strong>' + escapeHtml(latest.memo) + '</p>' : '');
+  }
+
+  function renderCampaignSetupHistory(checks) {
+    var sorted = checks.slice().sort(function (a, b) {
+      return (a.checkedAt || '') < (b.checkedAt || '') ? 1 : (a.checkedAt || '') > (b.checkedAt || '') ? -1 : 0;
+    });
+
+    csHistoryTbody.innerHTML = sorted.map(function (e) {
+      var lpMatch = e.lpUrlMatches ? '一致' : '不一致';
+      return '<tr>' +
+        '<td>' + escapeHtml(e.checkedAt || '—') + '</td>' +
+        '<td>' + escapeHtml(e.campaignName || '—') + '</td>' +
+        '<td style="text-align:center;"><span class="ab-badge ' + csDecisionClass(e.overallDecision) + '">' + escapeHtml(e.overallDecision || '—') + '</span></td>' +
+        '<td>' + (e.completionRate != null ? e.completionRate : 0) + '%</td>' +
+        '<td>' + lpMatch + '</td>' +
+        '<td>' + (e.okCount != null ? e.okCount : '—') + '</td>' +
+        '<td>' + (e.ngCount != null ? e.ngCount : '—') + '</td>' +
+        '<td>' + (e.uncheckedCount != null ? e.uncheckedCount : '—') + '</td>' +
+        '<td class="memo-cell" title="' + escapeHtml(e.memo) + '">' + escapeHtml(e.memo || '—') + '</td>' +
+        '<td style="text-align:center;"><button type="button" class="ab-delete-btn ab-cs-delete-btn" data-id="' + escapeHtml(e.id) + '">削除</button></td>' +
+        '</tr>';
+    }).join('');
+
+    csHistoryCards.innerHTML = sorted.map(function (e) {
+      var lpMatch = e.lpUrlMatches ? '一致' : '不一致';
+      return '<div class="ab-cs-history-card">' +
+        '<div class="ab-cs-history-card-header">' +
+          '<strong>' + escapeHtml(e.checkedAt || '—') + '</strong>' +
+          '<span class="ab-badge ' + csDecisionClass(e.overallDecision) + '">' + escapeHtml(e.overallDecision || '—') + '</span>' +
+        '</div>' +
+        '<div class="ab-cs-history-card-row">キャンペーン：' + escapeHtml(e.campaignName || '—') + '</div>' +
+        '<div class="ab-cs-history-card-row">完了率：' + (e.completionRate != null ? e.completionRate : 0) + '%｜LP URL：' + lpMatch + '</div>' +
+        '<div class="ab-cs-history-card-row">OK ' + (e.okCount != null ? e.okCount : 0) + '／NG ' + (e.ngCount != null ? e.ngCount : 0) + '／未確認 ' + (e.uncheckedCount != null ? e.uncheckedCount : 0) + '</div>' +
+        (e.memo ? '<div class="ab-cs-history-card-row">メモ：' + escapeHtml(e.memo) + '</div>' : '') +
+        '<button type="button" class="ab-delete-btn ab-cs-delete-btn" data-id="' + escapeHtml(e.id) + '" style="margin-top:8px;">削除</button>' +
+      '</div>';
+    }).join('');
+
+    csHistoryEmpty.style.display = sorted.length ? 'none' : 'block';
+  }
+
+  function updateCampaignSetupPreview() {
+    var formData = readCampaignSetupForm();
+    renderCampaignSetupProgress(formData);
+    var campaignType = csCampaignSelect.value;
+    var autoStatuses = computeAutoStatuses(formData.lpUrl, formData.expectedLpUrl);
+    var manualStatuses = readManualStatusesFromDom();
+    var merged = getDefaultItemStatuses(campaignType);
+    Object.keys(manualStatuses).forEach(function (k) { merged[k] = manualStatuses[k]; });
+    merged.lpUrlEntered = autoStatuses.lpUrlEntered;
+    merged.lpUrlMatches = autoStatuses.lpUrlMatches;
+    merged.finalUrlCorrect = autoStatuses.finalUrlCorrect;
+
+    csCheckGroups.querySelectorAll('.ab-cs-check-item.is-auto').forEach(function (el) {
+      var itemId = el.getAttribute('data-item-id');
+      var status = merged[itemId] || CS_STATUS.UNCHECKED;
+      var display = el.querySelector('.ab-cs-auto-status');
+      if (display) {
+        var label = status === CS_STATUS.OK ? 'OK' : (status === CS_STATUS.NG ? 'NG' : '未確認');
+        display.className = 'ab-cs-auto-status is-' + status;
+        display.textContent = label + '（自動判定）';
+      }
+    });
+
+    renderLpCompare(formData.lpUrl, formData.expectedLpUrl, autoStatuses);
+
+    CAMPAIGN_SETUP_GROUPS.forEach(function (group) {
+      var details = csCheckGroups.querySelector('.ab-cs-check-group[data-group-id="' + group.id + '"]');
+      if (!details) return;
+      var stats = countGroupStats(group, merged, campaignType);
+      var badges = details.querySelector('.ab-cs-group-badges');
+      if (badges) {
+        badges.innerHTML =
+          (stats.ng ? '<span class="is-ng">NG ' + stats.ng + '件</span>' : '') +
+          (stats.unchecked ? '<span class="is-unchecked">／未確認 ' + stats.unchecked + '件</span>' : '');
+      }
+    });
+  }
+
+  function renderCampaignSetupAll() {
+    var campaignType = csCampaignSelect.value;
+    csOtherFields.hidden = campaignType !== 'other';
+    renderCampaignSetupTemplate(campaignType);
+
+    var checks = loadCampaignSetupChecks();
+    renderCampaignSetupLatest(checks, campaignType);
+    renderCampaignSetupHistory(checks);
+
+    var manualStatuses = readManualStatusesFromDom();
+    var hasExisting = Object.keys(manualStatuses).length > 0;
+    if (!hasExisting) {
+      renderCampaignSetupForm(campaignType, getDefaultItemStatuses(campaignType));
+    } else {
+      renderCampaignSetupForm(campaignType, manualStatuses);
+    }
+    updateCampaignSetupPreview();
+    csFormDirty = false;
+  }
+
+  function switchCampaignSetup(campaignType) {
+    csCurrentCampaignType = campaignType;
+    csCampaignSelect.value = campaignType;
+    csOtherFields.hidden = campaignType !== 'other';
+    renderCampaignSetupTemplate(campaignType);
+    renderCampaignSetupForm(campaignType, getDefaultItemStatuses(campaignType));
+    csLpUrl.value = '';
+    csMemo.value = '';
+    var checks = loadCampaignSetupChecks();
+    renderCampaignSetupLatest(checks, campaignType);
+    updateCampaignSetupPreview();
+    csFormDirty = false;
+  }
+
+  function resetCampaignSetupForm() {
+    var campaignType = csCampaignSelect.value;
+    csLpUrl.value = '';
+    csMemo.value = '';
+    if (campaignType === 'other') {
+      csOtherCampaignName.value = '';
+      csOtherExpectedLp.value = '';
+    }
+    renderCampaignSetupForm(campaignType, getDefaultItemStatuses(campaignType));
+    updateCampaignSetupPreview();
+    csFormDirty = false;
+  }
+
+  function loadLatestCampaignSetupToForm() {
+    var campaignType = csCampaignSelect.value;
+    var campaignName = getCampaignDisplayName(campaignType);
+    var checks = loadCampaignSetupChecks();
+    var latest = getLatestCheckForCampaign(checks, campaignType, campaignName);
+
+    if (!latest) {
+      alert('このキャンペーンの保存履歴がありません。');
+      return;
+    }
+
+    if (latest.campaignType === 'other') {
+      csOtherCampaignName.value = latest.campaignName || '';
+      csOtherExpectedLp.value = latest.expectedLpUrl || '';
+    }
+    csLpUrl.value = latest.lpUrl || '';
+    csMemo.value = latest.memo || '';
+    renderCampaignSetupForm(campaignType, latest.itemStatuses || getDefaultItemStatuses(campaignType));
+    updateCampaignSetupPreview();
+    csFormDirty = false;
+  }
+
+  function hasCampaignSetupFormChanges() {
+    if (!csFormDirty) return false;
+    var campaignType = csCampaignSelect.value;
+    var defaults = getDefaultItemStatuses(campaignType);
+    var manual = readManualStatusesFromDom();
+    var hasManualChange = Object.keys(manual).some(function (k) {
+      return manual[k] !== (defaults[k] || CS_STATUS.UNCHECKED);
+    });
+    return hasManualChange || csLpUrl.value.trim() !== '' || csMemo.value.trim() !== '';
+  }
+
+  csCampaignSelect.addEventListener('change', function () {
+    var newType = csCampaignSelect.value;
+    if (newType === csCurrentCampaignType) return;
+    if (hasCampaignSetupFormChanges()) {
+      if (!confirm('未保存の入力があります。キャンペーンを切り替えますか？')) {
+        csCampaignSelect.value = csCurrentCampaignType;
+        return;
+      }
+    }
+    switchCampaignSetup(newType);
+  });
+
+  csLpUrl.addEventListener('input', function () {
+    csFormDirty = true;
+    updateCampaignSetupPreview();
+  });
+
+  csOtherExpectedLp.addEventListener('input', function () {
+    csFormDirty = true;
+    updateCampaignSetupPreview();
+  });
+
+  csCheckGroups.addEventListener('change', function (ev) {
+    var sel = ev.target.closest('.ab-cs-status-select');
+    if (!sel) return;
+    csFormDirty = true;
+    sel.className = 'ab-cs-status-select is-' + sel.value;
+    updateCampaignSetupPreview();
+  });
+
+  csMemo.addEventListener('input', function () { csFormDirty = true; });
+
+  campaignSetupForm.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var formData = readCampaignSetupForm();
+    if (formData.campaignType === 'other' && !formData.campaignName) {
+      alert('その他を選択した場合はキャンペーン名を入力してください。');
+      return;
+    }
+
+    var today = new Date();
+    var checkedAt = today.getFullYear() + '-' +
+      String(today.getMonth() + 1).padStart(2, '0') + '-' +
+      String(today.getDate()).padStart(2, '0');
+
+    var record = {
+      id: 'cs-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+      checkedAt: checkedAt,
+      campaignName: formData.campaignName,
+      campaignType: formData.campaignType,
+      lpUrl: formData.lpUrl,
+      expectedLpUrl: formData.expectedLpUrl,
+      lpUrlMatches: formData.lpUrlMatches,
+      itemStatuses: formData.itemStatuses,
+      memo: formData.memo,
+      okCount: formData.okCount,
+      ngCount: formData.ngCount,
+      uncheckedCount: formData.uncheckedCount,
+      notApplicableCount: formData.notApplicableCount,
+      completionRate: formData.completionRate,
+      overallDecision: formData.overallDecision
+    };
+
+    var checks = loadCampaignSetupChecks();
+    checks.push(record);
+    saveCampaignSetupChecks(checks);
+    renderCampaignSetupLatest(checks, formData.campaignType);
+    renderCampaignSetupHistory(checks);
+    csFormDirty = false;
+    alert('設定チェックを保存しました。');
+  });
+
+  csResetBtn.addEventListener('click', function () {
+    if (!confirm('すべて未確認に戻しますか？キャンペーン固有の対象外項目は対象外に戻ります。')) return;
+    resetCampaignSetupForm();
+  });
+
+  csLoadLatestBtn.addEventListener('click', loadLatestCampaignSetupToForm);
+
+  function handleCsHistoryDelete(ev) {
+    var btn = ev.target.closest('.ab-cs-delete-btn');
+    if (!btn) return;
+    if (!confirm('この設定チェック履歴を削除しますか？')) return;
+    var id = btn.getAttribute('data-id');
+    var checks = loadCampaignSetupChecks().filter(function (e) { return e.id !== id; });
+    saveCampaignSetupChecks(checks);
+    renderCampaignSetupHistory(checks);
+    renderCampaignSetupLatest(checks, csCampaignSelect.value);
+  }
+
+  csHistoryTbody.addEventListener('click', handleCsHistoryDelete);
+  csHistoryCards.addEventListener('click', handleCsHistoryDelete);
+
   /* ===== 初期化 ===== */
 
   (function init() {
@@ -507,5 +1423,6 @@
 
     renderAll();
     renderPreflightAll();
+    renderCampaignSetupAll();
   })();
 })();

@@ -1,4 +1,4 @@
-更新日: 2026-06-11
+更新日: 2026-06-12
 
 ## 前提（読む順）
 
@@ -26,6 +26,7 @@
 - **中部家庭LP `central.html` 公開準備完了**
 - **広告番頭MVP 作成・検証完了（2026-06-10）**：**表示確認・入力テスト済みで運用開始可能**
 - **広告開始前チェック・LP debug CTA確認 最終確認完了（2026-06-10）**：Google広告小額テスト開始可能
+- **Google広告 初期設定チェッカー追加（2026-06-12）**：完全分解・AI帳票番頭の専用テンプレート、LP URL自動判定、4状態チェック、履歴保存。localStorageのみ。Google Ads API・GA4 API連携は未実装
 - **完全分解LP LINE相談優先文面 追加完了（2026-06-10）**（`f7a2195`）
 - **Search Console は反映待ち確認フェーズ**（再送信・再リクエストは不要）
 - **新規 LP コード修正は急がない**。データを見て必要な地域だけ行う
@@ -71,7 +72,7 @@
 | FAQ一覧 | `cursor-test/faq.html` | cases・業務LP導線、構造化データ確認済み |
 | 南部まとめ | `cursor-test/south.html` | cases・業務LP導線、構造化データ確認済み |
 | 業務LP | `business-cleaning/index.html` | FAQ7、相談事例・見積り前・料金セクション、Instagram1件（`DMh62EjPcNu`）、構造化データ・sitemap済み |
-| **広告番頭MVP** | `ops/ad-bantou/`（index.html / style.css / app.js） | **2026-06-10 新規作成・検証完了**（`0a058bb`）。日次入力・自動計算・自動判定（継続/改善/停止候補/データ不足）・日別ログ・LP別集計・**広告開始前チェック**（`bcAdBantouPreflightChecks`）。localStorage（`bcAdBantouDailyLogs`）。noindex・sitemap未登録・既存LPからの導線なし。**公開URLでの表示確認・テスト入力・再読み込み復元・広告開始前チェック最終確認まで全項目OK。Google広告小額テスト開始可能** |
+| **広告番頭MVP** | `ops/ad-bantou/`（index.html / style.css / app.js） | **2026-06-10 新規作成・検証完了**（`0a058bb`）。日次入力・自動計算・自動判定（継続/改善/停止候補/データ不足）・日別ログ・LP別集計・**広告開始前チェック**（`bcAdBantouPreflightChecks`）・**Google広告 初期設定チェッカー**（`bcAdBantouCampaignSetupChecks`、2026-06-12）。localStorage（`bcAdBantouDailyLogs` / `bcAdBantouPreflightChecks` / `bcAdBantouCampaignSetupChecks`）。日次入力LP種別にAI帳票番頭LP追加。noindex・sitemap未登録・既存LPからの導線なし。**Google Ads API・GA4 API連携は未実装** |
 
 **中部LP 対応エリア**
 
@@ -277,7 +278,7 @@
 
 ## 次にやるべき1手
 
-- **Google広告の日次運用と広告番頭への数値入力**（毎日21時）。問い合わせ・成約・CPA・ROASを確認し、GA4で地域LP別CTA反応を蓄積する
+- **Google広告キャンペーン開始前に、広告番頭の「Google広告 初期設定チェッカー」で設定漏れを確認してから配信する**。その後、毎日21時の日次入力で問い合わせ・成約・CPA・ROASを確認する
 
 ## 判断基準
 

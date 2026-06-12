@@ -127,6 +127,90 @@
       <p class="ab-empty" id="preflight-history-empty">まだチェック履歴がありません。</p>
     </section>
 
+    <!-- Google広告 初期設定チェッカー -->
+    <section class="ab-section" id="campaign-setup-section">
+      <h2 class="ab-section-title">Google広告 初期設定チェッカー</h2>
+      <p class="ab-section-desc">キャンペーン開始前に、配信・計測・広告文・広告アセットの設定漏れを確認します。Google広告を自動取得する機能ではありません。実際の管理画面を確認して手動で記録してください。</p>
+
+      <div class="ab-field">
+        <label for="cs-campaign-select">確認するキャンペーン <span class="req">必須</span></label>
+        <select id="cs-campaign-select">
+          <option value="complete_disassembly">完全分解_南部_検索_小額テスト</option>
+          <option value="ai_bantou">AI帳票番頭_検索_全国_初期</option>
+          <option value="other">その他</option>
+        </select>
+      </div>
+
+      <div id="cs-other-fields" class="ab-cs-other-fields" hidden>
+        <div class="ab-field">
+          <label for="cs-other-campaign-name">キャンペーン名</label>
+          <input type="text" id="cs-other-campaign-name" placeholder="例：テストキャンペーン_検索">
+        </div>
+        <div class="ab-field">
+          <label for="cs-other-expected-lp">期待するLP URL</label>
+          <input type="url" id="cs-other-expected-lp" placeholder="https://example.com/lp/">
+        </div>
+      </div>
+
+      <div id="cs-template-card" class="ab-cs-template-card"></div>
+
+      <div class="ab-cs-progress" id="cs-progress-box">
+        <div class="ab-cs-progress-stats" id="cs-progress-stats"></div>
+        <div class="ab-cs-overall" id="cs-overall-box"></div>
+        <div class="ab-cs-next-action" id="cs-next-action-box"></div>
+      </div>
+
+      <div class="ab-cs-latest" id="cs-latest" hidden>
+        <p class="ab-cs-latest-title">最新の確認結果</p>
+        <div class="ab-cs-latest-body" id="cs-latest-body"></div>
+      </div>
+
+      <form id="campaign-setup-form" autocomplete="off">
+        <div class="ab-field ab-cs-lp-field">
+          <label for="cs-lp-url">現在設定されているLP URL</label>
+          <input type="url" id="cs-lp-url" placeholder="https://teruya1229.github.io/complete-disassembly/">
+          <div class="ab-cs-lp-compare" id="cs-lp-compare"></div>
+        </div>
+
+        <div id="cs-check-groups"></div>
+
+        <div class="ab-field">
+          <label for="cs-memo">メモ</label>
+          <p class="ab-hint"><strong>顧客名・住所・電話番号などの個人情報は入力しないでください。</strong>広告設定上の電話番号や地域設定を確認する項目はあっても、顧客個人情報を保存する用途にはしないでください。</p>
+          <textarea id="cs-memo" rows="2" placeholder="例：サイトリンクのURLを1件修正済み。"></textarea>
+        </div>
+
+        <div class="ab-cs-form-actions">
+          <button type="submit" class="ab-submit ab-submit--secondary">設定チェックを保存</button>
+          <button type="button" class="ab-cs-btn-secondary" id="cs-reset-btn">すべて未確認に戻す</button>
+          <button type="button" class="ab-cs-btn-secondary" id="cs-load-latest-btn">現在のキャンペーンの最新結果をフォームへ読み込む</button>
+        </div>
+      </form>
+
+      <h3 class="ab-subsection-title">設定チェック履歴</h3>
+      <div class="ab-cs-history-cards" id="cs-history-cards"></div>
+      <div class="ab-table-wrap ab-cs-history-table-wrap">
+        <table class="ab-table ab-table--campaign-setup" id="cs-history-table">
+          <thead>
+            <tr>
+              <th>確認日</th>
+              <th>キャンペーン</th>
+              <th>判定</th>
+              <th>完了率</th>
+              <th>LP URL判定</th>
+              <th>OK</th>
+              <th>NG</th>
+              <th>未確認</th>
+              <th>メモ</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="cs-history-tbody"></tbody>
+        </table>
+      </div>
+      <p class="ab-empty" id="cs-history-empty">まだ初期設定チェックの履歴がありません。</p>
+    </section>
+
     <!-- 今日の入力 -->
     <section class="ab-section" id="input-section">
       <h2 class="ab-section-title">今日の入力</h2>
@@ -145,6 +229,7 @@
             <option value="">選択してください</option>
             <option value="家庭LP">家庭LP</option>
             <option value="完全分解LP">完全分解LP</option>
+            <option value="AI帳票番頭LP">AI帳票番頭LP</option>
             <option value="業務LP">業務LP</option>
             <option value="現場業プラスワン研究会LP">現場業プラスワン研究会LP</option>
             <option value="その他">その他</option>
