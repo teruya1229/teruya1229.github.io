@@ -217,7 +217,7 @@
 
       <div class="ab-bb-import" id="bb-import-box">
         <h3 class="ab-subsection-title ab-bb-import-title">ブラウザー番頭JSON読み込み</h3>
-        <p class="ab-hint">ブラウザー番頭の <code>output/capture-*.json</code> をコピーして貼り付け、「JSONを反映」で下のフォームへ転記できます。</p>
+        <p class="ab-hint">ブラウザー番頭の <code>output/capture-*.json</code> または <code>output/daily-check-latest.json</code> をコピーして貼り付け、「JSONを反映」で下のフォームへ転記できます。</p>
         <div class="ab-field ab-bb-import-field">
           <label for="bb-json-input">browser-bantou JSON</label>
           <textarea id="bb-json-input" class="ab-bb-json-textarea" rows="8" placeholder='{"source":"browser-bantou","adBantouDailyInput":{...}}'></textarea>
@@ -226,8 +226,12 @@
           <button type="button" class="ab-submit ab-submit--secondary ab-bb-btn-apply" id="bb-json-apply-btn">JSONを反映</button>
           <button type="button" class="ab-cs-btn-secondary ab-bb-btn-clear" id="bb-json-clear-btn">クリア</button>
         </div>
-        <p class="ab-bb-import-note">保存はまだされません。内容確認後、既存の保存ボタンで保存してください。</p>
+        <p class="ab-bb-import-note">保存はまだされません。内容確認後、既存の保存ボタンで保存してください。一括JSON（daily-check）の場合はプレビューから1件ずつ反映してください。</p>
         <div class="ab-bb-import-message" id="bb-import-message" hidden></div>
+        <div class="ab-bb-batch-preview" id="bb-batch-preview" hidden>
+          <p class="ab-bb-batch-title">一括JSON（daily-check）プレビュー</p>
+          <div class="ab-bb-batch-items" id="bb-batch-items"></div>
+        </div>
       </div>
 
       <form id="entry-form" autocomplete="off">

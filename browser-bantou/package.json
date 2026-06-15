@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node run-readonly.mjs",
-    "template": "node run-readonly.mjs --template-only"
+    "template": "node run-readonly.mjs --template-only",
+    "daily-check": "node run-daily-check.mjs"
   },
   "engines": {
     "node": ">=18"

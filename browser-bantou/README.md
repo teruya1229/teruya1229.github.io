@@ -45,6 +45,33 @@ npm start
 node run-readonly.mjs --campaign=ai_bantou
 ```
 
+### 2b. 21時チェック（推奨・ワンクリック運用）
+
+毎日の確認は **bat をダブルクリック** するだけでOKです。
+
+```text
+run-daily-check.bat
+```
+
+または:
+
+```bash
+npm run daily-check
+```
+
+流れ:
+
+1. `complete_disassembly` の Google広告画面を開く → 確認後 Enter
+2. `ai_bantou` の Google広告画面を開く → 確認後 Enter
+3. 2件分を `output/daily-check-latest.json` にまとめて保存
+4. Windows では JSON をクリップボードへ自動コピー
+5. 広告番頭（`https://teruya1229.github.io/ops/ad-bantou/`）を自動で開く
+6. 広告番頭の「ブラウザー番頭JSON読み込み」へ貼り付け → 各件をフォームへ反映 → 保存
+
+単発確認が必要なときだけ `run-readonly.mjs` を使います。
+
+### 3. ブラウザを開いて確認するとき（単発・従来）
+
 1. Chromeが開き、Google広告へ移動します
 2. `campaigns.local.json`（または `campaigns.json`）の `campaignUrl` が設定されていれば **そのURLを直接開きます**
 3. `campaignUrl` が空なら、従来どおり **overview**（`https://ads.google.com/aw/overview`）を開きます
@@ -98,11 +125,11 @@ node run-readonly.mjs --campaign=ai_bantou
 
 ## 広告番頭との連携
 
-1. `output/capture-*.json` の `adBantouDailyInput` をコピー
-2. https://teruya1229.github.io/ops/ad-bantou/ の「今日の入力」へ手動転記
-3. 初期設定チェックは同ページの「Google広告 初期設定チェッカー」で記録
-
-将来的には「JSONをクリップボードにコピー」ボタンや、広告番頭側の「browser-bantou JSON を読み込む」欄を追加可能です（現時点はファイル経由の手動連携）。
+1. **日次チェック（推奨）**: `run-daily-check.bat` 実行後、クリップボードの一括JSONを広告番頭へ貼り付け
+2. **単発**: `output/capture-*.json` の `adBantouDailyInput` をコピー
+3. https://teruya1229.github.io/ops/ad-bantou/ の「ブラウザー番頭JSON読み込み」で反映
+4. 一括JSONはプレビューから1件ずつフォームへ反映 → 既存の保存ボタンで保存
+5. 初期設定チェックは同ページの「Google広告 初期設定チェッカー」で記録
 
 ## 取得できる / できない項目
 
@@ -119,7 +146,10 @@ node run-readonly.mjs --campaign=ai_bantou
 ```
 browser-bantou/
   package.json
-  run-readonly.mjs   # read-only 起動・出力
+  readonly-core.mjs  # 共通ロジック（run-readonly / run-daily-check）
+  run-readonly.mjs   # read-only 単発起動・出力
+  run-daily-check.mjs
+  run-daily-check.bat
   campaigns.json     # キャンペーン定義（広告番頭と整合・Git管理）
   campaigns.local.json  # キャンペーン直URL（ローカル専用・gitignore）
   README.md

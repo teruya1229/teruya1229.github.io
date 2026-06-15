@@ -2,6 +2,10 @@
 
 ## 本日やったこと
 
+### 2026-06-15（21時チェック簡略化）
+
+ブラウザー番頭に `run-daily-check.bat` / `run-daily-check.mjs` を追加。完全分解・AI帳票番頭を順番に read-only 実行し、一括JSONを `output/daily-check-latest.json` へ保存。Windows ではクリップボードコピーと広告番頭URL自動起動。広告番頭は一括JSON（daily-check）のプレビュー・1件ずつフォーム反映に対応。
+
 ### 2026-06-15（広告番頭：ブラウザー番頭JSON読み込み）
 
 広告番頭 `ops/ad-bantou/` に、ブラウザー番頭の出力JSON（`adBantouDailyInput`）を貼り付けて「今日の入力」フォームへ反映するUIを追加。反映のみで自動保存はしない（既存の保存ボタンで保存）。localStorageキーは追加なし。

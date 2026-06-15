@@ -790,6 +790,73 @@ body {
   color: var(--warn);
 }
 
+.ab-bb-batch-preview {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.ab-bb-batch-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: var(--brand);
+}
+.ab-bb-batch-items {
+  display: grid;
+  gap: 12px;
+}
+.ab-bb-batch-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.ab-bb-batch-card-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.ab-bb-batch-card-index {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #fff;
+  background: var(--brand);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+.ab-bb-batch-card-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  word-break: break-word;
+}
+.ab-bb-batch-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 12px;
+  font-size: 0.82rem;
+  color: var(--text-sub);
+  margin-bottom: 10px;
+}
+.ab-bb-batch-metrics dt {
+  font-weight: 700;
+  color: var(--text-main);
+}
+.ab-bb-batch-metrics dd {
+  margin: 0;
+  word-break: break-word;
+}
+.ab-bb-batch-apply-btn {
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 10px 14px;
+  min-height: 44px;
+  font-size: 0.92rem;
+}
+
 .ab-table--campaign-setup td { font-size: 0.8rem; }
 .ab-table--campaign-setup .memo-cell { max-width: 160px; }
 
@@ -811,4 +878,5 @@ body {
   .ab-cs-btn-secondary { max-width: none; }
   .ab-bb-import-actions .ab-submit,
   .ab-bb-import-actions .ab-cs-btn-secondary { max-width: none; width: 100%; }
+  .ab-bb-batch-metrics { grid-template-columns: 1fr; }
 }

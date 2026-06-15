@@ -310,6 +310,16 @@
   var bbJsonApplyBtn = document.getElementById('bb-json-apply-btn');
   var bbJsonClearBtn = document.getElementById('bb-json-clear-btn');
   var bbImportMessage = document.getElementById('bb-import-message');
+  var bbBatchPreview = document.getElementById('bb-batch-preview');
+  var bbBatchItems = document.getElementById('bb-batch-items');
+
+  function formatBbMetricValue(value) {
+    if (value === null || value === undefined || value === '') return '—';
+    if (typeof value === 'number' && isFinite(value)) {
+      return Number.isInteger(value) ? String(value) : value.toFixed(2);
+    }
+    return String(value);
+  }
 
   function setFormFieldValue(fieldId, value, isNumber) {
     var el = document.getElementById(fieldId);
@@ -336,6 +346,26 @@
     lpSelect.value = optionExists ? normalized : '';
   }
 
+  function validateAdBantouDailyInput(input, labelPrefix) {
+    var prefix = labelPrefix ? labelPrefix + ': ' : '';
+    if (!input) {
+      return { ok: false, error: prefix + 'adBantouDailyInput が見つかりません。' };
+    }
+    if (typeof input !== 'object' || Array.isArray(input)) {
+      return { ok: false, error: prefix + 'adBantouDailyInput がオブジェクトではありません。' };
+    }
+    if (!input.date || String(input.date).trim() === '') {
+      return { ok: false, error: prefix + 'adBantouDailyInput.date が必要です。' };
+    }
+    if (!input.lpType || String(input.lpType).trim() === '') {
+      return { ok: false, error: prefix + 'adBantouDailyInput.lpType が必要です。' };
+    }
+    if (!input.campaignName || String(input.campaignName).trim() === '') {
+      return { ok: false, error: prefix + 'adBantouDailyInput.campaignName が必要です。' };
+    }
+    return { ok: true, input: input };
+  }
+
   function parseBrowserBantouJson(raw) {
     var data;
     try {
@@ -346,27 +376,38 @@
     if (!data || typeof data !== 'object' || Array.isArray(data)) {
       return { ok: false, error: 'JSONの形式が正しくありません。' };
     }
-    var input = data.adBantouDailyInput;
-    if (!input) {
-      return { ok: false, error: 'adBantouDailyInput が見つかりません。' };
-    }
-    if (typeof input !== 'object' || Array.isArray(input)) {
-      return { ok: false, error: 'adBantouDailyInput がオブジェクトではありません。' };
-    }
-    if (!input.date || String(input.date).trim() === '') {
-      return { ok: false, error: 'adBantouDailyInput.date が必要です。' };
-    }
-    if (!input.lpType || String(input.lpType).trim() === '') {
-      return { ok: false, error: 'adBantouDailyInput.lpType が必要です。' };
-    }
-    if (!input.campaignName || String(input.campaignName).trim() === '') {
-      return { ok: false, error: 'adBantouDailyInput.campaignName が必要です。' };
-    }
+
     var warning = null;
     if (data.source !== 'browser-bantou') {
       warning = 'source が browser-bantou ではありません。内容を確認してから反映してください。';
     }
-    return { ok: true, input: input, warning: warning };
+
+    if (data.mode === 'daily-check' && Array.isArray(data.items)) {
+      var batchItems = [];
+      for (var i = 0; i < data.items.length; i++) {
+        var item = data.items[i];
+        var validated = validateAdBantouDailyInput(item && item.adBantouDailyInput, 'items[' + i + ']');
+        if (!validated.ok) {
+          return { ok: false, error: validated.error };
+        }
+        batchItems.push({
+          index: i,
+          campaignId: item.campaignId || '',
+          campaignName: item.campaignName || validated.input.campaignName,
+          input: validated.input
+        });
+      }
+      if (!batchItems.length) {
+        return { ok: false, error: 'items が空です。' };
+      }
+      return { ok: true, type: 'batch', items: batchItems, warning: warning };
+    }
+
+    var single = validateAdBantouDailyInput(data.adBantouDailyInput);
+    if (!single.ok) {
+      return single;
+    }
+    return { ok: true, type: 'single', input: single.input, warning: warning };
   }
 
   function applyBrowserBantouInput(input) {
@@ -390,25 +431,93 @@
     bbImportMessage.textContent = text;
   }
 
+  function hideBbBatchPreview() {
+    bbBatchPreview.hidden = true;
+    bbBatchItems.innerHTML = '';
+  }
+
+  function renderBbBatchPreview(items, warning) {
+    bbBatchPreview.hidden = false;
+    bbBatchItems.innerHTML = items.map(function (item, idx) {
+      var input = item.input;
+      return '<article class="ab-bb-batch-card">' +
+        '<div class="ab-bb-batch-card-header">' +
+          '<span class="ab-bb-batch-card-index">' + (idx + 1) + '件目</span>' +
+          '<span class="ab-bb-batch-card-name">' + escapeHtml(item.campaignName || input.campaignName) + '</span>' +
+        '</div>' +
+        '<dl class="ab-bb-batch-metrics">' +
+          '<div><dt>日付</dt><dd>' + escapeHtml(input.date) + '</dd></div>' +
+          '<div><dt>LP種別</dt><dd>' + escapeHtml(input.lpType) + '</dd></div>' +
+          '<div><dt>キャンペーン名</dt><dd>' + escapeHtml(input.campaignName) + '</dd></div>' +
+          '<div><dt>費用</dt><dd>' + escapeHtml(formatBbMetricValue(input.cost)) + '</dd></div>' +
+          '<div><dt>表示回数</dt><dd>' + escapeHtml(formatBbMetricValue(input.impressions)) + '</dd></div>' +
+          '<div><dt>クリック数</dt><dd>' + escapeHtml(formatBbMetricValue(input.clicks)) + '</dd></div>' +
+          '<div><dt>平均CPC</dt><dd>' + escapeHtml(formatBbMetricValue(input.avgCpc)) + '</dd></div>' +
+        '</dl>' +
+        '<button type="button" class="ab-submit ab-submit--secondary ab-bb-batch-apply-btn" data-batch-index="' + idx + '">' +
+          (idx + 1) + '件目をフォームへ反映' +
+        '</button>' +
+      '</article>';
+    }).join('');
+
+    var msg = '一括JSONを読み込みました（' + items.length + '件）。プレビューを確認し、反映する件を選んでください。保存はまだされません。';
+    showBbImportMessage(warning ? 'warning' : 'success', warning ? warning + ' ' + msg : msg);
+  }
+
+  function applyBatchItem(items, index) {
+    var item = items[index];
+    if (!item) return;
+    applyBrowserBantouInput(item.input);
+    var msg = (index + 1) + '件目を今日の入力へ反映しました。内容確認後、保存してください。';
+    msg += '（キャンペーン：' + item.input.campaignName + '／日付：' + item.input.date + '）';
+    showBbImportMessage('success', msg);
+    document.getElementById('entry-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  var bbBatchCache = null;
+
   bbJsonApplyBtn.addEventListener('click', function () {
     var raw = bbJsonInput.value.trim();
     if (!raw) {
+      hideBbBatchPreview();
+      bbBatchCache = null;
       showBbImportMessage('error', 'JSONを貼り付けてください。');
       return;
     }
     var parsed = parseBrowserBantouJson(raw);
     if (!parsed.ok) {
+      hideBbBatchPreview();
+      bbBatchCache = null;
       showBbImportMessage('error', parsed.error);
       return;
     }
+
+    if (parsed.type === 'batch') {
+      bbBatchCache = parsed.items;
+      renderBbBatchPreview(parsed.items, parsed.warning);
+      return;
+    }
+
+    hideBbBatchPreview();
+    bbBatchCache = null;
     applyBrowserBantouInput(parsed.input);
     var msg = 'ブラウザー番頭JSONを今日の入力へ反映しました。内容確認後、保存してください。';
     msg += '（キャンペーン：' + parsed.input.campaignName + '／日付：' + parsed.input.date + '）';
     showBbImportMessage(parsed.warning ? 'warning' : 'success', parsed.warning ? parsed.warning + ' ' + msg : msg);
   });
 
+  bbBatchItems.addEventListener('click', function (ev) {
+    var btn = ev.target.closest('[data-batch-index]');
+    if (!btn || !bbBatchCache) return;
+    var index = parseInt(btn.getAttribute('data-batch-index'), 10);
+    if (!isFinite(index)) return;
+    applyBatchItem(bbBatchCache, index);
+  });
+
   bbJsonClearBtn.addEventListener('click', function () {
     bbJsonInput.value = '';
+    bbBatchCache = null;
+    hideBbBatchPreview();
     bbImportMessage.hidden = true;
     bbImportMessage.textContent = '';
   });
