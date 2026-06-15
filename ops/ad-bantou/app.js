@@ -304,6 +304,115 @@
     renderAll();
   });
 
+  /* ===== ブラウザー番頭 JSON 読み込み ===== */
+
+  var bbJsonInput = document.getElementById('bb-json-input');
+  var bbJsonApplyBtn = document.getElementById('bb-json-apply-btn');
+  var bbJsonClearBtn = document.getElementById('bb-json-clear-btn');
+  var bbImportMessage = document.getElementById('bb-import-message');
+
+  function setFormFieldValue(fieldId, value, isNumber) {
+    var el = document.getElementById(fieldId);
+    if (!el) return;
+    if (isNumber) {
+      if (value === null || value === undefined) {
+        el.value = '';
+      } else {
+        var n = Number(value);
+        el.value = isFinite(n) ? String(n) : '';
+      }
+      return;
+    }
+    el.value = value == null ? '' : String(value);
+  }
+
+  function setLpTypeValue(lpType) {
+    var lpSelect = document.getElementById('f-lp-type');
+    if (!lpSelect) return;
+    var normalized = String(lpType || '').trim();
+    var optionExists = Array.prototype.some.call(lpSelect.options, function (opt) {
+      return opt.value === normalized;
+    });
+    lpSelect.value = optionExists ? normalized : '';
+  }
+
+  function parseBrowserBantouJson(raw) {
+    var data;
+    try {
+      data = JSON.parse(raw);
+    } catch (e) {
+      return { ok: false, error: 'JSONの形式が正しくありません。' };
+    }
+    if (!data || typeof data !== 'object' || Array.isArray(data)) {
+      return { ok: false, error: 'JSONの形式が正しくありません。' };
+    }
+    var input = data.adBantouDailyInput;
+    if (!input) {
+      return { ok: false, error: 'adBantouDailyInput が見つかりません。' };
+    }
+    if (typeof input !== 'object' || Array.isArray(input)) {
+      return { ok: false, error: 'adBantouDailyInput がオブジェクトではありません。' };
+    }
+    if (!input.date || String(input.date).trim() === '') {
+      return { ok: false, error: 'adBantouDailyInput.date が必要です。' };
+    }
+    if (!input.lpType || String(input.lpType).trim() === '') {
+      return { ok: false, error: 'adBantouDailyInput.lpType が必要です。' };
+    }
+    if (!input.campaignName || String(input.campaignName).trim() === '') {
+      return { ok: false, error: 'adBantouDailyInput.campaignName が必要です。' };
+    }
+    var warning = null;
+    if (data.source !== 'browser-bantou') {
+      warning = 'source が browser-bantou ではありません。内容を確認してから反映してください。';
+    }
+    return { ok: true, input: input, warning: warning };
+  }
+
+  function applyBrowserBantouInput(input) {
+    setFormFieldValue('f-date', input.date, false);
+    setLpTypeValue(input.lpType);
+    setFormFieldValue('f-campaign', input.campaignName, false);
+    setFormFieldValue('f-cost', input.cost, true);
+    setFormFieldValue('f-impressions', input.impressions, true);
+    setFormFieldValue('f-clicks', input.clicks, true);
+    setFormFieldValue('f-avg-cpc', input.avgCpc, true);
+    setFormFieldValue('f-cta-clicks', input.ctaClicks, true);
+    setFormFieldValue('f-inquiries', input.inquiries, true);
+    setFormFieldValue('f-conversions', input.conversions, true);
+    setFormFieldValue('f-revenue', input.revenue, true);
+    setFormFieldValue('f-memo', input.memo, false);
+  }
+
+  function showBbImportMessage(type, text) {
+    bbImportMessage.hidden = false;
+    bbImportMessage.className = 'ab-bb-import-message is-' + type;
+    bbImportMessage.textContent = text;
+  }
+
+  bbJsonApplyBtn.addEventListener('click', function () {
+    var raw = bbJsonInput.value.trim();
+    if (!raw) {
+      showBbImportMessage('error', 'JSONを貼り付けてください。');
+      return;
+    }
+    var parsed = parseBrowserBantouJson(raw);
+    if (!parsed.ok) {
+      showBbImportMessage('error', parsed.error);
+      return;
+    }
+    applyBrowserBantouInput(parsed.input);
+    var msg = 'ブラウザー番頭JSONを今日の入力へ反映しました。内容確認後、保存してください。';
+    msg += '（キャンペーン：' + parsed.input.campaignName + '／日付：' + parsed.input.date + '）';
+    showBbImportMessage(parsed.warning ? 'warning' : 'success', parsed.warning ? parsed.warning + ' ' + msg : msg);
+  });
+
+  bbJsonClearBtn.addEventListener('click', function () {
+    bbJsonInput.value = '';
+    bbImportMessage.hidden = true;
+    bbImportMessage.textContent = '';
+  });
+
   /* ===== 広告開始前チェック ===== */
 
   var PREFLIGHT_OK = '広告開始OK';
