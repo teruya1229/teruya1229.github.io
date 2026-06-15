@@ -8,6 +8,7 @@
 
   var STORAGE_KEY = 'bcAdBantouDailyLogs';
   var PREFLIGHT_STORAGE_KEY = 'bcAdBantouPreflightChecks';
+  var META_STORAGE_KEY = 'bcAdBantouLastSaveMeta';
 
   /* ===== ストレージ ===== */
 
@@ -23,6 +24,346 @@
 
   function saveLogs(logs) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(logs));
+  }
+
+  function loadLastSaveMeta() {
+    try {
+      var raw = localStorage.getItem(META_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function recordLastSave(count) {
+    var meta = {
+      savedAt: new Date().toISOString(),
+      count: count || 1
+    };
+    localStorage.setItem(META_STORAGE_KEY, JSON.stringify(meta));
+    renderLastSaveDisplay();
+  }
+
+  function formatDateTimeJa(iso) {
+    if (!iso) return '—';
+    try {
+      var d = new Date(iso);
+      if (isNaN(d.getTime())) return '—';
+      return d.getFullYear() + '/' +
+        String(d.getMonth() + 1).padStart(2, '0') + '/' +
+        String(d.getDate()).padStart(2, '0') + ' ' +
+        String(d.getHours()).padStart(2, '0') + ':' +
+        String(d.getMinutes()).padStart(2, '0');
+    } catch (e) {
+      return '—';
+    }
+  }
+
+  function getYesterdayIso() {
+    var d = new Date();
+    d.setDate(d.getDate() - 1);
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
+  }
+
+  function getTodayIso() {
+    var d = new Date();
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
+  }
+
+  function aggregateByDate(logs, dateStr) {
+    var filtered = logs.filter(function (e) { return e.date === dateStr; });
+    var totals = {
+      cost: 0, clicks: 0, inquiries: 0, conversions: 0, revenue: 0,
+      ctaClicks: 0, impressions: 0, count: filtered.length,
+      lpTypes: {}
+    };
+    filtered.forEach(function (e) {
+      totals.cost += e.cost || 0;
+      totals.clicks += e.clicks || 0;
+      totals.inquiries += e.inquiries || 0;
+      totals.conversions += e.conversions || 0;
+      totals.revenue += e.revenue || 0;
+      totals.ctaClicks += e.ctaClicks || 0;
+      totals.impressions += e.impressions || 0;
+      if (e.lpType) {
+        if (!totals.lpTypes[e.lpType]) totals.lpTypes[e.lpType] = 0;
+        totals.lpTypes[e.lpType]++;
+      }
+    });
+    totals.cpa = safeDiv(totals.cost, totals.conversions);
+    totals.roas = safeDiv(totals.revenue, totals.cost);
+    return totals;
+  }
+
+  function isLogEntered(e) {
+    return (e.cost > 0 || e.clicks >= 5 || e.impressions >= 100);
+  }
+
+  function getSortedUniqueDates(logs) {
+    var dates = {};
+    logs.forEach(function (e) { if (e.date) dates[e.date] = true; });
+    return Object.keys(dates).sort(function (a, b) { return a < b ? 1 : a > b ? -1 : 0; });
+  }
+
+  function getSortedUniqueLpTypes(logs) {
+    var types = {};
+    logs.forEach(function (e) { if (e.lpType) types[e.lpType] = true; });
+    return Object.keys(types).sort();
+  }
+
+  function groupLogsByKey(logs) {
+    var groups = {};
+    logs.forEach(function (e) {
+      var key = (e.lpType || '') + '\u0001' + (e.campaignName || '');
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(e);
+    });
+    Object.keys(groups).forEach(function (key) {
+      groups[key].sort(function (a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; });
+    });
+    return groups;
+  }
+
+  function countConsecutiveFromLatest(entries, predicate) {
+    var count = 0;
+    for (var i = 0; i < entries.length; i++) {
+      if (predicate(entries[i])) count++;
+      else break;
+    }
+    return count;
+  }
+
+  function detectAnomalies(logs) {
+    var alerts = [];
+    var yesterday = getYesterdayIso();
+    var yesterdayLogs = logs.filter(function (e) { return e.date === yesterday; });
+
+    if (logs.length > 0 && yesterdayLogs.length === 0) {
+      alerts.push({
+        level: 'warning',
+        text: '昨日（' + yesterday + '）のログがありません。21時チェックが未実施の可能性があります。'
+      });
+    }
+
+    var stopCount = logs.filter(function (e) {
+      return e.date === yesterday && e.decision === DECISION.STOP;
+    }).length;
+    if (stopCount > 0) {
+      alerts.push({
+        level: 'danger',
+        text: '昨日のログに停止候補が ' + stopCount + ' 件あります。LP・ターゲティングの見直しを検討してください。'
+      });
+    }
+
+    var groups = groupLogsByKey(logs);
+    Object.keys(groups).forEach(function (key) {
+      var entries = groups[key];
+      var nodataCount = countConsecutiveFromLatest(entries, function (e) {
+        return e.decision === DECISION.NO_DATA;
+      });
+      if (nodataCount >= 3) {
+        var sample = entries[0];
+        alerts.push({
+          level: 'warning',
+          text: (sample.lpType || 'LP') + '（' + (sample.campaignName || '—') + '）でデータ不足が ' + nodataCount + ' 日連続しています。'
+        });
+      }
+
+      var ctaZeroCount = countConsecutiveFromLatest(entries, function (e) {
+        return e.clicks > 0 && e.ctaClicks === 0;
+      });
+      if (ctaZeroCount >= 2) {
+        var s = entries[0];
+        alerts.push({
+          level: 'danger',
+          text: (s.lpType || 'LP') + '（' + (s.campaignName || '—') + '）でCTAクリック0が ' + ctaZeroCount + ' 日連続しています。'
+        });
+      }
+
+      var inquiryZeroCount = countConsecutiveFromLatest(entries, function (e) {
+        return e.clicks > 0 && e.inquiries === 0;
+      });
+      if (inquiryZeroCount >= 3) {
+        var s2 = entries[0];
+        alerts.push({
+          level: 'warning',
+          text: (s2.lpType || 'LP') + '（' + (s2.campaignName || '—') + '）で問い合わせ0が ' + inquiryZeroCount + ' 日連続しています。'
+        });
+      }
+
+      var spendNoConv = countConsecutiveFromLatest(entries, function (e) {
+        return e.cost > 0 && e.conversions === 0;
+      });
+      if (spendNoConv >= 5 && entries[0].cost > 500) {
+        var s3 = entries[0];
+        alerts.push({
+          level: 'warning',
+          text: (s3.lpType || 'LP') + '（' + (s3.campaignName || '—') + '）で広告費を使っているのに成約なしが ' + spendNoConv + ' 日続いています。'
+        });
+      }
+    });
+
+    return alerts;
+  }
+
+  var kpiGrid = document.getElementById('kpi-grid');
+  var alertsContainer = document.getElementById('alerts-container');
+  var lastSaveDisplay = document.getElementById('last-save-display');
+  var logCards = document.getElementById('log-cards');
+  var filterDate = document.getElementById('filter-date');
+  var filterLp = document.getElementById('filter-lp');
+  var filterDecision = document.getElementById('filter-decision');
+  var filterInput = document.getElementById('filter-input');
+  var filterCount = document.getElementById('filter-count');
+  var filterResetBtn = document.getElementById('filter-reset-btn');
+
+  function renderLastSaveDisplay() {
+    if (!lastSaveDisplay) return;
+    var meta = loadLastSaveMeta();
+    if (!meta || !meta.savedAt) {
+      lastSaveDisplay.textContent = '最終保存：まだ保存されていません';
+      return;
+    }
+    var countNote = meta.count > 1 ? '（' + meta.count + '件）' : '';
+    lastSaveDisplay.textContent = '最終保存：' + formatDateTimeJa(meta.savedAt) + countNote;
+  }
+
+  function renderAlerts(logs) {
+    if (!alertsContainer) return;
+    var alerts = detectAnomalies(logs);
+    if (!alerts.length) {
+      alertsContainer.hidden = true;
+      alertsContainer.innerHTML = '';
+      return;
+    }
+    alertsContainer.hidden = false;
+    alertsContainer.innerHTML = alerts.map(function (a) {
+      return '<div class="ab-alert ab-alert--' + a.level + '">' + escapeHtml(a.text) + '</div>';
+    }).join('');
+  }
+
+  function renderKpiCards(logs) {
+    if (!kpiGrid) return;
+    var yesterday = getYesterdayIso();
+    var totals = aggregateByDate(logs, yesterday);
+
+    if (totals.count === 0) {
+      kpiGrid.innerHTML =
+        '<div class="ab-kpi-empty">昨日（' + escapeHtml(yesterday) + '）のデータはまだありません。21時チェックで取り込んでください。</div>';
+      return;
+    }
+
+    var lpBadges = Object.keys(totals.lpTypes).map(function (lp) {
+      return '<span class="ab-kpi-lp-badge">' + escapeHtml(lp) + ' ' + totals.lpTypes[lp] + '件</span>';
+    }).join('');
+
+    var cards = [
+      { label: '広告費', value: fmtYen(totals.cost), sub: yesterday },
+      { label: 'クリック数', value: fmtNum(totals.clicks), sub: 'CTR ' + fmtPct(safeDiv(totals.clicks, totals.impressions)) },
+      { label: '問い合わせ数', value: fmtNum(totals.inquiries), sub: 'CTA ' + fmtNum(totals.ctaClicks) },
+      { label: '成約数', value: fmtNum(totals.conversions), sub: '売上 ' + fmtYen(totals.revenue) },
+      { label: 'CPA', value: fmtYen(totals.cpa), sub: '成約単価' },
+      { label: 'ROAS', value: fmtRatio(totals.roas), sub: '粗利 ' + fmtYen(totals.revenue - totals.cost) }
+    ];
+
+    kpiGrid.innerHTML =
+      '<p class="ab-kpi-date">昨日（' + escapeHtml(yesterday) + '）のサマリー ' + lpBadges + '</p>' +
+      '<div class="ab-kpi-row">' +
+      cards.map(function (c) {
+        return '<div class="ab-kpi-card">' +
+          '<div class="ab-kpi-label">' + escapeHtml(c.label) + '</div>' +
+          '<div class="ab-kpi-value">' + escapeHtml(c.value) + '</div>' +
+          '<div class="ab-kpi-sub">' + escapeHtml(c.sub) + '</div>' +
+        '</div>';
+      }).join('') +
+      '</div>';
+  }
+
+  function getActiveFilters() {
+    return {
+      date: filterDate ? filterDate.value : '',
+      lpType: filterLp ? filterLp.value : '',
+      decision: filterDecision ? filterDecision.value : '',
+      inputStatus: filterInput ? filterInput.value : ''
+    };
+  }
+
+  function applyLogFilters(logs) {
+    var f = getActiveFilters();
+    return logs.filter(function (e) {
+      if (f.date && e.date !== f.date) return false;
+      if (f.lpType && e.lpType !== f.lpType) return false;
+      if (f.decision && e.decision !== f.decision) return false;
+      if (f.inputStatus === 'entered' && !isLogEntered(e)) return false;
+      if (f.inputStatus === 'empty' && isLogEntered(e)) return false;
+      return true;
+    });
+  }
+
+  function updateFilterOptions(logs) {
+    if (!filterDate || !filterLp) return;
+
+    var currentDate = filterDate.value;
+    var currentLp = filterLp.value;
+    var dates = getSortedUniqueDates(logs);
+    var lpTypes = getSortedUniqueLpTypes(logs);
+
+    filterDate.innerHTML = '<option value="">すべて</option>' +
+      dates.map(function (d) {
+        return '<option value="' + escapeHtml(d) + '"' + (d === currentDate ? ' selected' : '') + '>' + escapeHtml(d) + '</option>';
+      }).join('');
+
+    filterLp.innerHTML = '<option value="">すべて</option>' +
+      lpTypes.map(function (lp) {
+        return '<option value="' + escapeHtml(lp) + '"' + (lp === currentLp ? ' selected' : '') + '>' + escapeHtml(lp) + '</option>';
+      }).join('');
+  }
+
+  function buildLogRowHtml(e) {
+    return '<tr>' +
+      '<td>' + escapeHtml(e.date) + '</td>' +
+      '<td>' + escapeHtml(e.lpType) + '</td>' +
+      '<td>' + escapeHtml(e.campaignName || '—') + '</td>' +
+      '<td>' + fmtYen(e.cost) + '</td>' +
+      '<td>' + fmtNum(e.clicks) + '</td>' +
+      '<td>' + fmtNum(e.ctaClicks) + '</td>' +
+      '<td>' + fmtNum(e.inquiries) + '</td>' +
+      '<td>' + fmtNum(e.conversions) + '</td>' +
+      '<td>' + fmtYen(e.revenue) + '</td>' +
+      '<td style="text-align:center;"><span class="ab-badge ' + decisionClass(e.decision) + '">' + escapeHtml(e.decision) + '</span></td>' +
+      '<td class="memo-cell" title="' + escapeHtml(e.memo) + '">' + escapeHtml(e.memo || '—') + '</td>' +
+      '<td style="text-align:center;"><button type="button" class="ab-delete-btn" data-id="' + escapeHtml(e.id) + '">削除</button></td>' +
+      '</tr>';
+  }
+
+  function buildLogCardHtml(e) {
+    var entered = isLogEntered(e);
+    return '<article class="ab-log-card">' +
+      '<div class="ab-log-card-header">' +
+        '<strong>' + escapeHtml(e.date) + '</strong>' +
+        '<span class="ab-badge ' + decisionClass(e.decision) + '">' + escapeHtml(e.decision) + '</span>' +
+      '</div>' +
+      '<div class="ab-log-card-row"><span>LP種別</span><span>' + escapeHtml(e.lpType) + '</span></div>' +
+      '<div class="ab-log-card-row"><span>キャンペーン</span><span>' + escapeHtml(e.campaignName || '—') + '</span></div>' +
+      '<div class="ab-log-card-metrics">' +
+        '<div><span>広告費</span><strong>' + fmtYen(e.cost) + '</strong></div>' +
+        '<div><span>クリック</span><strong>' + fmtNum(e.clicks) + '</strong></div>' +
+        '<div><span>CTA</span><strong>' + fmtNum(e.ctaClicks) + '</strong></div>' +
+        '<div><span>問い合わせ</span><strong>' + fmtNum(e.inquiries) + '</strong></div>' +
+        '<div><span>成約</span><strong>' + fmtNum(e.conversions) + '</strong></div>' +
+        '<div><span>売上</span><strong>' + fmtYen(e.revenue) + '</strong></div>' +
+      '</div>' +
+      (e.memo ? '<div class="ab-log-card-memo">' + escapeHtml(e.memo) + '</div>' : '') +
+      '<div class="ab-log-card-footer">' +
+        '<span class="ab-log-card-status' + (entered ? ' is-entered' : ' is-empty') + '">' +
+          (entered ? '入力済み' : '未入力・不足') + '</span>' +
+        '<button type="button" class="ab-delete-btn" data-id="' + escapeHtml(e.id) + '">削除</button>' +
+      '</div>' +
+    '</article>';
   }
 
   /* ===== 計算（0除算は null を返す） ===== */
@@ -178,28 +519,38 @@
   /* ===== 日別ログ ===== */
 
   function renderLogs(logs) {
+    updateFilterOptions(logs);
+
     var sorted = logs.slice().sort(function (a, b) {
       return a.date < b.date ? 1 : a.date > b.date ? -1 : 0;
     });
 
-    logTbody.innerHTML = sorted.map(function (e) {
-      return '<tr>' +
-        '<td>' + escapeHtml(e.date) + '</td>' +
-        '<td>' + escapeHtml(e.lpType) + '</td>' +
-        '<td>' + escapeHtml(e.campaignName || '—') + '</td>' +
-        '<td>' + fmtYen(e.cost) + '</td>' +
-        '<td>' + fmtNum(e.clicks) + '</td>' +
-        '<td>' + fmtNum(e.ctaClicks) + '</td>' +
-        '<td>' + fmtNum(e.inquiries) + '</td>' +
-        '<td>' + fmtNum(e.conversions) + '</td>' +
-        '<td>' + fmtYen(e.revenue) + '</td>' +
-        '<td style="text-align:center;"><span class="ab-badge ' + decisionClass(e.decision) + '">' + escapeHtml(e.decision) + '</span></td>' +
-        '<td class="memo-cell" title="' + escapeHtml(e.memo) + '">' + escapeHtml(e.memo || '—') + '</td>' +
-        '<td style="text-align:center;"><button type="button" class="ab-delete-btn" data-id="' + escapeHtml(e.id) + '">削除</button></td>' +
-        '</tr>';
-    }).join('');
+    var filtered = applyLogFilters(sorted);
+    var hasFilter = getActiveFilters().date || getActiveFilters().lpType ||
+      getActiveFilters().decision || getActiveFilters().inputStatus;
 
-    logEmpty.style.display = sorted.length ? 'none' : 'block';
+    logTbody.innerHTML = filtered.map(buildLogRowHtml).join('');
+
+    if (logCards) {
+      logCards.innerHTML = filtered.map(buildLogCardHtml).join('');
+    }
+
+    var showEmpty = sorted.length === 0;
+    var showNoMatch = !showEmpty && filtered.length === 0;
+
+    logEmpty.style.display = showEmpty ? 'block' : 'none';
+    logEmpty.textContent = showEmpty ? 'まだ入力データがありません。' : '条件に一致するログがありません。';
+    logEmpty.style.display = (showEmpty || showNoMatch) ? 'block' : 'none';
+
+    if (filterCount) {
+      if (hasFilter && sorted.length > 0) {
+        filterCount.hidden = false;
+        filterCount.textContent = filtered.length + ' 件表示（全 ' + sorted.length + ' 件中）';
+      } else {
+        filterCount.hidden = true;
+        filterCount.textContent = '';
+      }
+    }
   }
 
   /* ===== LP別集計 ===== */
@@ -244,6 +595,9 @@
 
   function renderAll() {
     var logs = loadLogs();
+    renderKpiCards(logs);
+    renderAlerts(logs);
+    renderLastSaveDisplay();
     renderLogs(logs);
     renderSummary(logs);
   }
@@ -283,6 +637,7 @@
     var logs = loadLogs();
     logs.push(record);
     saveLogs(logs);
+    recordLastSave(1);
 
     renderResult(computed, decision);
     renderAll();
@@ -303,6 +658,37 @@
     saveLogs(logs);
     renderAll();
   });
+
+  if (logCards) {
+    logCards.addEventListener('click', function (ev) {
+      var btn = ev.target.closest('.ab-delete-btn');
+      if (!btn) return;
+      if (!confirm('このログを削除しますか？')) return;
+      var id = btn.getAttribute('data-id');
+      var logs = loadLogs().filter(function (e) { return e.id !== id; });
+      saveLogs(logs);
+      renderAll();
+    });
+  }
+
+  function onFilterChange() {
+    renderLogs(loadLogs());
+  }
+
+  if (filterDate) filterDate.addEventListener('change', onFilterChange);
+  if (filterLp) filterLp.addEventListener('change', onFilterChange);
+  if (filterDecision) filterDecision.addEventListener('change', onFilterChange);
+  if (filterInput) filterInput.addEventListener('change', onFilterChange);
+
+  if (filterResetBtn) {
+    filterResetBtn.addEventListener('click', function () {
+      if (filterDate) filterDate.value = '';
+      if (filterLp) filterLp.value = '';
+      if (filterDecision) filterDecision.value = '';
+      if (filterInput) filterInput.value = '';
+      onFilterChange();
+    });
+  }
 
   /* ===== 入力正規化・重複判定・保存 ===== */
 
@@ -405,6 +791,7 @@
     });
 
     saveLogs(logs);
+    recordLastSave(saved.length);
     renderAll();
     return { saved: saved, skipped: skipped };
   }

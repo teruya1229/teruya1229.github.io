@@ -1,83 +1,93 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>広告番頭｜内部確認用（Google広告 日次入力・判定）</title>
-  <meta name="robots" content="noindex, nofollow">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header class="ab-header">
-    <div class="ab-container">
-      <h1 class="ab-title">広告番頭</h1>
-      <p class="ab-subtitle">Google広告の費用・クリック・CTA・問い合わせ・成約を整理して、継続 / 改善 / 停止を判断する画面</p>
-      <p class="ab-internal-badge">内部確認用ページ（noindex）｜顧客名・住所・電話番号などの個人情報は入力しないでください</p>
-    </div>
-  </header>
+          <!DOCTYPE html>
+          <html lang="ja">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>広告番頭｜内部確認用（Google広告 日次入力・判定）</title>
+            <meta name="robots" content="noindex, nofollow">
+            <link rel="stylesheet" href="style.css">
+          </head>
+          <body>
+            <header class="ab-header">
+              <div class="ab-container">
+                <h1 class="ab-title">広告番頭</h1>
+                <p class="ab-subtitle">Google広告の費用・クリック・CTA・問い合わせ・成約を整理して、継続 / 改善 / 停止を判断する画面</p>
+                <p class="ab-internal-badge">内部確認用ページ（noindex）｜顧客名・住所・電話番号などの個人情報は入力しないでください</p>
+              </div>
+            </header>
 
-  <main class="ab-container">
+            <main class="ab-container">
 
-    <!-- 今日の21時チェック -->
-    <section class="ab-section ab-daily-check" id="daily-check-section">
-      <h2 class="ab-section-title">今日の21時チェック</h2>
-      <p class="ab-section-desc">ブラウザー番頭の daily-check JSON を読み込み、2キャンペーンをまとめて保存する最短フローです。</p>
+              <!-- ダッシュボード（KPI・異常バナー・最終保存） -->
+              <section class="ab-dashboard" id="dashboard-section">
+                <div class="ab-dashboard-top">
+                  <h2 class="ab-dashboard-title">運用ダッシュボード</h2>
+                  <p class="ab-last-save" id="last-save-display">最終保存：—</p>
+                </div>
+                <div class="ab-alerts" id="alerts-container" hidden></div>
+                <div class="ab-kpi-grid" id="kpi-grid"></div>
+              </section>
 
-      <ol class="ab-daily-steps">
-        <li><strong>ブラウザー番頭を実行</strong>（<code>run-daily-check.bat</code>）</li>
-        <li><strong>JSONを読み込む</strong>（クリップボードまたは貼り付け）</li>
-        <li><strong>2件まとめて保存</strong>（内容確認後）</li>
-      </ol>
+              <!-- 今日の21時チェック -->
+              <section class="ab-section ab-daily-check" id="daily-check-section">
+                <h2 class="ab-section-title">今日の21時チェック</h2>
+                <p class="ab-section-desc">ブラウザー番頭の daily-check JSON を読み込み、2キャンペーンをまとめて保存する最短フローです。</p>
 
-      <div class="ab-daily-actions">
-        <button type="button" class="ab-submit ab-daily-btn-primary" id="dc-clipboard-btn">クリップボードからJSON読込</button>
-        <button type="button" class="ab-cs-btn-secondary ab-daily-btn-secondary" id="dc-toggle-paste-btn">貼り付け欄を開く</button>
-      </div>
+                <ol class="ab-daily-steps">
+                  <li><strong>ブラウザー番頭を実行</strong>（<code>run-daily-check.bat</code>）</li>
+                  <li><strong>JSONを読み込む</strong>（クリップボードまたは貼り付け）</li>
+                  <li><strong>2件まとめて保存</strong>（内容確認後）</li>
+                </ol>
 
-      <div class="ab-daily-paste" id="dc-paste-area" hidden>
-        <div class="ab-field">
-          <label for="dc-json-input">browser-bantou JSON（手動貼り付け）</label>
-          <textarea id="dc-json-input" class="ab-bb-json-textarea" rows="6" placeholder='{"source":"browser-bantou","mode":"daily-check","items":[...]}'></textarea>
-        </div>
-        <button type="button" class="ab-submit ab-submit--secondary ab-daily-btn-secondary" id="dc-load-paste-btn">貼り付けJSONを読込</button>
-      </div>
+                <div class="ab-daily-actions">
+                  <button type="button" class="ab-submit ab-daily-btn-primary" id="dc-clipboard-btn">クリップボードからJSON読込</button>
+                  <button type="button" class="ab-cs-btn-secondary ab-daily-btn-secondary" id="dc-toggle-paste-btn">貼り付け欄を開く</button>
+                </div>
 
-      <div class="ab-daily-message" id="dc-message" hidden></div>
+                <div class="ab-daily-paste" id="dc-paste-area" hidden>
+                  <div class="ab-field">
+                    <label for="dc-json-input">browser-bantou JSON（手動貼り付け）</label>
+                    <textarea id="dc-json-input" class="ab-bb-json-textarea" rows="6" placeholder='{"source":"browser-bantou","mode":"daily-check","items":[...]}'></textarea>
+                  </div>
+                  <button type="button" class="ab-submit ab-submit--secondary ab-daily-btn-secondary" id="dc-load-paste-btn">貼り付けJSONを読込</button>
+                </div>
 
-      <div class="ab-daily-preview" id="dc-preview" hidden>
-        <p class="ab-daily-preview-title">読み込みプレビュー</p>
-        <div class="ab-daily-preview-cards" id="dc-preview-cards"></div>
+                <div class="ab-daily-message" id="dc-message" hidden></div>
 
-        <div class="ab-daily-dup-dialog" id="dc-dup-dialog" hidden>
-          <p class="ab-daily-dup-title" id="dc-dup-title">既存ログと重複しています</p>
-          <ul class="ab-daily-dup-list" id="dc-dup-list"></ul>
-          <div class="ab-daily-dup-actions">
-            <button type="button" class="ab-submit ab-submit--secondary" id="dc-dup-overwrite-btn">既存を上書き</button>
-            <button type="button" class="ab-cs-btn-secondary" id="dc-dup-skip-btn">重複分はスキップ</button>
-            <button type="button" class="ab-cs-btn-secondary" id="dc-dup-cancel-btn">キャンセル</button>
-          </div>
-        </div>
+                <div class="ab-daily-preview" id="dc-preview" hidden>
+                  <p class="ab-daily-preview-title">読み込みプレビュー</p>
+                  <div class="ab-daily-preview-cards" id="dc-preview-cards"></div>
 
-        <div class="ab-daily-save-actions">
-          <button type="button" class="ab-submit ab-daily-btn-primary" id="dc-save-all-btn">2件まとめて保存</button>
-          <button type="button" class="ab-cs-btn-secondary ab-daily-btn-secondary" id="dc-clear-btn">保存せずクリア</button>
-        </div>
-      </div>
+                  <div class="ab-daily-dup-dialog" id="dc-dup-dialog" hidden>
+                    <p class="ab-daily-dup-title" id="dc-dup-title">既存ログと重複しています</p>
+                    <ul class="ab-daily-dup-list" id="dc-dup-list"></ul>
+                    <div class="ab-daily-dup-actions">
+                      <button type="button" class="ab-submit ab-submit--secondary" id="dc-dup-overwrite-btn">既存を上書き</button>
+                      <button type="button" class="ab-cs-btn-secondary" id="dc-dup-skip-btn">重複分はスキップ</button>
+                      <button type="button" class="ab-cs-btn-secondary" id="dc-dup-cancel-btn">キャンセル</button>
+                    </div>
+                  </div>
 
-      <div class="ab-daily-result" id="dc-result" hidden>
-        <p class="ab-daily-result-title" id="dc-result-title"></p>
-        <div class="ab-daily-result-metrics" id="dc-result-metrics"></div>
-        <div class="ab-daily-result-decisions" id="dc-result-decisions"></div>
-      </div>
-    </section>
+                  <div class="ab-daily-save-actions">
+                    <button type="button" class="ab-submit ab-daily-btn-primary" id="dc-save-all-btn">2件まとめて保存</button>
+                    <button type="button" class="ab-cs-btn-secondary ab-daily-btn-secondary" id="dc-clear-btn">保存せずクリア</button>
+                  </div>
+                </div>
 
-    <!-- 今日の入力 -->
-    <section class="ab-section" id="input-section">
-      <h2 class="ab-section-title">今日の入力</h2>
+                <div class="ab-daily-result" id="dc-result" hidden>
+                  <p class="ab-daily-result-title" id="dc-result-title"></p>
+                  <div class="ab-daily-result-metrics" id="dc-result-metrics"></div>
+                  <div class="ab-daily-result-decisions" id="dc-result-decisions"></div>
+                </div>
+              </section>
 
-      <div class="ab-bb-import" id="bb-import-box">
-        <h3 class="ab-subsection-title ab-bb-import-title">ブラウザー番頭JSON読み込み</h3>
-        <p class="ab-hint ab-bb-import-sub">手動入力・1件修正用。毎日の運用は上の「21時チェック」を使ってください。</p>
+              <!-- 今日の入力 -->
+              <section class="ab-section" id="input-section">
+                <h2 class="ab-section-title">今日の入力</h2>
+
+                <div class="ab-bb-import" id="bb-import-box">
+                  <h3 class="ab-subsection-title ab-bb-import-title">ブラウザー番頭JSON読み込み</h3>
+                  <p class="ab-hint ab-bb-import-sub">手動入力・1件修正用。毎日の運用は上の「21時チェック」を使ってください。</p>
         <div class="ab-field ab-bb-import-field">
           <label for="bb-json-input">browser-bantou JSON</label>
           <textarea id="bb-json-input" class="ab-bb-json-textarea" rows="8" placeholder='{"source":"browser-bantou","adBantouDailyInput":{...}}'></textarea>
@@ -193,9 +203,44 @@
     </section>
 
     <!-- 日別ログ -->
-    <section class="ab-section">
+    <section class="ab-section" id="log-section">
       <h2 class="ab-section-title">日別ログ</h2>
-      <div class="ab-table-wrap">
+      <div class="ab-log-filters" id="log-filters">
+        <div class="ab-filter-field">
+          <label for="filter-date">日付</label>
+          <select id="filter-date">
+            <option value="">すべて</option>
+          </select>
+        </div>
+        <div class="ab-filter-field">
+          <label for="filter-lp">LP種別</label>
+          <select id="filter-lp">
+            <option value="">すべて</option>
+          </select>
+        </div>
+        <div class="ab-filter-field">
+          <label for="filter-decision">判定</label>
+          <select id="filter-decision">
+            <option value="">すべて</option>
+            <option value="継続">継続</option>
+            <option value="改善">改善</option>
+            <option value="停止候補">停止候補</option>
+            <option value="データ不足">データ不足</option>
+          </select>
+        </div>
+        <div class="ab-filter-field">
+          <label for="filter-input">入力状態</label>
+          <select id="filter-input">
+            <option value="">すべて</option>
+            <option value="entered">入力済み</option>
+            <option value="empty">未入力・不足</option>
+          </select>
+        </div>
+        <button type="button" class="ab-filter-reset" id="filter-reset-btn">フィルタ解除</button>
+      </div>
+      <p class="ab-filter-count" id="filter-count" hidden></p>
+      <div class="ab-log-cards" id="log-cards"></div>
+      <div class="ab-table-wrap ab-log-table-wrap">
         <table class="ab-table" id="log-table">
           <thead>
             <tr>
