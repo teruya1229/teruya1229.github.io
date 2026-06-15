@@ -50,7 +50,8 @@ node run-readonly.mjs --campaign=ai_bantou
 3. ターミナルに read-only 確認手順が表示されます
 4. キャンペーン画面まで**手動で**移動して確認します
 5. ターミナルで Enter を押すと、画面上のテキストから **best-effort** で数値を読み取ります
-6. `output/capture-*.json` を広告番頭へ転記します
+6. `pageUrl` / `pageTitle` / `screenshotPath` を JSON に含め、スクリーンショットを `output/` に保存します
+7. `output/capture-*.json` を広告番頭へ転記します
 
 ## 安全ルール（禁止）
 
@@ -76,6 +77,7 @@ node run-readonly.mjs --campaign=ai_bantou
 
 | 項目 | MVP |
 |------|-----|
+| pageUrl / pageTitle / screenshotPath | Enter後に現在ページから取得・保存 |
 | 費用・表示回数・クリック・平均CPC | best-effort（画面テキスト解析。失敗時は null） |
 | キャンペーン状態・入札・コンバージョン | 手動確認（JSONに manualRequired として記録） |
 | LP URL・広告文・アセット | 広告番頭の初期設定チェッカーで記録 |
@@ -90,7 +92,7 @@ browser-bantou/
   README.md
   .gitignore
   .chrome-profile/   # ログイン状態（git管理外）
-  output/            # JSON出力（git管理外）
+  output/            # JSON・スクリーンショット出力（git管理外）
 ```
 
 ## 動作確認手順

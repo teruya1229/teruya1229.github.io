@@ -58,16 +58,48 @@ function yesterdayIso() {
     String(d.getDate()).padStart(2, '0');
 }
 
-function buildAdBantouPayload(campaign, snapshot) {
+function formatTimestampForFilename(date) {
+  var d = date || new Date();
+  return d.getFullYear() +
+    String(d.getMonth() + 1).padStart(2, '0') +
+    String(d.getDate()).padStart(2, '0') + '-' +
+    String(d.getHours()).padStart(2, '0') +
+    String(d.getMinutes()).padStart(2, '0') +
+    String(d.getSeconds()).padStart(2, '0');
+}
+
+function formatCheckedAt(date) {
+  var d = date || new Date();
+  var offsetMin = -d.getTimezoneOffset();
+  var sign = offsetMin >= 0 ? '+' : '-';
+  var abs = Math.abs(offsetMin);
+  var hh = String(Math.floor(abs / 60)).padStart(2, '0');
+  var mm = String(abs % 60).padStart(2, '0');
+  return d.getFullYear() + '-' +
+    String(d.getMonth() + 1).padStart(2, '0') + '-' +
+    String(d.getDate()).padStart(2, '0') + 'T' +
+    String(d.getHours()).padStart(2, '0') + ':' +
+    String(d.getMinutes()).padStart(2, '0') + ':' +
+    String(d.getSeconds()).padStart(2, '0') +
+    sign + hh + ':' + mm;
+}
+
+function buildAdBantouPayload(campaign, snapshot, pageMeta) {
+  var checkedAt = pageMeta.checkedAt || formatCheckedAt();
   return {
+    ok: pageMeta.ok !== false,
     source: 'browser-bantou',
     mode: 'read-only',
-    capturedAt: new Date().toISOString(),
+    checkedAt: checkedAt,
+    capturedAt: checkedAt,
     targetDate: yesterdayIso(),
     campaignId: campaign.id,
     campaignName: campaign.name,
     lpType: campaign.lpType,
     expectedLpUrl: campaign.expectedLpUrl,
+    pageUrl: pageMeta.pageUrl,
+    pageTitle: pageMeta.pageTitle,
+    screenshotPath: pageMeta.screenshotPath,
     autoRead: snapshot.autoRead,
     manualRequired: MANUAL_FIELDS,
     adBantouDailyInput: {
@@ -84,6 +116,7 @@ function buildAdBantouPayload(campaign, snapshot) {
       revenue: null,
       memo: 'browser-bantou read-only で取得。CTA・問い合わせ・成約は手動入力。'
     },
+    memo: pageMeta.memo,
     setupCheckerHints: {
       note: '初期設定の4状態チェックは広告番頭の Google広告 初期設定チェッカーで記録',
       adBantouUrl: CONFIG.adBantouUrl
@@ -147,6 +180,24 @@ async function tryReadOverviewMetrics(page) {
   return result;
 }
 
+async function capturePageMetadata(page, campaign) {
+  var now = new Date();
+  var checkedAt = formatCheckedAt(now);
+  var pageUrl = page.url();
+  var pageTitle = await page.title();
+  var screenshotFile = 'screenshot-' + campaign.id + '-' + formatTimestampForFilename(now) + '.png';
+  var screenshotAbsPath = join(OUTPUT_DIR, screenshotFile);
+  await page.screenshot({ path: screenshotAbsPath, fullPage: false });
+  return {
+    ok: true,
+    checkedAt: checkedAt,
+    pageUrl: pageUrl,
+    pageTitle: pageTitle,
+    screenshotPath: 'output/' + screenshotFile,
+    memo: 'Google広告ページを開き、URL・タイトル・スクリーンショットを保存しました。'
+  };
+}
+
 async function main() {
   var args = parseArgs(process.argv.slice(2));
   var campaign = getCampaign(args.campaignId);
@@ -154,9 +205,17 @@ async function main() {
   mkdirSync(OUTPUT_DIR, { recursive: true });
 
   if (args.templateOnly) {
+    var templateCheckedAt = formatCheckedAt();
     var template = buildAdBantouPayload(campaign, { autoRead: {
       cost: null, impressions: null, clicks: null, avgCpc: null, rawHints: ['template_only']
-    }});
+    }}, {
+      ok: true,
+      checkedAt: templateCheckedAt,
+      pageUrl: null,
+      pageTitle: null,
+      screenshotPath: null,
+      memo: 'テンプレート出力。ブラウザ起動なし。'
+    });
     var templatePath = join(OUTPUT_DIR, 'ad-bantou-template-' + campaign.id + '.json');
     writeFileSync(templatePath, JSON.stringify(template, null, 2), 'utf8');
     console.log('テンプレート出力:', templatePath);
@@ -190,13 +249,15 @@ async function main() {
     });
 
     var autoRead = await tryReadOverviewMetrics(page);
-    var payload = buildAdBantouPayload(campaign, { autoRead: autoRead });
+    var pageMeta = await capturePageMetadata(page, campaign);
+    var payload = buildAdBantouPayload(campaign, { autoRead: autoRead }, pageMeta);
     var outPath = join(OUTPUT_DIR, 'capture-' + campaign.id + '-' + Date.now() + '.json');
     writeFileSync(outPath, JSON.stringify(payload, null, 2), 'utf8');
 
     console.log('\n=== 取得結果（best-effort） ===');
     console.log(JSON.stringify(payload, null, 2));
     console.log('\n保存先:', outPath);
+    console.log('スクリーンショット:', pageMeta.screenshotPath);
     console.log('\n次の一手: 上記 JSON の adBantouDailyInput を広告番頭へ転記');
     console.log('初期設定チェックは', CONFIG.adBantouUrl, 'で手動記録');
   } finally {
