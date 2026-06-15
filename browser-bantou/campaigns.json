@@ -1,0 +1,18 @@
+{
+  "campaigns": [
+    {
+      "id": "complete_disassembly",
+      "name": "完全分解_南部_検索_小額テスト",
+      "lpType": "完全分解LP",
+      "expectedLpUrl": "https://teruya1229.github.io/complete-disassembly/"
+    },
+    {
+      "id": "ai_bantou",
+      "name": "AI帳票番頭_検索_全国_初期",
+      "lpType": "AI帳票番頭LP",
+      "expectedLpUrl": "https://teruya1229.github.io/ai-chouhyou-bantou/"
+    }
+  ],
+  "googleAdsOverviewUrl": "https://ads.google.com/aw/overview",
+  "adBantouUrl": "https://teruya1229.github.io/ops/ad-bantou/"
+}

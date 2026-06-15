@@ -1,0 +1,17 @@
+{
+  "name": "browser-bantou",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Google広告などを read-only で開き、確認手順と広告番頭用JSONを出すローカルツール",
+  "type": "module",
+  "scripts": {
+    "start": "node run-readonly.mjs",
+    "template": "node run-readonly.mjs --template-only"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "playwright": "^1.60.0"
+  }
+}
