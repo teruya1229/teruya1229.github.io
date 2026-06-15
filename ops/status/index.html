@@ -75,38 +75,40 @@ LP追加量産は急がず、広告運用・GA4・問い合わせ実績を優先
 フェーズ：運用・計測
 公開URL：https://teruya1229.github.io/ops/ad-bantou/
 
+Phase 1 運用ダッシュボード改善（2026-06-15 公開完了）：
+・commit c861b45（広告番頭 Phase 1 ダッシュボード改善）
+・運用ダッシュボード / 最終保存日時 / 異常・注意バナー
+・昨日サマリーKPIカード6枚 / 日別ログフィルタ / スマホ用ログカード
+・CSS変数による管理画面風デザイン整理
+・新規キー bcAdBantouLastSaveMeta（既存3キーはスキーマ変更なし）
+
 実装済み機能：
+・21時チェック専用パネル（クリップボード・2件まとめて保存・重複処理）
+・ブラウザー番頭JSON読み込み（単体・daily-check一括）
 ・日次入力（広告費・クリック・CTA・問い合わせ・成約・売上）
 ・自動計算・自動判定（継続 / 改善 / 停止候補 / データ不足）
 ・日別ログ・LP別集計
-・広告開始前チェック（LP CTA debug確認。ブラウザー番頭の確認手順を統合）
+・広告開始前チェック（LP CTA debug確認）
 ・Google広告 初期設定チェッカー（2026-06-12追加 / 2026-06-15最終確認OK）
-
-Google広告 初期設定チェッカー：
-・完全分解_南部_検索_小額テスト テンプレート対応済み
-・AI帳票番頭_検索_全国_初期 テンプレート対応済み
-・LP URL照合対応済み（末尾スラッシュ差を許容）
-・4状態チェック（未確認 / OK / NG / 対象外）
-・完了率・総合判定・次の一手
-・履歴保存・読込・削除
-・日次入力LP種別に「AI帳票番頭LP」追加済み
 
 localStorageキー：
 ・bcAdBantouDailyLogs（日次ログ）
 ・bcAdBantouPreflightChecks（広告開始前チェック）
 ・bcAdBantouCampaignSetupChecks（初期設定チェック）
+・bcAdBantouLastSaveMeta（最終保存日時メタ）
 
 未実装：
 ・Google Ads API連携
 ・GA4 API連携
+・Phase 2（ミニチャート・export/import 等）
 
-実装コミット：
-0ef2aae7d8da9197094b1ef389a88f07aabe9ab9
-feat: add Google Ads campaign setup checker to ad bantou
+実装コミット（最新）：
+c861b45
+広告番頭 Phase 1 ダッシュボード改善
 
 【次の優先】
 
-1. Google広告キャンペーン開始前に初期設定チェッカーで設定漏れ確認
+1. ユーザー本人のChromeで広告番頭の実データ表示を確認（KPI・バナー・ログ）
 2. 毎日21時の広告番頭日次入力
 3. GA4で地域LP別CTA反応を蓄積
 4. 問い合わせ・成約・CPA・ROASの確認

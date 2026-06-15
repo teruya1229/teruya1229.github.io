@@ -70,33 +70,33 @@ https://teruya1229.github.io/ops/handoff/
 【広告番頭】
 
 URL：https://teruya1229.github.io/ops/ad-bantou/
-内部確認用（noindex / nofollow / sitemap未登録）
+内部確認用（noindex）｜顧客名・住所・電話番号などの個人情報は入力しない
+
+Phase 1 運用ダッシュボード改善（2026-06-15 公開完了）：
+・commit c861b45
+・運用ダッシュボード / KPIカード6枚 / 異常バナー / ログフィルタ / スマホカード
+・最終保存日時（bcAdBantouLastSaveMeta）｜既存3キーはスキーマ変更なし
+・GitHub Pages公開確認済み（実データは本人Chromeで最終確認予定）
+・Phase 2は未着手
 
 機能：
+・21時チェック専用パネル / browser-bantou JSON読み込み
 ・日次入力・自動計算・判定・日別ログ・LP別集計
 ・広告開始前チェック（LP CTA debug確認）
-  → ブラウザー番頭の確認手順を広告番頭へ統合済み
 ・Google広告 初期設定チェッカー（追加済み・最終確認OK）
-
-初期設定チェッカー：
-・完全分解広告・AI帳票番頭広告の専用テンプレート対応済み
-・LP URL照合対応済み
-・4状態チェック / 完了率 / 次の一手 / 履歴保存対応済み
-・日次入力にAI帳票番頭LP追加済み
-・localStorageのみで保存
-・Google Ads API / GA4 API連携は未実装
 
 localStorageキー：
 ・bcAdBantouDailyLogs
 ・bcAdBantouPreflightChecks
 ・bcAdBantouCampaignSetupChecks
+・bcAdBantouLastSaveMeta
 
-実装コミット：
-0ef2aae7d8da9197094b1ef389a88f07aabe9ab9
+実装コミット（最新）：
+c861b45
 
 【次にやるべき1手】
 
-Google広告キャンペーン開始前に、広告番頭の「Google広告 初期設定チェッカー」で設定漏れを確認してから配信する。
+ユーザー本人のChromeで広告番頭の実データ表示を確認する。
 その後、毎日21時の日次入力で問い合わせ・成約・CPA・ROASを確認する。
 
 【固定URL】
@@ -119,8 +119,9 @@ AI帳票番頭LP：https://teruya1229.github.io/ai-chouhyou-bantou/
 使い方（新チャット1発目）
 
 前提は status.md → handoff.md → rules.md の順で読んで進んでください。
-広告番頭の初期設定チェッカーは実装済み（0ef2aae）。
-次の優先：広告日次運用 / 毎日21時の広告番頭入力 / GA4地域LP別CTA反応。
+広告番頭 Phase 1 ダッシュボード改善は 2026-06-15 に公開完了（c861b45）。
+次の優先：本人Chromeで実データ確認 / 毎日21時の広告番頭入力 / GA4地域LP別CTA反応。
+Phase 2（ミニチャート等）はまだ着手しない。
   </pre>
 </body>
 </html>

@@ -30,6 +30,7 @@
 - **ブラウザー番頭JSON読み込み追加済み（2026-06-15）**：広告番頭の「今日の入力」に `adBantouDailyInput` 貼り付け反映UIを追加。反映のみ（自動保存なし）。完全分解LP・AI帳票番頭LP対応。
 - **21時チェック簡略化（2026-06-15）**：`browser-bantou/run-daily-check.bat` で2キャンペーン連続確認→一括JSON→クリップボード→広告番頭起動。広告番頭は daily-check 一括JSONのプレビュー反映対応。
 - **広告番頭21時チェックUX改善（2026-06-15）**：最上部に専用パネル、クリップボード読込、2件まとめて保存、重複上書き/スキップ、保存後サマリー表示。
+- **広告番頭 Phase 1 運用ダッシュボード改善 公開完了（2026-06-15）**：運用ダッシュボード・KPIカード6枚・異常バナー・ログフィルタ・スマホカード表示・最終保存日時・CSS変数整理。commit `c861b45`。新規キー `bcAdBantouLastSaveMeta`。既存3キー・コアロジックは維持。GitHub Pages公開確認済み。Phase 2は未着手。
 - **完全分解LP LINE相談優先文面 追加完了（2026-06-10）**（`f7a2195`）
 - **Search Console は反映待ち確認フェーズ**（再送信・再リクエストは不要）
 - **新規 LP コード修正は急がない**。データを見て必要な地域だけ行う
@@ -75,7 +76,7 @@
 | FAQ一覧 | `cursor-test/faq.html` | cases・業務LP導線、構造化データ確認済み |
 | 南部まとめ | `cursor-test/south.html` | cases・業務LP導線、構造化データ確認済み |
 | 業務LP | `business-cleaning/index.html` | FAQ7、相談事例・見積り前・料金セクション、Instagram1件（`DMh62EjPcNu`）、構造化データ・sitemap済み |
-| **広告番頭MVP** | `ops/ad-bantou/`（index.html / style.css / app.js） | **2026-06-10 新規作成・検証完了**（`0a058bb`）。日次入力・自動計算・自動判定（継続/改善/停止候補/データ不足）・日別ログ・LP別集計・**広告開始前チェック**（`bcAdBantouPreflightChecks`）・**Google広告 初期設定チェッカー**（`bcAdBantouCampaignSetupChecks`、2026-06-12）。localStorage（`bcAdBantouDailyLogs` / `bcAdBantouPreflightChecks` / `bcAdBantouCampaignSetupChecks`）。日次入力LP種別にAI帳票番頭LP追加。noindex・sitemap未登録・既存LPからの導線なし。**Google Ads API・GA4 API連携は未実装** |
+| **広告番頭MVP** | `ops/ad-bantou/`（index.html / style.css / app.js） | **2026-06-10 新規作成**（`0a058bb`）。**2026-06-15 Phase 1 ダッシュボード改善公開完了**（`c861b45`）：運用ダッシュボード・KPI・異常バナー・ログフィルタ・スマホカード・最終保存日時。日次入力・自動計算・判定・日別ログ・LP別集計・21時チェック・browser-bantou JSON・広告開始前チェック・初期設定チェッカー。localStorage（`bcAdBantouDailyLogs` / `bcAdBantouPreflightChecks` / `bcAdBantouCampaignSetupChecks` / `bcAdBantouLastSaveMeta`）。noindex・sitemap未登録。**Google Ads API・GA4 API連携は未実装** |
 
 **中部LP 対応エリア**
 
@@ -281,7 +282,7 @@
 
 ## 次にやるべき1手
 
-- **Google広告キャンペーン開始前に、広告番頭の「Google広告 初期設定チェッカー」で設定漏れを確認してから配信する**。その後、毎日21時の日次入力で問い合わせ・成約・CPA・ROASを確認する
+- **ユーザー本人のChromeで広告番頭の実データ表示を確認する**（KPI・異常バナー・ログ一覧）。その後、毎日21時の日次入力で問い合わせ・成約・CPA・ROASを確認する
 
 ## 判断基準
 
