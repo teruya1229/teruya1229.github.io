@@ -304,6 +304,111 @@
     renderAll();
   });
 
+  /* ===== 入力正規化・重複判定・保存 ===== */
+
+  function normalizeNumberForSave(value) {
+    if (value === null || value === undefined || value === '') return 0;
+    var n = Number(value);
+    return isFinite(n) && n >= 0 ? n : 0;
+  }
+
+  function normalizeInputForSave(input) {
+    return {
+      date: String(input.date || '').trim(),
+      lpType: String(input.lpType || '').trim(),
+      campaignName: String(input.campaignName || '').trim(),
+      cost: normalizeNumberForSave(input.cost),
+      impressions: normalizeNumberForSave(input.impressions),
+      clicks: normalizeNumberForSave(input.clicks),
+      avgCpc: normalizeNumberForSave(input.avgCpc),
+      ctaClicks: normalizeNumberForSave(input.ctaClicks),
+      inquiries: normalizeNumberForSave(input.inquiries),
+      conversions: normalizeNumberForSave(input.conversions),
+      revenue: normalizeNumberForSave(input.revenue),
+      memo: input.memo == null ? '' : String(input.memo).trim()
+    };
+  }
+
+  function duplicateKey(entry) {
+    return entry.date + '\u0001' + entry.campaignName + '\u0001' + entry.lpType;
+  }
+
+  function findLogIndexByKey(logs, entry) {
+    var key = duplicateKey(entry);
+    for (var i = 0; i < logs.length; i++) {
+      if (duplicateKey(logs[i]) === key) return i;
+    }
+    return -1;
+  }
+
+  function createRecordFromInput(input) {
+    var entry = normalizeInputForSave(input);
+    var computed = computeMetrics(entry);
+    var decision = decide(entry);
+    return {
+      id: 'ab-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8),
+      date: entry.date,
+      lpType: entry.lpType,
+      campaignName: entry.campaignName,
+      cost: entry.cost,
+      impressions: entry.impressions,
+      clicks: entry.clicks,
+      avgCpc: entry.avgCpc,
+      ctaClicks: entry.ctaClicks,
+      inquiries: entry.inquiries,
+      conversions: entry.conversions,
+      revenue: entry.revenue,
+      memo: entry.memo,
+      computed: computed,
+      decision: decision.label
+    };
+  }
+
+  function findDuplicatesForBatch(items, logs) {
+    var duplicates = [];
+    items.forEach(function (item) {
+      var entry = normalizeInputForSave(item.input);
+      var idx = findLogIndexByKey(logs, entry);
+      if (idx >= 0) {
+        duplicates.push({
+          index: item.index,
+          entry: entry,
+          existing: logs[idx]
+        });
+      }
+    });
+    return duplicates;
+  }
+
+  function saveBatchItems(items, mode) {
+    var logs = loadLogs();
+    var saved = [];
+    var skipped = [];
+
+    items.forEach(function (item) {
+      var record = createRecordFromInput(item.input);
+      var idx = findLogIndexByKey(logs, record);
+
+      if (idx >= 0) {
+        if (mode === 'skip') {
+          skipped.push(record);
+          return;
+        }
+        record.id = logs[idx].id;
+        logs[idx] = record;
+        saved.push(record);
+        return;
+      }
+
+      logs.push(record);
+      saved.push(record);
+    });
+
+    saveLogs(logs);
+    renderAll();
+    return { saved: saved, skipped: skipped };
+  }
+
   /* ===== ブラウザー番頭 JSON 読み込み ===== */
 
   var bbJsonInput = document.getElementById('bb-json-input');
@@ -431,6 +536,38 @@
     bbImportMessage.textContent = text;
   }
 
+  function buildBatchCardHtml(item, idx, options) {
+    var opts = options || {};
+    var input = item.input;
+    var applyBtn = '';
+    if (opts.showApplyButton) {
+      var btnClass = opts.applyBtnClass || 'ab-bb-batch-apply-btn';
+      var dataAttr = opts.dataAttr || 'data-batch-index';
+      applyBtn = '<button type="button" class="ab-submit ab-submit--secondary ' + btnClass + '" ' + dataAttr + '="' + idx + '">' +
+        (idx + 1) + '件目をフォームへ反映</button>';
+    }
+    return '<article class="ab-bb-batch-card">' +
+      '<div class="ab-bb-batch-card-header">' +
+        '<span class="ab-bb-batch-card-index">' + (idx + 1) + '件目</span>' +
+        '<span class="ab-bb-batch-card-name">' + escapeHtml(item.campaignName || input.campaignName) + '</span>' +
+      '</div>' +
+      '<dl class="ab-bb-batch-metrics">' +
+        '<div><dt>日付</dt><dd>' + escapeHtml(input.date) + '</dd></div>' +
+        '<div><dt>LP種別</dt><dd>' + escapeHtml(input.lpType) + '</dd></div>' +
+        '<div><dt>キャンペーン名</dt><dd>' + escapeHtml(input.campaignName) + '</dd></div>' +
+        '<div><dt>広告費</dt><dd>' + escapeHtml(formatBbMetricValue(input.cost)) + '</dd></div>' +
+        '<div><dt>表示回数</dt><dd>' + escapeHtml(formatBbMetricValue(input.impressions)) + '</dd></div>' +
+        '<div><dt>クリック数</dt><dd>' + escapeHtml(formatBbMetricValue(input.clicks)) + '</dd></div>' +
+        '<div><dt>平均CPC</dt><dd>' + escapeHtml(formatBbMetricValue(input.avgCpc)) + '</dd></div>' +
+        '<div><dt>CTA</dt><dd>' + escapeHtml(formatBbMetricValue(input.ctaClicks)) + '</dd></div>' +
+        '<div><dt>問い合わせ</dt><dd>' + escapeHtml(formatBbMetricValue(input.inquiries)) + '</dd></div>' +
+        '<div><dt>成約</dt><dd>' + escapeHtml(formatBbMetricValue(input.conversions)) + '</dd></div>' +
+        '<div><dt>売上</dt><dd>' + escapeHtml(formatBbMetricValue(input.revenue)) + '</dd></div>' +
+      '</dl>' +
+      applyBtn +
+    '</article>';
+  }
+
   function hideBbBatchPreview() {
     bbBatchPreview.hidden = true;
     bbBatchItems.innerHTML = '';
@@ -439,25 +576,11 @@
   function renderBbBatchPreview(items, warning) {
     bbBatchPreview.hidden = false;
     bbBatchItems.innerHTML = items.map(function (item, idx) {
-      var input = item.input;
-      return '<article class="ab-bb-batch-card">' +
-        '<div class="ab-bb-batch-card-header">' +
-          '<span class="ab-bb-batch-card-index">' + (idx + 1) + '件目</span>' +
-          '<span class="ab-bb-batch-card-name">' + escapeHtml(item.campaignName || input.campaignName) + '</span>' +
-        '</div>' +
-        '<dl class="ab-bb-batch-metrics">' +
-          '<div><dt>日付</dt><dd>' + escapeHtml(input.date) + '</dd></div>' +
-          '<div><dt>LP種別</dt><dd>' + escapeHtml(input.lpType) + '</dd></div>' +
-          '<div><dt>キャンペーン名</dt><dd>' + escapeHtml(input.campaignName) + '</dd></div>' +
-          '<div><dt>費用</dt><dd>' + escapeHtml(formatBbMetricValue(input.cost)) + '</dd></div>' +
-          '<div><dt>表示回数</dt><dd>' + escapeHtml(formatBbMetricValue(input.impressions)) + '</dd></div>' +
-          '<div><dt>クリック数</dt><dd>' + escapeHtml(formatBbMetricValue(input.clicks)) + '</dd></div>' +
-          '<div><dt>平均CPC</dt><dd>' + escapeHtml(formatBbMetricValue(input.avgCpc)) + '</dd></div>' +
-        '</dl>' +
-        '<button type="button" class="ab-submit ab-submit--secondary ab-bb-batch-apply-btn" data-batch-index="' + idx + '">' +
-          (idx + 1) + '件目をフォームへ反映' +
-        '</button>' +
-      '</article>';
+      return buildBatchCardHtml(item, idx, {
+        showApplyButton: true,
+        applyBtnClass: 'ab-bb-batch-apply-btn',
+        dataAttr: 'data-batch-index'
+      });
     }).join('');
 
     var msg = '一括JSONを読み込みました（' + items.length + '件）。プレビューを確認し、反映する件を選んでください。保存はまだされません。';
@@ -520,6 +643,228 @@
     hideBbBatchPreview();
     bbImportMessage.hidden = true;
     bbImportMessage.textContent = '';
+  });
+
+  /* ===== 21時チェック ===== */
+
+  var dcClipboardBtn = document.getElementById('dc-clipboard-btn');
+  var dcTogglePasteBtn = document.getElementById('dc-toggle-paste-btn');
+  var dcPasteArea = document.getElementById('dc-paste-area');
+  var dcJsonInput = document.getElementById('dc-json-input');
+  var dcLoadPasteBtn = document.getElementById('dc-load-paste-btn');
+  var dcMessage = document.getElementById('dc-message');
+  var dcPreview = document.getElementById('dc-preview');
+  var dcPreviewCards = document.getElementById('dc-preview-cards');
+  var dcDupDialog = document.getElementById('dc-dup-dialog');
+  var dcDupList = document.getElementById('dc-dup-list');
+  var dcSaveAllBtn = document.getElementById('dc-save-all-btn');
+  var dcClearBtn = document.getElementById('dc-clear-btn');
+  var dcResult = document.getElementById('dc-result');
+  var dcResultTitle = document.getElementById('dc-result-title');
+  var dcResultMetrics = document.getElementById('dc-result-metrics');
+  var dcResultDecisions = document.getElementById('dc-result-decisions');
+  var dcBatchCache = null;
+
+  function showDcMessage(type, text) {
+    dcMessage.hidden = false;
+    dcMessage.className = 'ab-daily-message is-' + type;
+    dcMessage.textContent = text;
+  }
+
+  function hideDcMessage() {
+    dcMessage.hidden = true;
+    dcMessage.textContent = '';
+  }
+
+  function hideDcDupDialog() {
+    dcDupDialog.hidden = true;
+    dcDupList.innerHTML = '';
+  }
+
+  function clearDailyCheckPanel() {
+    dcBatchCache = null;
+    dcJsonInput.value = '';
+    dcPreview.hidden = true;
+    dcPreviewCards.innerHTML = '';
+    hideDcDupDialog();
+    hideDcMessage();
+    dcResult.hidden = true;
+    dcResultTitle.textContent = '';
+    dcResultMetrics.innerHTML = '';
+    dcResultDecisions.innerHTML = '';
+    dcSaveAllBtn.textContent = '2件まとめて保存';
+  }
+
+  function renderDcPreview(items, warning) {
+    dcPreview.hidden = false;
+    dcResult.hidden = true;
+    dcPreviewCards.innerHTML = items.map(function (item, idx) {
+      return buildBatchCardHtml(item, idx, {
+        showApplyButton: true,
+        applyBtnClass: 'ab-dc-apply-btn',
+        dataAttr: 'data-dc-index'
+      });
+    }).join('');
+    hideDcDupDialog();
+    var msg = '一括JSONを読み込みました（' + items.length + '件）。内容を確認して「2件まとめて保存」を押してください。';
+    showDcMessage(warning ? 'warning' : 'success', warning ? warning + ' ' + msg : msg);
+    dcSaveAllBtn.textContent = items.length + '件まとめて保存';
+  }
+
+  function loadDailyCheckJson(raw, sourceLabel) {
+    var parsed = parseBrowserBantouJson(raw);
+    if (!parsed.ok) {
+      clearDailyCheckPanel();
+      showDcMessage('error', parsed.error);
+      return;
+    }
+    if (parsed.type !== 'batch') {
+      showDcMessage('error', 'daily-check 形式（items 配列）のJSONを貼り付けてください。単体JSONは「今日の入力」の読み込み欄を使ってください。');
+      return;
+    }
+    dcBatchCache = parsed.items;
+    dcJsonInput.value = raw;
+    renderDcPreview(parsed.items, parsed.warning);
+    if (sourceLabel) {
+      showDcMessage(parsed.warning ? 'warning' : 'success',
+        (parsed.warning ? parsed.warning + ' ' : '') + sourceLabel + 'から読み込みました（' + parsed.items.length + '件）。');
+    }
+  }
+
+  function renderDcSaveResult(result) {
+    var saved = result.saved;
+    if (!saved.length) {
+      showDcMessage('warning', '保存対象がありませんでした（重複分はすべてスキップされました）。');
+      return;
+    }
+
+    var lpNames = saved.map(function (r) { return r.lpType; }).join('、');
+    dcResult.hidden = false;
+    dcResultTitle.textContent = '保存完了：' + lpNames + ' の' + saved.length + '件を保存しました。';
+
+    var totals = saved.reduce(function (acc, r) {
+      acc.cost += r.cost;
+      acc.impressions += r.impressions;
+      acc.clicks += r.clicks;
+      acc.inquiries += r.inquiries;
+      return acc;
+    }, { cost: 0, impressions: 0, clicks: 0, inquiries: 0 });
+
+    dcResultMetrics.innerHTML =
+      '<div><dt>広告費合計</dt><dd>' + escapeHtml(fmtYen(totals.cost)) + '</dd></div>' +
+      '<div><dt>表示回数合計</dt><dd>' + escapeHtml(fmtNum(totals.impressions)) + '</dd></div>' +
+      '<div><dt>クリック数合計</dt><dd>' + escapeHtml(fmtNum(totals.clicks)) + '</dd></div>' +
+      '<div><dt>問い合わせ数合計</dt><dd>' + escapeHtml(fmtNum(totals.inquiries)) + '</dd></div>';
+
+    dcResultDecisions.innerHTML = saved.map(function (r) {
+      return '<div><span class="ab-badge ' + decisionClass(r.decision) + '">' + escapeHtml(r.decision) + '</span> ' +
+        escapeHtml(r.lpType) + '（' + escapeHtml(r.campaignName) + '）</div>';
+    }).join('');
+
+    var skipNote = result.skipped.length ? ' 重複スキップ：' + result.skipped.length + '件。' : '';
+    showDcMessage('success', '保存が完了しました。' + skipNote);
+    dcPreview.hidden = true;
+    hideDcDupDialog();
+    dcBatchCache = null;
+  }
+
+  function executeDailyCheckSave(mode) {
+    if (!dcBatchCache || !dcBatchCache.length) {
+      showDcMessage('error', '保存するJSONがありません。先に読み込んでください。');
+      return;
+    }
+    var result = saveBatchItems(dcBatchCache, mode);
+    renderDcSaveResult(result);
+  }
+
+  function promptDuplicateSave(duplicates) {
+    dcDupDialog.hidden = false;
+    dcDupList.innerHTML = duplicates.map(function (dup) {
+      return '<li>' + escapeHtml(dup.entry.date) + ' / ' + escapeHtml(dup.entry.lpType) + ' / ' + escapeHtml(dup.entry.campaignName) + '</li>';
+    }).join('');
+    showDcMessage('warning', duplicates.length + '件が既存ログと重複しています。上書き・スキップ・キャンセルを選んでください。');
+  }
+
+  function requestDailyCheckSave() {
+    if (!dcBatchCache || !dcBatchCache.length) {
+      showDcMessage('error', '保存するJSONがありません。先に読み込んでください。');
+      return;
+    }
+    var duplicates = findDuplicatesForBatch(dcBatchCache, loadLogs());
+    if (!duplicates.length) {
+      executeDailyCheckSave('normal');
+      return;
+    }
+    promptDuplicateSave(duplicates);
+  }
+
+  dcClipboardBtn.addEventListener('click', function () {
+    if (navigator.clipboard && navigator.clipboard.readText) {
+      navigator.clipboard.readText().then(function (text) {
+        if (!text || !text.trim()) {
+          showDcMessage('error', 'クリップボードが空です。browser-bantou の daily-check JSON をコピーしてください。');
+          dcPasteArea.hidden = false;
+          return;
+        }
+        loadDailyCheckJson(text.trim(), 'クリップボード');
+      }).catch(function () {
+        showDcMessage('warning', 'クリップボードを読めませんでした。貼り付け欄から手動で読み込んでください。');
+        dcPasteArea.hidden = false;
+      });
+      return;
+    }
+    showDcMessage('warning', 'このブラウザではクリップボード自動読込に非対応です。貼り付け欄を使ってください。');
+    dcPasteArea.hidden = false;
+  });
+
+  dcTogglePasteBtn.addEventListener('click', function () {
+    dcPasteArea.hidden = !dcPasteArea.hidden;
+    if (!dcPasteArea.hidden) {
+      dcJsonInput.focus();
+    }
+  });
+
+  dcLoadPasteBtn.addEventListener('click', function () {
+    var raw = dcJsonInput.value.trim();
+    if (!raw) {
+      showDcMessage('error', 'JSONを貼り付けてください。');
+      return;
+    }
+    loadDailyCheckJson(raw, '貼り付け欄');
+  });
+
+  dcSaveAllBtn.addEventListener('click', requestDailyCheckSave);
+
+  var dcDupOverwriteBtn = document.getElementById('dc-dup-overwrite-btn');
+  var dcDupSkipBtn = document.getElementById('dc-dup-skip-btn');
+  var dcDupCancelBtn = document.getElementById('dc-dup-cancel-btn');
+
+  dcDupOverwriteBtn.addEventListener('click', function () {
+    executeDailyCheckSave('overwrite');
+  });
+
+  dcDupSkipBtn.addEventListener('click', function () {
+    executeDailyCheckSave('skip');
+  });
+
+  dcDupCancelBtn.addEventListener('click', function () {
+    hideDcDupDialog();
+    showDcMessage('warning', '保存をキャンセルしました。');
+  });
+
+  dcClearBtn.addEventListener('click', function () {
+    clearDailyCheckPanel();
+    dcPasteArea.hidden = true;
+  });
+
+  dcPreviewCards.addEventListener('click', function (ev) {
+    var btn = ev.target.closest('[data-dc-index]');
+    if (!btn || !dcBatchCache) return;
+    var index = parseInt(btn.getAttribute('data-dc-index'), 10);
+    if (!isFinite(index) || !dcBatchCache[index]) return;
+    applyBrowserBantouInput(dcBatchCache[index].input);
+    showDcMessage('success', (index + 1) + '件目をフォームへ反映しました。修正後は個別に保存できます。');
+    document.getElementById('entry-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   /* ===== 広告開始前チェック ===== */

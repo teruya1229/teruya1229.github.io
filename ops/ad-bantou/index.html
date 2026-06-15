@@ -18,197 +18,57 @@
 
   <main class="ab-container">
 
-    <!-- Claude in Chrome 作業手順 -->
-    <details class="ab-steps" id="claude-steps">
-      <summary>Claude in Chrome 作業手順（毎日ここから始める）</summary>
-      <ol>
-        <li>Google広告を開く</li>
-        <li>期間を「昨日」にする</li>
-        <li>キャンペーン別に「費用・表示回数・クリック数・平均クリック単価」を確認する</li>
-        <li>GA4 または LP計測画面で「CTAクリック数」を確認する</li>
-        <li>LINE・電話・Airリザーブ・Googleカレンダーから「問い合わせ数・成約数」を確認する</li>
-        <li>下の「今日の入力」フォームに上から順に入力する</li>
-        <li>判定が「停止候補」または「改善」なら、メモに理由を書く（個人情報は書かない）</li>
-        <li>最後に「日別ログ」と「LP別集計」を確認する</li>
+    <!-- 今日の21時チェック -->
+    <section class="ab-section ab-daily-check" id="daily-check-section">
+      <h2 class="ab-section-title">今日の21時チェック</h2>
+      <p class="ab-section-desc">ブラウザー番頭の daily-check JSON を読み込み、2キャンペーンをまとめて保存する最短フローです。</p>
+
+      <ol class="ab-daily-steps">
+        <li><strong>ブラウザー番頭を実行</strong>（<code>run-daily-check.bat</code>）</li>
+        <li><strong>JSONを読み込む</strong>（クリップボードまたは貼り付け）</li>
+        <li><strong>2件まとめて保存</strong>（内容確認後）</li>
       </ol>
-    </details>
 
-    <!-- 広告開始前チェック -->
-    <section class="ab-section" id="preflight-section">
-      <h2 class="ab-section-title">広告開始前チェック</h2>
-      <p class="ab-section-desc">Google広告を開始する前に、LPのCTA計測が正常か確認するためのチェック欄です。</p>
-
-      <details class="ab-steps">
-        <summary>Claude in Chrome 作業手順（広告開始前チェック）</summary>
-        <ol>
-          <li>debug確認URLを開く</li>
-          <li>CTAをクリックする</li>
-          <li>右下に「計測OK」が表示されたらOKにチェック</li>
-          <li>実際にLINE送信・電話発信・予約確定はしない</li>
-          <li>確認結果をこの広告番頭に保存する</li>
-        </ol>
-      </details>
-
-      <div class="ab-preflight-urls">
-        <p class="ab-preflight-urls-title">debug確認URL</p>
-        <ul>
-          <li>
-            <span class="ab-preflight-url-label">家庭LP debug確認URL：</span>
-            <a href="https://teruya1229.github.io/cursor-test/?debug=1" target="_blank" rel="noopener">https://teruya1229.github.io/cursor-test/?debug=1</a>
-          </li>
-          <li>
-            <span class="ab-preflight-url-label">完全分解LP debug確認URL：</span>
-            <a href="https://teruya1229.github.io/complete-disassembly/?debug=1" target="_blank" rel="noopener">https://teruya1229.github.io/complete-disassembly/?debug=1</a>
-          </li>
-        </ul>
+      <div class="ab-daily-actions">
+        <button type="button" class="ab-submit ab-daily-btn-primary" id="dc-clipboard-btn">クリップボードからJSON読込</button>
+        <button type="button" class="ab-cs-btn-secondary ab-daily-btn-secondary" id="dc-toggle-paste-btn">貼り付け欄を開く</button>
       </div>
 
-      <div class="ab-preflight-latest" id="preflight-latest" hidden>
-        <p class="ab-preflight-latest-title">最新のチェック結果</p>
-        <div class="ab-preflight-latest-body" id="preflight-latest-body"></div>
-      </div>
-
-      <form id="preflight-form" autocomplete="off">
+      <div class="ab-daily-paste" id="dc-paste-area" hidden>
         <div class="ab-field">
-          <label for="pf-date">確認日 <span class="req">必須</span></label>
-          <p class="ab-hint">Claude用：LPのCTA計測を確認した日付を入力してください。</p>
-          <input type="date" id="pf-date" required>
+          <label for="dc-json-input">browser-bantou JSON（手動貼り付け）</label>
+          <textarea id="dc-json-input" class="ab-bb-json-textarea" rows="6" placeholder='{"source":"browser-bantou","mode":"daily-check","items":[...]}'></textarea>
         </div>
-
-        <div class="ab-preflight-groups">
-          <fieldset class="ab-preflight-group">
-            <legend>【家庭LP】</legend>
-            <p class="ab-hint ab-preflight-note">現行の家庭LPでは電話CTAは表示していないため、チェック対象外です。</p>
-            <label class="ab-check"><input type="checkbox" id="pf-home-pageOk"> ページ表示OK</label>
-            <label class="ab-check"><input type="checkbox" id="pf-home-lineCtaOk"> LINE CTA 計測OK</label>
-            <label class="ab-check"><input type="checkbox" id="pf-home-airReserveCtaOk"> Airリザーブ CTA 計測OK</label>
-            <label class="ab-check"><input type="checkbox" id="pf-home-layoutOk"> 表示崩れなし</label>
-          </fieldset>
-
-          <fieldset class="ab-preflight-group">
-            <legend>【完全分解LP】</legend>
-            <label class="ab-check"><input type="checkbox" id="pf-complete-pageOk"> ページ表示OK</label>
-            <label class="ab-check"><input type="checkbox" id="pf-complete-lineCtaOk"> LINE CTA 計測OK</label>
-            <label class="ab-check"><input type="checkbox" id="pf-complete-phoneCtaOk"> 電話CTA 計測OK</label>
-            <label class="ab-check"><input type="checkbox" id="pf-complete-layoutOk"> 表示崩れなし</label>
-          </fieldset>
-        </div>
-
-        <div class="ab-field">
-          <label for="pf-memo">確認者メモ</label>
-          <p class="ab-hint">Claude用：気づいた点があれば記載してください。<strong>顧客名・住所・電話番号などの個人情報は絶対に書かないでください。</strong></p>
-          <textarea id="pf-memo" rows="2" placeholder="例：家庭LPのLINE・AirリザーブCTAで計測OKトーストを確認。完全分解LPも全CTA OK。"></textarea>
-        </div>
-
-        <div class="ab-preflight-decision" id="preflight-decision-box">
-          <span class="ab-preflight-decision-label" id="preflight-decision-label">広告開始前に要確認</span>
-          <span class="ab-preflight-decision-hint" id="preflight-decision-hint">すべてのチェック項目にチェックが入ると「広告開始OK」になります。</span>
-        </div>
-
-        <button type="submit" class="ab-submit ab-submit--secondary">チェック結果を保存する</button>
-      </form>
-
-      <h3 class="ab-subsection-title">チェック履歴</h3>
-      <div class="ab-table-wrap">
-        <table class="ab-table ab-table--preflight" id="preflight-history-table">
-          <thead>
-            <tr>
-              <th>確認日</th>
-              <th>判定</th>
-              <th>家庭LP</th>
-              <th>完全分解LP</th>
-              <th>メモ</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="preflight-history-tbody"></tbody>
-        </table>
-      </div>
-      <p class="ab-empty" id="preflight-history-empty">まだチェック履歴がありません。</p>
-    </section>
-
-    <!-- Google広告 初期設定チェッカー -->
-    <section class="ab-section" id="campaign-setup-section">
-      <h2 class="ab-section-title">Google広告 初期設定チェッカー</h2>
-      <p class="ab-section-desc">キャンペーン開始前に、配信・計測・広告文・広告アセットの設定漏れを確認します。Google広告を自動取得する機能ではありません。実際の管理画面を確認して手動で記録してください。</p>
-
-      <div class="ab-field">
-        <label for="cs-campaign-select">確認するキャンペーン <span class="req">必須</span></label>
-        <select id="cs-campaign-select">
-          <option value="complete_disassembly">完全分解_南部_検索_小額テスト</option>
-          <option value="ai_bantou">AI帳票番頭_検索_全国_初期</option>
-          <option value="other">その他</option>
-        </select>
+        <button type="button" class="ab-submit ab-submit--secondary ab-daily-btn-secondary" id="dc-load-paste-btn">貼り付けJSONを読込</button>
       </div>
 
-      <div id="cs-other-fields" class="ab-cs-other-fields" hidden>
-        <div class="ab-field">
-          <label for="cs-other-campaign-name">キャンペーン名</label>
-          <input type="text" id="cs-other-campaign-name" placeholder="例：テストキャンペーン_検索">
+      <div class="ab-daily-message" id="dc-message" hidden></div>
+
+      <div class="ab-daily-preview" id="dc-preview" hidden>
+        <p class="ab-daily-preview-title">読み込みプレビュー</p>
+        <div class="ab-daily-preview-cards" id="dc-preview-cards"></div>
+
+        <div class="ab-daily-dup-dialog" id="dc-dup-dialog" hidden>
+          <p class="ab-daily-dup-title" id="dc-dup-title">既存ログと重複しています</p>
+          <ul class="ab-daily-dup-list" id="dc-dup-list"></ul>
+          <div class="ab-daily-dup-actions">
+            <button type="button" class="ab-submit ab-submit--secondary" id="dc-dup-overwrite-btn">既存を上書き</button>
+            <button type="button" class="ab-cs-btn-secondary" id="dc-dup-skip-btn">重複分はスキップ</button>
+            <button type="button" class="ab-cs-btn-secondary" id="dc-dup-cancel-btn">キャンセル</button>
+          </div>
         </div>
-        <div class="ab-field">
-          <label for="cs-other-expected-lp">期待するLP URL</label>
-          <input type="url" id="cs-other-expected-lp" placeholder="https://example.com/lp/">
+
+        <div class="ab-daily-save-actions">
+          <button type="button" class="ab-submit ab-daily-btn-primary" id="dc-save-all-btn">2件まとめて保存</button>
+          <button type="button" class="ab-cs-btn-secondary ab-daily-btn-secondary" id="dc-clear-btn">保存せずクリア</button>
         </div>
       </div>
 
-      <div id="cs-template-card" class="ab-cs-template-card"></div>
-
-      <div class="ab-cs-progress" id="cs-progress-box">
-        <div class="ab-cs-progress-stats" id="cs-progress-stats"></div>
-        <div class="ab-cs-overall" id="cs-overall-box"></div>
-        <div class="ab-cs-next-action" id="cs-next-action-box"></div>
+      <div class="ab-daily-result" id="dc-result" hidden>
+        <p class="ab-daily-result-title" id="dc-result-title"></p>
+        <div class="ab-daily-result-metrics" id="dc-result-metrics"></div>
+        <div class="ab-daily-result-decisions" id="dc-result-decisions"></div>
       </div>
-
-      <div class="ab-cs-latest" id="cs-latest" hidden>
-        <p class="ab-cs-latest-title">最新の確認結果</p>
-        <div class="ab-cs-latest-body" id="cs-latest-body"></div>
-      </div>
-
-      <form id="campaign-setup-form" autocomplete="off">
-        <div class="ab-field ab-cs-lp-field">
-          <label for="cs-lp-url">現在設定されているLP URL</label>
-          <input type="url" id="cs-lp-url" placeholder="https://teruya1229.github.io/complete-disassembly/">
-          <div class="ab-cs-lp-compare" id="cs-lp-compare"></div>
-        </div>
-
-        <div id="cs-check-groups"></div>
-
-        <div class="ab-field">
-          <label for="cs-memo">メモ</label>
-          <p class="ab-hint"><strong>顧客名・住所・電話番号などの個人情報は入力しないでください。</strong>広告設定上の電話番号や地域設定を確認する項目はあっても、顧客個人情報を保存する用途にはしないでください。</p>
-          <textarea id="cs-memo" rows="2" placeholder="例：サイトリンクのURLを1件修正済み。"></textarea>
-        </div>
-
-        <div class="ab-cs-form-actions">
-          <button type="submit" class="ab-submit ab-submit--secondary">設定チェックを保存</button>
-          <button type="button" class="ab-cs-btn-secondary" id="cs-reset-btn">すべて未確認に戻す</button>
-          <button type="button" class="ab-cs-btn-secondary" id="cs-load-latest-btn">現在のキャンペーンの最新結果をフォームへ読み込む</button>
-        </div>
-      </form>
-
-      <h3 class="ab-subsection-title">設定チェック履歴</h3>
-      <div class="ab-cs-history-cards" id="cs-history-cards"></div>
-      <div class="ab-table-wrap ab-cs-history-table-wrap">
-        <table class="ab-table ab-table--campaign-setup" id="cs-history-table">
-          <thead>
-            <tr>
-              <th>確認日</th>
-              <th>キャンペーン</th>
-              <th>判定</th>
-              <th>完了率</th>
-              <th>LP URL判定</th>
-              <th>OK</th>
-              <th>NG</th>
-              <th>未確認</th>
-              <th>メモ</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="cs-history-tbody"></tbody>
-        </table>
-      </div>
-      <p class="ab-empty" id="cs-history-empty">まだ初期設定チェックの履歴がありません。</p>
     </section>
 
     <!-- 今日の入力 -->
@@ -217,7 +77,7 @@
 
       <div class="ab-bb-import" id="bb-import-box">
         <h3 class="ab-subsection-title ab-bb-import-title">ブラウザー番頭JSON読み込み</h3>
-        <p class="ab-hint">ブラウザー番頭の <code>output/capture-*.json</code> または <code>output/daily-check-latest.json</code> をコピーして貼り付け、「JSONを反映」で下のフォームへ転記できます。</p>
+        <p class="ab-hint ab-bb-import-sub">手動入力・1件修正用。毎日の運用は上の「21時チェック」を使ってください。</p>
         <div class="ab-field ab-bb-import-field">
           <label for="bb-json-input">browser-bantou JSON</label>
           <textarea id="bb-json-input" class="ab-bb-json-textarea" rows="8" placeholder='{"source":"browser-bantou","adBantouDailyInput":{...}}'></textarea>
@@ -386,6 +246,202 @@
       <p class="ab-empty" id="summary-empty">まだ集計データがありません。</p>
     </section>
 
+    <details class="ab-infrequent-wrap">
+      <summary class="ab-infrequent-summary">たまに使う設定チェック（広告開始前・初期設定・作業手順）</summary>
+
+    <!-- Claude in Chrome 作業手順 -->
+    <details class="ab-steps" id="claude-steps">
+      <summary>Claude in Chrome 作業手順</summary>
+      <ol>
+        <li>Google広告を開く</li>
+        <li>期間を「昨日」にする</li>
+        <li>キャンペーン別に「費用・表示回数・クリック数・平均クリック単価」を確認する</li>
+        <li>GA4 または LP計測画面で「CTAクリック数」を確認する</li>
+        <li>LINE・電話・Airリザーブ・Googleカレンダーから「問い合わせ数・成約数」を確認する</li>
+        <li>21時チェックパネルまたは「今日の入力」フォームへ記録する</li>
+        <li>判定が「停止候補」または「改善」なら、メモに理由を書く（個人情報は書かない）</li>
+        <li>最後に「日別ログ」と「LP別集計」を確認する</li>
+      </ol>
+    </details>
+
+    <!-- 広告開始前チェック -->
+    <section class="ab-section ab-section--nested" id="preflight-section">
+      <h2 class="ab-section-title">広告開始前チェック</h2>
+      <p class="ab-section-desc">Google広告を開始する前に、LPのCTA計測が正常か確認するためのチェック欄です。</p>
+
+      <details class="ab-steps">
+        <summary>Claude in Chrome 作業手順（広告開始前チェック）</summary>
+        <ol>
+          <li>debug確認URLを開く</li>
+          <li>CTAをクリックする</li>
+          <li>右下に「計測OK」が表示されたらOKにチェック</li>
+          <li>実際にLINE送信・電話発信・予約確定はしない</li>
+          <li>確認結果をこの広告番頭に保存する</li>
+        </ol>
+      </details>
+
+      <div class="ab-preflight-urls">
+        <p class="ab-preflight-urls-title">debug確認URL</p>
+        <ul>
+          <li>
+            <span class="ab-preflight-url-label">家庭LP debug確認URL：</span>
+            <a href="https://teruya1229.github.io/cursor-test/?debug=1" target="_blank" rel="noopener">https://teruya1229.github.io/cursor-test/?debug=1</a>
+          </li>
+          <li>
+            <span class="ab-preflight-url-label">完全分解LP debug確認URL：</span>
+            <a href="https://teruya1229.github.io/complete-disassembly/?debug=1" target="_blank" rel="noopener">https://teruya1229.github.io/complete-disassembly/?debug=1</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="ab-preflight-latest" id="preflight-latest" hidden>
+        <p class="ab-preflight-latest-title">最新のチェック結果</p>
+        <div class="ab-preflight-latest-body" id="preflight-latest-body"></div>
+      </div>
+
+      <form id="preflight-form" autocomplete="off">
+        <div class="ab-field">
+          <label for="pf-date">確認日 <span class="req">必須</span></label>
+          <p class="ab-hint">Claude用：LPのCTA計測を確認した日付を入力してください。</p>
+          <input type="date" id="pf-date" required>
+        </div>
+
+        <div class="ab-preflight-groups">
+          <fieldset class="ab-preflight-group">
+            <legend>【家庭LP】</legend>
+            <p class="ab-hint ab-preflight-note">現行の家庭LPでは電話CTAは表示していないため、チェック対象外です。</p>
+            <label class="ab-check"><input type="checkbox" id="pf-home-pageOk"> ページ表示OK</label>
+            <label class="ab-check"><input type="checkbox" id="pf-home-lineCtaOk"> LINE CTA 計測OK</label>
+            <label class="ab-check"><input type="checkbox" id="pf-home-airReserveCtaOk"> Airリザーブ CTA 計測OK</label>
+            <label class="ab-check"><input type="checkbox" id="pf-home-layoutOk"> 表示崩れなし</label>
+          </fieldset>
+
+          <fieldset class="ab-preflight-group">
+            <legend>【完全分解LP】</legend>
+            <label class="ab-check"><input type="checkbox" id="pf-complete-pageOk"> ページ表示OK</label>
+            <label class="ab-check"><input type="checkbox" id="pf-complete-lineCtaOk"> LINE CTA 計測OK</label>
+            <label class="ab-check"><input type="checkbox" id="pf-complete-phoneCtaOk"> 電話CTA 計測OK</label>
+            <label class="ab-check"><input type="checkbox" id="pf-complete-layoutOk"> 表示崩れなし</label>
+          </fieldset>
+        </div>
+
+        <div class="ab-field">
+          <label for="pf-memo">確認者メモ</label>
+          <p class="ab-hint">Claude用：気づいた点があれば記載してください。<strong>顧客名・住所・電話番号などの個人情報は絶対に書かないでください。</strong></p>
+          <textarea id="pf-memo" rows="2" placeholder="例：家庭LPのLINE・AirリザーブCTAで計測OKトーストを確認。完全分解LPも全CTA OK。"></textarea>
+        </div>
+
+        <div class="ab-preflight-decision" id="preflight-decision-box">
+          <span class="ab-preflight-decision-label" id="preflight-decision-label">広告開始前に要確認</span>
+          <span class="ab-preflight-decision-hint" id="preflight-decision-hint">すべてのチェック項目にチェックが入ると「広告開始OK」になります。</span>
+        </div>
+
+        <button type="submit" class="ab-submit ab-submit--secondary">チェック結果を保存する</button>
+      </form>
+
+      <h3 class="ab-subsection-title">チェック履歴</h3>
+      <div class="ab-table-wrap">
+        <table class="ab-table ab-table--preflight" id="preflight-history-table">
+          <thead>
+            <tr>
+              <th>確認日</th>
+              <th>判定</th>
+              <th>家庭LP</th>
+              <th>完全分解LP</th>
+              <th>メモ</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="preflight-history-tbody"></tbody>
+        </table>
+      </div>
+      <p class="ab-empty" id="preflight-history-empty">まだチェック履歴がありません。</p>
+    </section>
+
+    <!-- Google広告 初期設定チェッカー -->
+    <section class="ab-section ab-section--nested" id="campaign-setup-section">
+      <h2 class="ab-section-title">Google広告 初期設定チェッカー</h2>
+      <p class="ab-section-desc">キャンペーン開始前に、配信・計測・広告文・広告アセットの設定漏れを確認します。Google広告を自動取得する機能ではありません。実際の管理画面を確認して手動で記録してください。</p>
+
+      <div class="ab-field">
+        <label for="cs-campaign-select">確認するキャンペーン <span class="req">必須</span></label>
+        <select id="cs-campaign-select">
+          <option value="complete_disassembly">完全分解_南部_検索_小額テスト</option>
+          <option value="ai_bantou">AI帳票番頭_検索_全国_初期</option>
+          <option value="other">その他</option>
+        </select>
+      </div>
+
+      <div id="cs-other-fields" class="ab-cs-other-fields" hidden>
+        <div class="ab-field">
+          <label for="cs-other-campaign-name">キャンペーン名</label>
+          <input type="text" id="cs-other-campaign-name" placeholder="例：テストキャンペーン_検索">
+        </div>
+        <div class="ab-field">
+          <label for="cs-other-expected-lp">期待するLP URL</label>
+          <input type="url" id="cs-other-expected-lp" placeholder="https://example.com/lp/">
+        </div>
+      </div>
+
+      <div id="cs-template-card" class="ab-cs-template-card"></div>
+
+      <div class="ab-cs-progress" id="cs-progress-box">
+        <div class="ab-cs-progress-stats" id="cs-progress-stats"></div>
+        <div class="ab-cs-overall" id="cs-overall-box"></div>
+        <div class="ab-cs-next-action" id="cs-next-action-box"></div>
+      </div>
+
+      <div class="ab-cs-latest" id="cs-latest" hidden>
+        <p class="ab-cs-latest-title">最新の確認結果</p>
+        <div class="ab-cs-latest-body" id="cs-latest-body"></div>
+      </div>
+
+      <form id="campaign-setup-form" autocomplete="off">
+        <div class="ab-field ab-cs-lp-field">
+          <label for="cs-lp-url">現在設定されているLP URL</label>
+          <input type="url" id="cs-lp-url" placeholder="https://teruya1229.github.io/complete-disassembly/">
+          <div class="ab-cs-lp-compare" id="cs-lp-compare"></div>
+        </div>
+
+        <div id="cs-check-groups"></div>
+
+        <div class="ab-field">
+          <label for="cs-memo">メモ</label>
+          <p class="ab-hint"><strong>顧客名・住所・電話番号などの個人情報は入力しないでください。</strong>広告設定上の電話番号や地域設定を確認する項目はあっても、顧客個人情報を保存する用途にはしないでください。</p>
+          <textarea id="cs-memo" rows="2" placeholder="例：サイトリンクのURLを1件修正済み。"></textarea>
+        </div>
+
+        <div class="ab-cs-form-actions">
+          <button type="submit" class="ab-submit ab-submit--secondary">設定チェックを保存</button>
+          <button type="button" class="ab-cs-btn-secondary" id="cs-reset-btn">すべて未確認に戻す</button>
+          <button type="button" class="ab-cs-btn-secondary" id="cs-load-latest-btn">現在のキャンペーンの最新結果をフォームへ読み込む</button>
+        </div>
+      </form>
+
+      <h3 class="ab-subsection-title">設定チェック履歴</h3>
+      <div class="ab-cs-history-cards" id="cs-history-cards"></div>
+      <div class="ab-table-wrap ab-cs-history-table-wrap">
+        <table class="ab-table ab-table--campaign-setup" id="cs-history-table">
+          <thead>
+            <tr>
+              <th>確認日</th>
+              <th>キャンペーン</th>
+              <th>判定</th>
+              <th>完了率</th>
+              <th>LP URL判定</th>
+              <th>OK</th>
+              <th>NG</th>
+              <th>未確認</th>
+              <th>メモ</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="cs-history-tbody"></tbody>
+        </table>
+      </div>
+      <p class="ab-empty" id="cs-history-empty">まだ初期設定チェックの履歴がありません。</p>
+    </section>
+
     <!-- 判定基準の説明 -->
     <details class="ab-steps">
       <summary>判定基準（参考）</summary>
@@ -406,6 +462,8 @@
         <li><a href="https://teruya1229.github.io/complete-disassembly/" target="_blank" rel="noopener">完全分解LP</a></li>
         <li><a href="https://teruya1229.github.io/business-cleaning/" target="_blank" rel="noopener">業務LP</a></li>
       </ul>
+    </details>
+
     </details>
 
   </main>
