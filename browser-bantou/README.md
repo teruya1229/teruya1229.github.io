@@ -45,13 +45,34 @@ npm start
 node run-readonly.mjs --campaign=ai_bantou
 ```
 
-1. Chromeが開き、Google広告概要へ移動します
-2. **初回は手動ログイン**が必要です（プロファイルに保存されます）
-3. ターミナルに read-only 確認手順が表示されます
-4. キャンペーン画面まで**手動で**移動して確認します
-5. ターミナルで Enter を押すと、画面上のテキストから **best-effort** で数値を読み取ります
-6. `pageUrl` / `pageTitle` / `screenshotPath` を JSON に含め、スクリーンショットを `output/` に保存します
-7. `output/capture-*.json` を広告番頭へ転記します
+1. Chromeが開き、Google広告へ移動します
+2. `campaigns.json` の `campaignUrl` が設定されていれば **そのURLを直接開きます**
+3. `campaignUrl` が空なら、従来どおり **overview**（`https://ads.google.com/aw/overview`）を開きます
+4. **初回は手動ログイン**が必要です（プロファイルに保存されます）
+5. ターミナルに read-only 確認手順が表示されます
+6. ターミナルで Enter を押すと、画面上のテキストから **best-effort** で数値を読み取ります
+7. `openedUrl` / `pageUrl` / `pageTitle` / `screenshotPath` を JSON に含め、スクリーンショットを `output/` に保存します
+8. `output/capture-*.json` を広告番頭へ転記します
+
+### 3. キャンペーン詳細URLの登録（campaignUrl）
+
+キャンペーンごとに Google広告の詳細画面へ直接開けるようにします。
+
+1. Google広告で対象キャンペーンの**詳細画面**を人間が開く
+2. ブラウザのアドレスバーから URL をコピー
+3. `campaigns.json` の該当キャンペーンの `campaignUrl` に貼る
+
+```json
+"campaignUrl": "https://ads.google.com/aw/campaigns?..."
+```
+
+4. 次回から `node run-readonly.mjs --campaign=complete_disassembly` でその URL を開く
+
+**注意：**
+
+- URL にはアカウントID・キャンペーンIDなどが含まれる可能性があります
+- スクリーンショットや URL を外部共有しないでください（ローカル保管のみ）
+- `campaignUrl` が空のままでも従来どおり overview にフォールバックします
 
 ## 安全ルール（禁止）
 
@@ -77,6 +98,7 @@ node run-readonly.mjs --campaign=ai_bantou
 
 | 項目 | MVP |
 |------|-----|
+| openedUrl / campaignUrlConfigured | 開こうとしたURLと直URL設定の有無 |
 | pageUrl / pageTitle / screenshotPath | Enter後に現在ページから取得・保存 |
 | 費用・表示回数・クリック・平均CPC | best-effort（画面テキスト解析。失敗時は null） |
 | キャンペーン状態・入札・コンバージョン | 手動確認（JSONに manualRequired として記録） |

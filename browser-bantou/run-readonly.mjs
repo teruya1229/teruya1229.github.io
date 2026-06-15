@@ -50,6 +50,20 @@ function getCampaign(campaignId) {
   return CONFIG.campaigns.find(function (c) { return c.id === campaignId; }) || CONFIG.campaigns[0];
 }
 
+function resolveCampaignUrl(campaign) {
+  var campaignUrl = String(campaign.campaignUrl || '').trim();
+  if (campaignUrl) {
+    return {
+      openedUrl: campaignUrl,
+      campaignUrlConfigured: true
+    };
+  }
+  return {
+    openedUrl: CONFIG.googleAdsOverviewUrl,
+    campaignUrlConfigured: false
+  };
+}
+
 function yesterdayIso() {
   var d = new Date();
   d.setDate(d.getDate() - 1);
@@ -84,7 +98,7 @@ function formatCheckedAt(date) {
     sign + hh + ':' + mm;
 }
 
-function buildAdBantouPayload(campaign, snapshot, pageMeta) {
+function buildAdBantouPayload(campaign, snapshot, pageMeta, navigation) {
   var checkedAt = pageMeta.checkedAt || formatCheckedAt();
   return {
     ok: pageMeta.ok !== false,
@@ -97,6 +111,8 @@ function buildAdBantouPayload(campaign, snapshot, pageMeta) {
     campaignName: campaign.name,
     lpType: campaign.lpType,
     expectedLpUrl: campaign.expectedLpUrl,
+    openedUrl: navigation.openedUrl,
+    campaignUrlConfigured: navigation.campaignUrlConfigured,
     pageUrl: pageMeta.pageUrl,
     pageTitle: pageMeta.pageTitle,
     screenshotPath: pageMeta.screenshotPath,
@@ -124,10 +140,12 @@ function buildAdBantouPayload(campaign, snapshot, pageMeta) {
   };
 }
 
-function printChecklist(campaign) {
+function printChecklist(campaign, navigation) {
   console.log('\n=== ブラウザー番頭 read-only 確認手順 ===\n');
   console.log('対象キャンペーン:', campaign.name);
   console.log('期待LP:', campaign.expectedLpUrl);
+  console.log('開くURL:', navigation.openedUrl);
+  console.log('campaignUrl設定:', navigation.campaignUrlConfigured ? 'あり' : 'なし（overview）');
   console.log('広告番頭:', CONFIG.adBantouUrl);
   console.log('');
   READ_ONLY_CHECKLIST.forEach(function (line, i) {
@@ -201,6 +219,7 @@ async function capturePageMetadata(page, campaign) {
 async function main() {
   var args = parseArgs(process.argv.slice(2));
   var campaign = getCampaign(args.campaignId);
+  var navigation = resolveCampaignUrl(campaign);
 
   mkdirSync(OUTPUT_DIR, { recursive: true });
 
@@ -215,18 +234,22 @@ async function main() {
       pageTitle: null,
       screenshotPath: null,
       memo: 'テンプレート出力。ブラウザ起動なし。'
-    });
+    }, navigation);
     var templatePath = join(OUTPUT_DIR, 'ad-bantou-template-' + campaign.id + '.json');
     writeFileSync(templatePath, JSON.stringify(template, null, 2), 'utf8');
     console.log('テンプレート出力:', templatePath);
-    printChecklist(campaign);
+    printChecklist(campaign, navigation);
     return;
   }
 
-  printChecklist(campaign);
+  printChecklist(campaign, navigation);
 
   console.log('Chromeプロファイル:', PROFILE_DIR);
-  console.log('初回はGoogleログインが必要です。ログイン後、キャンペーン画面まで手動で移動してください。\n');
+  if (navigation.campaignUrlConfigured) {
+    console.log('campaignUrl を開きます。ログイン済みならキャンペーン詳細へ直接移動します。\n');
+  } else {
+    console.log('初回はGoogleログインが必要です。ログイン後、キャンペーン画面まで手動で移動してください。\n');
+  }
 
   var context = await chromium.launchPersistentContext(PROFILE_DIR, {
     headless: args.headless,
@@ -238,8 +261,8 @@ async function main() {
   var page = context.pages()[0] || await context.newPage();
 
   try {
-    await page.goto(CONFIG.googleAdsOverviewUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
-    console.log('Google広告を開きました。ブラウザで画面を確認してください。');
+    await page.goto(navigation.openedUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    console.log('Google広告を開きました:', navigation.openedUrl);
     console.log('read-only のため、スクリプトからのクリック・設定変更は行いません。\n');
     console.log('確認が終わったら、このターミナルで Enter を押してください...');
 
@@ -250,7 +273,7 @@ async function main() {
 
     var autoRead = await tryReadOverviewMetrics(page);
     var pageMeta = await capturePageMetadata(page, campaign);
-    var payload = buildAdBantouPayload(campaign, { autoRead: autoRead }, pageMeta);
+    var payload = buildAdBantouPayload(campaign, { autoRead: autoRead }, pageMeta, navigation);
     var outPath = join(OUTPUT_DIR, 'capture-' + campaign.id + '-' + Date.now() + '.json');
     writeFileSync(outPath, JSON.stringify(payload, null, 2), 'utf8');
 
