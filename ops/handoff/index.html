@@ -46,152 +46,81 @@
 </head>
 <body>
   <h1>引き継ぎシート（運用ルール）</h1>
-  <p class="sub">このページはチャット引き継ぎ専用。更新日を必ず書き換える。</p>
+  <p class="sub">このページはチャット引き継ぎ専用。正本はリポジトリ内 handoff.md。</p>
   <pre>
-更新日：2026-02-16
+更新日：2026-06-15
 
-【0. 今回のゴール】
-- REPLACE（例：GBP整備／LP改善／地域ページ追加 など）
+【読む順】
 
-【1. 事業・ブランド軸（固定）】
-- ターゲット：子育て家庭（沖縄南部）
-- ブランド：安心で勝つ
-- 強み：業界経験17年／丁寧な説明と養生／仕上がり確認
-- 導線：Instagram → LP → LINE
+1. status.md（進捗の正本）
+2. handoff.md（引継ぎの正本）
+3. rules.md（問題対応ルール）
 
-【2. サイト情報（固定）】
-- 本番URL：https://teruya1229.github.io/
-- 検証URL：https://teruya1229.github.io/cursor-test/
-- 重要ページ：REPLACE（料金、予約、地域など）
-
-【3. サイト制作・運用ルール（固定）】
-- LP編集は「Cursor用プロンプト」に統一（Readdy.AIは使わない）
-- 可能な作業は「全部プロンプト化」で提示（commit/push手順・差し替え指示込み）
-- 迷ったらこのページを正として更新し、前提を固定して進める
-
-【AI三位一体運用】
-このプロジェクトは以下の役割で運用する
-
-ChatGPT
-戦略 / マーケ / 方針
-
-Claude
-設計整理
-Cursor用プロンプト作成
-レビュー
-
-Cursor
-実装
-commit
-push
-
-【4. Search Console 運用ルール（固定）】
-- 見るのはルートプロパティ（https://teruya1229.github.io/）のみ
-- 送るサイトマップは /sitemap.xml のみ
-- /cursor-test/sitemap.xml は送信しない（混乱の元）
-- HTMLページ（/cursor-test/◯◯.html）をサイトマップ欄に入れるのは禁止（必ず失敗する）
-- URL検査・インデックス登録リクエストは実URL（/cursor-test/配下）で行う
-- GSCが不安定な場合は追わない → 入口URL検査＋内部リンクで前進する
-
-【5. 計測（GA4）運用ルール（固定）】
-- GA4テスト：公開URLに ?debug=1 → CTAクリック → 「計測OK」表示を確認
-- GA4リアルタイムで cta_click イベントを確認（確認済み）
-- 次ステップ：cta_click をキーイベント化（★ON）
-
-【LINEリンク管理（正／旧）】
-- 現行（正）：https://lin.ee/tsilra6
-- 旧（使用禁止）：https://lin.ee/22lwU7U
-- ルール：今後は現行（正）だけを使う。旧URLは一切使わない。推測でURLを作らない。
-
-【6. 料金・商品（変動）】
-- 南部限定：8,000円おまかせプラン（200世帯達成まで）
-- リピート：感謝価格（表記）
-- ライト/スタンダード/プレミアム：REPLACE
-- オプション：REPLACE（例：抗菌・防カビコーティング 等）
-- 口コミ目標：1ヶ月で15件
-
-【7. 現在の重点テーマ（変動）】
-- REPLACE（例：Googleビジネスプロフィール充実。商品はまずエアコンクリーニングから、子育て家庭×安心を前面）
-
-【8. 直近の状況（変動）】
-- Done（2026-02-16）：
-  - GSCサイトマップ：/sitemap.xml は 200 OK + application/xml + 正しい urlset（10URL）で返る状態に復旧済み
-  - GSC側で「サイトマップを読み込めませんでした」が出ることがある（UI/取得側要因）。サイト側は正常のため、以後は "入口URL検査→インデックス登録" を優先運用
-  - 内部リンク強化：cursor-test/index.html に「対応エリア」テキストリンク（naha/nanjo/yaese/haebaru/itoman/tomigusuku/yonabaru + south）を追加し、Googleが辿れる導線を完成
-  - URL検査：/cursor-test/ のインデックス登録リクエストが OK（前進確認）
-  - LPのCTA/導線は現行LINE（https://lin.ee/tsilra6）に統一済み
-  - Googleフォーム分岐設計完成（満足ルート→口コミ ／ 改善ルート→ヒアリング を完全分離）
-  - 口コミリンクを送信後メッセージに移動（押し忘れ対策）
-  - 口コミ後LINE感謝テンプレ完成
-  - 紹介制度テンプレ確定＋紹介キーワード自動返信設定済み
-  - 紹介循環モデル：80%完成（フォーム→口コミ→感謝→紹介の一連フロー構築済み）
-  - commit: b85636e "Add root sitemap.xml (cursor-test pages)"
-  - commit: 6c94d9d "Add internal links to area pages"
-- Next（3つまで）：
-  1) （GA4）cta_click をキーイベント化（★ON）
-  2) （紹介循環）残り20%の仕上げ（実運用テスト→微調整→本番稼働）
-  3) （GBP）週次の投稿＆パフォーマンス確認（継続）
-
-【9. context used対策（固定）】
-- Cursorの「context used」が高い時は、新スレ/新Agentに分割して続行する
-- 分割時は「最小の引き継ぎプロンプト」を作って開始する
-
-【10. 禁止・注意（事故防止）】
-- 過去ログの前提を優先し、勝手に方針変更しない
-- 推測で広げない。必要ならスクショ・URL・該当テキストを根拠に進める
-- URL（特に lin.ee や @ID）は推測で新規作成しない。名刺/公式で確認済みのURLのみ正として扱う
-- 変更が発生したら、このページ（引き継ぎシート）を先に更新してから作業する
-
-【11. 追加前提（2026-03-07）】
-- LPプロジェクトのローカル開発場所は C:\dev\teruya1229-github-io を正とする
-- 今後は LPプロジェクト単体で扱う（電工プロジェクト文脈は切り離し）
-- 現在は検証フェーズのため、原則として大きなLP改修は行わない
-- Cursor Run Allowlist 方針を固定前提にする
-- Allowlist対象：
-  git status / git add / git commit / git push / git diff / git log / ls / pwd / Get-ChildItem / Get-Location
-- Allowlist禁止：
-  rm / del / sudo / git reset --hard / git clean / git checkout -- . / git restore . / git restore --source / git reset --mixed / git reset --soft
-
-【12. 次にやるべき1手（2026-03-07）】
-- ヒーロー直下に「竣工清掃対応」の一文を追加し、建設会社からの問い合わせ導線を強化する
-
-【判断基準】
-- LPのSEO軸はエアコンクリーニングなので、構造は変更せず1〜2行の補足文で対応する
-
-【注意点】
-- LPの方向性（子育て家庭応援）は維持し、ターゲット限定表現は使わない
-
-【13. 追加前提（完全分解LP・業務LP進捗 / 2026-03-07）】
-- 進行順は「完全分解LPを先に進め、その後に業務LPを仕上げる」を固定する
-- 本日は写真なしで進められる範囲まで実装済み（文言・構成・CTA導線まで反映）
-- 完全分解LPのエリア表現は「沖縄南部を中心に対応／エアコン完全分解クリーニング」を優先する
-- 業務LPは南部限定にせず、沖縄本島対応で進める
-- 次回は写真差し替え、または軽い仕上げ（文言微調整）から再開する
-
-【14. 次担当向け更新（業務LP公開確認後 / 2026-03-19）】
-
-【次にやるべき1手】
-- 業務LPはひとまず止めてよい
-- 次回以降、業務LPを触る場合は大きなレイアウト変更ではなく文言微調整を優先
-- CSS追加は安易に行わず、既存クラス流用または文言調整で済むかを先に判断する
-
-【判断基準】
-- 現時点の業務LPは公開運用可能
-- 目立つ崩れや反映漏れは確認されていない
-- 気になる点が出ても、まずはFVや見出し文言など軽微修正から検討する
-- 業務LPはBtoB向け文脈維持を優先し、家庭向け表現に寄せない
-
-【注意点】
-- 未追跡の business-cleaning/business-clean-parts-optimized.jpg は未使用予備画像であり、本番差分ではない
-- 誤って add / commit しなくてよい
-- 実機上の正式ルートは C:\dev\bc-service\teruya1229-github-io を正として扱う
-- 電工プロジェクト文脈は混ぜない
+公開版参照（任意）：
+https://teruya1229.github.io/ops/status/
+https://teruya1229.github.io/ops/handoff/
 
 ---
 
-使い方（新チャット1発目にこれだけ）
-前提はこのページ固定で進めて：
-https://teruya1229.github.io/ops/handoff/
+【フェーズ】
+
+制作中心 → 運用・計測・回収フェーズへ移行済み（2026-06-11）
+南部7市町村LP刷新・公開確認完了
+
+【広告番頭】
+
+URL：https://teruya1229.github.io/ops/ad-bantou/
+内部確認用（noindex / nofollow / sitemap未登録）
+
+機能：
+・日次入力・自動計算・判定・日別ログ・LP別集計
+・広告開始前チェック（LP CTA debug確認）
+  → ブラウザー番頭の確認手順を広告番頭へ統合済み
+・Google広告 初期設定チェッカー（追加済み・最終確認OK）
+
+初期設定チェッカー：
+・完全分解広告・AI帳票番頭広告の専用テンプレート対応済み
+・LP URL照合対応済み
+・4状態チェック / 完了率 / 次の一手 / 履歴保存対応済み
+・日次入力にAI帳票番頭LP追加済み
+・localStorageのみで保存
+・Google Ads API / GA4 API連携は未実装
+
+localStorageキー：
+・bcAdBantouDailyLogs
+・bcAdBantouPreflightChecks
+・bcAdBantouCampaignSetupChecks
+
+実装コミット：
+0ef2aae7d8da9197094b1ef389a88f07aabe9ab9
+
+【次にやるべき1手】
+
+Google広告キャンペーン開始前に、広告番頭の「Google広告 初期設定チェッカー」で設定漏れを確認してから配信する。
+その後、毎日21時の日次入力で問い合わせ・成約・CPA・ROASを確認する。
+
+【固定URL】
+
+LINE：https://lin.ee/tsilra6
+Airリザーブ：https://airrsv.net/bc-servicesokinawa/calendar
+広告番頭：https://teruya1229.github.io/ops/ad-bantou/
+完全分解LP：https://teruya1229.github.io/complete-disassembly/
+完全分解LP debug：https://teruya1229.github.io/complete-disassembly/?debug=1
+AI帳票番頭LP：https://teruya1229.github.io/ai-chouhyou-bantou/
+
+【判断基準】
+
+・LP本文・CSS・sitemapは問題が出たときのみ最小修正
+・広告番頭は内部確認用。個人情報を入力しない
+・破壊系 git コマンド禁止
+
+---
+
+使い方（新チャット1発目）
+
+前提は status.md → handoff.md → rules.md の順で読んで進んでください。
+広告番頭の初期設定チェッカーは実装済み（0ef2aae）。
+次の優先：広告日次運用 / 毎日21時の広告番頭入力 / GA4地域LP別CTA反応。
   </pre>
 </body>
 </html>

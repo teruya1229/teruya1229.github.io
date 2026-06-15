@@ -1,6 +1,34 @@
-更新日: 2026-06-12
+更新日: 2026-06-15
 
 ## 本日やったこと
+
+### 2026-06-15（広告番頭：Google広告 初期設定チェッカー 最終確認）
+
+広告番頭 `ops/ad-bantou/` の Google広告 初期設定チェッカーを最終確認。本体は `0ef2aae` で実装済み。公開URL・コード・localStorageキーを確認し、追加修正は不要と判断。公開用 `ops/status/` / `ops/handoff/` ページを最新化。
+
+**【確認結果】**
+
+- Google広告 初期設定チェッカー：実装済み・公開URLで表示確認OK
+- ブラウザー番頭の確認手順（LP CTA debug確認）は広告開始前チェックとして広告番頭へ統合済み
+- 完全分解広告・AI帳票番頭広告の専用テンプレート対応済み
+- LP URL照合（末尾スラッシュ許容）対応済み
+- 4状態チェック、完了率、次の一手、履歴保存対応済み
+- 日次入力へAI帳票番頭LP追加済み
+- localStorageのみで保存（`bcAdBantouCampaignSetupChecks`）
+- Google Ads API・GA4 API連携は未実装
+- 実装コミット：`0ef2aae7d8da9197094b1ef389a88f07aabe9ab9`
+
+**【localStorageキー】**
+
+- `bcAdBantouDailyLogs`（既存・変更なし）
+- `bcAdBantouPreflightChecks`（既存・変更なし）
+- `bcAdBantouCampaignSetupChecks`（初期設定チェック）
+
+**【公開URL】**
+
+- 広告番頭：`https://teruya1229.github.io/ops/ad-bantou/`
+
+---
 
 ### 2026-06-12（広告番頭：Google広告 初期設定チェッカー追加）
 
