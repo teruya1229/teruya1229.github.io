@@ -46,7 +46,7 @@ node run-readonly.mjs --campaign=ai_bantou
 ```
 
 1. Chromeが開き、Google広告へ移動します
-2. `campaigns.json` の `campaignUrl` が設定されていれば **そのURLを直接開きます**
+2. `campaigns.local.json`（または `campaigns.json`）の `campaignUrl` が設定されていれば **そのURLを直接開きます**
 3. `campaignUrl` が空なら、従来どおり **overview**（`https://ads.google.com/aw/overview`）を開きます
 4. **初回は手動ログイン**が必要です（プロファイルに保存されます）
 5. ターミナルに read-only 確認手順が表示されます
@@ -59,20 +59,30 @@ node run-readonly.mjs --campaign=ai_bantou
 キャンペーンごとに Google広告の詳細画面へ直接開けるようにします。
 
 1. Google広告で対象キャンペーンの**詳細画面**を人間が開く
-2. ブラウザのアドレスバーから URL をコピー
-3. `campaigns.json` の該当キャンペーンの `campaignUrl` に貼る
+2. ブラウザのアドレスバーから URL をコピー（`utm_*`、`_ga`、`subid`、`experiment` などの計測系パラメータは除いてよい）
+3. `campaigns.local.json` の該当キャンペーンIDの `campaignUrl` に貼る
 
 ```json
-"campaignUrl": "https://ads.google.com/aw/campaigns?..."
+{
+  "complete_disassembly": {
+    "campaignUrl": "https://ads.google.com/aw/campaigns?..."
+  }
+}
 ```
 
 4. 次回から `node run-readonly.mjs --campaign=complete_disassembly` でその URL を開く
 
+**ローカル専用設定：**
+
+- `campaigns.local.json` は **ローカル専用**（Git に含めない）
+- Google広告 URL にはアカウントID・キャンペーンIDなどが含まれるため、公開リポジトリへコミットしない
+- `campaigns.local.json` は `.gitignore` 対象
+- リポジトリに含まれる `campaigns.json` の `campaignUrl` は空のまま（テンプレート用）
+- `campaigns.local.json` が無くても従来どおり動作し、`campaignUrl` が空なら overview にフォールバックします
+
 **注意：**
 
-- URL にはアカウントID・キャンペーンIDなどが含まれる可能性があります
 - スクリーンショットや URL を外部共有しないでください（ローカル保管のみ）
-- `campaignUrl` が空のままでも従来どおり overview にフォールバックします
 
 ## 安全ルール（禁止）
 
@@ -110,7 +120,8 @@ node run-readonly.mjs --campaign=ai_bantou
 browser-bantou/
   package.json
   run-readonly.mjs   # read-only 起動・出力
-  campaigns.json     # キャンペーン定義（広告番頭と整合）
+  campaigns.json     # キャンペーン定義（広告番頭と整合・Git管理）
+  campaigns.local.json  # キャンペーン直URL（ローカル専用・gitignore）
   README.md
   .gitignore
   .chrome-profile/   # ログイン状態（git管理外）

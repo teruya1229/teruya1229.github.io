@@ -5,14 +5,14 @@
       "name": "完全分解_南部_検索_小額テスト",
       "lpType": "完全分解LP",
       "expectedLpUrl": "https://teruya1229.github.io/complete-disassembly/",
-      "campaignUrl": "https://ads.google.com/aw/campaigns?campaignId=23930793733&ocid=415271471&authuser=0"
+      "campaignUrl": ""
     },
     {
       "id": "ai_bantou",
       "name": "AI帳票番頭_検索_全国_初期",
       "lpType": "AI帳票番頭LP",
       "expectedLpUrl": "https://teruya1229.github.io/ai-chouhyou-bantou/",
-      "campaignUrl": "https://ads.google.com/aw/campaigns?campaignId=23931857930&ocid=415271471&authuser=0"
+      "campaignUrl": ""
     }
   ],
   "googleAdsOverviewUrl": "https://ads.google.com/aw/overview",

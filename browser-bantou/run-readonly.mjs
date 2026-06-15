@@ -7,13 +7,15 @@
  * - 確認手順を表示し、広告番頭へ貼れるJSONテンプレートを出力
  */
 import { chromium } from 'playwright';
-import { readFileSync, mkdirSync, writeFileSync } from 'fs';
+import { readFileSync, mkdirSync, writeFileSync, existsSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = __dirname;
-const CONFIG = JSON.parse(readFileSync(join(ROOT, 'campaigns.json'), 'utf8'));
+const CONFIG_PATH = join(ROOT, 'campaigns.json');
+const LOCAL_CONFIG_PATH = join(ROOT, 'campaigns.local.json');
+const CONFIG = loadConfig();
 const PROFILE_DIR = join(ROOT, '.chrome-profile');
 const OUTPUT_DIR = join(ROOT, 'output');
 
@@ -36,6 +38,22 @@ const MANUAL_FIELDS = [
   'adStatus',
   'conversionSettingsNote'
 ];
+
+function loadConfig() {
+  var config = JSON.parse(readFileSync(CONFIG_PATH, 'utf8'));
+  var localOverrides = {};
+  if (existsSync(LOCAL_CONFIG_PATH)) {
+    localOverrides = JSON.parse(readFileSync(LOCAL_CONFIG_PATH, 'utf8'));
+  }
+  config.campaigns = config.campaigns.map(function (campaign) {
+    var local = localOverrides[campaign.id];
+    if (local && String(local.campaignUrl || '').trim()) {
+      return Object.assign({}, campaign, { campaignUrl: String(local.campaignUrl).trim() });
+    }
+    return campaign;
+  });
+  return config;
+}
 
 function parseArgs(argv) {
   const campaignArg = argv.find(function (a) { return a.startsWith('--campaign='); });
