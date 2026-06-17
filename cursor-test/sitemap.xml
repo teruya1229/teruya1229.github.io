@@ -20,8 +20,14 @@
   </url>
   <url>
     <loc>https://teruya1229.github.io/cursor-test/blog.html</loc>
-    <lastmod>2026-02-13</lastmod>
+    <lastmod>2026-06-17</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://teruya1229.github.io/cursor-test/articles/okinawa-aircon-cleaning-rainy-season.html</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
