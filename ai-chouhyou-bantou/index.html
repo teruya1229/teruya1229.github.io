@@ -618,7 +618,13 @@
       font-size: 0.8rem;
       font-weight: 700;
       color: var(--text-sub);
+      margin-bottom: 6px;
+    }
+    .plan-work {
+      font-size: 0.78rem;
+      color: var(--text-light);
       margin-bottom: 8px;
+      line-height: 1.55;
     }
     .plan-desc {
       font-size: 0.86rem;
@@ -690,49 +696,78 @@
       font-size: 0.78rem;
       color: var(--text-light);
       line-height: 1.7;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
       padding: 12px 14px;
       background: #fff;
       border: 1px solid var(--border);
       border-radius: 6px;
     }
+    .demo-lead strong {
+      display: block;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-bottom: 4px;
+    }
+    .demo-details {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+    }
+    .demo-summary {
+      padding: 10px 14px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      cursor: pointer;
+      list-style: none;
+    }
+    .demo-summary::-webkit-details-marker { display: none; }
+    .demo-summary::before {
+      content: '▸ ';
+      color: var(--text-light);
+    }
+    .demo-details[open] .demo-summary::before { content: '▾ '; }
+    .demo-gallery {
+      padding: 0 12px 12px;
+      border-top: 1px solid var(--border);
+    }
     .demo-img {
       display: block;
       width: 100%;
-      max-width: 440px;
-      margin: 0 auto;
+      max-width: 320px;
+      margin: 12px auto 0;
       border-radius: 4px;
       border: 1px solid var(--border);
-      opacity: 0.88;
+      opacity: 0.82;
     }
-    .demo-img--secondary {
-      max-width: 380px;
-      opacity: 0.85;
+    .demo-img--thumb-sm {
+      max-width: 200px;
+      opacity: 0.78;
     }
     .demo-img-caption {
-      font-size: 0.68rem;
+      font-size: 0.66rem;
       color: var(--text-light);
       margin-top: 4px;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
       line-height: 1.45;
       text-align: center;
-      max-width: 440px;
+      max-width: 320px;
       margin-left: auto;
       margin-right: auto;
     }
     .demo-sub-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      max-width: 380px;
-      margin: 8px auto 0;
+      gap: 8px;
+      max-width: 280px;
+      margin: 4px auto 0;
     }
     @media (max-width: 480px) {
-      .demo-sub-grid { grid-template-columns: 1fr; max-width: 280px; }
+      .demo-sub-grid { grid-template-columns: 1fr; max-width: 200px; }
     }
     .demo-sub-grid .demo-img {
       max-width: 100%;
-      opacity: 0.82;
+      opacity: 0.75;
     }
 
     /* ===== FINAL CTA ===== */
@@ -887,7 +922,7 @@
           <p class="hero-eyebrow">一人親方・小規模現場業者向け</p>
           <h1 class="hero-title">現場17年の私が、受付・請求・売上管理の散らかりを一緒に整えます。</h1>
           <p class="hero-sub">
-            LINE、メモ、写真、紙に分かれた案件情報を、今のやり方に合わせて整理します。AIは難しいシステムではなく、確認・要約・記録を助ける道具として使います。
+            LINE、メモ、写真、紙に分かれた案件情報を、今のやり方に合わせて整理します。請求漏れや月末の確認が不安な方も、今の状態のまま相談できます。
           </p>
           <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-primary" data-track-location="hero_primary">今の受付・請求まわりを無料で相談する</a>
           <a href="#pain" class="hero-scroll-link">こんな状態でも大丈夫です</a>
@@ -936,8 +971,8 @@
             </div>
             <p class="prose">
               私自身も、受付・日程調整・作業・請求・売上管理を自分で回してきました。システム会社ではなく、今も現場に出ている事業者です。<br><br>
-              現場が終わったあとに、LINEやメモを見返して請求内容を確認する大変さが分かります。BCサービスでも同じ流れを自分の現場で試し、忙しいあとでも続けられるかを基準に整えてきました。<br><br>
-              だから、いきなり難しいシステムを入れるのではなく、今のやり方を崩さずに整えることを大切にしています。AIは主役ではありません。現場の流れをラクにするための補助道具として使います。
+              作業後にLINEやメモを見返しながら、請求内容や売上を確認してきました。現場が増えるほど、情報が散らばる怖さも、月末に思い出す大変さも分かります。BCサービスでも、受付・日程調整・作業・請求・売上確認までを自分で回してきました。<br><br>
+              だから、きれいなシステムを最初から入れるより、今のやり方を崩さずに整えることを大切にしています。AIは主役ではありません。現場の流れをラクにするための補助道具として使います。
             </p>
           </div>
         </div>
@@ -953,9 +988,8 @@
             <div class="compare-card compare-card--before">
               <span class="compare-label">いま</span>
               <ul class="compare-list">
-                <li>LINE・メモ・紙に情報が分かれている</li>
-                <li>月末に請求内容を思い出す</li>
-                <li>売上や未請求が見えにくい</li>
+                <li>情報がバラバラに残っている</li>
+                <li>月末の確認に時間がかかる</li>
               </ul>
             </div>
             <div class="compare-card compare-card--after">
@@ -1011,6 +1045,7 @@
               <p class="plan-name">無料相談</p>
               <p class="plan-price">¥0</p>
               <p class="plan-for">まず現状を確認したい方へ</p>
+              <p class="plan-work">作業内容：今の受付・請求まわりの確認</p>
               <ul class="plan-list">
                 <li>今の管理方法を確認</li>
                 <li>詰まりやすい箇所を見つける</li>
@@ -1022,6 +1057,7 @@
               <p class="plan-name">業務整理レポート</p>
               <p class="plan-price">¥19,800 <span>（税込）</span></p>
               <p class="plan-for">小さく試したい方、本導入前に設計を確認したい方へ</p>
+              <p class="plan-work">作業内容：現状確認と改善ポイントの整理</p>
               <ul class="plan-list">
                 <li>現状を整理して改善ポイントをまとめる</li>
                 <li>どこから始めるべきか決める</li>
@@ -1034,6 +1070,7 @@
               <p class="plan-name">月末請求ミニ導入</p>
               <p class="plan-price">¥49,800 <span>（税込）</span></p>
               <p class="plan-for">まず月末の確認をラクにしたい方へ</p>
+              <p class="plan-work">作業内容：受付・請求まわりの初期設計</p>
               <ul class="plan-list">
                 <li>受付・請求まわりを最小構成で整える</li>
                 <li>請求に必要な項目の整理</li>
@@ -1045,6 +1082,7 @@
               <p class="plan-name">受付から売上まで標準導入</p>
               <p class="plan-price">¥148,000 <span>（税込）</span></p>
               <p class="plan-for">受付から売上確認まで一通り整えたい方へ</p>
+              <p class="plan-work">作業内容：継続して使える運用ルールの整理</p>
               <ul class="plan-list">
                 <li>受付から請求、売上・未請求確認まで一通り整える</li>
                 <li>継続して使える流れまで作る</li>
@@ -1097,22 +1135,30 @@
     <section class="section demo-section" id="demo" data-track-section="demo">
       <div class="container-wide">
         <div class="container-narrow">
-          <p class="demo-heading">参考：整理後の一例</p>
-          <p class="demo-lead">実際の運用では、今の受付方法に合わせて必要な項目を一緒に整理します。画像は整理後の一例で、この画面やテンプレを販売するサービスではありません。</p>
-          <img src="./images/ai-bantou-demo-main.png" alt="案件情報の整理から請求データ作成までの動作イメージ" class="demo-img" loading="lazy" width="440" height="248">
-          <p class="demo-img-caption">整理イメージ：案件情報の流れを一つにつなげる考え方</p>
-          <img src="./images/ai-bantou-invoice-20.png" alt="請求書用データへの整理イメージ" class="demo-img demo-img--secondary" loading="lazy" width="380" height="214">
-          <p class="demo-img-caption">整理イメージ：請求書用データへの反映例</p>
-          <div class="demo-sub-grid">
-            <div>
-              <img src="./images/ai-bantou-reception-form.png" alt="受付票の整理例" class="demo-img" loading="lazy" width="260" height="184">
-              <p class="demo-img-caption">受付の整理例</p>
+          <p class="demo-heading">参考資料</p>
+          <p class="demo-lead">
+            <strong>画像は、整理後のイメージを説明するための参考資料です。</strong>
+            AIが自動で請求書を作るサービスではなく、今の受付・請求の流れを照屋が一緒に整理する導入支援です。
+          </p>
+          <details class="demo-details">
+            <summary class="demo-summary">参考画像を見る</summary>
+            <div class="demo-gallery">
+              <img src="./images/ai-bantou-demo-main.png" alt="案件情報の整理から請求データ作成までの動作イメージ" class="demo-img" loading="lazy" width="320" height="180">
+              <p class="demo-img-caption">整理イメージ：案件情報の流れ</p>
+              <img src="./images/ai-bantou-invoice-20.png" alt="請求書用データへの整理イメージ" class="demo-img demo-img--thumb-sm" loading="lazy" width="200" height="112">
+              <p class="demo-img-caption">整理イメージ：請求データへの反映例</p>
+              <div class="demo-sub-grid">
+                <div>
+                  <img src="./images/ai-bantou-reception-form.png" alt="受付票の整理例" class="demo-img" loading="lazy" width="200" height="141">
+                  <p class="demo-img-caption">受付の整理例</p>
+                </div>
+                <div>
+                  <img src="./images/ai-bantou-sales-list.png" alt="売上一覧の整理例" class="demo-img" loading="lazy" width="200" height="141">
+                  <p class="demo-img-caption">売上・未請求の確認例</p>
+                </div>
+              </div>
             </div>
-            <div>
-              <img src="./images/ai-bantou-sales-list.png" alt="売上一覧の整理例" class="demo-img" loading="lazy" width="260" height="184">
-              <p class="demo-img-caption">売上・未請求の確認例</p>
-            </div>
-          </div>
+          </details>
         </div>
       </div>
     </section>
