@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI帳票番頭｜一人親方・現場業の受付票・請求書・売上一覧をAIで整理</title>
-  <meta name="description" content="LINE・電話・写真・メモに散らばった現場案件を、受付票・請求書用データ・売上一覧へ整理。今の仕事のやり方を大きく変えず、請求漏れや月末の転記作業を減らす導入支援です。">
+  <title>AI帳票番頭｜一人親方・現場業者の受付票・請求書・売上一覧をAIでラクに</title>
+  <meta name="description" content="一人親方・小規模現場業者向け。LINE・メモ・紙に散らばった受付・請求・売上管理を、受付票・請求書・売上一覧テンプレとAIで整理。難しいDXではなく、現場に合わせた実用導入支援。まずは無料診断から。">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://teruya1229.github.io/ai-chouhyou-bantou/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="AI帳票番頭｜一人親方・現場業の受付票・請求書・売上一覧をAIで整理">
-  <meta property="og:description" content="LINE・電話・写真・メモに散らばった現場案件を、受付票・請求書用データ・売上一覧へ整理。今の仕事のやり方を大きく変えず、請求漏れや月末の転記作業を減らす導入支援です。">
+  <meta property="og:title" content="AI帳票番頭｜一人親方・現場業者の受付票・請求書・売上一覧をAIでラクに">
+  <meta property="og:description" content="一人親方・小規模現場業者向け。受付票・請求書・売上一覧をAIとテンプレで整理。まずは無料診断から。">
   <meta property="og:url" content="https://teruya1229.github.io/ai-chouhyou-bantou/">
   <meta property="og:image" content="https://teruya1229.github.io/ai-chouhyou-bantou/images/ai-bantou-demo-main.png">
   <meta property="og:locale" content="ja_JP">
@@ -392,6 +392,124 @@
       background: #34d399;
       border-radius: 50%;
       flex-shrink: 0;
+    }
+
+    .hero-cta-note {
+      font-size: 0.85rem;
+      color: #bfdbfe;
+      line-height: 1.7;
+      margin-top: -4px;
+      margin-bottom: 4px;
+    }
+    .hero-audience {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .hero-audience-tag {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.28);
+      color: #e0f2fe;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      line-height: 1.4;
+    }
+    .compare-list {
+      list-style: none;
+      font-size: 0.88rem;
+      color: var(--text-sub);
+      line-height: 1.75;
+    }
+    .compare-list li {
+      padding: 5px 0 5px 16px;
+      position: relative;
+    }
+    .compare-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 13px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.45;
+    }
+    .compare-card--before .compare-list li::before { background: #b91c1c; opacity: 0.6; }
+    .compare-card--after .compare-list li::before { background: var(--brand-blue); opacity: 0.7; }
+    .field-note {
+      margin-top: 20px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--brand-green);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      line-height: 1.8;
+    }
+    .field-note strong {
+      display: block;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .deliverable-grid {
+      display: grid;
+      gap: 12px;
+    }
+    @media (min-width: 600px) {
+      .deliverable-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    .deliverable-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .deliverable-icon {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      background: var(--bg-blue-light);
+      color: var(--brand-blue);
+      font-size: 0.85rem;
+      font-weight: 800;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .deliverable-item strong {
+      display: block;
+      font-size: 0.92rem;
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+    .deliverable-item p {
+      font-size: 0.82rem;
+      color: var(--text-sub);
+      line-height: 1.6;
+    }
+    .target-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .target-tag {
+      background: var(--bg-blue-light);
+      color: var(--brand-blue);
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid #bfdbfe;
     }
 
     /* Hero flow diagram */
@@ -1070,10 +1188,10 @@
         <span>現場業の案件整理・請求サポート</span>
       </div>
       <nav class="header-nav" aria-label="ページ内ナビゲーション">
+        <a href="#before-after">Before/After</a>
+        <a href="#deliverables">渡すもの</a>
         <a href="#flow">仕組み</a>
-        <a href="#case-study">自社運用例</a>
         <a href="#pricing">料金</a>
-        <a href="#profile">運営者</a>
       </nav>
       <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="header-cta" data-track-location="header">LINEで無料診断</a>
     </div>
@@ -1085,20 +1203,30 @@
     <section class="hero">
       <div class="container-wide hero-grid">
         <div>
-          <p class="hero-eyebrow">現場経験17年の現場業者が、<br>自分の仕事のために作った仕組み</p>
-          <h1 class="hero-title">LINEに埋もれた案件を、<br>請求できる状態まで整える。</h1>
+          <p class="hero-eyebrow">一人親方・小規模現場業者向け｜難しいDXではなく、実用の導入支援</p>
+          <h1 class="hero-title">受付票・請求書・売上一覧を、<br>AIとテンプレでラクに整える。</h1>
+          <div class="hero-audience" aria-label="対象業種">
+            <span class="hero-audience-tag">一人親方</span>
+            <span class="hero-audience-tag">エアコン清掃</span>
+            <span class="hero-audience-tag">ハウスクリーニング</span>
+            <span class="hero-audience-tag">設備・電気工事</span>
+            <span class="hero-audience-tag">リフォーム</span>
+            <span class="hero-audience-tag">便利屋</span>
+            <span class="hero-audience-tag">建築系個人事業</span>
+          </div>
           <p class="hero-sub">
-            電話・写真・メモ・カレンダーに散らばった<br>
-            お客様名・作業内容・金額・請求状況を一つにつなぎ、<br>
-            受付票・請求データ・売上一覧へ整理します。<br><br>
-            今使っている請求書や仕事の流れを、<br>
-            全部変える必要はありません。
+            LINE・メモ・紙・請求書・売上管理がバラバラな状態を、<br>
+            受付票・請求書テンプレ・売上一覧へ整理します。<br><br>
+            パソコンが得意じゃなくてもOK。<br>
+            現場帰りでも使える、今の仕事に合わせた帳票まわりの整え方です。
           </p>
           <div class="hero-cta-group">
-            <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-primary" data-track-location="hero">今の管理方法をLINEで見てもらう</a>
-            <a href="#demo" class="btn-secondary">実際の整理イメージを見る</a>
+            <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-primary" data-track-location="hero_primary">まずは無料で、今の帳票まわりを診断する</a>
+            <a href="#before-after" class="btn-secondary">導入前と導入後を見る</a>
           </div>
+          <p class="hero-cta-note">受付・請求書・売上管理のどこが詰まっているかを確認し、あなたの現場に合う形を提案します。</p>
           <ul class="reassurance-list">
+            <li>パソコンが苦手でもOK</li>
             <li>個人情報は隠した状態でOK</li>
             <li>相談だけで終了してもOK</li>
             <li>強引な営業はありません</li>
@@ -1117,8 +1245,44 @@
       </div>
     </section>
 
+    <!-- 導入前と導入後 -->
+    <section class="section section-light" id="before-after">
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">導入前と導入後の違い</h2>
+          <p class="section-lead">帳票まわりがバラバラだと、月末に毎回集め直す作業が発生します。小さく整えるだけで、事務作業の負担はかなり変わります。</p>
+          <div class="compare-grid">
+            <div class="compare-card compare-card--before">
+              <span class="compare-label">Before</span>
+              <ul class="compare-list">
+                <li>受付内容がLINE、メモ、紙でバラバラ</li>
+                <li>請求書作成が後回し</li>
+                <li>売上一覧がまとまっていない</li>
+                <li>日程や顧客情報を探すのに時間がかかる</li>
+                <li>AIを使いたいが、何から始めればいいか分からない</li>
+              </ul>
+            </div>
+            <div class="compare-card compare-card--after">
+              <span class="compare-label">After</span>
+              <ul class="compare-list">
+                <li>受付票テンプレで情報を整理</li>
+                <li>請求書テンプレですぐ作成</li>
+                <li>売上一覧で今月の数字が見える</li>
+                <li>AIプロンプトで文章作成や要約を補助</li>
+                <li>必要ならMake連携や自動化まで拡張できる</li>
+              </ul>
+            </div>
+          </div>
+          <div class="field-note">
+            <strong>難しいシステム開発ではなく、今の仕事に合わせて整える導入支援です。</strong>
+            一人親方でも始めやすいよう、受付・請求・売上管理から小さく始められます。現場帰りでも続けられる運用を前提に設計します。
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- 問題提起 -->
-    <section class="section section-light">
+    <section class="section">
       <div class="container-wide">
         <div class="container-narrow">
           <h2 class="section-title">仕事は終わった。<br>でも、請求は終わっていない。</h2>
@@ -1133,44 +1297,6 @@
             案件情報を「どこへ残すか」が決まっていないため、<br>
             月末にもう一度集め直す必要がある状態です。
           </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 導入前と導入後 -->
-    <section class="section">
-      <div class="container-wide">
-        <div class="container-narrow">
-          <h2 class="section-title">導入前と導入後の流れ</h2>
-          <div class="compare-grid">
-            <div class="compare-card compare-card--before">
-              <span class="compare-label">Before</span>
-              <div class="compare-sources">
-                <span class="compare-tag">LINE</span>
-                <span class="compare-tag">電話</span>
-                <span class="compare-tag">写真</span>
-                <span class="compare-tag">カレンダー</span>
-                <span class="compare-tag">手書きメモ</span>
-              </div>
-              <div class="compare-flow">
-                <p>案件情報がバラバラの場所に残る</p>
-                <div class="compare-arrow">↓</div>
-                <p>月末に思い出しながら請求書作成</p>
-              </div>
-            </div>
-            <div class="compare-card compare-card--after">
-              <span class="compare-label">After</span>
-              <div class="compare-flow">
-                <p>受付時に案件情報を整理</p>
-                <div class="compare-arrow">↓</div>
-                <p>作業後に内容と金額を確認</p>
-                <div class="compare-arrow">↓</div>
-                <p>請求書用データへ反映</p>
-                <div class="compare-arrow">↓</div>
-                <p>未請求・売上一覧を確認</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -1211,6 +1337,65 @@
             <dt>Makeなどの連携</dt>
             <dd>→ さらに自動化が必要になったときに追加する仕組み</dd>
           </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- 導入後に渡すもの -->
+    <section class="section" id="deliverables" data-track-section="deliverables">
+      <div class="container-wide">
+        <div class="container-narrow">
+          <h2 class="section-title">導入後に渡すもの</h2>
+          <p class="section-lead">「結局なにをもらえるの？」で離脱しないよう、プランに応じて整える内容を先にご説明します。いきなり高機能なシステムを入れるのではなく、今の帳票まわりに合わせて渡します。</p>
+          <div class="deliverable-grid">
+            <div class="deliverable-item">
+              <span class="deliverable-icon">1</span>
+              <div>
+                <strong>受付票テンプレ</strong>
+                <p>LINEや電話で届いた案件を、受付時点で整理できる形にします。</p>
+              </div>
+            </div>
+            <div class="deliverable-item">
+              <span class="deliverable-icon">2</span>
+              <div>
+                <strong>請求書テンプレ</strong>
+                <p>今使っている請求書に合わせて、すぐ作成できるデータの残し方を整えます。</p>
+              </div>
+            </div>
+            <div class="deliverable-item">
+              <span class="deliverable-icon">3</span>
+              <div>
+                <strong>売上一覧テンプレ</strong>
+                <p>今月の売上や未請求を、一覧で確認できる形にします。</p>
+              </div>
+            </div>
+            <div class="deliverable-item">
+              <span class="deliverable-icon">4</span>
+              <div>
+                <strong>AIプロンプト</strong>
+                <p>案件整理や文章作成に使える、繰り返し使える指示文を渡します。</p>
+              </div>
+            </div>
+            <div class="deliverable-item">
+              <span class="deliverable-icon">5</span>
+              <div>
+                <strong>初期設定・導入手順</strong>
+                <p>そのまま使い始められるよう、設定と手順を一緒に整えます。</p>
+              </div>
+            </div>
+            <div class="deliverable-item">
+              <span class="deliverable-icon">6</span>
+              <div>
+                <strong>Make連携案（必要な場合）</strong>
+                <p>さらに自動化が必要になったときに、拡張の方向性もご提案できます。</p>
+              </div>
+            </div>
+          </div>
+          <p class="field-note" style="margin-top:24px;">
+            <strong>料金プランを見る前に、まず無料診断で現状を確認できます。</strong>
+            今の請求書やメモを見せていただくだけで、どこから整えるとラクになるかをお伝えします。
+            <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:10px;color:var(--brand-blue);font-weight:700;text-decoration:underline;" data-track-location="deliverables_cta">無料診断をLINEで相談する →</a>
+          </p>
         </div>
       </div>
     </section>
@@ -1327,11 +1512,12 @@
             <div class="fit-card fit-card--yes">
               <h3>向いている方</h3>
               <ul class="fit-list">
+                <li>一人親方・小規模な現場業者</li>
+                <li>エアコン清掃・ハウスクリーニング・設備・電気工事・リフォーム業者</li>
                 <li>LINE・電話・写真・メモで案件を受けている</li>
                 <li>月末にまとめて請求書を作っている</li>
-                <li>請求済み・未請求を確認しづらい</li>
+                <li>パソコンが得意じゃなくても、小さく始めたい</li>
                 <li>今の請求書を残したまま改善したい</li>
-                <li>最初は小さく始めたい</li>
               </ul>
             </div>
             <div class="fit-card fit-card--no">
@@ -1442,6 +1628,9 @@
             </div>
           </div>
           <p class="diag-reassurance">相談だけで終わっても大丈夫です。強引な営業は行いません。</p>
+          <p style="text-align:center;margin-top:20px;">
+            <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display:inline-block;" data-track-location="diag_flow">まずは無料で、今の帳票まわりを診断する</a>
+          </p>
         </div>
       </div>
     </section>
@@ -1493,12 +1682,13 @@
     <section class="final-cta">
       <div class="container-wide">
         <div class="container-narrow">
-          <h2 class="final-cta-title">まずは、今使っている請求書やメモを<br>そのまま見せてください。</h2>
+          <h2 class="final-cta-title">まずは無料で、<br>今の帳票まわりを診断する</h2>
           <p class="final-cta-sub">
-            きれいに整理する必要はありません。<br>
-            どこに情報が散らばり、どこで二度手間が発生しているかを見るところから始めます。
+            受付・請求書・売上管理のどこが詰まっているかを確認し、<br>
+            あなたの現場に合う形を提案します。<br>
+            きれいに整理する必要はありません。今のまま見せてください。
           </p>
-          <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-line-final" data-track-location="final">今の管理方法をLINEで見てもらう</a>
+          <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-line-final" data-track-location="final_primary">まずは無料で、今の帳票まわりを診断する</a>
           <ul class="reassurance-list" style="justify-content:center;margin-top:16px;">
             <li>個人情報は隠してOK</li>
             <li>相談だけでもOK</li>
@@ -1547,7 +1737,7 @@
   </footer>
 
   <div class="fixed-cta" aria-label="画面下固定CTA">
-    <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" data-track-location="mobile_fixed">LINEで無料診断</a>
+    <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" data-track-location="mobile_fixed">無料診断をLINEで相談</a>
   </div>
 
   <script>
