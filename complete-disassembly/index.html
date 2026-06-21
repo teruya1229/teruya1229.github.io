@@ -651,18 +651,26 @@
       font-size: 0.95rem;
       font-weight: 700;
       color: #fff;
-      background: var(--brand-dark, #142e46);
+      background: #06C755;
       border: none;
       border-radius: 999px;
       text-decoration: none;
-      box-shadow: 0 4px 14px rgba(20, 46, 70, 0.2);
-      transition: background 0.15s, transform 0.15s;
+      box-shadow: 0 2px 8px rgba(6, 199, 85, 0.3);
+      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
     }
 
     .sec-mid-cta .mid-cta-line:hover {
-      background: #1c3654;
+      background: #05b34c;
       color: #fff;
+      box-shadow: 0 4px 14px rgba(6, 199, 85, 0.4);
       transform: translateY(-1px);
+    }
+
+    .sec-mid-cta .mid-cta-line:active {
+      background: #049a42;
+      color: #fff;
+      transform: translateY(1px);
+      box-shadow: 0 1px 4px rgba(6, 199, 85, 0.25);
     }
 
     .sec-mid-cta .mid-cta-line-icon {
