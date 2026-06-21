@@ -15,7 +15,7 @@
         text-align: center;
       }
 
-      .sec-reason .reason-list {
+      .sec-reason .reason-cards {
         max-width: 680px;
         margin-left: auto;
         margin-right: auto;
@@ -44,7 +44,7 @@
       .sec-worries li.card,
       .sec-diff li.card,
       .sec-recommend li.card,
-      .sec-reason li.card {
+      .sec-reason .reason-card-item {
         padding: 14px 18px;
         margin-bottom: 10px;
       }
@@ -52,7 +52,7 @@
       .sec-worries li.card:last-child,
       .sec-diff li.card:last-child,
       .sec-recommend li.card:last-child,
-      .sec-reason li.card:last-child {
+      .sec-reason .reason-card-item:last-child {
         margin-bottom: 0;
       }
 
@@ -345,6 +345,360 @@
         display: none;
       }
     }
+
+    /* --- 完全分解とは --- */
+    .sec-about .about-lead {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: var(--text-sub, #4b5563);
+      margin: 0 auto 20px;
+      max-width: 680px;
+    }
+
+    .sec-about .about-range-card {
+      padding: 16px 14px;
+      margin-bottom: 16px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .sec-about .about-range-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #6b7280;
+      margin: 0 0 14px;
+    }
+
+    .sec-about .about-range-item + .about-range-item {
+      margin-top: 12px;
+    }
+
+    .sec-about .about-range-item-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 0.88rem;
+    }
+
+    .sec-about .about-range-name {
+      font-weight: 700;
+      color: var(--text-main, #111827);
+      flex-shrink: 0;
+    }
+
+    .sec-about .about-range-note {
+      font-size: 0.82rem;
+      color: #6b7280;
+      text-align: right;
+    }
+
+    .sec-about .about-range-item--full .about-range-name,
+    .sec-about .about-range-item--full .about-range-note {
+      color: var(--brand, #1a56db);
+      font-weight: 700;
+    }
+
+    .sec-about .about-range-track {
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .sec-about .about-range-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .sec-about .about-range-fill--normal {
+      width: 38%;
+      background: #9ca3af;
+    }
+
+    .sec-about .about-range-fill--full {
+      width: 100%;
+      background: var(--brand, #1a56db);
+    }
+
+    .sec-about .about-case-wrap {
+      margin: 0 0 16px;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .sec-about .about-case-btn {
+      display: inline-block;
+      padding: 8px 16px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--brand, #1a56db);
+      background: #fff;
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      text-decoration: none;
+      line-height: 1.4;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .sec-about .about-case-btn:hover {
+      background: #f0f7ff;
+      border-color: #93c5fd;
+    }
+
+    .sec-about .about-feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .sec-about .about-feature-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 14px;
+      margin-bottom: 10px;
+    }
+
+    .sec-about .about-feature-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .sec-about .about-feature-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #dbeafe;
+      border-radius: 10px;
+      font-size: 1.15rem;
+      line-height: 1;
+    }
+
+    .sec-about .about-feature-body h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin: 0 0 4px;
+      line-height: 1.4;
+      color: var(--text-main, #111827);
+    }
+
+    .sec-about .about-feature-body h3::before {
+      content: "✓ ";
+      color: var(--brand, #1a56db);
+    }
+
+    .sec-about .about-feature-body p {
+      font-size: 0.86rem;
+      line-height: 1.65;
+      color: #4b5563;
+      margin: 0;
+    }
+
+    /* --- 完全分解を選ばれる理由 --- */
+    .sec-reason {
+      background: var(--bg-light, #dde3ed) !important;
+    }
+
+    .sec-reason .reason-eyebrow {
+      display: block;
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--brand, #1a56db);
+      margin: 0 0 6px;
+    }
+
+    .sec-reason .reason-lead {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: #4b5563;
+      text-align: center;
+      margin: 0 auto 20px;
+      max-width: 680px;
+    }
+
+    .sec-reason .reason-cards {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-width: 680px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .sec-reason .reason-card-item {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 14px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .sec-reason .reason-card-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .sec-reason .reason-card-num {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1;
+      color: #e5e7eb;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .sec-reason .reason-card-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #dbeafe;
+      border-radius: 10px;
+      font-size: 1.15rem;
+      line-height: 1;
+    }
+
+    .sec-reason .reason-card-body {
+      flex: 1;
+      min-width: 0;
+      padding-right: 28px;
+    }
+
+    .sec-reason .reason-card-label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #60a5fa;
+      margin: 0 0 4px;
+    }
+
+    .sec-reason .reason-card-body h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin: 0 0 6px;
+      line-height: 1.4;
+      color: var(--text-main, #111827);
+    }
+
+    .sec-reason .reason-card-body p {
+      font-size: 0.86rem;
+      line-height: 1.65;
+      color: #4b5563;
+      margin: 0;
+    }
+
+    /* --- 中間CTA --- */
+    .sec-mid-cta {
+      background: var(--bg-light, #dde3ed) !important;
+    }
+
+    .sec-mid-cta .mid-cta-card {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 24px 18px;
+      text-align: center;
+    }
+
+    .sec-mid-cta .mid-cta-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--brand-dark, #142e46);
+      margin: 0 0 10px;
+      line-height: 1.45;
+    }
+
+    .sec-mid-cta .mid-cta-lead {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: #4b5563;
+      margin: 0 0 18px;
+    }
+
+    .sec-mid-cta .mid-cta-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sec-mid-cta .mid-cta-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      max-width: 320px;
+      min-height: 48px;
+      padding: 12px 20px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      background: var(--brand-dark, #142e46);
+      border: none;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(20, 46, 70, 0.2);
+      transition: background 0.15s, transform 0.15s;
+    }
+
+    .sec-mid-cta .mid-cta-line:hover {
+      background: #1c3654;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .sec-mid-cta .mid-cta-line-icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .sec-mid-cta .mid-cta-air {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      max-width: 320px;
+      min-height: 48px;
+      padding: 12px 20px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--brand-dark, #142e46);
+      background: #fff;
+      border: 1px solid rgba(31, 42, 68, 0.2);
+      border-radius: 999px;
+      text-decoration: none;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .sec-mid-cta .mid-cta-air:hover {
+      background: #f9fafb;
+      border-color: rgba(31, 42, 68, 0.35);
+      color: var(--brand-dark, #142e46);
+    }
+
+    .sec-mid-cta .mid-cta-air-icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
   </style>
 
   <!-- 構造化データ: LocalBusiness / Service / BreadcrumbList -->
@@ -602,23 +956,106 @@
     <section class="section section-light sec-about">
       <div class="container">
         <h2 class="section-title">完全分解とは</h2>
-        <div class="plan-compare plan-compare--single">
-          <p class="profile-message">エアコンのドレンパンやファンを取り外し、通常洗浄では届きにくい内部の汚れまでしっかり洗浄するクリーニングです。</p>
-          <p class="profile-message">機種によっては基板周辺まで分解対応します。</p>
-          <p class="related-link">実際の分解写真は、<a href="#case-studies">施工事例</a>をご覧ください。</p>
+        <p class="about-lead">エアコン内部の部品まで取り外して洗う、徹底的なクリーニング方法です。<br>表面だけでは落としきれない、ドレンパンやファンの奥に溜まったカビやホコリにも、発生源から直接アプローチできます。</p>
+
+        <div class="about-range-card card">
+          <p class="about-range-title">洗浄が届く範囲のイメージ</p>
+          <div class="about-range-item">
+            <div class="about-range-item-head">
+              <span class="about-range-name">通常洗浄</span>
+              <span class="about-range-note">表面が中心</span>
+            </div>
+            <div class="about-range-track">
+              <div class="about-range-fill about-range-fill--normal" aria-hidden="true"></div>
+            </div>
+          </div>
+          <div class="about-range-item about-range-item--full">
+            <div class="about-range-item-head">
+              <span class="about-range-name">完全分解</span>
+              <span class="about-range-note">内部の奥まで</span>
+            </div>
+            <div class="about-range-track">
+              <div class="about-range-fill about-range-fill--full" aria-hidden="true"></div>
+            </div>
+          </div>
         </div>
+
+        <p class="about-case-wrap">
+          <a href="#case-studies" class="about-case-btn">施工事例を見る →</a>
+        </p>
+
+        <ul class="about-feature-list">
+          <li class="about-feature-card card">
+            <span class="about-feature-icon" aria-hidden="true">🔧</span>
+            <div class="about-feature-body">
+              <h3>ドレンパン・ファンまで分解</h3>
+              <p>本体から部品を取り外し、奥まで洗浄します。</p>
+            </div>
+          </li>
+          <li class="about-feature-card card">
+            <span class="about-feature-icon" aria-hidden="true">💧</span>
+            <div class="about-feature-body">
+              <h3>内部の汚れまで対応</h3>
+              <p>通常洗浄では届きにくい内部の汚れもしっかり。</p>
+            </div>
+          </li>
+          <li class="about-feature-card card">
+            <span class="about-feature-icon" aria-hidden="true">⚙</span>
+            <div class="about-feature-body">
+              <h3>基板周辺まで対応</h3>
+              <p>機種によっては基板周辺まで分解して対応します。</p>
+            </div>
+          </li>
+        </ul>
       </div>
     </section>
 
     <section class="section sec-reason">
       <div class="container">
+        <span class="reason-eyebrow">REASONS</span>
         <h2 class="section-title">完全分解を選ばれる理由</h2>
-        <div class="plan-compare plan-compare--single">
-          <ul class="reason-list">
-            <li class="card">ファンやドレンパンまで外して<br>奥の汚れまで洗いやすい</li>
-            <li class="card">ニオイの原因になりやすい部分まで<br>しっかり確認しながら洗浄できる</li>
-            <li class="card">通常洗浄で改善しなかったケースでも<br>内部までしっかり洗いたい方に向いている</li>
-          </ul>
+        <p class="reason-lead">「ここまでやるの？」という分解だからこそ、仕上がりに納得していただけます。</p>
+        <ul class="reason-cards">
+          <li class="reason-card-item card">
+            <span class="reason-card-num" aria-hidden="true">01</span>
+            <span class="reason-card-icon" aria-hidden="true">🌀</span>
+            <div class="reason-card-body">
+              <span class="reason-card-label">REASON 1</span>
+              <h3>奥の汚れまで洗いやすい</h3>
+              <p>ファンやドレンパンまで外すから、奥に溜まった汚れまでしっかり洗えます。</p>
+            </div>
+          </li>
+          <li class="reason-card-item card">
+            <span class="reason-card-num" aria-hidden="true">02</span>
+            <span class="reason-card-icon" aria-hidden="true">💨</span>
+            <div class="reason-card-body">
+              <span class="reason-card-label">REASON 2</span>
+              <h3>ニオイの原因まで確認</h3>
+              <p>ニオイの原因になりやすい部分まで、目で確認しながら洗浄します。</p>
+            </div>
+          </li>
+          <li class="reason-card-item card">
+            <span class="reason-card-num" aria-hidden="true">03</span>
+            <span class="reason-card-icon" aria-hidden="true">🛡</span>
+            <div class="reason-card-body">
+              <span class="reason-card-label">REASON 3</span>
+              <h3>改善しなかった方にも</h3>
+              <p>通常洗浄では改善しなかったケースにも向いている方法です。</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section section-light sec-mid-cta">
+      <div class="container">
+        <div class="mid-cta-card card">
+          <h2 class="mid-cta-title">まずはお気軽にご相談ください</h2>
+          <p class="mid-cta-lead">完全分解が必要か迷う場合も、機種や汚れの状態を見ながらご案内します。</p>
+          <div class="mid-cta-buttons">
+            <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="mid-cta-line" data-cta="line" data-cta-location="mid"><span class="mid-cta-line-icon" aria-hidden="true">💬</span>LINEで相談する</a>
+            <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="mid-cta-air" data-cta="air_reserve" data-cta-location="mid" aria-label="Airリザーブで空き状況を見る"><span class="mid-cta-air-icon" aria-hidden="true">📅</span>空き状況を見る</a>
+          </div>
         </div>
       </div>
     </section>
@@ -924,6 +1361,8 @@
     window.__bcShowDebugToast = showDebugToast;
 
     function detectLocation(anchor) {
+      var attrLoc = anchor.getAttribute('data-cta-location');
+      if (attrLoc) return attrLoc;
       var cls0 = (typeof anchor.className === 'string' ? anchor.className : '').toLowerCase();
       if (/\bheader-tel\b/.test(cls0)) return 'mid';
       var node = anchor;
@@ -932,6 +1371,7 @@
         var cls = (typeof node.className === 'string' ? node.className : '').toLowerCase();
         var combined = id + ' ' + cls;
         if (/\bhero\b/.test(combined)) return 'hero';
+        if (/\bsec-mid-cta\b/.test(combined)) return 'mid';
         if (/\bline-cta-wrap\b/.test(combined)) return 'bottom';
         node = node.parentElement;
       }
@@ -941,6 +1381,7 @@
     function detectCtaType(href) {
       if (!href) return null;
       if (href.indexOf('https://lin.ee/') === 0) return 'line';
+      if (href.indexOf('https://airrsv.net/bc-servicesokinawa/calendar') === 0) return 'air_reserve';
       if (href.indexOf('tel:') === 0) return 'tel';
       if (href.indexOf('mailto:') === 0) return 'mail';
       return null;
@@ -1023,7 +1464,7 @@
     if (params.get('debug') !== '1' && params.get('debug_mode') !== 'true') return;
 
     function bindDebugCtaToasts() {
-      document.querySelectorAll('a[href*="lin.ee/tsilra6"], a[href^="tel:"]').forEach(function(link) {
+      document.querySelectorAll('a[href*="lin.ee/tsilra6"], a[href*="airrsv.net/bc-servicesokinawa/calendar"], a[href^="tel:"]').forEach(function(link) {
         link.addEventListener('click', function() {
           if (typeof window.__bcShowDebugToast === 'function') window.__bcShowDebugToast();
         });
