@@ -856,6 +856,26 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 24px 22px;
+      display: grid;
+      gap: 20px;
+    }
+    @media (min-width: 640px) {
+      .trust-block {
+        grid-template-columns: 120px 1fr;
+        align-items: start;
+      }
+    }
+    .trust-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      display: block;
+      margin: 0 auto;
+    }
+    @media (min-width: 640px) {
+      .trust-avatar { margin: 0; }
     }
     .trust-tags {
       display: flex;
@@ -1511,6 +1531,8 @@
         <div class="container-narrow">
           <h2 class="section-title">なぜ、私が分かるのか</h2>
           <div class="trust-block">
+            <img src="../cursor-test/images/teruya-profile.png" alt="照屋 昴" class="trust-avatar" width="120" height="120" loading="lazy">
+            <div>
             <p class="profile-name" style="font-size:1.05rem;font-weight:800;color:var(--brand-navy);margin-bottom:4px;">照屋 昴　BCサービス代表</p>
             <div class="trust-tags" aria-label="得意業種">
               <span class="trust-tag">エアコン清掃</span>
@@ -1524,6 +1546,7 @@
               作業後にLINEやメモを見返しながら、請求内容や売上を確認してきました。現場が増えるほど、情報が散らばる怖さも、月末に思い出す大変さも分かります。BCサービスでも、受付・日程調整・作業・請求・売上確認までを自分で回してきました。<br><br>
               だから、きれいなシステムを最初から入れるより、今のやり方を崩さずに整えることを大切にしています。AIは主役ではありません。現場の流れをラクにするための補助道具として使います。
             </p>
+            </div>
           </div>
         </div>
       </div>
