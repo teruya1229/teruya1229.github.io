@@ -281,71 +281,515 @@
 
     /* ===== HERO ===== */
     .hero {
+      position: relative;
+      overflow: hidden;
       background: #fff;
       border-bottom: 1px solid var(--border);
-      padding: 40px 0 48px;
+      padding: 36px 0 52px;
     }
-    .hero-grid {
+    .hero-bg-glow {
+      pointer-events: none;
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(64px);
+    }
+    .hero-bg-glow--left {
+      width: 28rem;
+      height: 28rem;
+      left: -8rem;
+      top: -8rem;
+      background: rgba(56, 189, 248, 0.14);
+    }
+    .hero-bg-glow--right {
+      width: 26rem;
+      height: 26rem;
+      right: -6rem;
+      top: 6rem;
+      background: rgba(6, 199, 85, 0.1);
+    }
+    .hero-bg-grid {
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      opacity: 0.35;
+      background-image:
+        linear-gradient(to right, rgba(226, 232, 240, 0.9) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(226, 232, 240, 0.9) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(ellipse 75% 55% at 50% 0%, black 35%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 75% 55% at 50% 0%, black 35%, transparent 100%);
+    }
+    .hero-inner {
+      position: relative;
+    }
+    .hero-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .hero-brand-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--brand-navy);
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .hero-brand-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+    .hero-brand-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--brand-navy);
+      letter-spacing: -0.01em;
+    }
+    .hero-layout {
       display: grid;
-      gap: 28px;
-      align-items: start;
+      gap: 36px;
+      align-items: center;
     }
-    @media (min-width: 720px) {
-      .hero-grid {
-        grid-template-columns: 140px 1fr;
-        gap: 36px;
-        align-items: center;
+    @media (min-width: 960px) {
+      .hero {
+        padding: 48px 0 64px;
+      }
+      .hero-brand {
+        margin-bottom: 36px;
+      }
+      .hero-layout {
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 48px;
       }
     }
-    .hero-photo-wrap {
-      text-align: center;
-    }
-    .hero-photo {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid var(--border);
-      display: block;
-      margin: 0 auto;
-    }
-    @media (min-width: 720px) {
-      .hero-photo { width: 130px; height: 130px; }
-    }
-    .hero-badge {
-      display: inline-block;
-      margin-top: 10px;
+    .hero-tagline {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      max-width: 100%;
       font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--brand-navy);
-      background: var(--bg-light);
-      border: 1px solid var(--border);
-      padding: 4px 10px;
-      border-radius: 20px;
+      font-weight: 600;
+      color: var(--text-main);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+      line-height: 1.5;
     }
-    .hero-eyebrow {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--text-light);
-      margin-bottom: 12px;
-      letter-spacing: 0.02em;
+    .hero-tagline svg {
+      width: 14px;
+      height: 14px;
+      color: #0284c7;
+      flex-shrink: 0;
     }
     .hero-title {
-      font-size: 1.4rem;
+      font-size: 1.55rem;
       font-weight: 800;
-      line-height: 1.5;
+      line-height: 1.38;
       color: var(--brand-navy);
-      margin-bottom: 16px;
+      margin-bottom: 18px;
+      letter-spacing: -0.02em;
     }
     @media (min-width: 600px) {
-      .hero-title { font-size: 1.65rem; }
+      .hero-title { font-size: 1.85rem; }
+    }
+    @media (min-width: 960px) {
+      .hero-title { font-size: 2.05rem; }
+    }
+    .hero-title-mark {
+      position: relative;
+      display: inline;
+      color: #0369a1;
+    }
+    .hero-title-mark::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 2px;
+      width: 100%;
+      height: 0.55em;
+      background: rgba(56, 189, 248, 0.28);
+      border-radius: 999px;
+      transform: rotate(-0.5deg);
+      z-index: -1;
     }
     .hero-sub {
       font-size: 0.92rem;
       color: var(--text-sub);
       line-height: 1.85;
-      margin-bottom: 22px;
+      margin-bottom: 0;
+      max-width: 36rem;
     }
+    @media (min-width: 600px) {
+      .hero-sub { font-size: 0.98rem; }
+    }
+    .hero-cta-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    @media (min-width: 520px) {
+      .hero-cta-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+    }
+    .hero .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 52px;
+      padding: 14px 24px;
+      font-size: 0.95rem;
+      box-shadow: 0 8px 24px rgba(6, 199, 85, 0.22);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .hero .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 28px rgba(6, 199, 85, 0.28);
+    }
+    .hero .btn-primary svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    @media (min-width: 520px) {
+      .hero .btn-primary { width: auto; }
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      min-height: 52px;
+      padding: 14px 22px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: background 0.15s ease;
+    }
+    .btn-outline:hover {
+      background: var(--bg-light);
+    }
+    .btn-outline svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+    @media (min-width: 520px) {
+      .btn-outline { width: auto; }
+    }
+    .hero-price-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .hero-price-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1 1 140px;
+      max-width: 100%;
+      padding: 10px 14px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+    }
+    .hero-price-badge--free {
+      border-color: rgba(6, 199, 85, 0.28);
+      background: rgba(6, 199, 85, 0.06);
+    }
+    .hero-price-badge-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    .hero-price-badge--free .hero-price-badge-icon {
+      background: rgba(6, 199, 85, 0.14);
+      color: var(--line-green);
+    }
+    .hero-price-badge:not(.hero-price-badge--free) .hero-price-badge-icon {
+      background: rgba(56, 189, 248, 0.12);
+      color: #0284c7;
+    }
+    .hero-price-badge-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+    .hero-price-badge-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+    .hero-price-badge-note {
+      font-size: 0.68rem;
+      color: var(--text-light);
+      line-height: 1.35;
+    }
+    .hero-industries {
+      margin-top: 28px;
+    }
+    .hero-industries-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-bottom: 10px;
+    }
+    .hero-industry-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      list-style: none;
+    }
+    .hero-industry-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(17, 24, 39, 0.82);
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 999px;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+    }
+    /* hero visual card */
+    .hero-visual {
+      position: relative;
+    }
+    .hero-visual-glow {
+      pointer-events: none;
+      position: absolute;
+      inset: 16px 16px -16px;
+      border-radius: 24px;
+      background: linear-gradient(to bottom, rgba(56, 189, 248, 0.1), rgba(6, 199, 85, 0.12));
+      filter: blur(24px);
+      z-index: 0;
+    }
+    .hero-visual-card {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 24px 60px -20px rgba(20, 40, 80, 0.22);
+    }
+    @media (min-width: 600px) {
+      .hero-visual-card { padding: 24px; }
+    }
+    .hero-visual-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .hero-visual-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .hero-visual-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .hero-visual-dots span:nth-child(1) { background: rgba(248, 113, 113, 0.45); }
+    .hero-visual-dots span:nth-child(2) { background: rgba(56, 189, 248, 0.45); }
+    .hero-visual-dots span:nth-child(3) { background: rgba(6, 199, 85, 0.45); }
+    .hero-visual-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+    .hero-flow {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px;
+      background: var(--bg-light);
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    .hero-flow-step {
+      flex: 1;
+      text-align: center;
+      font-size: 0.62rem;
+      font-weight: 700;
+      line-height: 1.35;
+      padding: 8px 4px;
+      border-radius: 8px;
+    }
+    @media (min-width: 400px) {
+      .hero-flow-step { font-size: 0.68rem; padding: 8px 6px; }
+    }
+    .hero-flow-step--muted {
+      background: #fff;
+      color: var(--text-light);
+    }
+    .hero-flow-step--accent {
+      background: rgba(56, 189, 248, 0.14);
+      color: #0284c7;
+    }
+    .hero-flow-step--primary {
+      background: rgba(30, 41, 59, 0.08);
+      color: var(--brand-navy);
+    }
+    .hero-flow-arrow {
+      flex-shrink: 0;
+      width: 12px;
+      height: 12px;
+      color: #0284c7;
+    }
+    .hero-doc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .hero-doc-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .hero-doc-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(30, 41, 59, 0.08);
+      color: var(--brand-navy);
+      flex-shrink: 0;
+    }
+    .hero-doc-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+    .hero-doc-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .hero-doc-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+    .hero-doc-desc {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .hero-doc-tag {
+      flex-shrink: 0;
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      background: var(--bg-light);
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    @media (max-width: 399px) {
+      .hero-doc-tag { display: none; }
+    }
+    .hero-prompt-hint {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      border-radius: 12px;
+    }
+    .hero-prompt-hint svg {
+      width: 16px;
+      height: 16px;
+      color: #0284c7;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .hero-prompt-hint p {
+      font-size: 0.72rem;
+      color: var(--text-sub);
+      line-height: 1.65;
+    }
+    .hero-prompt-hint strong {
+      color: var(--text-main);
+      font-weight: 700;
+    }
+    .hero-float-badge {
+      display: none;
+      position: absolute;
+      left: -12px;
+      bottom: -16px;
+      z-index: 2;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+    }
+    @media (min-width: 520px) {
+      .hero-float-badge { display: flex; }
+    }
+    .hero-float-badge-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(6, 199, 85, 0.12);
+      color: var(--line-green);
+    }
+    .hero-float-badge-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+    .hero-float-badge-label {
+      font-size: 0.65rem;
+      color: var(--text-light);
+      line-height: 1.3;
+    }
+    .hero-float-badge-value {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.3;
+    }
+
     .btn-primary {
       display: inline-block;
       text-align: center;
@@ -357,19 +801,10 @@
       border-radius: var(--radius);
       letter-spacing: 0.02em;
     }
-    .hero-scroll-link {
-      display: inline-block;
-      margin-top: 12px;
-      font-size: 0.82rem;
-      color: var(--text-light);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
     .reassurance-list {
       display: flex;
       flex-wrap: wrap;
       gap: 6px 14px;
-      margin-top: 16px;
       font-size: 0.76rem;
       color: var(--text-light);
     }
@@ -913,24 +1348,139 @@
 
     <!-- 1. ファーストビュー -->
     <section class="hero">
-      <div class="container-wide hero-grid">
-        <div class="hero-photo-wrap">
-          <img src="../cursor-test/images/teruya-profile.png" alt="照屋 昴" class="hero-photo" width="130" height="130" loading="eager">
-          <p class="hero-badge">現場業17年</p>
+      <div class="hero-bg-glow hero-bg-glow--left" aria-hidden="true"></div>
+      <div class="hero-bg-glow hero-bg-glow--right" aria-hidden="true"></div>
+      <div class="hero-bg-grid" aria-hidden="true"></div>
+      <div class="container-wide hero-inner">
+        <div class="hero-brand">
+          <div class="hero-brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+          </div>
+          <span class="hero-brand-name">AI帳票番頭</span>
         </div>
-        <div>
-          <p class="hero-eyebrow">一人親方・小規模現場業者向け</p>
-          <h1 class="hero-title">現場17年の私が、受付・請求・売上管理の散らかりを一緒に整えます。</h1>
-          <p class="hero-sub">
-            LINE、メモ、写真、紙に分かれた案件情報を、今のやり方に合わせて整理します。請求漏れや月末の確認が不安な方も、今の状態のまま相談できます。
-          </p>
-          <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-primary" data-track-location="hero_primary">今の受付・請求まわりを無料で相談する</a>
-          <a href="#pain" class="hero-scroll-link">こんな状態でも大丈夫です</a>
-          <ul class="reassurance-list">
-            <li>相談だけOK</li>
-            <li>個人情報は隠してOK</li>
-            <li>強引な営業なし</li>
-          </ul>
+
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <p class="hero-tagline">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+              現場業のための、小さく始めるAI事務改善
+            </p>
+
+            <h1 class="hero-title">紙・LINE・Excelで散らかった事務作業を、<span class="hero-title-mark">AIで回る形</span>に整えます。</h1>
+
+            <p class="hero-sub">受付票、請求書、売上一覧、簡易プロンプトまで。あなたの仕事に合わせて、現場の事務を分かったうえでAIを使いやすい形に整えます。</p>
+
+            <div class="hero-cta-row">
+              <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-primary" data-track-location="hero_primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>
+                LINEで無料診断を相談する
+              </a>
+              <a href="#how" class="btn-outline">
+                できることを見る
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </div>
+
+            <div class="hero-price-badges">
+              <div class="hero-price-badge hero-price-badge--free">
+                <div class="hero-price-badge-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                </div>
+                <div>
+                  <p class="hero-price-badge-title">無料診断 0円</p>
+                  <p class="hero-price-badge-note">まず相談だけでOK</p>
+                </div>
+              </div>
+              <div class="hero-price-badge">
+                <div class="hero-price-badge-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                </div>
+                <div>
+                  <p class="hero-price-badge-title">お試し 19,800円〜</p>
+                  <p class="hero-price-badge-note">小さく始められる</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-industries">
+              <p class="hero-industries-label">こんな現場業の方に使われています</p>
+              <ul class="hero-industry-tags">
+                <li class="hero-industry-tag">エアコンクリーニング</li>
+                <li class="hero-industry-tag">ハウスクリーニング</li>
+                <li class="hero-industry-tag">電気工事</li>
+                <li class="hero-industry-tag">水道工事</li>
+                <li class="hero-industry-tag">リフォーム</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-visual-glow" aria-hidden="true"></div>
+            <div class="hero-visual-card">
+              <div class="hero-visual-header">
+                <div class="hero-visual-dots" aria-hidden="true">
+                  <span></span><span></span><span></span>
+                </div>
+                <span class="hero-visual-label">帳票整理の完成イメージ</span>
+              </div>
+
+              <div class="hero-flow" aria-label="整理の流れ">
+                <span class="hero-flow-step hero-flow-step--muted">紙・LINE・Excel</span>
+                <svg class="hero-flow-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                <span class="hero-flow-step hero-flow-step--accent">AIで整理</span>
+                <svg class="hero-flow-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                <span class="hero-flow-step hero-flow-step--primary">受付 / 請求 / 売上が見える化</span>
+              </div>
+
+              <ul class="hero-doc-list">
+                <li class="hero-doc-item">
+                  <div class="hero-doc-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+                  </div>
+                  <div class="hero-doc-body">
+                    <p class="hero-doc-title">受付票テンプレ</p>
+                    <p class="hero-doc-desc">現場の依頼内容をひな形で記録</p>
+                  </div>
+                  <span class="hero-doc-tag">本日 4件</span>
+                </li>
+                <li class="hero-doc-item">
+                  <div class="hero-doc-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                  </div>
+                  <div class="hero-doc-body">
+                    <p class="hero-doc-title">請求書テンプレ</p>
+                    <p class="hero-doc-desc">面倒な請求書をすばやく作成</p>
+                  </div>
+                  <span class="hero-doc-tag">未送付 2件</span>
+                </li>
+                <li class="hero-doc-item">
+                  <div class="hero-doc-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                  </div>
+                  <div class="hero-doc-body">
+                    <p class="hero-doc-title">売上一覧</p>
+                    <p class="hero-doc-desc">後回しの売上を自動で集計</p>
+                  </div>
+                  <span class="hero-doc-tag">今月 ¥1,284,000</span>
+                </li>
+              </ul>
+
+              <div class="hero-prompt-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>
+                <p><strong>簡易プロンプト付き。</strong>「今日の受付をまとめて」と話しかけるだけで整理できます。</p>
+              </div>
+            </div>
+
+            <div class="hero-float-badge" aria-hidden="true">
+              <div class="hero-float-badge-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+              </div>
+              <div>
+                <p class="hero-float-badge-label">今月の売上</p>
+                <p class="hero-float-badge-value">自動で見える化</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
