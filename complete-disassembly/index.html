@@ -62,6 +62,14 @@
         margin-right: auto;
       }
 
+      .sec-about .about-compare-wrap,
+      .sec-price .price-included-card,
+      .sec-line-photo .line-photo-card {
+        max-width: 680px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
       .ai-summary-section .container {
         max-width: 680px;
         margin-left: auto;
@@ -341,8 +349,23 @@
     }
 
     @media (max-width: 767px) {
-      .header-tel-note {
-        display: none;
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .header-nav {
+        display: flex;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .header-tel-wrap {
+        display: none !important;
       }
     }
 
@@ -501,6 +524,70 @@
       line-height: 1.65;
       color: #4b5563;
       margin: 0;
+    }
+
+    .sec-about .about-compare-wrap {
+      margin: 20px auto 16px;
+    }
+
+    .sec-about .about-compare-lead {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: #4b5563;
+      margin: 0 0 14px;
+    }
+
+    .sec-about .about-compare-table-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .sec-about .about-compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .sec-about .about-compare-table th,
+    .sec-about .about-compare-table td {
+      padding: 10px 8px;
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: middle;
+      overflow-wrap: anywhere;
+    }
+
+    .sec-about .about-compare-table tr:last-child th,
+    .sec-about .about-compare-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .sec-about .about-compare-table thead th {
+      background: #f0f7ff;
+      color: var(--brand-dark, #142e46);
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .sec-about .about-compare-table tbody th {
+      width: 32%;
+      color: #374151;
+      font-weight: 700;
+      text-align: left;
+      background: #f9fafb;
+    }
+
+    .sec-about .about-compare-table td {
+      width: 34%;
+      color: #4b5563;
+      text-align: center;
+    }
+
+    .sec-about .about-compare-table td:last-child {
+      color: var(--brand, #1a56db);
+      font-weight: 700;
+      background: #f8fbff;
     }
 
     /* --- 完全分解を選ばれる理由 --- */
@@ -706,6 +793,88 @@
     .sec-mid-cta .mid-cta-air-icon {
       font-size: 1rem;
       line-height: 1;
+    }
+
+    .sec-price .price-included-card {
+      margin-top: 18px;
+      padding: 18px 14px;
+    }
+
+    .sec-price .price-included-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--brand-dark, #142e46);
+      margin: 0 0 12px;
+      line-height: 1.45;
+    }
+
+    .sec-price .price-included-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .sec-price .price-included-block h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--brand, #1a56db);
+      margin: 0 0 8px;
+      line-height: 1.45;
+    }
+
+    .sec-price .price-included-list,
+    .sec-price .price-time-list,
+    .sec-price .price-note-list,
+    .sec-line-photo .line-photo-list {
+      padding-left: 1.2em;
+      margin: 0;
+    }
+
+    .sec-price .price-included-list li,
+    .sec-price .price-time-list li,
+    .sec-price .price-note-list li,
+    .sec-line-photo .line-photo-list li {
+      font-size: 0.86rem;
+      line-height: 1.65;
+      color: #4b5563;
+      margin-bottom: 4px;
+    }
+
+    .sec-price .price-included-list li:last-child,
+    .sec-price .price-time-list li:last-child,
+    .sec-price .price-note-list li:last-child,
+    .sec-line-photo .line-photo-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .sec-line-photo {
+      background: var(--bg-light, #dde3ed) !important;
+    }
+
+    .sec-line-photo .line-photo-card {
+      padding: 22px 16px;
+    }
+
+    .sec-line-photo .line-photo-lead {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: #4b5563;
+      margin: 0 0 16px;
+      text-align: center;
+    }
+
+    .sec-line-photo .line-photo-list-wrap {
+      margin: 0 0 18px;
+      padding: 14px;
+      background: #f8fbff;
+      border: 1px solid #dbeafe;
+      border-radius: 8px;
+    }
+
+    .sec-line-photo .line-photo-list-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--brand-dark, #142e46);
+      margin: 0 0 8px;
     }
   </style>
 
@@ -988,6 +1157,59 @@
           </div>
         </div>
 
+        <div class="about-compare-wrap">
+          <h3 class="section-title">通常洗浄では届かない、ファン・ドレンパンまで外します</h3>
+          <p class="about-compare-lead">BCサービスの完全分解は、ドレンパンと送風ファンを取り外し、ニオイやカビの原因になりやすい奥の汚れまで洗浄します。</p>
+          <div class="about-compare-table-card card">
+            <table class="about-compare-table">
+              <thead>
+                <tr>
+                  <th scope="col">項目</th>
+                  <th scope="col">通常洗浄</th>
+                  <th scope="col">完全分解</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">外装カバー</th>
+                  <td>洗浄</td>
+                  <td>洗浄</td>
+                </tr>
+                <tr>
+                  <th scope="row">フィルター</th>
+                  <td>洗浄</td>
+                  <td>洗浄</td>
+                </tr>
+                <tr>
+                  <th scope="row">熱交換器</th>
+                  <td>表面中心</td>
+                  <td>奥まで洗浄</td>
+                </tr>
+                <tr>
+                  <th scope="row">送風ファン</th>
+                  <td>取り外さず洗浄</td>
+                  <td>取り外して洗浄</td>
+                </tr>
+                <tr>
+                  <th scope="row">ドレンパン</th>
+                  <td>基本そのまま</td>
+                  <td>取り外して洗浄</td>
+                </tr>
+                <tr>
+                  <th scope="row">ニオイの原因</th>
+                  <td>残る場合あり</td>
+                  <td>原因部分まで確認しやすい</td>
+                </tr>
+                <tr>
+                  <th scope="row">作業時間</th>
+                  <td>短め</td>
+                  <td>長め</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
         <p class="about-case-wrap">
           <a href="#case-studies" class="about-case-btn">施工事例を見る →</a>
         </p>
@@ -1148,6 +1370,37 @@
           </div>
         </div>
         <p class="price-card-note">※内部までしっかり洗いたい方向けの料金です。設置状況や機種により追加対応が必要な場合があります</p>
+        <div class="price-included-card card">
+          <h3 class="price-included-title">料金に含まれる作業内容</h3>
+          <div class="price-included-grid">
+            <div class="price-included-block">
+              <h4>作業内容</h4>
+              <ul class="price-included-list">
+                <li>分解作業</li>
+                <li>取り外した部品の洗浄</li>
+                <li>熱交換器・送風口まわりの高圧洗浄</li>
+                <li>ドレンパン・送風ファンの洗浄</li>
+                <li>作業後の動作確認</li>
+              </ul>
+            </div>
+            <div class="price-included-block">
+              <h4>作業時間目安</h4>
+              <ul class="price-time-list">
+                <li>通常タイプ完全分解：1.5-2.5時間目安</li>
+                <li>お掃除機能付き完全分解：2-3.5時間目安</li>
+              </ul>
+            </div>
+            <div class="price-included-block">
+              <h4>注意事項</h4>
+              <ul class="price-note-list">
+                <li>機種・設置状況・年式によっては完全分解できない場合があります</li>
+                <li>10年以上経過した機種は、部品劣化や破損リスクを確認しながら対応します</li>
+                <li>ニオイ・水漏れ・冷え不良は、汚れ以外が原因の場合もあります</li>
+                <li>作業前に機種と設置状況を確認します</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1328,6 +1581,27 @@
         <p class="profile-title">子育て家庭応援クリーニング 代表</p>
         <p class="profile-name"><strong>照屋 昴</strong></p>
         <p class="profile-message">私自身も子どもを育てる親として、安心して任せられる作業を大切にしています。<br>沖縄南部で、完全分解が必要なご家庭にも丁寧に対応します。</p>
+      </div>
+    </section>
+
+    <section class="section sec-line-photo">
+      <div class="container">
+        <div class="line-photo-card card">
+          <h2 class="section-title">LINEで写真を送るだけで、事前に確認できます</h2>
+          <p class="line-photo-lead">完全分解が必要か、対応できそうな機種かを確認するために、LINEで写真を送っていただけるとスムーズです。</p>
+          <div class="line-photo-list-wrap">
+            <p class="line-photo-list-title">送ってほしい写真</p>
+            <ol class="line-photo-list">
+              <li>エアコン正面</li>
+              <li>型番シール</li>
+              <li>左右・上部のすき間</li>
+              <li>汚れ・水漏れ・ニオイが気になる部分</li>
+            </ol>
+          </div>
+          <div class="line-cta-wrap">
+            <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="bottom">LINEで機種写真を送って相談する</a>
+          </div>
+        </div>
       </div>
     </section>
 
