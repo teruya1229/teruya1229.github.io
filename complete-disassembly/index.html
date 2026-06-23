@@ -64,6 +64,7 @@
 
       .sec-about .about-compare-wrap,
       .sec-price .price-included-card,
+      .sec-price .price-insurance-card,
       .sec-line-photo .line-photo-card {
         max-width: 680px;
         margin-left: auto;
@@ -846,6 +847,79 @@
       margin-bottom: 0;
     }
 
+    .sec-price .price-insurance-card {
+      margin-top: 16px;
+      padding: 20px 14px;
+      background: #f8fbff;
+      border: 1px solid #dbeafe;
+    }
+
+    .sec-price .price-insurance-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--brand-dark, #142e46);
+      margin: 0 0 12px;
+      line-height: 1.45;
+    }
+
+    .sec-price .price-insurance-lead {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: #4b5563;
+      margin: 0 0 12px;
+    }
+
+    .sec-price .price-insurance-points {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .sec-price .price-insurance-point {
+      padding: 12px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+    }
+
+    .sec-price .price-insurance-point-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--brand, #1a56db);
+      margin: 0 0 4px;
+      line-height: 1.45;
+    }
+
+    .sec-price .price-insurance-point-title span {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      color: #fff;
+      background: var(--brand, #1a56db);
+      border-radius: 999px;
+      font-size: 0.75rem;
+      line-height: 1;
+    }
+
+    .sec-price .price-insurance-point p {
+      font-size: 0.84rem;
+      line-height: 1.65;
+      color: #4b5563;
+      margin: 0;
+    }
+
+    @media (min-width: 768px) {
+      .sec-price .price-insurance-points {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
     .sec-line-photo {
       background: var(--bg-light, #dde3ed) !important;
     }
@@ -1398,6 +1472,26 @@
                 <li>ニオイ・水漏れ・冷え不良は、汚れ以外が原因の場合もあります</li>
                 <li>作業前に機種と設置状況を確認します</li>
               </ul>
+            </div>
+          </div>
+        </div>
+        <div class="price-insurance-card card">
+          <h3 class="price-insurance-title">万一に備えて、損害賠償保険に加入しています</h3>
+          <p class="price-insurance-lead">BCサービスでは、作業中の万一に備えて、最大1億円の損害賠償保険に加入しています。</p>
+          <p class="price-insurance-lead">完全分解は通常洗浄よりも多くの部品を取り外す作業のため、作業前に機種・年式・設置状況を確認し、リスクがある場合は事前にご説明します。</p>
+          <p class="price-insurance-lead">万が一、作業中の破損や不具合が発生した場合も、メーカー修理の手配を含めて誠実に対応いたします。</p>
+          <div class="price-insurance-points" aria-label="万一時の対応方針">
+            <div class="price-insurance-point">
+              <h4 class="price-insurance-point-title"><span>1</span>保険加入</h4>
+              <p>作業中の万一に備え、損害賠償保険に加入しています。</p>
+            </div>
+            <div class="price-insurance-point">
+              <h4 class="price-insurance-point-title"><span>2</span>事前確認</h4>
+              <p>機種・年式・設置状況を確認し、リスクがある場合は事前にご説明します。</p>
+            </div>
+            <div class="price-insurance-point">
+              <h4 class="price-insurance-point-title"><span>3</span>修理手配</h4>
+              <p>作業中の破損や不具合が発生した場合は、メーカー修理の手配を含めて対応します。</p>
             </div>
           </div>
         </div>
