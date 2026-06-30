@@ -162,6 +162,20 @@
       text-align:center;
       text-decoration:none;
     }
+    .phone-subcta{
+      display:inline-block;
+      margin-top:8px;
+      padding:10px 14px;
+      border:1px solid rgba(31,42,68,.24);
+      border-radius:10px;
+      background:#fff;
+      color:#1F2A44;
+      font-weight:700;
+      font-size:0.95rem;
+      line-height:1.35;
+      text-align:center;
+      text-decoration:none;
+    }
     .air-reserve-note{
       max-width:680px;
       margin:8px auto 0;
@@ -230,6 +244,7 @@
         <p class="hero-price-badge">追加料金なし・事前に料金目安を案内 <strong>9,000円〜</strong>（税込）</p>
         <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="urasoe-fv">LINEで無料相談する</a>
         <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="urasoe-fv" aria-label="Airリザーブで空き状況を見て仮予約する">空き状況を見て仮予約する</a>
+        <a href="tel:05017241338" class="phone-subcta">急ぎの方は電話で相談</a>
         <p class="air-reserve-note">※Airリザーブでの受付は仮予約です。内容確認後、LINEにて正式確定となります。</p>
         <p class="hero-area">対象：浦添市全域（南部・中部どちらにも近いエリアとして対応）</p>
       </div>
@@ -440,6 +455,11 @@
             <span class="btn-cta-label">LINEで無料相談する</span>
             <span class="btn-cta-sub">見積もりだけでもOK</span>
           </a>
+          <a href="tel:05017241338" class="btn-cta btn-cta-tel">
+            <span class="btn-cta-icon">📞</span>
+            <span class="btn-cta-label">急ぎの方は電話で相談</span>
+            <span class="btn-cta-sub">050-1724-1338</span>
+          </a>
         </div>
         <p style="text-align:center;margin-top:14px;">
           <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="urasoe-bottom" style="color:#fff;border-color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.12);">空き状況を見て仮予約する</a>
@@ -548,6 +568,22 @@
           debug_flag: isDebug,
           transport_type: 'beacon'
         });
+      }
+    }, true);
+  })();
+  </script>
+
+  <!-- GA4: LINE / 電話クリック計測 -->
+  <script>
+  (function() {
+    document.addEventListener('click', function(e) {
+      var anchor = e.target.closest('a');
+      if (!anchor || typeof window.gtag !== 'function') return;
+      var href = anchor.getAttribute('href') || '';
+      if (href.indexOf('lin.ee') !== -1) {
+        gtag('event', 'line_click', { link_url: href });
+      } else if (href.indexOf('tel:') === 0) {
+        gtag('event', 'phone_click', { link_url: href });
       }
     }, true);
   })();

@@ -445,6 +445,20 @@
       text-align:center;
       text-decoration:none;
     }
+    .phone-subcta{
+      display:inline-block;
+      margin-top:8px;
+      padding:10px 14px;
+      border:1px solid rgba(31,42,68,.24);
+      border-radius:10px;
+      background:#fff;
+      color:#1F2A44;
+      font-weight:700;
+      font-size:0.95rem;
+      line-height:1.35;
+      text-align:center;
+      text-decoration:none;
+    }
     .air-reserve-note{
       max-width:680px;
       margin:8px auto 0;
@@ -543,8 +557,9 @@
         <!-- LINE CTA: FV -->
         <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="fv">LINEで無料相談する</a>
         <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="fv" aria-label="Airリザーブで空き状況を見て仮予約する">空き状況を見て仮予約する</a>
+        <a href="tel:05017241338" class="phone-subcta">急ぎの方は電話で相談</a>
         <p class="air-reserve-note">※Airリザーブでの受付は仮予約です。内容確認後、LINEまたはお電話にて正式確定となります。</p>
-        <p style="margin-top:10px;background:#fff7e6;border:1px solid #f5d28a;border-radius:10px;padding:10px 12px;font-size:0.9rem;line-height:1.6;color:#5b3b00;">お問い合わせが集中しているため、現在はLINEでのお問い合わせを優先しております。確認後、順番にご返信いたします。</p>
+        <p style="margin-top:10px;background:#fff7e6;border:1px solid #f5d28a;border-radius:10px;padding:10px 12px;font-size:0.9rem;line-height:1.6;color:#5b3b00;">LINEで写真を送るだけで、概算料金と空き状況をご案内できます。お急ぎの方はお電話でもご相談ください。</p>
         <p class="hero-area">対象：南城市・与那原町・八重瀬町・豊見城市・糸満市・那覇市・南風原町</p>
       </div>
     </section>
@@ -1351,6 +1366,7 @@
       <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="bottom">南部8,000円で予約する</a>
       <p class="cta-note">🎁 LINE友だち限定特典あり（エアコンご依頼の方）</p>
       <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="bottom" aria-label="Airリザーブで空き状況を見て仮予約する">空き状況を見て仮予約する</a>
+      <a href="tel:05017241338" class="phone-subcta">電話で相談する</a>
       <p class="air-reserve-note">※仮予約受付です。内容確認後に正式確定となります。写真確認が必要な場合はLINEに写真を送ってください。</p>
     </div>
 
@@ -1581,6 +1597,22 @@
       observeOnce(document.getElementById('price-section'), 'price_section_view');
       observeOnce(document.getElementById('premium-section'), 'premium_section_view');
     });
+  })();
+  </script>
+
+  <!-- GA4: LINE / 電話クリック計測 -->
+  <script>
+  (function() {
+    document.addEventListener('click', function(e) {
+      var anchor = e.target.closest('a');
+      if (!anchor || typeof window.gtag !== 'function') return;
+      var href = anchor.getAttribute('href') || '';
+      if (href.indexOf('lin.ee') !== -1) {
+        gtag('event', 'line_click', { link_url: href });
+      } else if (href.indexOf('tel:') === 0) {
+        gtag('event', 'phone_click', { link_url: href });
+      }
+    }, true);
   })();
   </script>
 

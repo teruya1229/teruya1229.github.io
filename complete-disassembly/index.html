@@ -1855,6 +1855,22 @@
   })();
   </script>
 
+  <!-- GA4: LINE / 電話クリック計測 -->
+  <script>
+  (function() {
+    document.addEventListener('click', function(e) {
+      var anchor = e.target.closest('a');
+      if (!anchor || typeof window.gtag !== 'function') return;
+      var href = anchor.getAttribute('href') || '';
+      if (href.indexOf('lin.ee') !== -1) {
+        gtag('event', 'line_click', { link_url: href });
+      } else if (href.indexOf('tel:') === 0) {
+        gtag('event', 'phone_click', { link_url: href });
+      }
+    }, true);
+  })();
+  </script>
+
   <script async src="//www.instagram.com/embed.js"></script>
 </body>
 </html>
