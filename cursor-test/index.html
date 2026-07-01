@@ -448,16 +448,37 @@
     .phone-subcta{
       display:inline-block;
       margin-top:8px;
-      padding:10px 14px;
-      border:1px solid rgba(31,42,68,.24);
+      padding:8px 12px;
+      border:1px solid rgba(31,42,68,.18);
       border-radius:10px;
-      background:#fff;
-      color:#1F2A44;
-      font-weight:700;
-      font-size:0.95rem;
+      background:rgba(255,255,255,.92);
+      color:#4b5563;
+      font-weight:600;
+      font-size:0.82rem;
       line-height:1.35;
       text-align:center;
       text-decoration:none;
+    }
+    .phone-subcta-note{
+      max-width:340px;
+      margin:6px auto 0;
+      padding:0 4px;
+      font-size:0.75rem;
+      line-height:1.5;
+      color:rgba(255,255,255,0.88);
+      text-align:center;
+    }
+    .header-tel-wrap{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      flex-shrink:0;
+    }
+    .header-tel-wrap .header-tel{
+      font-size:0.8125rem;
+      padding:8px 12px;
+      min-height:auto;
+      white-space:nowrap;
     }
     .air-reserve-note{
       max-width:680px;
@@ -506,6 +527,9 @@
       font-weight: 600;
       text-decoration: underline;
     }
+    @media(max-width:767px){
+      .header-tel-wrap{display:none !important;}
+    }
     @media(max-width:600px){
       main{gap:0;}
       .consultation-flow .flow-lead{font-size:0.9rem;line-height:1.7;}
@@ -532,8 +556,9 @@
         <a href="faq.html">FAQ</a>
         <a href="blog.html">ブログ</a>
       </nav>
-      <!-- 一時停止中: 電話導線は再開時に戻す -->
-      <!-- <a href="tel:05017241338" class="header-tel">050-1724-1338</a> -->
+      <div class="header-tel-wrap">
+        <a href="tel:05017241338" class="header-tel">050-1724-1338</a>
+      </div>
     </div>
   </header>
 
@@ -558,6 +583,7 @@
         <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="fv">LINEで無料相談する</a>
         <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="fv" aria-label="Airリザーブで空き状況を見て仮予約する">空き状況を見て仮予約する</a>
         <a href="tel:05017241338" class="phone-subcta">急ぎの方は電話で相談</a>
+        <p class="phone-subcta-note">作業中は電話に出られない場合があります。写真で確認できるLINE相談がスムーズです。</p>
         <p class="air-reserve-note">※Airリザーブでの受付は仮予約です。内容確認後、LINEまたはお電話にて正式確定となります。</p>
         <p style="margin-top:10px;background:#fff7e6;border:1px solid #f5d28a;border-radius:10px;padding:10px 12px;font-size:0.9rem;line-height:1.6;color:#5b3b00;">LINEで写真を送るだけで、概算料金と空き状況をご案内できます。お急ぎの方はお電話でもご相談ください。</p>
         <p class="hero-area">対象：南城市・与那原町・八重瀬町・豊見城市・糸満市・那覇市・南風原町</p>
