@@ -132,6 +132,46 @@
               "@type": "Answer",
               "text": "はい。散らかっている状態のままで大丈夫です。一緒に、どこが一番つらいかから確認します。"
             }
+          },
+          {
+            "@type": "Question",
+            "name": "支払方法は何がありますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "銀行振込でお願いしています。お申し込み内容の確定後、作業着手前にお支払いいただく前払い制です。その他の方法をご希望の場合は、事前にご相談ください。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "キャンセルはできますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "作業着手前であれば、LINEまたはメールでご連絡いただければキャンセルできます。作業着手後のキャンセルは、原則お受けできません。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "返金はできますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "作業着手前のキャンセルは、振込手数料を除き全額返金します。作業着手後の返金は原則お受けできませんが、当方の責によりサービスを提供できなかった場合は、未提供分について協議のうえ返金します。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "AIへ送るデータはどう扱われますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "AIツールへ情報を入力する場合は、お客様や取引先を特定できる情報（氏名・住所・電話番号など）を可能な限り除いた形で行います。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "LINEへ送った情報はどう扱われますか？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "ご相談への回答とサービス提供の目的にのみ使用し、第三者への提供は行いません。ご依頼があれば、お送りいただいた画像や相談内容は削除します。"
+            }
           }
         ]
       }
@@ -1111,6 +1151,26 @@
       padding-top: 10px;
       border-top: 1px solid var(--border);
     }
+    .plan-specs {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: var(--bg-light);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: var(--text-sub);
+      line-height: 1.7;
+      list-style: none;
+    }
+    .plan-specs li {
+      display: flex;
+      gap: 8px;
+    }
+    .plan-specs-label {
+      flex-shrink: 0;
+      font-weight: 700;
+      color: var(--brand-navy);
+      min-width: 5.5em;
+    }
     .plan-note {
       margin-top: 18px;
       font-size: 0.8rem;
@@ -1263,6 +1323,70 @@
       font-weight: 800;
       padding: 15px 28px;
       border-radius: var(--radius);
+    }
+    .line-flow {
+      max-width: 420px;
+      margin: 0 auto 24px;
+      padding: 18px 20px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius);
+      text-align: left;
+    }
+    .line-flow-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .line-flow-steps {
+      list-style: none;
+      font-size: 0.84rem;
+      color: #e2e8f0;
+      line-height: 1.6;
+    }
+    .line-flow-steps li {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .line-flow-steps li + li {
+      margin-top: 4px;
+      padding-top: 16px;
+      position: relative;
+    }
+    .line-flow-steps li + li::after {
+      content: '↓';
+      position: absolute;
+      top: -2px;
+      left: 9px;
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+    .line-flow-num {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(6, 199, 85, 0.85);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      border-radius: 50%;
+      position: relative;
+      top: 3px;
+    }
+    .line-flow-note {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 0.76rem;
+      color: #94a3b8;
+      line-height: 1.65;
+      text-align: center;
     }
     .final-cta .reassurance-list {
       justify-content: center;
@@ -1636,6 +1760,12 @@
                 <li>詰まりやすい箇所を見つける</li>
                 <li>相談だけで終了OK</li>
               </ul>
+              <ul class="plan-specs">
+                <li><span class="plan-specs-label">納品物</span><span>なし（相談のみ）</span></li>
+                <li><span class="plan-specs-label">提供期間</span><span>LINEで随時（やり取りの目安30分程度）</span></li>
+                <li><span class="plan-specs-label">打ち合わせ</span><span>LINEでのやり取り</span></li>
+                <li><span class="plan-specs-label">成果物</span><span>詰まりポイントの整理（LINEで回答）</span></li>
+              </ul>
               <p class="plan-scope">有料作業の前に、一緒に現状を見る入口です。</p>
             </div>
             <div class="plan-card">
@@ -1647,6 +1777,12 @@
                 <li>現状を整理して改善ポイントをまとめる</li>
                 <li>どこから始めるべきか決める</li>
                 <li>現状ヒアリングと簡易レポート</li>
+              </ul>
+              <ul class="plan-specs">
+                <li><span class="plan-specs-label">納品物</span><span>業務整理レポート（PDF）</span></li>
+                <li><span class="plan-specs-label">提供期間</span><span>ヒアリング後、約1週間</span></li>
+                <li><span class="plan-specs-label">打ち合わせ</span><span>1回（LINEまたはオンライン）</span></li>
+                <li><span class="plan-specs-label">成果物</span><span>現状整理と改善ポイントをまとめたレポート</span></li>
               </ul>
               <p class="plan-scope">本格的な導入支援は、ミニ導入・標準導入で対応します。</p>
             </div>
@@ -1661,6 +1797,12 @@
                 <li>請求に必要な項目の整理</li>
                 <li>基本的な使い方説明と運用ルール</li>
               </ul>
+              <ul class="plan-specs">
+                <li><span class="plan-specs-label">納品物</span><span>受付・請求のテンプレート一式＋簡易プロンプト</span></li>
+                <li><span class="plan-specs-label">提供期間</span><span>約2週間</span></li>
+                <li><span class="plan-specs-label">打ち合わせ</span><span>2回程度（LINEまたはオンライン）</span></li>
+                <li><span class="plan-specs-label">成果物</span><span>受付から請求までが回る最小構成の運用ルール</span></li>
+              </ul>
               <p class="plan-scope">売上・未請求確認まで含む場合は標準導入をご検討ください。</p>
             </div>
             <div class="plan-card">
@@ -1672,6 +1814,12 @@
                 <li>受付から請求、売上・未請求確認まで一通り整える</li>
                 <li>継続して使える流れまで作る</li>
                 <li>使い方説明と運用ルールの整理</li>
+              </ul>
+              <ul class="plan-specs">
+                <li><span class="plan-specs-label">納品物</span><span>受付・請求・売上一覧のテンプレート一式＋簡易プロンプト＋運用ルール資料</span></li>
+                <li><span class="plan-specs-label">提供期間</span><span>約1ヶ月</span></li>
+                <li><span class="plan-specs-label">打ち合わせ</span><span>3回程度（LINEまたはオンライン）</span></li>
+                <li><span class="plan-specs-label">成果物</span><span>受付から売上・未請求確認まで回る運用一式</span></li>
               </ul>
               <p class="plan-scope">さらに自動化が必要になった場合は、別途ご相談ください。</p>
             </div>
@@ -1710,6 +1858,26 @@
             <div class="faq-item">
               <p class="faq-q">まだ何を整えたいか決まっていなくても相談できますか？</p>
               <p class="faq-a">はい。散らかっている状態のままで大丈夫です。一緒に、どこが一番つらいかから確認します。</p>
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">支払方法は何がありますか？</p>
+              <p class="faq-a">銀行振込でお願いしています。お申し込み内容の確定後、作業着手前にお支払いいただく前払い制です。その他の方法をご希望の場合は、事前にご相談ください。</p>
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">キャンセルはできますか？</p>
+              <p class="faq-a">作業着手前であれば、LINEまたはメールでご連絡いただければキャンセルできます。作業着手後のキャンセルは、原則お受けできません。詳しくは<a href="./tokushoho.html" style="color:var(--brand-navy);text-decoration:underline;text-underline-offset:2px;">特定商取引法に基づく表記</a>をご確認ください。</p>
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">返金はできますか？</p>
+              <p class="faq-a">作業着手前のキャンセルは、振込手数料を除き全額返金します。作業着手後の返金は原則お受けできませんが、当方の責によりサービスを提供できなかった場合は、未提供分について協議のうえ返金します。</p>
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">AIへ送るデータはどう扱われますか？</p>
+              <p class="faq-a">AIツールへ情報を入力する場合は、お客様や取引先を特定できる情報（氏名・住所・電話番号など）を可能な限り除いた形で行います。詳しくは<a href="./privacy.html" style="color:var(--brand-navy);text-decoration:underline;text-underline-offset:2px;">プライバシーポリシー</a>をご確認ください。</p>
+            </div>
+            <div class="faq-item">
+              <p class="faq-q">LINEへ送った情報はどう扱われますか？</p>
+              <p class="faq-a">ご相談への回答とサービス提供の目的にのみ使用し、第三者への提供は行いません。ご依頼があれば、お送りいただいた画像や相談内容は削除します。</p>
             </div>
           </div>
         </div>
@@ -1752,6 +1920,18 @@
         <div class="container-narrow">
           <h2 class="final-cta-title">きれいに整理できていなくても大丈夫です。<br>今のまま見せてください。</h2>
           <p class="final-cta-sub">受付・請求・売上管理のどこがつらいか、一緒に確認します。</p>
+          <div class="line-flow" aria-label="LINE追加後の流れ">
+            <p class="line-flow-title">LINE追加後の流れ</p>
+            <ol class="line-flow-steps">
+              <li><span class="line-flow-num">1</span><span>LINEを追加する</span></li>
+              <li><span class="line-flow-num">2</span><span>自動メッセージが届く</span></li>
+              <li><span class="line-flow-num">3</span><span>現在のお困り事を送信する</span></li>
+              <li><span class="line-flow-num">4</span><span>24時間以内を目安に照屋から返信</span></li>
+              <li><span class="line-flow-num">5</span><span>無料診断</span></li>
+              <li><span class="line-flow-num">6</span><span>必要な場合のみ、導入のご提案</span></li>
+            </ol>
+            <p class="line-flow-note">営業目的の連絡は行いません。相談だけで終了しても大丈夫です。</p>
+          </div>
           <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" class="btn-line-final" data-track-location="final_primary">今のままLINEで相談する</a>
           <ul class="reassurance-list" style="margin-top:14px;">
             <li>相談だけでもOK</li>
@@ -1796,6 +1976,11 @@
       <a href="https://lin.ee/t5eDoCU" target="_blank" rel="noopener noreferrer" data-track-location="footer">LINE</a>
       &nbsp;／&nbsp;
       <a href="mailto:bc.teruya@gmail.com">bc.teruya@gmail.com</a>
+    </p>
+    <p style="margin-top:10px;">
+      <a href="./tokushoho.html">特定商取引法に基づく表記</a>
+      &nbsp;／&nbsp;
+      <a href="./privacy.html">プライバシーポリシー</a>
     </p>
   </footer>
 
