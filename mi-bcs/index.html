@@ -50,18 +50,19 @@
   </script>
   <style>
     :root {
-      --brand: #1c3d5a;
-      --brand-dark: #142e46;
-      --bg-body: #f7f9fb;
-      --bg-light: #eef2f7;
-      --text-primary: #1a2b3c;
-      --text-secondary: #5a6a7a;
-      --border: #dfe3ea;
+      --brand: #0f4c4d;
+      --brand-dark: #0a3437;
+      --bg-body: #fbfaf7;
+      --bg-light: #f0f4f2;
+      --text-primary: #1d2d2f;
+      --text-secondary: #4a5d5f;
+      --border: #d7e1de;
       --white: #ffffff;
       --line: #007a33;
       --line-dark: #00632a;
-      --card-radius: 12px;
-      --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      --accent: #a94f17;
+      --card-radius: 16px;
+      --card-shadow: 0 8px 24px rgba(10, 52, 55, 0.07);
     }
 
     *,
@@ -93,6 +94,7 @@
 
     a {
       color: var(--brand);
+      text-underline-offset: 0.18em;
     }
 
     .container {
@@ -108,12 +110,14 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 2px 10px rgba(10, 52, 55, 0.05);
     }
 
     .header-inner {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 12px 20px;
+      min-height: 64px;
+      padding: 10px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -121,7 +125,10 @@
     }
 
     .header-brand {
-      font-size: 1.1rem;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      font-size: 1.24rem;
       font-weight: 800;
       color: var(--brand);
       text-decoration: none;
@@ -137,7 +144,7 @@
     }
 
     .header-nav a {
-      font-size: 0.82rem;
+      font-size: 0.9rem;
       font-weight: 600;
       color: var(--text-secondary);
       text-decoration: none;
@@ -150,7 +157,7 @@
     .hero {
       position: relative;
       color: var(--white);
-      padding: 56px 0 52px;
+      padding: 72px 0 68px;
       overflow: hidden;
       background: var(--brand-dark);
     }
@@ -161,13 +168,14 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.35;
+      opacity: 0.68;
+      object-position: center 55%;
     }
 
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(160deg, rgba(20, 46, 70, 0.92) 0%, rgba(28, 61, 90, 0.88) 100%);
+      background: linear-gradient(105deg, rgba(6, 46, 49, 0.9) 0%, rgba(8, 55, 57, 0.76) 58%, rgba(7, 45, 48, 0.66) 100%);
     }
 
     .hero .container {
@@ -177,44 +185,45 @@
 
     .hero-label {
       display: inline-block;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      margin: 0 0 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin: 0 0 16px;
       opacity: 0.92;
     }
 
     .hero-title {
-      font-size: clamp(1.35rem, 4.5vw, 2rem);
+      font-size: clamp(1.8rem, 3.3vw, 2.65rem);
       font-weight: 800;
-      line-height: 1.45;
-      margin: 0 0 16px;
-      max-width: 820px;
+      line-height: 1.42;
+      margin: 0 0 20px;
+      max-width: 900px;
+      text-wrap: balance;
     }
 
     .hero-lead {
-      font-size: clamp(0.95rem, 2.8vw, 1.05rem);
-      line-height: 1.85;
-      margin: 0 0 20px;
-      max-width: 720px;
+      font-size: clamp(1rem, 1.6vw, 1.12rem);
+      line-height: 1.8;
+      margin: 0 0 24px;
+      max-width: 760px;
       opacity: 0.95;
     }
 
     .hero-pills {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin: 0 0 28px;
+      gap: 10px;
+      margin: 0 0 32px;
       padding: 0;
       list-style: none;
     }
 
     .hero-pills li {
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.42);
       border-radius: 999px;
-      padding: 6px 14px;
-      font-size: 0.82rem;
+      padding: 7px 15px;
+      font-size: 1rem;
       font-weight: 600;
     }
 
@@ -226,18 +235,29 @@
     }
 
     .btn {
-      display: inline-block;
-      padding: 13px 22px;
-      border-radius: 8px;
-      font-size: 0.95rem;
+      min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 24px;
+      border-radius: 10px;
+      font-size: 1rem;
       font-weight: 700;
       text-decoration: none;
-      transition: opacity 0.2s;
+      transition: background-color 0.2s, border-color 0.2s, color 0.2s;
       text-align: center;
     }
 
     .btn:hover {
       opacity: 0.9;
+    }
+
+    .btn:focus-visible,
+    .header a:focus-visible,
+    .other-links a:focus-visible,
+    .overview-table a:focus-visible {
+      outline: 3px solid #f59e0b;
+      outline-offset: 3px;
     }
 
     .btn-line {
@@ -259,9 +279,9 @@
       background: transparent;
       color: var(--white);
       border: 1px solid rgba(255, 255, 255, 0.55);
-      font-weight: 600;
-      font-size: 0.88rem;
-      padding: 11px 18px;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 13px 22px;
     }
 
     .btn-brand {
@@ -270,7 +290,7 @@
     }
 
     .section {
-      padding: 52px 0;
+      padding: 64px 0;
     }
 
     .section-light {
@@ -278,48 +298,79 @@
     }
 
     .section-title {
-      font-size: clamp(1.2rem, 4vw, 1.5rem);
+      font-size: clamp(1.45rem, 2.4vw, 1.8rem);
       font-weight: 800;
       color: var(--brand);
-      margin: 0 0 12px;
+      margin: 0 0 16px;
       line-height: 1.45;
     }
 
+    .section-title::before {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: 0.14em;
+    }
+
+    .section-title::after {
+      content: "";
+      display: block;
+      width: 42px;
+      height: 3px;
+      margin-top: 12px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    #services .section-title::before { content: "SERVICES"; }
+    #reasons .section-title::before { content: "REASONS"; }
+    #flow .section-title::before { content: "FLOW"; }
+    #bc-service .section-title::before { content: "PARTNERSHIP"; }
+    #area .section-title::before { content: "AREA & SUPPORT"; }
+    #company .section-title::before { content: "COMPANY"; }
+    #other .section-title::before { content: "OTHER BUSINESS"; }
+    #contact .section-title::before { content: "CONTACT"; }
+
     .section-lead {
       color: var(--text-secondary);
-      margin: 0 0 28px;
-      line-height: 1.9;
-      max-width: 760px;
+      margin: 0 0 32px;
+      font-size: 1rem;
+      line-height: 1.8;
+      max-width: 800px;
     }
 
     .section-text {
       color: var(--text-secondary);
       margin: 0 0 16px;
-      line-height: 1.9;
+      font-size: 1rem;
+      line-height: 1.8;
     }
 
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
+      gap: 20px;
     }
 
     .card-grid-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
+      gap: 20px;
     }
 
     .card {
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--card-radius);
-      padding: 22px 20px;
+      padding: 26px 24px;
       box-shadow: var(--card-shadow);
     }
 
     .card h3 {
-      font-size: 1.05rem;
+      font-size: 1.12rem;
       font-weight: 800;
       color: var(--brand);
       margin: 0 0 12px;
@@ -329,7 +380,7 @@
     .card p,
     .card li {
       margin: 0;
-      font-size: 0.92rem;
+      font-size: 1rem;
       color: var(--text-secondary);
       line-height: 1.8;
     }
@@ -345,7 +396,7 @@
 
     .card-note {
       margin-top: 12px;
-      font-size: 0.85rem;
+      font-size: 1rem;
       color: var(--text-secondary);
       line-height: 1.75;
     }
@@ -353,7 +404,7 @@
     .reason-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px;
+      gap: 16px;
       margin: 0;
       padding: 0;
       list-style: none;
@@ -364,10 +415,10 @@
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--card-radius);
-      padding: 18px 16px 18px 52px;
+      padding: 21px 18px 21px 60px;
       position: relative;
       box-shadow: var(--card-shadow);
-      font-size: 0.95rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--text-primary);
       line-height: 1.6;
@@ -377,10 +428,10 @@
     .reason-list li::before {
       content: counter(reason);
       position: absolute;
-      left: 14px;
-      top: 16px;
-      width: 28px;
-      height: 28px;
+      left: 16px;
+      top: 19px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       background: var(--brand);
       color: var(--white);
@@ -396,24 +447,25 @@
       padding: 0;
       list-style: none;
       display: grid;
-      gap: 12px;
+      gap: 14px;
     }
 
     .flow-list li {
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--card-radius);
-      padding: 16px 18px;
+      padding: 20px 22px;
       display: grid;
-      grid-template-columns: 42px 1fr;
-      gap: 14px;
+      grid-template-columns: 46px 1fr;
+      gap: 16px;
       align-items: start;
       box-shadow: var(--card-shadow);
+      border-left: 4px solid var(--accent);
     }
 
     .flow-num {
-      width: 42px;
-      height: 42px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       background: var(--brand);
       color: var(--white);
@@ -426,14 +478,14 @@
 
     .flow-list h3 {
       margin: 0 0 4px;
-      font-size: 1rem;
+      font-size: 1.08rem;
       font-weight: 800;
       color: var(--brand);
     }
 
     .flow-list p {
       margin: 0;
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: var(--text-secondary);
       line-height: 1.75;
     }
@@ -444,10 +496,10 @@
 
     .role-label {
       display: inline-block;
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       font-weight: 700;
       color: var(--brand);
-      background: var(--bg-light);
+      background: #e6efec;
       border-radius: 999px;
       padding: 3px 10px;
       margin-bottom: 10px;
@@ -455,14 +507,14 @@
 
     .install-note {
       margin: 14px 0 0;
-      font-size: 0.86rem;
+      font-size: 1rem;
       line-height: 1.7;
       color: #4b5563;
     }
 
     .profile-qual {
       margin: 8px 0 0;
-      font-size: 0.88rem;
+      font-size: 1rem;
       line-height: 1.7;
       color: #4b5563;
       font-weight: 600;
@@ -481,8 +533,8 @@
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: 999px;
-      padding: 6px 14px;
-      font-size: 0.88rem;
+      padding: 8px 15px;
+      font-size: 1rem;
       font-weight: 600;
       color: var(--brand);
     }
@@ -499,11 +551,11 @@
 
     .overview-table th,
     .overview-table td {
-      padding: 14px 16px;
+      padding: 16px 18px;
       text-align: left;
       vertical-align: top;
       border-bottom: 1px solid var(--border);
-      font-size: 0.95rem;
+      font-size: 1rem;
       line-height: 1.7;
     }
 
@@ -513,8 +565,8 @@
     }
 
     .overview-table th {
-      width: 34%;
-      background: #f3f6fa;
+      width: 30%;
+      background: #e9f0ee;
       color: var(--brand);
       font-weight: 700;
       white-space: nowrap;
@@ -526,34 +578,36 @@
 
     .profile-wrap {
       display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 20px;
+      grid-template-columns: 148px 1fr;
+      gap: 28px;
       align-items: center;
-      margin-top: 24px;
+      margin-top: 30px;
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--card-radius);
-      padding: 20px;
+      padding: 28px;
       box-shadow: var(--card-shadow);
     }
 
     .profile-wrap img {
-      width: 120px;
-      height: 120px;
+      width: 140px;
+      height: 140px;
       object-fit: cover;
       border-radius: 50%;
+      border: 4px solid var(--white);
+      outline: 2px solid var(--border);
     }
 
     .profile-wrap h3 {
       margin: 0 0 6px;
-      font-size: 1rem;
+      font-size: 1.15rem;
       font-weight: 800;
       color: var(--brand);
     }
 
     .profile-wrap p {
       margin: 0;
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: var(--text-secondary);
       line-height: 1.75;
     }
@@ -562,13 +616,13 @@
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--card-radius);
-      padding: 22px 20px;
+      padding: 26px 24px;
       box-shadow: var(--card-shadow);
     }
 
     .other-box p {
       margin: 0 0 12px;
-      font-size: 0.92rem;
+      font-size: 1rem;
       color: var(--text-secondary);
       line-height: 1.8;
     }
@@ -585,7 +639,7 @@
     }
 
     .other-links a {
-      font-size: 0.9rem;
+      font-size: 1rem;
       font-weight: 600;
     }
 
@@ -593,7 +647,7 @@
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--card-radius);
-      padding: 28px 24px;
+      padding: 36px 28px;
       text-align: center;
       box-shadow: var(--card-shadow);
     }
@@ -611,7 +665,7 @@
 
     .contact-note {
       margin: 16px 0 0;
-      font-size: 0.85rem;
+      font-size: 1rem;
       color: var(--text-secondary);
       line-height: 1.75;
     }
@@ -619,9 +673,9 @@
     .footer {
       background: var(--brand-dark);
       color: rgba(255, 255, 255, 0.85);
-      padding: 28px 0;
+      padding: 36px 0;
       text-align: center;
-      font-size: 0.85rem;
+      font-size: 1rem;
     }
 
     .footer p {
@@ -637,14 +691,88 @@
     }
 
     @media (max-width: 720px) {
+      .container {
+        padding: 0 18px;
+      }
+
+      .header-inner {
+        min-height: 60px;
+        padding: 8px 18px;
+      }
+
       .header-nav {
         display: none;
+      }
+
+      .hero {
+        padding: 48px 0 44px;
+      }
+
+      .hero-bg {
+        object-position: 62% center;
+      }
+
+      .hero-overlay {
+        background: linear-gradient(105deg, rgba(6, 46, 49, 0.9) 0%, rgba(8, 55, 57, 0.76) 100%);
+      }
+
+      .hero-title {
+        font-size: clamp(1.65rem, 7.2vw, 1.9rem);
+        line-height: 1.45;
+        text-wrap: pretty;
+      }
+
+      .hero-lead,
+      .card p,
+      .card li,
+      .card-note,
+      .flow-list p,
+      .install-note,
+      .profile-qual,
+      .profile-wrap p,
+      .other-box p,
+      .contact-note {
+        font-size: 1rem;
+      }
+
+      .hero-pills li {
+        font-size: 1rem;
+      }
+
+      .section {
+        padding: 52px 0;
+      }
+
+      .section-title {
+        font-size: 1.55rem;
+      }
+
+      .section-lead {
+        margin-bottom: 26px;
+      }
+
+      .card,
+      .other-box {
+        padding: 22px 20px;
+      }
+
+      .flow-list li {
+        grid-template-columns: 42px 1fr;
+        gap: 14px;
+        padding: 18px 16px;
+      }
+
+      .flow-num {
+        width: 42px;
+        height: 42px;
       }
 
       .profile-wrap {
         grid-template-columns: 1fr;
         text-align: center;
         justify-items: center;
+        gap: 22px;
+        padding: 24px 20px;
       }
 
       .overview-table th,
@@ -670,6 +798,7 @@
 
       .btn {
         width: 100%;
+        min-height: 52px;
       }
     }
   </style>
