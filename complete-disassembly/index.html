@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>エアコン完全分解クリーニング｜沖縄南部対応｜BCサービス</title>
-  <meta name="description" content="沖縄南部対応のエアコン完全分解クリーニング。通常洗浄では届きにくい内部まで分解してしっかり洗浄します。">
-  <meta name="keywords" content="沖縄南部, エアコン完全分解, エアコンクリーニング, BCサービス">
+  <title>エアコン完全分解クリーニング｜沖縄中南部対応｜BCサービス</title>
+  <meta name="description" content="南城市を拠点に、沖縄中南部16市町村へ対応。エアコン完全分解クリーニング。通常洗浄では届きにくい内部まで分解してしっかり洗浄します。">
+  <meta name="keywords" content="沖縄中南部, エアコン完全分解, エアコンクリーニング, BCサービス">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://teruya1229.github.io/complete-disassembly/">
+  <meta property="og:title" content="エアコン完全分解クリーニング｜沖縄中南部対応｜BCサービス">
+  <meta property="og:description" content="南城市を拠点に、沖縄中南部16市町村へ対応。通常洗浄では届きにくい内部まで分解してしっかり洗浄します。">
+  <meta property="og:url" content="https://teruya1229.github.io/complete-disassembly/">
+  <meta property="og:type" content="website">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="../cursor-test/style.css">
   <style>
@@ -37,7 +41,7 @@
       }
 
       .sec-case-studies .case-study-card {
-        max-width: 680px;
+        max-width: 960px;
         margin-left: auto;
         margin-right: auto;
       }
@@ -188,19 +192,26 @@
 
     .sec-case-studies .case-study-photos {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .sec-case-studies .case-study-photos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+      }
     }
 
     .sec-case-studies .case-study-photo-item {
       text-align: center;
+      margin: 0;
     }
 
     .sec-case-studies .case-study-photo-item img {
       display: block;
       width: 100%;
-      aspect-ratio: 4 / 3;
-      object-fit: cover;
+      height: auto;
       border-radius: 8px;
     }
 
@@ -282,17 +293,32 @@
       text-align: center;
     }
 
-    .instagram-embed-wrap {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-      overflow: hidden;
-      max-width: 100%;
+    .youtube-short-wrap {
+      width: 100%;
+      max-width: 420px;
+      margin: 20px auto 0;
     }
 
-    .instagram-embed-wrap .instagram-media {
-      margin-left: auto !important;
-      margin-right: auto !important;
+    .youtube-short-wrap iframe {
+      display: block;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      border: 0;
+      border-radius: 12px;
+      background: #000;
+    }
+
+    .case-study-ig-link {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 0.82rem;
+      line-height: 1.6;
+    }
+
+    .case-study-ig-link a {
+      color: var(--brand, #1a56db);
+      font-weight: 600;
+      text-decoration: underline;
     }
 
     .ai-summary-section p{
@@ -350,6 +376,49 @@
       color: rgba(255, 255, 255, 0.92);
     }
 
+    .hero-phone-cta-wrap {
+      display: none;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .hero-phone-cta {
+      display: inline-block;
+      min-width: 220px;
+      max-width: 90%;
+      padding: 10px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      text-decoration: none;
+      line-height: 1.35;
+    }
+
+    .hero-phone-cta-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      opacity: 0.92;
+    }
+
+    .hero-phone-cta-number {
+      display: block;
+      margin-top: 2px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-phone-cta-note {
+      max-width: 340px;
+      margin: 8px auto 0;
+      font-size: 0.72rem;
+      line-height: 1.5;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.88);
+    }
+
     @media (max-width: 767px) {
       .header-inner {
         align-items: flex-start;
@@ -368,6 +437,10 @@
 
       .header-tel-wrap {
         display: none !important;
+      }
+
+      .hero-phone-cta-wrap {
+        display: block;
       }
     }
 
@@ -1001,7 +1074,16 @@
           "糸満市",
           "那覇市",
           "南風原町",
-          "与那原町"
+          "与那原町",
+          "浦添市",
+          "西原町",
+          "宜野湾市",
+          "中城村",
+          "北中城村",
+          "北谷町",
+          "沖縄市",
+          "読谷村",
+          "うるま市"
         ],
         "sameAs": [
           "https://www.instagram.com/bcservicenanjyo/"
@@ -1011,7 +1093,7 @@
         "@type": "Service",
         "@id": "https://teruya1229.github.io/complete-disassembly/#service",
         "name": "エアコン完全分解クリーニング",
-        "description": "BCサービスは、沖縄南部のご家庭向けにエアコン完全分解クリーニングを行っています。通常分解では届きにくい内部汚れや、送風ファン・ドレンパン周辺の汚れが気になる方向けに、機種や設置状況を確認しながら作業内容を案内しています。",
+        "description": "BCサービスは、南城市を拠点に沖縄中南部のご家庭向けにエアコン完全分解クリーニングを行っています。通常分解では届きにくい内部汚れや、送風ファン・ドレンパン周辺の汚れが気になる方向けに、機種や設置状況を確認しながら作業内容を案内しています。",
         "serviceType": "エアコン完全分解クリーニング",
         "provider": {
           "@id": "https://teruya1229.github.io/#bc-service"
@@ -1023,7 +1105,16 @@
           "糸満市",
           "那覇市",
           "南風原町",
-          "与那原町"
+          "与那原町",
+          "浦添市",
+          "西原町",
+          "宜野湾市",
+          "中城村",
+          "北中城村",
+          "北谷町",
+          "沖縄市",
+          "読谷村",
+          "うるま市"
         ],
         "url": "https://teruya1229.github.io/complete-disassembly/",
         "hasOfferCatalog": {
@@ -1108,7 +1199,7 @@
         "name": "どんな人に完全分解がおすすめですか？",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "エアコンの風のにおいが気になる方、吹き出し口の奥に黒い汚れが見える方、寝室や子ども部屋で使っている方、前回のクリーニングから年数が経っている方におすすめです。特に南城市・八重瀬町・豊見城市など沖縄南部の子育て家庭からのご相談が多いです。"
+          "text": "エアコンの風のにおいが気になる方、吹き出し口の奥に黒い汚れが見える方、寝室や子ども部屋で使っている方、前回のクリーニングから年数が経っている方におすすめです。特に南城市・八重瀬町・豊見城市など沖縄中南部の子育て家庭からのご相談が多いです。"
         }
       },
       {
@@ -1148,7 +1239,7 @@
         "name": "対応エリアはどこですか？",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "南城市・八重瀬町・豊見城市・糸満市・那覇市・南風原町・与那原町を中心に対応しています。完全分解クリーニングは作業時間が長くなるため、エリアや日程によって調整が必要な場合があります。"
+          "text": "南城市を拠点に、南城市・八重瀬町・豊見城市・糸満市・那覇市・南風原町・与那原町・浦添市・西原町・宜野湾市・中城村・北中城村・北谷町・沖縄市・読谷村・うるま市の沖縄中南部16市町村へ対応しています。完全分解クリーニングは作業時間が長くなるため、エリアや日程によって調整が必要な場合があります。"
         }
       }
     ]
@@ -1198,9 +1289,16 @@
       <img src="../cursor-test/images/hero-fv.jpg" alt="完全分解クリーニング作業イメージ" class="hero-bg" width="1400" height="900">
       <div class="hero-overlay"></div>
       <div class="hero-inner">
-        <h1 class="hero-title">沖縄南部のエアコン<br>完全分解クリーニング<br>内部までしっかり洗える特別プラン</h1>
-        <p class="hero-lead">通常洗浄では届かない内部の汚れまで、<br>部品を分解してしっかり洗浄します。</p>
+        <h1 class="hero-title">沖縄中南部のエアコン<br>完全分解クリーニング</h1>
+        <p class="hero-lead">南城市を拠点に、沖縄中南部16市町村へ対応。<br>通常洗浄では届かない内部の汚れまで、部品を分解してしっかり洗浄します。</p>
         <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta">LINEで無料相談する</a>
+        <div class="hero-phone-cta-wrap">
+          <a href="tel:05017241338" class="hero-phone-cta" data-cta="tel" data-cta-location="hero">
+            <span class="hero-phone-cta-label">電話で相談</span>
+            <span class="hero-phone-cta-number">050-1724-1338</span>
+          </a>
+          <p class="hero-phone-cta-note">作業中は電話に出られない場合があります。写真で確認できるLINE相談がスムーズです。</p>
+        </div>
         <p class="cta-note cta-note--line-priority">写真を送れるLINE相談がおすすめです。<br>型番・設置状況・汚れ具合を確認してから、対応可否と目安料金をご案内します。</p>
       </div>
     </section>
@@ -1503,7 +1601,7 @@
       <div class="container">
         <h2 class="section-title">完全分解クリーニングの施工事例</h2>
         <p class="case-study-lead">
-          沖縄・南城市をはじめ、沖縄南部の現場で行ったエアコンクリーニングの事例です。実際の現場写真とあわせて、どのような汚れがあり、完全分解クリーニングでどのように改善したかを紹介します。お掃除機能付きエアコン以外のノーマル機種でも、通常分解では落ちない汚れまで、家族が吸う空気のために内部まで丁寧に洗浄しています。
+          沖縄・南城市をはじめ、沖縄中南部の現場で行ったエアコンクリーニングの事例です。実際の現場写真とあわせて、どのような汚れがあり、完全分解クリーニングでどのように改善したかを紹介します。お掃除機能付きエアコン以外のノーマル機種でも、通常分解では落ちない汚れまで、家族が吸う空気のために内部まで丁寧に洗浄しています。
         </p>
         <article class="card case-study-card" data-case-id="2026-06-03-sample">
           <div class="case-study-head">
@@ -1553,20 +1651,22 @@
           </div>
         </article>
 
-        <article class="card case-study-card" data-case-id="instagram-reel-dvvg1">
-          <h3>Instagramで見る完全分解クリーニングの施工事例</h3>
+        <article class="card case-study-card" data-case-id="youtube-short-smkg3bl1ew">
+          <h3>動画で見るエアコン完全分解クリーニング</h3>
           <p class="case-study-comment">
-            実際のエアコン完全分解クリーニングの様子をInstagramリールで紹介しています。分解した部品や内部の汚れ、洗浄後の変化を動画で確認できるため、写真だけでは伝わりにくい作業の流れを見たい方にも参考になります。沖縄南部でエアコンの風のにおいや内部汚れが気になる方は、完全分解クリーニングの検討材料としてご覧ください。
+            送風ファンやドレンパンを取り外し、内部の汚れを洗浄する様子を短い動画で確認できます。沖縄中南部でエアコンの風のにおいや内部汚れが気になる方は、完全分解クリーニングの検討材料としてご覧ください。
           </p>
-          <div class="instagram-embed-wrap">
-            <blockquote class="instagram-media"
-              data-instgrm-captioned
-              data-instgrm-permalink="https://www.instagram.com/reel/DVvg1-tCP9I/?utm_source=ig_embed&amp;utm_campaign=loading"
-              data-instgrm-version="14"
-              style="background:#FFF; border:0; border-radius:12px; margin:0 auto; max-width:540px; min-width:280px; width:100%;">
-            </blockquote>
+          <div class="youtube-short-wrap">
+            <iframe
+              src="https://www.youtube.com/embed/SMKg-3BL1ew"
+              title="エアコン完全分解クリーニングの作業動画｜BCサービス"
+              loading="lazy"
+              playsinline
+              allowfullscreen
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"></iframe>
           </div>
-          <p class="case-study-note">※Instagramの投稿が表示されない場合は、Instagramアプリまたはブラウザでご確認ください。</p>
+          <p class="case-study-ig-link"><a href="https://www.instagram.com/bcservicenanjyo/" target="_blank" rel="noopener noreferrer">Instagramでも施工事例を見る</a></p>
         </article>
         <p class="related-link"><a href="../cursor-test/cases.html">通常分解も含めた施工事例一覧を見る</a></p>
       </div>
@@ -1575,9 +1675,9 @@
     <!-- 完全分解クリーニング サービス概要まとめ（AI検索・ご検討者向け） -->
     <section class="section ai-summary-section section-light">
       <div class="container">
-        <h2 class="section-title">沖縄南部でエアコン完全分解クリーニングを検討している方へ</h2>
+        <h2 class="section-title">沖縄中南部でエアコン完全分解クリーニングを検討している方へ</h2>
         <p>
-          BCサービスでは、南城市を拠点に、沖縄南部のご家庭向けにエアコン完全分解クリーニングを行っています。対応エリアは、南城市 / 八重瀬町 / 豊見城市 / 糸満市 / 那覇市 / 南風原町 / 与那原町を中心としています。
+          BCサービスでは、南城市を拠点に、沖縄中南部のご家庭向けにエアコン完全分解クリーニングを行っています。対応エリアは、南城市 / 八重瀬町 / 豊見城市 / 糸満市 / 那覇市 / 南風原町 / 与那原町 / 浦添市 / 西原町 / 宜野湾市 / 中城村 / 北中城村 / 北谷町 / 沖縄市 / 読谷村 / うるま市の16市町村です。
         </p>
         <p>
           完全分解クリーニングは、通常のエアコンクリーニングよりも部品を多く取り外し、送風ファンやドレンパン周辺など、汚れが残りやすい内部まで確認しながら洗浄する方法です。通常分解では届きにくい汚れや、吹き出し口の奥の黒い汚れ、風のにおいが気になる方に向いています。
@@ -1589,15 +1689,17 @@
           料金目安は、ノーマルエアコンの完全分解クリーニングが14,000円〜、お掃除機能付きエアコンの完全分解クリーニングが23,000円〜です。メーカー・型番・設置状況・汚れ具合によって作業内容や料金が変わる場合があるため、LINEで写真や型番を送っていただけると、事前に目安をお伝えしやすくなります。
         </p>
         <p>
-          このページでは、実際に行った完全分解クリーニングの<a href="#case-studies">写真施工事例とInstagramリール施工事例</a>を掲載しています。分解した部品、洗浄で出た汚水、洗浄後の状態を見ながら、通常分解との違いや作業の雰囲気を確認できます。
+          このページでは、実際に行った完全分解クリーニングの<a href="#case-studies">写真施工事例と作業動画</a>を掲載しています。分解した部品、洗浄で出た汚水、洗浄後の状態を見ながら、通常分解との違いや作業の雰囲気を確認できます。
         </p>
         <p>
-          通常分解クリーニングを検討している方は、<a href="../cursor-test/">家庭向けエアコンクリーニングのページ</a>もご覧ください。対応エリアは、<a href="../cursor-test/south.html">沖縄南部の対応エリアまとめ</a>でも確認できます。作業内容や料金について不安がある方は、<a href="../cursor-test/faq.html">よくある質問</a>も参考にしてください。
+          通常分解クリーニングを検討している方は、<a href="../cursor-test/">家庭向けエアコンクリーニングのページ</a>もご覧ください。南部エリアの通常分解情報は、<a href="../cursor-test/south.html">沖縄南部の対応エリアまとめ</a>でも確認できます。作業内容や料金について不安がある方は、<a href="../cursor-test/faq.html">よくある質問</a>も参考にしてください。
         </p>
         <div class="card" style="margin-top:20px;padding:20px 18px;text-align:center;">
-          <h3 style="font-size:1.0625rem;font-weight:700;color:var(--brand,#1a56db);margin:0 0 10px;">中部エリア・浦添市でエアコンクリーニングをご検討の方へ</h3>
-          <p style="font-size:0.875rem;line-height:1.7;color:#4b5563;margin:0 0 14px;">中部エリア・浦添市でエアコンクリーニングをご検討の方も、対応エリアや料金目安を各ページで確認できます。</p>
+          <h3 style="font-size:1.0625rem;font-weight:700;color:var(--brand,#1a56db);margin:0 0 10px;">通常分解をご検討の方へ（地域別ページ）</h3>
+          <p style="font-size:0.875rem;line-height:1.7;color:#4b5563;margin:0 0 14px;">完全分解は沖縄中南部16市町村へ対応しています。通常分解クリーニングの料金・対応エリアを地域別に確認したい方は、以下もご覧ください。</p>
           <p style="margin:0;font-size:0.875rem;line-height:1.8;">
+            <a href="../cursor-test/south.html" style="color:var(--brand,#1a56db);font-weight:600;text-decoration:underline;">南部エリアのエアコンクリーニング</a>
+            <span style="color:#9ca3af;margin:0 8px;">｜</span>
             <a href="../cursor-test/central.html" style="color:var(--brand,#1a56db);font-weight:600;text-decoration:underline;">中部エリアのエアコンクリーニング</a>
             <span style="color:#9ca3af;margin:0 8px;">｜</span>
             <a href="../cursor-test/urasoe.html" style="color:var(--brand,#1a56db);font-weight:600;text-decoration:underline;">浦添市のエアコンクリーニング</a>
@@ -1610,7 +1712,7 @@
     <section class="section section-light sec-faq" id="faq">
       <div class="container">
         <h2 class="section-title">よくある質問</h2>
-        <p class="faq-page-intro">初めて完全分解クリーニングをご検討の方からよくいただく質問です。沖縄南部・南城市の現場で実際に施工している内容をもとに、子育て家庭の方にもわかりやすくまとめています。</p>
+        <p class="faq-page-intro">初めて完全分解クリーニングをご検討の方からよくいただく質問です。沖縄中南部・南城市の現場で実際に施工している内容をもとに、子育て家庭の方にもわかりやすくまとめています。</p>
         <div class="faq-list plan-compare--single">
           <details class="faq-details">
             <summary>完全分解クリーニングとは何ですか？</summary>
@@ -1627,7 +1729,7 @@
           <details class="faq-details">
             <summary>どんな人に完全分解がおすすめですか？</summary>
             <div class="faq-details-body">
-              <p>エアコンの風のにおいが気になる方、吹き出し口の奥に黒い汚れが見える方、寝室や子ども部屋で使っている方、前回のクリーニングから年数が経っている方におすすめです。特に南城市・八重瀬町・豊見城市など沖縄南部の子育て家庭からのご相談が多いです。</p>
+              <p>エアコンの風のにおいが気になる方、吹き出し口の奥に黒い汚れが見える方、寝室や子ども部屋で使っている方、前回のクリーニングから年数が経っている方におすすめです。特に南城市・八重瀬町・豊見城市など沖縄中南部の子育て家庭からのご相談が多いです。</p>
             </div>
           </details>
           <details class="faq-details">
@@ -1657,12 +1759,12 @@
           <details class="faq-details">
             <summary>対応エリアはどこですか？</summary>
             <div class="faq-details-body">
-              <p>南城市・八重瀬町・豊見城市・糸満市・那覇市・南風原町・与那原町を中心に対応しています。完全分解クリーニングは作業時間が長くなるため、エリアや日程によって調整が必要な場合があります。地域別の詳細は<a href="../cursor-test/south.html">沖縄南部の対応エリアまとめ</a>をご覧ください。</p>
+              <p>南城市を拠点に、南城市・八重瀬町・豊見城市・糸満市・那覇市・南風原町・与那原町・浦添市・西原町・宜野湾市・中城村・北中城村・北谷町・沖縄市・読谷村・うるま市の沖縄中南部16市町村へ対応しています。完全分解クリーニングは作業時間が長くなるため、エリアや日程によって調整が必要な場合があります。通常分解の南部エリア詳細は<a href="../cursor-test/south.html">沖縄南部の対応エリアまとめ</a>もご確認ください。</p>
             </div>
           </details>
         </div>
         <p class="related-link">実際の分解写真は、<a href="#case-studies">施工事例</a>をご覧ください。</p>
-        <p class="faq-cta">通常のエアコンクリーニングは<a href="../cursor-test/">家庭向けLP</a>、対応エリアは<a href="../cursor-test/south.html">沖縄南部まとめ</a>、詳しいFAQ一覧は<a href="../cursor-test/faq.html">こちら</a>をご覧ください。</p>
+        <p class="faq-cta">通常のエアコンクリーニングは<a href="../cursor-test/">家庭向けLP</a>、南部の通常分解情報は<a href="../cursor-test/south.html">沖縄南部まとめ</a>、詳しいFAQ一覧は<a href="../cursor-test/faq.html">こちら</a>をご覧ください。</p>
       </div>
     </section>
 
@@ -1684,7 +1786,7 @@
         <img src="../cursor-test/images/teruya-profile.png" alt="代表 照屋昴" width="360" height="360" loading="lazy" class="profile-img">
         <p class="profile-title">子育て家庭応援クリーニング 代表</p>
         <p class="profile-name"><strong>照屋 昴</strong></p>
-        <p class="profile-message">私自身も子どもを育てる親として、安心して任せられる作業を大切にしています。<br>沖縄南部で、完全分解が必要なご家庭にも丁寧に対応します。</p>
+        <p class="profile-message">私自身も子どもを育てる親として、安心して任せられる作業を大切にしています。<br>南城市を拠点に、沖縄中南部で完全分解が必要なご家庭にも丁寧に対応します。</p>
       </div>
     </section>
 
@@ -1768,7 +1870,8 @@
       if (!href) return null;
       if (href.indexOf('https://lin.ee/') === 0) return 'line';
       if (href.indexOf('https://airrsv.net/bc-servicesokinawa/calendar') === 0) return 'air_reserve';
-      if (href.indexOf('tel:') === 0) return 'tel';
+      /* tel は phone_click で計測。LINE用 cta_click に含めない */
+      if (href.indexOf('tel:') === 0) return null;
       if (href.indexOf('mailto:') === 0) return 'mail';
       return null;
     }
@@ -1880,7 +1983,5 @@
     }, true);
   })();
   </script>
-
-  <script async src="//www.instagram.com/embed.js"></script>
 </body>
 </html>
