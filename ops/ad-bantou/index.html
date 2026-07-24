@@ -40,7 +40,7 @@
                 </ol>
 
                 <div class="ab-daily-actions">
-                  <button type="button" class="ab-submit ab-daily-btn-primary" id="dc-clipboard-btn">クリップボードからJSON読込</button>
+                  <button type="button" class="ab-submit ab-daily-btn-primary" id="dc-clipboard-btn">広告チェック結果を貼り付け</button>
                   <button type="button" class="ab-cs-btn-secondary ab-daily-btn-secondary" id="dc-toggle-paste-btn">貼り付け欄を開く</button>
                 </div>
 
@@ -78,6 +78,30 @@
                   <p class="ab-daily-result-title" id="dc-result-title"></p>
                   <div class="ab-daily-result-metrics" id="dc-result-metrics"></div>
                   <div class="ab-daily-result-decisions" id="dc-result-decisions"></div>
+                </div>
+              </section>
+
+              <!-- Budil連携（共通JSONコピー・ファイル入出力） -->
+              <section class="ab-section ab-budil-bridge" id="budil-bridge-section">
+                <h2 class="ab-section-title">Budil連携</h2>
+                <p class="ab-section-desc">保存済みの日次広告ログを共通JSONへ変換し、Budilへクリップボードまたはファイルで渡します。売上データとは混ぜません。</p>
+
+                <div class="ab-daily-actions">
+                  <button type="button" class="ab-submit ab-daily-btn-primary" id="budil-copy-btn">Budil用にコピー</button>
+                  <button type="button" class="ab-cs-btn-secondary ab-daily-btn-secondary" id="budil-export-btn">JSONを書き出す</button>
+                  <button type="button" class="ab-cs-btn-secondary ab-daily-btn-secondary" id="budil-import-btn">JSONを読み込む</button>
+                  <input type="file" id="budil-import-file" accept=".json,application/json" hidden>
+                </div>
+
+                <div class="ab-daily-message" id="budil-bridge-message" hidden></div>
+
+                <div class="ab-daily-preview" id="budil-bridge-preview" hidden>
+                  <p class="ab-daily-preview-title">Budil共通JSON プレビュー（まだ保存されていません）</p>
+                  <div class="ab-daily-preview-cards" id="budil-bridge-preview-cards"></div>
+                  <div class="ab-daily-save-actions">
+                    <button type="button" class="ab-submit ab-daily-btn-primary" id="budil-confirm-save-btn">確定して保存</button>
+                    <button type="button" class="ab-cs-btn-secondary ab-daily-btn-secondary" id="budil-cancel-preview-btn">キャンセル</button>
+                  </div>
                 </div>
               </section>
 

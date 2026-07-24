@@ -1189,7 +1189,7 @@
     if (navigator.clipboard && navigator.clipboard.readText) {
       navigator.clipboard.readText().then(function (text) {
         if (!text || !text.trim()) {
-          showDcMessage('error', 'クリップボードが空です。browser-bantou の daily-check JSON をコピーしてください。');
+          showDcMessage('error', 'クリップボードが空です。広告チェック結果（browser-bantou daily-check JSON）をコピーしてください。');
           dcPasteArea.hidden = false;
           return;
         }
@@ -2353,6 +2353,387 @@
 
   csHistoryTbody.addEventListener('click', handleCsHistoryDelete);
   csHistoryCards.addEventListener('click', handleCsHistoryDelete);
+
+  /* ===== Budil連携（共通JSON） ===== */
+
+  var BUDIL_SCHEMA_VERSION = 1;
+  var BUDIL_RECORD_TYPE = 'daily-ad-performance';
+  var budilImportCache = null;
+
+  var budilCopyBtn = document.getElementById('budil-copy-btn');
+  var budilExportBtn = document.getElementById('budil-export-btn');
+  var budilImportBtn = document.getElementById('budil-import-btn');
+  var budilImportFile = document.getElementById('budil-import-file');
+  var budilBridgeMessage = document.getElementById('budil-bridge-message');
+  var budilBridgePreview = document.getElementById('budil-bridge-preview');
+  var budilBridgePreviewCards = document.getElementById('budil-bridge-preview-cards');
+  var budilConfirmSaveBtn = document.getElementById('budil-confirm-save-btn');
+  var budilCancelPreviewBtn = document.getElementById('budil-cancel-preview-btn');
+
+  function showBudilBridgeMessage(type, text) {
+    if (!budilBridgeMessage) return;
+    budilBridgeMessage.hidden = false;
+    budilBridgeMessage.className = 'ab-daily-message is-' + type;
+    budilBridgeMessage.textContent = text;
+  }
+
+  function clearBudilBridgePreview() {
+    budilImportCache = null;
+    if (budilBridgePreview) budilBridgePreview.hidden = true;
+    if (budilBridgePreviewCards) budilBridgePreviewCards.innerHTML = '';
+  }
+
+  function normalizeAdTypeKey(adType) {
+    var raw = String(adType || 'Google検索広告').trim().toLowerCase();
+    if (!raw) return 'google-search';
+    if (raw.indexOf('google') >= 0 && (raw.indexOf('検索') >= 0 || raw.indexOf('search') >= 0)) {
+      return 'google-search';
+    }
+    return raw
+      .replace(/[_\s]+/g, '-')
+      .replace(/[^a-z0-9\u3040-\u30ff\u4e00-\u9faf-]/g, '')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '') || 'google-search';
+  }
+
+  function deriveCampaignKey(log) {
+    var name = String((log && log.campaignName) || '').trim();
+    var lp = String((log && log.lpType) || '').trim();
+    if (name.indexOf('完全分解') >= 0 || lp === '完全分解LP') {
+      if (name.indexOf('中部') >= 0 || name.indexOf('中南部') >= 0) return 'complete-disassembly-central-south';
+      return 'complete-disassembly-south';
+    }
+    if (name.indexOf('AI帳票') >= 0 || lp === 'AI帳票番頭LP') return 'ai-bantou-national';
+    if (name.indexOf('浦添') >= 0 || name.indexOf('urasoe') >= 0) return 'home-urasoe';
+    if (name.indexOf('中部') >= 0) return 'home-central';
+    if (name.indexOf('南部') >= 0 || lp === '家庭LP') return 'home-south';
+    if (lp === '業務LP') return 'business';
+    var slug = name
+      .toLowerCase()
+      .replace(/[_\s　]+/g, '-')
+      .replace(/[^a-z0-9\u3040-\u30ff\u4e00-\u9faf-]/g, '')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+    return slug || 'campaign-unknown';
+  }
+
+  function toFiniteOrNull(value) {
+    if (value === null || value === undefined || value === '') return null;
+    var n = Number(value);
+    return isFinite(n) ? n : null;
+  }
+
+  function toNonNegNumber(value) {
+    var n = Number(value);
+    return isFinite(n) && n >= 0 ? n : 0;
+  }
+
+  function formatExportedAtJst(dateObj) {
+    var d = dateObj || new Date();
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, '0');
+    var day = String(d.getDate()).padStart(2, '0');
+    var h = String(d.getHours()).padStart(2, '0');
+    var min = String(d.getMinutes()).padStart(2, '0');
+    var s = String(d.getSeconds()).padStart(2, '0');
+    return y + '-' + m + '-' + day + 'T' + h + ':' + min + ':' + s + '+09:00';
+  }
+
+  function buildRecordId(dateStr, campaignKey, adType) {
+    return String(dateStr || '') + '__' + String(campaignKey || '') + '__' + normalizeAdTypeKey(adType);
+  }
+
+  function logToBudilCommonJson(log, exportedAt) {
+    var campaignKey = deriveCampaignKey(log);
+    var adType = 'Google検索広告';
+    var ctr = log.computed && toFiniteOrNull(log.computed.ctr);
+    var avgCpc = toFiniteOrNull(log.avgCpc);
+    return {
+      schemaVersion: BUDIL_SCHEMA_VERSION,
+      source: 'ad-bantou',
+      recordType: BUDIL_RECORD_TYPE,
+      recordId: buildRecordId(log.date, campaignKey, adType),
+      date: String(log.date || '').trim(),
+      account: 'BCサービス',
+      campaignKey: campaignKey,
+      campaignName: String(log.campaignName || '').trim(),
+      lpType: String(log.lpType || '').trim(),
+      adType: adType,
+      cost: toNonNegNumber(log.cost),
+      impressions: toNonNegNumber(log.impressions),
+      clicks: toNonNegNumber(log.clicks),
+      averageCpc: avgCpc,
+      ctr: ctr,
+      cta: toNonNegNumber(log.ctaClicks),
+      inquiries: toNonNegNumber(log.inquiries),
+      contracts: toNonNegNumber(log.conversions),
+      sales: toNonNegNumber(log.revenue),
+      memo: log.memo == null ? '' : String(log.memo),
+      exportedAt: exportedAt || formatExportedAtJst()
+    };
+  }
+
+  function validateBudilCommonRecord(rec, labelPrefix) {
+    var prefix = labelPrefix ? labelPrefix + ': ' : '';
+    if (!rec || typeof rec !== 'object' || Array.isArray(rec)) {
+      return { ok: false, error: prefix + '共通JSONの形式が正しくありません。' };
+    }
+    var required = [
+      'schemaVersion', 'source', 'recordType', 'recordId', 'date',
+      'campaignKey', 'campaignName', 'cost', 'impressions', 'clicks', 'exportedAt'
+    ];
+    for (var i = 0; i < required.length; i++) {
+      var key = required[i];
+      if (rec[key] === undefined || rec[key] === null || rec[key] === '') {
+        if (key === 'cost' || key === 'impressions' || key === 'clicks') {
+          if (rec[key] === 0) continue;
+        }
+        return { ok: false, error: prefix + '必須項目「' + key + '」が不足しています。' };
+      }
+    }
+    if (Number(rec.schemaVersion) !== BUDIL_SCHEMA_VERSION) {
+      return { ok: false, error: prefix + 'schemaVersion が未対応です（期待値: ' + BUDIL_SCHEMA_VERSION + '）。' };
+    }
+    if (String(rec.recordType) !== BUDIL_RECORD_TYPE) {
+      return { ok: false, error: prefix + 'recordType が daily-ad-performance ではありません。' };
+    }
+    return { ok: true, record: rec };
+  }
+
+  function extractBudilCommonRecords(data) {
+    if (Array.isArray(data)) {
+      return data;
+    }
+    if (!data || typeof data !== 'object') return null;
+    if (data.recordType === BUDIL_RECORD_TYPE && data.recordId) {
+      return [data];
+    }
+    if (Array.isArray(data.records)) {
+      return data.records;
+    }
+    return null;
+  }
+
+  function parseBudilCommonJson(raw) {
+    var data;
+    try {
+      data = JSON.parse(raw);
+    } catch (e) {
+      return { ok: false, error: 'JSONの形式が正しくありません。' };
+    }
+    var list = extractBudilCommonRecords(data);
+    if (!list || !list.length) {
+      return { ok: false, error: 'Budil共通JSON（daily-ad-performance）が見つかりません。' };
+    }
+    var records = [];
+    for (var i = 0; i < list.length; i++) {
+      var validated = validateBudilCommonRecord(list[i], 'records[' + i + ']');
+      if (!validated.ok) return validated;
+      records.push(validated.record);
+    }
+    return { ok: true, records: records };
+  }
+
+  function budilCommonToAdInput(rec) {
+    return {
+      date: String(rec.date || '').trim(),
+      lpType: String(rec.lpType || '').trim() || 'その他',
+      campaignName: String(rec.campaignName || '').trim(),
+      cost: toNonNegNumber(rec.cost),
+      impressions: toNonNegNumber(rec.impressions),
+      clicks: toNonNegNumber(rec.clicks),
+      avgCpc: toNonNegNumber(rec.averageCpc),
+      ctaClicks: toNonNegNumber(rec.cta),
+      inquiries: toNonNegNumber(rec.inquiries),
+      conversions: toNonNegNumber(rec.contracts),
+      revenue: toNonNegNumber(rec.sales),
+      memo: rec.memo == null ? '' : String(rec.memo)
+    };
+  }
+
+  function getLogsForBudilExport() {
+    var logs = loadLogs().slice().sort(function (a, b) {
+      return String(b.date || '').localeCompare(String(a.date || '')) ||
+        String(b.id || '').localeCompare(String(a.id || ''));
+    });
+    if (!logs.length) return [];
+    var latestDate = logs[0].date;
+    return logs.filter(function (l) { return l.date === latestDate; });
+  }
+
+  function buildBudilExportPayload(logs) {
+    var exportedAt = formatExportedAtJst();
+    var records = logs.map(function (log) {
+      return logToBudilCommonJson(log, exportedAt);
+    });
+    if (records.length === 1) return records[0];
+    return {
+      schemaVersion: BUDIL_SCHEMA_VERSION,
+      source: 'ad-bantou',
+      recordType: 'daily-ad-performance-bundle',
+      exportedAt: exportedAt,
+      records: records
+    };
+  }
+
+  function validateBudilExportPayload(payload) {
+    var records = extractBudilCommonRecords(payload);
+    if (!records || !records.length) {
+      return { ok: false, error: '書き出す広告ログがありません。' };
+    }
+    for (var i = 0; i < records.length; i++) {
+      var validated = validateBudilCommonRecord(records[i], 'records[' + i + ']');
+      if (!validated.ok) return validated;
+    }
+    return { ok: true, records: records, payload: payload };
+  }
+
+  function downloadJsonFile(filename, obj) {
+    var blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function renderBudilImportPreview(records) {
+    if (!budilBridgePreview || !budilBridgePreviewCards) return;
+    budilBridgePreview.hidden = false;
+    budilBridgePreviewCards.innerHTML = records.map(function (rec, idx) {
+      var input = budilCommonToAdInput(rec);
+      return buildBatchCardHtml({
+        campaignName: input.campaignName,
+        input: input
+      }, idx, { showApplyButton: false });
+    }).join('');
+  }
+
+  function copyBudilPayloadToClipboard() {
+    var logs = getLogsForBudilExport();
+    if (!logs.length) {
+      showBudilBridgeMessage('error', 'コピーする日次ログがありません。先に広告チェック結果を保存してください。');
+      return;
+    }
+    var payload = buildBudilExportPayload(logs);
+    var validated = validateBudilExportPayload(payload);
+    if (!validated.ok) {
+      showBudilBridgeMessage('error', validated.error);
+      return;
+    }
+    var text = JSON.stringify(payload, null, 2);
+    if (!(navigator.clipboard && navigator.clipboard.writeText)) {
+      showBudilBridgeMessage('error', 'このブラウザではクリップボードへコピーできません。JSON書き出しを使ってください。');
+      return;
+    }
+    navigator.clipboard.writeText(text).then(function () {
+      showBudilBridgeMessage('success', 'Budil用データをコピーしました（' + validated.records.length + '件 / 日付 ' + logs[0].date + '）。');
+    }).catch(function () {
+      showBudilBridgeMessage('error', 'クリップボードへのコピーに失敗しました。ブラウザの権限を確認するか、JSON書き出しを使ってください。');
+    });
+  }
+
+  function exportBudilJsonFile() {
+    var logs = getLogsForBudilExport();
+    if (!logs.length) {
+      showBudilBridgeMessage('error', '書き出す日次ログがありません。先に広告チェック結果を保存してください。');
+      return;
+    }
+    var payload = buildBudilExportPayload(logs);
+    var validated = validateBudilExportPayload(payload);
+    if (!validated.ok) {
+      showBudilBridgeMessage('error', validated.error);
+      return;
+    }
+    var dateStr = logs[0].date;
+    var filename;
+    if (validated.records.length === 1) {
+      filename = 'ad-bantou_' + dateStr + '_' + validated.records[0].campaignKey + '.json';
+    } else {
+      filename = 'ad-bantou_' + dateStr + '_bundle.json';
+    }
+    downloadJsonFile(filename, payload);
+    showBudilBridgeMessage('success', 'JSONを書き出しました（' + filename + '）。');
+  }
+
+  function handleBudilCommonImportRaw(raw, sourceLabel) {
+    var parsed = parseBudilCommonJson(raw);
+    if (!parsed.ok) {
+      clearBudilBridgePreview();
+      showBudilBridgeMessage('error', parsed.error);
+      return;
+    }
+    budilImportCache = parsed.records.map(function (rec, idx) {
+      return {
+        index: idx,
+        campaignName: rec.campaignName,
+        input: budilCommonToAdInput(rec),
+        recordId: rec.recordId
+      };
+    });
+    renderBudilImportPreview(parsed.records);
+    showBudilBridgeMessage('success',
+      (sourceLabel || 'ファイル') + 'から読み込みました（' + parsed.records.length + '件）。内容を確認し「確定して保存」を押してください。');
+  }
+
+  if (budilCopyBtn) {
+    budilCopyBtn.addEventListener('click', copyBudilPayloadToClipboard);
+  }
+  if (budilExportBtn) {
+    budilExportBtn.addEventListener('click', exportBudilJsonFile);
+  }
+  if (budilImportBtn && budilImportFile) {
+    budilImportBtn.addEventListener('click', function () {
+      budilImportFile.value = '';
+      budilImportFile.click();
+    });
+    budilImportFile.addEventListener('change', function () {
+      var file = budilImportFile.files && budilImportFile.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        handleBudilCommonImportRaw(String(reader.result || ''), 'JSONファイル');
+      };
+      reader.onerror = function () {
+        showBudilBridgeMessage('error', 'ファイルの読み込みに失敗しました。');
+      };
+      reader.readAsText(file, 'UTF-8');
+    });
+  }
+  if (budilConfirmSaveBtn) {
+    budilConfirmSaveBtn.addEventListener('click', function () {
+      if (!budilImportCache || !budilImportCache.length) {
+        showBudilBridgeMessage('error', '保存するプレビューがありません。');
+        return;
+      }
+      var duplicates = findDuplicatesForBatch(budilImportCache, loadLogs());
+      var mode = 'normal';
+      if (duplicates.length) {
+        var choice = window.confirm(
+          '同じ日付・キャンペーンの広告データが既にあります（' + duplicates.length + '件）。\nOKで既存データを更新 / キャンセルで中止'
+        );
+        if (!choice) {
+          showBudilBridgeMessage('warning', '保存をキャンセルしました。');
+          return;
+        }
+        mode = 'overwrite';
+      }
+      var result = saveBatchItems(budilImportCache, mode);
+      clearBudilBridgePreview();
+      showBudilBridgeMessage('success',
+        '広告番頭ログへ保存しました（保存 ' + result.saved.length + '件' +
+        (result.skipped.length ? ' / スキップ ' + result.skipped.length + '件' : '') + '）。');
+    });
+  }
+  if (budilCancelPreviewBtn) {
+    budilCancelPreviewBtn.addEventListener('click', function () {
+      clearBudilBridgePreview();
+      showBudilBridgeMessage('warning', 'プレビューをクリアしました。');
+    });
+  }
 
   /* ===== 初期化 ===== */
 
