@@ -219,6 +219,7 @@
       page_slug: '/cursor-test/'
     });
   </script>
+  <link rel="preload" as="image" type="image/webp" href="assets/hero-fv-home-768.webp" imagesrcset="assets/hero-fv-home-768.webp 768w, assets/hero-fv-home-1440.webp 1440w" imagesizes="100vw" fetchpriority="high">
   <link rel="stylesheet" href="style.css">
   <style>
     main{
@@ -550,7 +551,7 @@
   <header class="header">
     <div class="header-inner">
       <a href="#top" class="logo">
-        <img src="images/logo-bc.png" alt="ＢＣサービス" class="logo-img">
+        <img src="assets/logo-bc-home-128.webp" alt="ＢＣサービス" class="logo-img" width="128" height="128" decoding="async">
       </a>
       <nav class="header-nav">
         <a href="south.html">南部</a>
@@ -574,7 +575,18 @@
     -->
     <!-- ファーストビュー：<img> で背景画像を表示（差し替え時は src を変更） -->
     <section class="hero">
-      <img src="images/hero-fv.jpg" alt="エアコンクリーニング作業中" class="hero-bg" width="1400" height="900">
+      <img
+        src="assets/hero-fv-home-1440.webp"
+        srcset="assets/hero-fv-home-768.webp 768w, assets/hero-fv-home-1440.webp 1440w"
+        sizes="100vw"
+        alt="エアコンクリーニング作業中"
+        class="hero-bg"
+        width="1440"
+        height="1080"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      >
       <div class="hero-overlay"></div>
       <div class="hero-inner">
         <h1 class="hero-title"><span>沖縄南部の子育て家庭向け</span><span>エアコンクリーニング</span></h1>
@@ -969,6 +981,10 @@
       <img
         src="images/aircon-before.jpg"
         alt="クリーニング前のエアコン内部｜熱交換器の汚れ｜BCサービス"
+        width="2000"
+        height="1125"
+        loading="lazy"
+        decoding="async"
         style="max-width: 100%; width: 480px; border-radius: 8px;"
       >
       <p style="color: #888; font-size: 0.85em; margin-top: 0.8em;">
@@ -983,8 +999,12 @@
         見た目は清潔でも、内部にはこれだけの汚れが溜まっています。
       </p>
       <img
-        src="images/osui1.jpg"
+        src="assets/osui1-home-720.webp"
         alt="エアコンクリーニング後の汚水｜BCサービス"
+        width="720"
+        height="540"
+        loading="lazy"
+        decoding="async"
         style="max-width: 100%; width: 360px; border-radius: 8px;"
       >
       <p style="color: #888; font-size: 0.85em; margin-top: 0.8em;">
@@ -998,6 +1018,10 @@
       <img
         src="images/teruya-profile.png"
         alt="BCサービス代表 照屋昴"
+        width="600"
+        height="600"
+        loading="lazy"
+        decoding="async"
         style="width: 140px; height: 140px; border-radius: 50%; object-fit: cover; margin-bottom: 1em;"
       >
 
@@ -1430,7 +1454,7 @@
   <footer class="footer">
     <div class="footer-inner">
       <a href="#top" class="footer-logo">
-        <img src="images/logo-bc.png" alt="ＢＣサービス" class="footer-logo-img">
+        <img src="assets/logo-bc-home-128.webp" alt="ＢＣサービス" class="footer-logo-img" width="128" height="128" loading="lazy" decoding="async">
       </a>
       <div class="footer-nav">
         <a href="south.html">南部まとめ</a>
