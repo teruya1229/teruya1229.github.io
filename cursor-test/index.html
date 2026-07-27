@@ -227,7 +227,6 @@
       flex-direction:column;
     }
     .hero{order:1;}
-    #mid-cta{order:2;}
     .consultation-flow{order:3;}
     #pricing{order:4;}
     #proof-before{order:5;}
@@ -255,7 +254,6 @@
     .cta-visual{order:27;}
     #contact{order:28;}
     .company{order:29;}
-    #bottom-cta{order:30;}
     #footer-area-link{order:31;}
     .hero-intro{
       font-size:0.9rem;
@@ -417,16 +415,6 @@
         gap:10px;
       }
     }
-    #mid-cta.section{
-      padding-top:36px;
-      padding-bottom:36px;
-    }
-    @media(min-width:768px){
-      #mid-cta.section{
-        padding-top:44px;
-        padding-bottom:44px;
-      }
-    }
     /* SEO説明文の本文幅 */
     .ai-summary-section .container > p{
       max-width:720px;
@@ -502,13 +490,60 @@
     .instagram-embed-wrap{
       display:flex;
       justify-content:center;
-      margin-top:20px;
+      margin:20px auto 0;
       overflow:hidden;
-      max-width:100%;
+      max-width:420px;
+      width:100%;
     }
     .instagram-embed-wrap .instagram-media{
       margin-left:auto !important;
       margin-right:auto !important;
+      max-width:100% !important;
+    }
+    @media (min-width:768px) and (max-width:979px){
+      #pricing .plan-compare{
+        grid-template-columns:1fr;
+      }
+      #pricing .ac-plans{
+        flex-direction:column;
+      }
+    }
+    @media (min-width:768px){
+      .profile .profile-img{
+        width:280px;
+        height:280px;
+      }
+    }
+    @media (max-width:767px){
+      .header-nav{
+        flex-wrap:nowrap;
+        white-space:nowrap;
+        overflow-x:auto;
+        -webkit-overflow-scrolling:touch;
+        min-width:0;
+        flex:1 1 auto;
+        scrollbar-width:none;
+      }
+      .header-nav::-webkit-scrollbar{
+        display:none;
+      }
+      .header-nav a{
+        flex:0 0 auto;
+      }
+    }
+    .plan-pricing-details,
+    .other-pricing-details{
+      margin-top:12px;
+      text-align:left;
+    }
+    .plan-pricing-details > summary,
+    .other-pricing-details > summary{
+      cursor:pointer;
+      font-weight:700;
+      font-size:0.9375rem;
+      color:var(--brand,#1c3d5a);
+      padding:10px 4px;
+      line-height:1.5;
     }
     .consultation-flow .flow-lead{
       text-align:center;
@@ -814,18 +849,6 @@
       </div>
     </section>
 
-    <!-- 中間CTA（ヒーロー直後：二重FV解消） -->
-    <section class="section section-light" id="mid-cta">
-      <div class="container" style="max-width:680px;text-align:center;">
-        <h2 class="section-title">写真を送ってもらえれば、料金目安をお伝えします</h2>
-        <p style="font-size:0.92rem;line-height:1.75;color:#4b5563;margin:0 0 4px;">エアコンの型番や設置状況の写真をLINEで送ってもらえれば、作業内容と空き状況を確認して返信します。</p>
-        <div class="line-cta-wrap">
-          <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="mid">LINEで相談する</a>
-          <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="mid" aria-label="Airリザーブで空き状況を見て仮予約する">空き状況を見る</a>
-        </div>
-      </div>
-    </section>
-
     <!-- 相談の流れ3ステップ -->
     <section class="section consultation-flow section-light">
       <div class="container">
@@ -1020,6 +1043,8 @@
             <p class="plan-card-desc">送風ファンまで取り外して内部パーツを完全分解。<br>汚れの原因まで除去するため、2〜3年安心して使いたい方におすすめです。</p>
             <p class="plan-card-desc">最近は、カビの再発防止のため完全分解を選ばれるご家庭が増えています。</p>
             <div class="plan-detail-stack" aria-label="完全分解プラン詳細">
+              <details class="plan-pricing-details">
+                <summary>完全分解の施工内容・料金詳細を見る</summary>
               <section class="plan-detail-card plan-detail-card--primary">
                 <h4 class="plan-detail-title">【南部エリア】</h4>
                 <p class="plan-detail-price">税込 14,000円</p>
@@ -1044,6 +1069,7 @@
               <p class="plan-detail-note">完全分解クリーニングは、内部パーツまで取り外して洗浄するため、汚れの原因までしっかり除去できます。</p>
               <p class="plan-detail-note">⚠️ 完全分解は1日対応できる台数が限られます</p>
               <p class="plan-detail-note">※機種・設置状況により対応できない場合があります。</p>
+              </details>
             </div>
             <p class="premium-detail-subcta"><a href="https://teruya1229.github.io/complete-disassembly/?from=home_lp_kansetubunkai" target="_blank" rel="noopener noreferrer">沖縄南部で、通常分解では届きにくい内部汚れが気になる方は、完全分解クリーニングの詳しい説明もご覧ください</a></p>
             <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta plan-card-btn" data-cta="line" data-cta-location="price-premium">完全分解について相談・予約する</a>
@@ -1057,6 +1083,8 @@
             <p class="plan-card-desc">目安：1年間安心して使えるクリーニング</p>
             <p class="plan-card-desc">内部までしっかり洗浄する標準クリーニングです。<br>カビや汚れを除去し、1年間安心して使える状態に整えます。</p>
             <div class="plan-detail-stack" aria-label="通常分解プラン詳細">
+              <details class="plan-pricing-details">
+                <summary>通常分解の施工内容・料金詳細を見る</summary>
               <section class="plan-detail-card plan-detail-card--primary">
                 <h4 class="plan-detail-title">【南部エリア】</h4>
                 <p class="plan-detail-price">税込 8,000円</p>
@@ -1078,6 +1106,7 @@
                 </ul>
               </section>
               <p class="plan-choice-note">通常分解は、予約時にご希望の施工内容をお知らせください。</p>
+              </details>
             </div>
             <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta plan-card-btn plan-card-btn--sub" data-cta="line" data-cta-location="price-standard">エアコンクリーニングを相談する</a>
             <p class="plan-card-sub-note">ご相談だけでも大丈夫です。<br>返信は原則24時間以内に行います。</p>
@@ -1169,6 +1198,8 @@
         <!-- その他クリーニング料金 -->
         <div class="pricing-block">
           <h3 class="pricing-block-title">その他クリーニング料金（目安）</h3>
+          <details class="other-pricing-details">
+            <summary>その他クリーニング料金を見る</summary>
           <p class="pricing-block-lead">※ 汚れの程度・作業内容により金額が前後する場合があります。<br>※ 事前に写真を確認し、正確なお見積りをご案内します。</p>
           <table class="price-table">
             <thead>
@@ -1187,6 +1218,7 @@
             <p>トイレクリーニングは、<br>浴室・洗面所・換気扇などとの<br>「水回りセット」でのご依頼がお得です。</p>
             <p class="set-menu-sub">※ 単品での対応は行っておりません。<br>※ ご希望内容に合わせて最適な組み合わせをご提案します。</p>
           </div>
+          </details>
         </div>
       </div>
     </section>
@@ -1224,7 +1256,7 @@
         height="960"
         loading="lazy"
         decoding="async"
-        style="max-width: 100%; width: 360px; height: auto; border-radius: 8px;"
+        style="max-width: 100%; width: 300px; height: auto; border-radius: 8px;"
       >
       <p style="color: #888; font-size: 0.85em; margin-top: 0.8em;">
         ※ お子様のいるご家庭ほど、定期的なクリーニングをおすすめします。
@@ -1642,15 +1674,6 @@
         </div>
       </div>
     </section>
-
-    <!-- LINE CTA: フッター直前 -->
-    <div id="bottom-cta" class="line-cta-wrap">
-      <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="bottom">南部8,000円で予約する</a>
-      <p class="cta-note">🎁 LINE友だち限定特典あり（エアコンご依頼の方）</p>
-      <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="bottom" aria-label="Airリザーブで空き状況を見て仮予約する">空き状況を見て仮予約する</a>
-      <a href="tel:05017241338" class="phone-subcta">電話で相談する</a>
-      <p class="air-reserve-note">※仮予約受付です。内容確認後に正式確定となります。写真確認が必要な場合はLINEに写真を送ってください。</p>
-    </div>
 
     <!-- 南部エリアテキストリンク（フッター付近） -->
     <div id="footer-area-link" style="text-align:center;padding:12px 16px 24px;">
