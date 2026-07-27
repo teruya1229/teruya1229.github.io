@@ -48,7 +48,7 @@
   <h1>引き継ぎシート（運用ルール）</h1>
   <p class="sub">このページはチャット引き継ぎ専用。正本はリポジトリ内 handoff.md。</p>
   <pre>
-更新日：2026-06-15
+更新日：2026-07-27
 
 【読む順】
 
@@ -64,8 +64,27 @@ https://teruya1229.github.io/ops/handoff/
 
 【フェーズ】
 
+家庭向けトップ第2弾・確定6項目 完了（2026-07-27 / 77d9b03）
 制作中心 → 運用・計測・回収フェーズへ移行済み（2026-06-11）
 南部7市町村LP刷新・公開確認完了
+
+【家庭向けトップ第2弾】
+
+対象：cursor-test/index.html
+実装commit：77d9b0396b86a0b56f19e285ef0da0fffb2c7cc4
+公開URL：https://teruya1229.github.io/cursor-test/?v=77d9b03
+Deploy to GitHub Pages：completed / success
+run：https://github.com/teruya1229/teruya1229.github.io/actions/runs/30266303836
+
+内容：
+・id="mid-cta"削除
+・料金詳細3か所を初期閉じのdetails / summary化
+・768px〜979pxの料金カードを1列化
+・Instagram・汚水写真・後半代表者写真を縮小
+・id="bottom-cta"削除、id="contact"へ統合
+・767px以下のヘッダーナビを1行・横スクロール化
+
+結論：実装・公開・最終確認まで完了。再実装不要
 
 【広告番頭】
 
@@ -91,18 +110,19 @@ localStorageキー：
 ・bcAdBantouCampaignSetupChecks
 ・bcAdBantouLastSaveMeta
 
-実装コミット（最新）：
+実装コミット（広告番頭）：
 c861b45
 
 【次にやるべき1手】
 
-ユーザー本人のChromeで広告番頭の実データ表示を確認する。
-その後、毎日21時の日次入力で問い合わせ・成約・CPA・ROASを確認する。
+家庭向けLPの追加修正は行わず、GA4・Search Console・問い合わせ実績を計測する。
+新しい実データまたは明確な不具合が出た場合だけ最小修正する。
 
 【固定URL】
 
 LINE：https://lin.ee/tsilra6
 Airリザーブ：https://airrsv.net/bc-servicesokinawa/calendar
+家庭向けトップ：https://teruya1229.github.io/cursor-test/?v=77d9b03
 広告番頭：https://teruya1229.github.io/ops/ad-bantou/
 完全分解LP：https://teruya1229.github.io/complete-disassembly/
 完全分解LP debug：https://teruya1229.github.io/complete-disassembly/?debug=1
@@ -119,9 +139,8 @@ AI帳票番頭LP：https://teruya1229.github.io/ai-chouhyou-bantou/
 使い方（新チャット1発目）
 
 前提は status.md → handoff.md → rules.md の順で読んで進んでください。
-広告番頭 Phase 1 ダッシュボード改善は 2026-06-15 に公開完了（c861b45）。
-次の優先：本人Chromeで実データ確認 / 毎日21時の広告番頭入力 / GA4地域LP別CTA反応。
-Phase 2（ミニチャート等）はまだ着手しない。
+家庭向けトップ第2弾は 2026-07-27 に実装・公開・最終確認完了（77d9b03）。再実装不要。
+次の優先：家庭向けLP追加修正は行わず、GA4・Search Console・問い合わせ実績を計測する。
   </pre>
 </body>
 </html>

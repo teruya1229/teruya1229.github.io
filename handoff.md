@@ -1,4 +1,4 @@
-更新日: 2026-06-15
+更新日: 2026-07-27
 
 ## 前提（読む順）
 
@@ -8,6 +8,14 @@
 4. 公開版参照（任意）：`https://teruya1229.github.io/ops/status/` / `https://teruya1229.github.io/ops/handoff/`
 
 ## フェーズ
+
+**家庭向けトップ第2弾・確定6項目 完了（2026-07-27）**
+
+- 対象：`cursor-test/index.html`
+- 実装commit：`77d9b0396b86a0b56f19e285ef0da0fffb2c7cc4`（`fix: refine household LP layout balance`）
+- 内容：`mid-cta`削除／料金詳細3か所details化／768–979px料金1列／画像3点縮小／`bottom-cta`削除し`contact`統合／767px以下ナビ横スクロール
+- GitHub Pages：Deploy success（run 30266303836）／公開確認 `?v=77d9b03`（390/768/1280/1440）OK
+- **結論：実装・公開・最終確認まで完了。再実装不要。家庭向けLPの追加修正は行わず運用・計測へ戻る**
 
 **制作中心 → 運用・計測・回収フェーズへ移行（2026-06-11）**
 
@@ -61,7 +69,7 @@
 
 | ページ | パス | 状態 |
 |--------|------|------|
-| 家庭LP（南部） | `cursor-test/index.html` | FAQ9 + JSON-LD、AIまとめ、Instagram事例、cases導線、構造化データ済み。LINE優先・電話一時停止は維持。**中部LPへの内部リンク2箇所・浦添LPへの内部リンク1箇所追加済み** |
+| 家庭LP（南部） | `cursor-test/index.html` | **第2弾完了（2026-07-27 / `77d9b03`）**：mid-cta・bottom-cta削除、料金details3・768–979px1列、画像縮小、767pxナビ横スクロール。公開確認OK・再実装不要。FAQ9 + JSON-LD、AIまとめ、Instagram事例、cases導線、構造化データ、LINE優先維持。**中部LP内部リンク2・浦添LP内部リンク1** |
 | **中部家庭LP** | `cursor-test/central.html` | **2026-06-09 新規作成・公開確認済み**。スマホ固定CTA / build表示 / 南城市表現 / ナビ / 料金表調整済み。FAQ9 + JSON-LD、構造化データ、GA4 `central_lp` 計測済み。ルート sitemap 登録済み。**浦添LPへの内部リンク1箇所追加済み** |
 | **南城市LP** | `cursor-test/nanjo.html` | **2026-06-10 既存刷新・公開確認OK**（`dbc94e3`、ゴール達成型）。本拠地大里・南部応援価格8,000円/完全分解14,000円。FAQ8 + JSON-LD一致、構造化データ、GA4 `nanjo_lp` 計測済み。sitemap `lastmod` 更新のみ |
 | **豊見城市LP** | `cursor-test/tomigusuku.html` | **2026-06-10 既存刷新・公開確認OK**（`8322aba`、ゴール達成型）。軽微修正 `b73db60`。南部応援価格8,000円/完全分解14,000円/お掃除機能付き15,000円。FAQ8 + JSON-LD一致、構造化データ、GA4 `tomigusuku_lp` 計測済み。sitemap `lastmod` 更新のみ。index/south/他LP/ブログから内部リンク済み |
@@ -282,7 +290,7 @@
 
 ## 次にやるべき1手
 
-- **ユーザー本人のChromeで広告番頭の実データ表示を確認する**（KPI・異常バナー・ログ一覧）。その後、毎日21時の日次入力で問い合わせ・成約・CPA・ROASを確認する
+家庭向けLPの追加修正は行わず、GA4・Search Console・問い合わせ実績を計測する。新しい実データまたは明確な不具合が出た場合だけ最小修正する。
 
 ## 判断基準
 

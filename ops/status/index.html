@@ -62,13 +62,47 @@
 
 ---
 
-更新日：2026-06-15
+更新日：2026-07-27
 
 【現在フェーズ】
 
 運用・計測・回収フェーズ
+家庭向けトップ第2弾・確定6項目 完了（2026-07-27）
 南部7市町村LP刷新完了（2026-06-11）
-LP追加量産は急がず、広告運用・GA4・問い合わせ実績を優先
+家庭向けLPの追加修正は行わず、GA4・Search Console・問い合わせ実績を計測する
+
+【家庭向けトップ第2弾（2026-07-27 完了）】
+
+対象：cursor-test/index.html
+実装commit：77d9b0396b86a0b56f19e285ef0da0fffb2c7cc4
+message：fix: refine household LP layout balance
+公開URL：https://teruya1229.github.io/cursor-test/?v=77d9b03
+GitHub Actions Deploy to GitHub Pages：completed / success
+run：https://github.com/teruya1229/teruya1229.github.io/actions/runs/30266303836
+
+実装内容：
+1. id="mid-cta"削除
+2. 料金詳細3か所を初期閉じのdetails / summary化
+3. 768px〜979pxの料金カードを1列化
+4. Instagram・汚水写真・後半代表者写真を縮小
+5. id="bottom-cta"削除、id="contact"へ統合
+6. 767px以下のヘッダーナビを1行・横スクロール化
+
+公開最終確認（390 / 768 / 1280 / 1440px）：
+・details3か所：初期閉じ・開閉・フォーカス表示 正常
+・料金カード：390・768は1列／1280・1440は2列
+・Instagram：最大約420px・中央
+・汚水写真：300px
+・後半代表者写真：390pxで220px、768px以上で280px
+・#proof-profile：140px丸型維持
+・390pxヘッダーナビ：7リンク・横スクロール正常
+・ページ全体横スクロールなし
+・#contact・footer-area-link・固定LINEバー正常
+・LINE・電話・Airリザーブ・GA4計測維持
+・コンソールエラーなし
+・公開最終確認時のコード変更・commit・pushなし
+
+結論：実装・公開・最終確認まで完了。再実装不要
 
 【広告番頭（ops/ad-bantou/）】
 
@@ -108,15 +142,17 @@ c861b45
 
 【次の優先】
 
-1. ユーザー本人のChromeで広告番頭の実データ表示を確認（KPI・バナー・ログ）
-2. 毎日21時の広告番頭日次入力
-3. GA4で地域LP別CTA反応を蓄積
-4. 問い合わせ・成約・CPA・ROASの確認
+1. 家庭向けLPの追加修正は行わない
+2. GA4・Search Console・問い合わせ実績を計測する
+3. 新しい実データまたは明確な不具合が出た場合だけ最小修正する
+4. 毎日21時の広告番頭日次入力
+5. 問い合わせ・成約・CPA・ROASの確認
 
 【固定URL】
 
 LINE：https://lin.ee/tsilra6
 Airリザーブ：https://airrsv.net/bc-servicesokinawa/calendar
+家庭向けトップ：https://teruya1229.github.io/cursor-test/?v=77d9b03
 広告番頭：https://teruya1229.github.io/ops/ad-bantou/
 完全分解LP：https://teruya1229.github.io/complete-disassembly/
 AI帳票番頭LP：https://teruya1229.github.io/ai-chouhyou-bantou/

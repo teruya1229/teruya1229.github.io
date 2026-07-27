@@ -1,6 +1,51 @@
-更新日: 2026-06-15
+更新日: 2026-07-27
+
+## 次にやるべき1手
+
+家庭向けLPの追加修正は行わず、GA4・Search Console・問い合わせ実績を計測する。新しい実データまたは明確な不具合が出た場合だけ最小修正する。
 
 ## 本日やったこと
+
+### 2026-07-27（家庭向けトップ第2弾・確定6項目 実装・公開・最終確認完了）
+
+家庭向けトップ `cursor-test/index.html` の最終調整（第2弾・確定6項目）を実装し、GitHub Pagesへ公開。公開最終確認まで完了。**再実装不要。**
+
+**【公開完了】**
+
+- 日時：2026年7月27日
+- 対象：`cursor-test/index.html`
+- 実装commit：`77d9b0396b86a0b56f19e285ef0da0fffb2c7cc4`（`fix: refine household LP layout balance`）
+- 公開確認URL：`https://teruya1229.github.io/cursor-test/?v=77d9b03`
+- GitHub Actions「Deploy to GitHub Pages」：completed / success
+- run：https://github.com/teruya1229/teruya1229.github.io/actions/runs/30266303836
+
+**【実装内容（確定6項目）】**
+
+1. `id="mid-cta"` 削除
+2. 料金詳細3か所を初期閉じの details / summary 化
+3. 768px〜979pxの料金カードを1列化
+4. Instagram・汚水写真・後半代表者写真を縮小
+5. `id="bottom-cta"` 削除、`id="contact"` へ統合
+6. 767px以下のヘッダーナビを1行・横スクロール化
+
+**【公開最終確認（390 / 768 / 1280 / 1440px）】**
+
+- details3か所：初期閉じ・開閉・フォーカス表示 正常
+- 料金カード：390px・768pxは1列／1280px・1440pxは2列
+- Instagram：最大約420px・中央
+- 汚水写真：300px
+- 後半代表者写真：390pxで220px、768px以上で280px
+- `#proof-profile`：140px丸型を維持
+- 390pxヘッダーナビ：7リンク維持、横スクロール正常
+- ページ全体の横スクロール：なし
+- `#contact`・`footer-area-link`・固定LINEバー：正常
+- LINE・電話・Airリザーブ・GA4計測：維持
+- コンソールエラー：なし
+- 公開最終確認時のコード変更・commit・push：なし
+
+**【結論】**
+
+家庭向けトップ第2弾は実装・公開・最終確認まで完了。再実装不要。次は運用・計測へ戻る。
 
 ### 2026-06-15（広告番頭 Phase 1 運用ダッシュボード改善 公開完了）
 
