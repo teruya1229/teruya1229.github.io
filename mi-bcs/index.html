@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>沖縄の家電販売・エアコン販売・設置工事手配｜合同会社MI.BCS</title>
-  <meta name="description" content="沖縄南部でエアコン、冷蔵庫、テレビなどの家電販売を行い、配送・設置工事・電気工事の手配、撤去・リサイクル、修理手配までご相談いただけます。合同会社MI.BCSが販売窓口です。">
+  <title>沖縄南部のエアコン販売・交換・照明LED化｜合同会社MI.BCS</title>
+  <meta name="description" content="沖縄南部でエアコン販売・交換、照明器具販売・LED化をご相談いただけます。商品選びから取付・撤去・処分まで、LINE写真見積りで窓口を分けずにご案内します。">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://teruya1229.github.io/mi-bcs/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="沖縄の家電販売・エアコン販売・設置工事手配｜合同会社MI.BCS">
-  <meta property="og:description" content="沖縄南部でエアコン、冷蔵庫、テレビなどの家電販売を行い、配送・設置工事・電気工事の手配、撤去・リサイクル、修理手配までご相談いただけます。合同会社MI.BCSが販売窓口です。">
+  <meta property="og:title" content="沖縄南部のエアコン販売・交換・照明LED化｜合同会社MI.BCS">
+  <meta property="og:description" content="沖縄南部でエアコン販売・交換、照明器具販売・LED化をご相談いただけます。商品選びから取付・撤去・処分まで、LINE写真見積りで窓口を分けずにご案内します。">
   <meta property="og:url" content="https://teruya1229.github.io/mi-bcs/">
   <meta property="og:image" content="https://teruya1229.github.io/cursor-test/images/aircon-installation.jpg">
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="沖縄の家電販売・エアコン販売・設置工事手配｜合同会社MI.BCS">
-  <meta name="twitter:description" content="沖縄南部でエアコン、冷蔵庫、テレビなどの家電販売を行い、配送・設置工事・電気工事の手配、撤去・リサイクル、修理手配までご相談いただけます。合同会社MI.BCSが販売窓口です。">
+  <meta name="twitter:title" content="沖縄南部のエアコン販売・交換・照明LED化｜合同会社MI.BCS">
+  <meta name="twitter:description" content="沖縄南部でエアコン販売・交換、照明器具販売・LED化をご相談いただけます。商品選びから取付・撤去・処分まで、LINE写真見積りで窓口を分けずにご案内します。">
   <meta name="twitter:image" content="https://teruya1229.github.io/cursor-test/images/aircon-installation.jpg">
   <script type="application/ld+json">
   {
@@ -45,7 +45,7 @@
       "南風原町",
       "与那原町"
     ],
-    "description": "沖縄南部でエアコン、冷蔵庫、テレビなどの家電販売を行い、配送・設置工事・電気工事の手配、撤去・リサイクル、修理手配の窓口となる法人です。"
+    "description": "沖縄南部でエアコン販売・交換、照明器具販売・LED化を中心に、商品選びから取付・撤去・処分までご相談いただける販売窓口です。"
   }
   </script>
   <style>
@@ -193,11 +193,11 @@
     }
 
     .hero-title {
-      font-size: clamp(1.8rem, 3.3vw, 2.65rem);
+      font-size: clamp(1.75rem, 3.2vw, 2.5rem);
       font-weight: 800;
       line-height: 1.42;
       margin: 0 0 20px;
-      max-width: 900px;
+      max-width: 920px;
       text-wrap: balance;
     }
 
@@ -205,7 +205,7 @@
       font-size: clamp(1rem, 1.6vw, 1.12rem);
       line-height: 1.8;
       margin: 0 0 24px;
-      max-width: 760px;
+      max-width: 780px;
       opacity: 0.95;
     }
 
@@ -239,7 +239,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 13px 24px;
+      padding: 13px 22px;
       border-radius: 10px;
       font-size: 1rem;
       font-weight: 700;
@@ -255,7 +255,8 @@
     .btn:focus-visible,
     .header a:focus-visible,
     .other-links a:focus-visible,
-    .overview-table a:focus-visible {
+    .overview-table a:focus-visible,
+    .sub-link:focus-visible {
       outline: 3px solid #f59e0b;
       outline-offset: 3px;
     }
@@ -287,6 +288,12 @@
     .btn-brand {
       background: var(--brand);
       color: var(--white);
+    }
+
+    .btn-outline {
+      background: var(--white);
+      color: var(--brand);
+      border: 1px solid var(--border);
     }
 
     .section {
@@ -326,10 +333,13 @@
     }
 
     #services .section-title::before { content: "SERVICES"; }
-    #reasons .section-title::before { content: "REASONS"; }
+    #pricing .section-title::before { content: "PRICING"; }
+    #value .section-title::before { content: "SUPPORT"; }
+    #line-estimate .section-title::before { content: "LINE ESTIMATE"; }
     #flow .section-title::before { content: "FLOW"; }
-    #bc-service .section-title::before { content: "PARTNERSHIP"; }
-    #area .section-title::before { content: "AREA & SUPPORT"; }
+    #faq .section-title::before { content: "FAQ"; }
+    #other-appliances .section-title::before { content: "OTHER"; }
+    #area .section-title::before { content: "AREA"; }
     #company .section-title::before { content: "COMPANY"; }
     #other .section-title::before { content: "OTHER BUSINESS"; }
     #contact .section-title::before { content: "CONTACT"; }
@@ -369,6 +379,38 @@
       box-shadow: var(--card-shadow);
     }
 
+    .service-card {
+      display: flex;
+      flex-direction: column;
+      border-top: 4px solid var(--brand);
+    }
+
+    .service-card.lighting {
+      border-top-color: var(--accent);
+    }
+
+    .service-card h3 {
+      font-size: 1.28rem;
+      margin-bottom: 14px;
+    }
+
+    .service-card .card-desc {
+      margin: 0 0 16px;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .service-card ul {
+      margin: 0 0 20px;
+      padding-left: 1.15em;
+      flex: 1;
+    }
+
+    .service-card .cta-row {
+      margin-top: auto;
+    }
+
     .card h3 {
       font-size: 1.12rem;
       font-weight: 800;
@@ -396,22 +438,64 @@
 
     .card-note {
       margin-top: 12px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--text-secondary);
       line-height: 1.75;
     }
 
-    .reason-list {
+    .price-card h3 {
+      margin-bottom: 16px;
+    }
+
+    .price-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .price-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 1rem;
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
+
+    .price-list li:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .price-list .label {
+      flex: 1;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .price-list .amount {
+      flex-shrink: 0;
+      font-weight: 800;
+      color: var(--brand);
+      font-size: 1.05rem;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .value-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 16px;
       margin: 0;
       padding: 0;
       list-style: none;
-      counter-reset: reason;
+      counter-reset: value;
     }
 
-    .reason-list li {
+    .value-list li {
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--card-radius);
@@ -422,11 +506,11 @@
       font-weight: 700;
       color: var(--text-primary);
       line-height: 1.6;
-      counter-increment: reason;
+      counter-increment: value;
     }
 
-    .reason-list li::before {
-      content: counter(reason);
+    .value-list li::before {
+      content: counter(value);
       position: absolute;
       left: 16px;
       top: 19px;
@@ -440,6 +524,22 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .photo-list {
+      margin: 0 0 18px;
+      padding-left: 1.15em;
+    }
+
+    .photo-list li {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .photo-list li + li {
+      margin-top: 4px;
     }
 
     .flow-list {
@@ -490,19 +590,57 @@
       line-height: 1.75;
     }
 
-    .role-card h3 {
-      margin-bottom: 8px;
+    .faq-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 14px;
     }
 
-    .role-label {
-      display: inline-block;
-      font-size: 0.85rem;
-      font-weight: 700;
+    .faq-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 22px 24px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .faq-item h3 {
+      margin: 0 0 10px;
+      font-size: 1.08rem;
+      font-weight: 800;
       color: var(--brand);
-      background: #e6efec;
-      border-radius: 999px;
-      padding: 3px 10px;
-      margin-bottom: 10px;
+      line-height: 1.55;
+    }
+
+    .faq-item p {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .sub-service {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 26px 24px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .sub-service p {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .sub-link {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 1rem;
+      font-weight: 600;
     }
 
     .install-note {
@@ -717,7 +855,7 @@
       }
 
       .hero-title {
-        font-size: clamp(1.65rem, 7.2vw, 1.9rem);
+        font-size: clamp(1.55rem, 6.6vw, 1.85rem);
         line-height: 1.45;
         text-wrap: pretty;
       }
@@ -727,11 +865,14 @@
       .card li,
       .card-note,
       .flow-list p,
+      .faq-item p,
       .install-note,
       .profile-qual,
       .profile-wrap p,
       .other-box p,
-      .contact-note {
+      .sub-service p,
+      .contact-note,
+      .photo-list li {
         font-size: 1rem;
       }
 
@@ -744,7 +885,7 @@
       }
 
       .section-title {
-        font-size: 1.55rem;
+        font-size: 1.5rem;
       }
 
       .section-lead {
@@ -752,8 +893,25 @@
       }
 
       .card,
-      .other-box {
+      .other-box,
+      .sub-service,
+      .faq-item {
         padding: 22px 20px;
+      }
+
+      .service-card h3 {
+        font-size: 1.18rem;
+      }
+
+      .price-list li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .price-list .amount {
+        white-space: normal;
+        text-align: left;
       }
 
       .flow-list li {
@@ -808,10 +966,11 @@
     <div class="header-inner">
       <a href="#top" class="header-brand">MI.BCS</a>
       <nav class="header-nav" aria-label="ページ内メニュー">
-        <a href="#services">取扱サービス</a>
-        <a href="#reasons">選ばれる理由</a>
+        <a href="#services">主力サービス</a>
+        <a href="#pricing">料金の目安</a>
+        <a href="#line-estimate">LINE写真見積り</a>
         <a href="#flow">ご利用の流れ</a>
-        <a href="#bc-service">販売と施工</a>
+        <a href="#faq">よくある質問</a>
         <a href="#company">会社情報</a>
         <a href="#contact">お問い合わせ</a>
       </nav>
@@ -824,150 +983,234 @@
     <img src="../cursor-test/images/aircon-installation.jpg" alt="エアコン設置工事のイメージ" class="hero-bg" width="1400" height="900">
     <div class="hero-overlay"></div>
     <div class="container">
-      <p class="hero-label">合同会社MI.BCS｜家電販売・設置工事手配</p>
-      <h1 class="hero-title">沖縄で、家電選びから販売・配送、設置工事の手配、アフター対応まで、ひとつの窓口でご相談いただけます</h1>
-      <p class="hero-lead">合同会社MI.BCSが家電販売の窓口となり、設置工事やアフター対応までまとめてご相談いただけます。</p>
+      <p class="hero-label">合同会社MI.BCS｜沖縄南部のエアコン・照明販売</p>
+      <h1 class="hero-title">沖縄南部でエアコン・照明を買うなら、商品選びから交換・処分までまとめて相談。</h1>
+      <p class="hero-lead">ご家庭・店舗・事業所に合った商品をご提案します。設置場所の写真をLINEで送るだけで、本体・工事・撤去・処分など、必要な費用をまとめた見積りをご案内します。</p>
       <ul class="hero-pills">
+        <li>エアコン販売・交換</li>
+        <li>照明器具販売・LED化</li>
         <li>沖縄南部対応</li>
-        <li>家電販売・設置工事手配</li>
-        <li>機種選びから相談可能</li>
       </ul>
       <div class="cta-row">
-        <a href="https://lin.ee/tsilra6" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで機種・見積を相談する</a>
+        <a href="https://lin.ee/tsilra6" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEでエアコンの見積り</a>
+        <a href="https://lin.ee/tsilra6" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで照明・LED交換の見積り</a>
         <a href="tel:05017241338" class="btn btn-phone">電話で相談する</a>
-        <a href="mailto:bc.teruya@gmail.com" class="btn btn-mail">メールで相談する</a>
       </div>
     </div>
   </section>
 
   <section class="section" id="services">
     <div class="container">
-      <h2 class="section-title">取扱サービス</h2>
-      <p class="section-lead">エアコンを中心に、冷蔵庫・テレビ、電気工事・住宅設備、買替え相談まで対応します。設置状況を確認したうえで、無理のない範囲でご提案します。</p>
-      <div class="card-grid">
-        <div class="card" id="aircon">
-          <h3>エアコン販売・取付工事の手配</h3>
+      <h2 class="section-title">2つの主力サービス</h2>
+      <p class="section-lead">エアコン販売・交換と、照明器具販売・LED化を中心にご相談いただけます。設置場所の写真があれば、必要な商品と工事内容をまとめてご案内します。</p>
+      <div class="card-grid-2">
+        <div class="card service-card" id="aircon">
+          <h3>エアコン販売・交換</h3>
+          <p class="card-desc">お部屋の広さや設置環境、ご予算に合った機種をご提案します。本体だけでなく、取付工事や既設エアコンの撤去・処分までまとめてご相談いただけます。</p>
           <ul>
-            <li>家庭用エアコンの機種選定</li>
-            <li>本体販売</li>
-            <li>取付・取外し</li>
-            <li>電圧切替</li>
-            <li>コンセント交換</li>
-            <li>専用回路などの電気工事</li>
+            <li>部屋に合った容量・機種の提案</li>
+            <li>本体と工事を含めた総額見積り</li>
+            <li>新規取付・買替え</li>
+            <li>100V／200V、コンセント、専用回路の確認</li>
+            <li>既設エアコンの取外し</li>
+            <li>リサイクル・収集運搬</li>
+            <li>修理・洗浄・買替えの判断相談</li>
           </ul>
-          <p class="card-note">設置状況を確認したうえでお見積りします。</p>
+          <div class="cta-row">
+            <a href="https://lin.ee/tsilra6" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEでエアコンの見積り</a>
+          </div>
         </div>
-        <div class="card">
-          <h3>冷蔵庫・テレビ</h3>
+        <div class="card service-card lighting" id="lighting">
+          <h3>照明器具販売・LED化</h3>
+          <p class="card-desc">古い蛍光灯器具や故障した照明を、設置場所に合ったLED照明へ交換します。現在の器具や設置部分の写真から、交換候補をご提案できます。</p>
           <ul>
-            <li>商品提案・販売</li>
-            <li>配送手配</li>
-            <li>設置条件の確認</li>
+            <li>LEDシーリングライトへの交換</li>
+            <li>直結式照明器具の交換</li>
+            <li>蛍光灯器具からLEDへの切替え</li>
+            <li>家庭・店舗・事業所の照明交換</li>
+            <li>古い照明器具の撤去・処分</li>
+            <li>現状写真から交換候補を提案</li>
           </ul>
-          <p class="card-note">商品、地域、設置状況により対応可否が異なります。まずはご相談ください。</p>
-        </div>
-        <div class="card">
-          <h3>電気工事・住宅設備</h3>
-          <ul>
-            <li>エアコン周辺の電気工事</li>
-            <li>電圧・コンセント・専用回路の確認</li>
-            <li>住宅設備は内容を確認したうえで提案</li>
-          </ul>
-          <p class="card-note">未確定の工事内容を断定せず、現地や写真確認のうえでご案内します。</p>
-        </div>
-        <div class="card">
-          <h3>買替え相談</h3>
-          <ul>
-            <li>洗浄、修理、交換のどれが適切か相談可能</li>
-            <li>現在の機種、年式、症状、設置状況を確認して提案</li>
-          </ul>
-          <p class="card-note">修理そのものを自社施工するのではなく、法人窓口としてメーカー等への修理手配が可能です。</p>
+          <div class="cta-row">
+            <a href="https://lin.ee/tsilra6" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで照明・LED交換の見積り</a>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section section-light" id="reasons">
+  <section class="section section-light" id="pricing">
     <div class="container">
-      <h2 class="section-title">選ばれる理由</h2>
-      <p class="section-lead">現場経験を踏まえた提案と、販売から設置までの一貫対応を大切にしています。</p>
-      <ol class="reason-list">
-        <li>現場経験を踏まえた機種提案</li>
-        <li>販売後の設置工事は、提携する登録電気工事業者と連携して手配</li>
-        <li>電圧・コンセント・専用回路・設置条件も確認</li>
-        <li>洗浄・修理・交換をまとめて相談可能</li>
+      <h2 class="section-title">料金の目安（税込）</h2>
+      <p class="section-lead">工事・撤去・処分に関する目安です。本体価格や追加部材は設置状況を確認のうえ、お見積りでご案内します。</p>
+      <div class="card-grid-2">
+        <div class="card price-card">
+          <h3>エアコン</h3>
+          <ul class="price-list">
+            <li>
+              <span class="label">標準取付工事</span>
+              <span class="amount">22,000円～</span>
+            </li>
+            <li>
+              <span class="label">既設エアコン取外し</span>
+              <span class="amount">5,500円～7,700円</span>
+            </li>
+            <li>
+              <span class="label">リサイクル料</span>
+              <span class="amount">550円</span>
+            </li>
+            <li>
+              <span class="label">収集運搬料</span>
+              <span class="amount">3,300円</span>
+            </li>
+          </ul>
+          <p class="card-note">標準工事の範囲を超える作業、追加部材、設置状況により料金が変わります。現地状況または写真を確認後、事前にお見積りします。</p>
+        </div>
+        <div class="card price-card">
+          <h3>照明</h3>
+          <ul class="price-list">
+            <li>
+              <span class="label">照明器具交換工事</span>
+              <span class="amount">6,600円～</span>
+            </li>
+          </ul>
+          <p class="card-note">照明器具代・追加部材・処分費は別途です。器具の種類や設置状況によりお見積りします。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="value">
+    <div class="container">
+      <h2 class="section-title">商品選びから交換・処分まで、窓口を分けずに相談できます</h2>
+      <p class="section-lead">商品選びから設置条件の確認、交換・処分、購入後の相談まで、ひとつの窓口で進められます。</p>
+      <ol class="value-list">
+        <li>商品選び</li>
+        <li>設置条件の確認</li>
+        <li>本体・工事を含めた見積り</li>
+        <li>交換・取外し</li>
+        <li>リサイクル・処分</li>
+        <li>購入後の保証・修理相談</li>
       </ol>
+    </div>
+  </section>
+
+  <section class="section section-light" id="line-estimate">
+    <div class="container">
+      <h2 class="section-title">写真を送るだけで見積相談</h2>
+      <p class="section-lead">現在の機器や設置場所の写真をLINEでお送りください。内容を確認し、必要な商品・工事・費用をご案内します。</p>
+      <div class="card">
+        <h3>送っていただきたい写真の例</h3>
+        <ul class="photo-list">
+          <li>現在の機器全体</li>
+          <li>型番が書かれたラベル</li>
+          <li>設置場所の周辺</li>
+          <li>エアコンの場合は室内機・室外機・コンセント周辺</li>
+          <li>照明の場合は器具全体と取付部分</li>
+        </ul>
+        <p class="card-note">写真だけでは判断できない場合は、追加写真または現地確認をお願いすることがあります。</p>
+        <div class="cta-row" style="margin-top:20px;">
+          <a href="https://lin.ee/tsilra6" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで写真を送って見積相談</a>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="section" id="flow">
     <div class="container">
       <h2 class="section-title">ご利用の流れ</h2>
-      <p class="section-lead">ご相談から設置工事・アフター対応まで、分かりやすく進めます。</p>
+      <p class="section-lead">ご相談から納品・交換まで、分かりやすく進めます。</p>
       <ol class="flow-list">
         <li>
           <span class="flow-num">1</span>
           <div>
             <h3>LINEまたは電話で相談</h3>
-            <p>ご希望の家電や設置住所、現在の機種をお知らせください。</p>
+            <p>エアコン交換や照明・LED化のご希望をお知らせください。</p>
           </div>
         </li>
         <li>
           <span class="flow-num">2</span>
           <div>
-            <h3>現在の機種・設置状況を確認</h3>
-            <p>型番や設置場所の写真があると、確認がスムーズです。</p>
+            <h3>写真・設置状況を確認</h3>
+            <p>設置場所や現在の機器の写真をもとに、条件を確認します。</p>
           </div>
         </li>
         <li>
           <span class="flow-num">3</span>
           <div>
-            <h3>機種と見積をご提案</h3>
-            <p>設置条件を踏まえて、機種と費用の目安をご案内します。</p>
+            <h3>商品と工事内容を提案</h3>
+            <p>設置条件に合う商品と、必要な工事内容をご提案します。</p>
           </div>
         </li>
         <li>
           <span class="flow-num">4</span>
           <div>
-            <h3>ご注文・配送手配</h3>
-            <p>ご注文後、配送の手配を進めます。</p>
+            <h3>見積り確認後に注文</h3>
+            <p>内容と費用をご確認いただいたうえでご注文ください。</p>
           </div>
         </li>
         <li>
           <span class="flow-num">5</span>
           <div>
-            <h3>設置工事・アフター対応</h3>
-            <p>設置相談・現地確認・施工調整・施工後の窓口はBCサービスが対応し、実際の設置工事・電気工事は工事内容に応じて提携する登録電気工事業者が施工します。</p>
+            <h3>納品・交換・撤去</h3>
+            <p>納品と交換、既設機器の撤去を進めます。</p>
+          </div>
+        </li>
+        <li>
+          <span class="flow-num">6</span>
+          <div>
+            <h3>保証・修理の相談</h3>
+            <p>購入後の保証や修理についても、窓口としてご相談いただけます。</p>
           </div>
         </li>
       </ol>
     </div>
   </section>
 
-  <section class="section section-light" id="bc-service">
+  <section class="section section-light" id="faq">
     <div class="container">
-      <h2 class="section-title">販売と施工の担当</h2>
-      <p class="section-lead">販売から設置相談・アフター対応まで、窓口を分けずにまとめてご相談いただけます。</p>
-      <div class="card-grid-2">
-        <div class="card role-card">
-          <span class="role-label">販売窓口</span>
-          <h3>合同会社MI.BCS</h3>
-          <p>販売・注文・メーカー保証・修理手配を担当します。</p>
-        </div>
-        <div class="card role-card">
-          <span class="role-label">設置相談・現場窓口</span>
-          <h3>BCサービス</h3>
-          <p>設置相談・現地確認・施工調整・施工後の窓口を担当します。</p>
-          <p style="margin-top:12px;"><a href="https://teruya1229.github.io/cursor-test/">BCサービスの家庭向けページはこちら</a></p>
-        </div>
-      </div>
-      <p class="install-note">設置工事もご相談ください。提携する登録電気工事業者が、安心・確実に施工します。</p>
+      <h2 class="section-title">よくある質問</h2>
+      <ul class="faq-list">
+        <li class="faq-item">
+          <h3>Q. 商品だけ購入できますか？</h3>
+          <p>A. 商品のみのご相談と、取付・交換を含めたご相談のどちらにも対応します。商品や地域によって条件が異なるため、まずはお問い合わせください。</p>
+        </li>
+        <li class="faq-item">
+          <h3>Q. 工事費を含めた総額を確認できますか？</h3>
+          <p>A. 設置場所や既存設備を確認し、本体・工事・撤去・処分など必要な費用をまとめてお見積りします。</p>
+        </li>
+        <li class="faq-item">
+          <h3>Q. 写真だけで見積りできますか？</h3>
+          <p>A. 写真から概算をご案内できます。写真だけでは判断できない場合や追加工事の可能性がある場合は、追加確認または現地確認を行います。</p>
+        </li>
+        <li class="faq-item">
+          <h3>Q. 古いエアコンや照明器具は処分できますか？</h3>
+          <p>A. エアコンのリサイクル・収集運搬、照明器具の撤去・処分もご相談いただけます。処分内容により料金が異なります。</p>
+        </li>
+        <li class="faq-item">
+          <h3>Q. 100Vから200Vへの変更も相談できますか？</h3>
+          <p>A. コンセント、専用回路、分電盤などの状況確認が必要です。写真または現地確認後に対応内容をご案内します。</p>
+        </li>
+        <li class="faq-item">
+          <h3>Q. 購入後に故障した場合はどうなりますか？</h3>
+          <p>A. メーカー保証や修理手配について、購入後も窓口としてご相談いただけます。保証内容は商品ごとに異なります。</p>
+        </li>
+      </ul>
     </div>
   </section>
 
-  <section class="section" id="area">
+  <section class="section" id="other-appliances">
     <div class="container">
-      <h2 class="section-title">対応エリア・撤去・保証</h2>
+      <h2 class="section-title">その他の家電・住宅設備もご相談ください</h2>
+      <div class="sub-service">
+        <p>冷蔵庫・テレビなどの家電や住宅設備についても、商品選び・販売・配送・設置手配をご相談いただけます。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-light" id="area">
+    <div class="container">
+      <h2 class="section-title">対応エリア・会社情報</h2>
       <p class="section-lead">当面の対応エリアは、沖縄南部の次の7市町です。</p>
       <ul class="area-tags">
         <li>南城市</li>
@@ -981,22 +1224,22 @@
       <div class="card-grid">
         <div class="card">
           <h3>対応エリアについて</h3>
-          <p>冷蔵庫・テレビについては、商品・配送先・設置状況によって対応可否が異なります。エアコン販売・取付工事の手配を中心に、まずはご相談ください。</p>
+          <p>エアコン販売・交換、照明器具販売・LED化を中心に、沖縄南部でご相談いただけます。その他の家電は、商品・配送先・設置状況によって対応可否が異なります。</p>
         </div>
         <div class="card">
           <h3>撤去・リサイクル</h3>
-          <p>古い家電の撤去・リサイクルもご相談いただけます。対象品目、回収条件、リサイクル料金、収集運搬料金はお見積り時にご案内します。</p>
+          <p>古いエアコンや照明器具の撤去・リサイクルもご相談いただけます。対象品目、回収条件、料金はお見積り時にご案内します。</p>
         </div>
         <div class="card">
           <h3>メーカー保証・故障時対応</h3>
           <p>販売後のメーカー保証や故障時の修理手配は、合同会社MI.BCSが窓口となって対応します。保証内容・保証期間は各メーカーおよび製品の規定によります。</p>
         </div>
       </div>
-      <p class="install-note">商品の価格、配送・設置の可否、撤去・リサイクルに関する費用は、商品・地域・設置条件を確認のうえ、お見積りでご案内します。</p>
+      <p class="install-note">家庭向けのエアコン洗浄・修理のご相談は、<a href="https://teruya1229.github.io/cursor-test/">BCサービスの家庭向けページ</a>もご確認ください。</p>
     </div>
   </section>
 
-  <section class="section section-light" id="company">
+  <section class="section" id="company">
     <div class="container">
       <h2 class="section-title">会社情報</h2>
       <table class="overview-table">
@@ -1039,7 +1282,7 @@
           </tr>
           <tr>
             <th>事業内容</th>
-            <td>家電製品・住宅設備の販売、配送・設置手配、電気工事・清掃業務の取次・施工手配、AI業務効率化支援</td>
+            <td>エアコン・照明を中心とした家電製品・住宅設備の販売、配送・設置手配、電気工事・清掃業務の取次・施工手配、AI業務効率化支援</td>
           </tr>
         </tbody>
       </table>
@@ -1048,13 +1291,13 @@
         <div>
           <h3>代表 照屋 昴</h3>
           <p class="profile-qual">代表者保有資格：第二種電気工事士・認定電気工事従事者</p>
-          <p>現場での設置・施工経験を踏まえ、機種選びから販売、設置工事の手配までご相談いただけます。強引なご案内はしませんので、まずはお気軽にご相談ください。</p>
+          <p>現場での設置・施工経験を踏まえ、機種選びから販売、交換・処分までご相談いただけます。強引なご案内はしませんので、まずはお気軽にご相談ください。</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="section" id="other">
+  <section class="section section-light" id="other">
     <div class="container">
       <h2 class="section-title">その他事業</h2>
       <div class="other-box">
@@ -1068,15 +1311,16 @@
     </div>
   </section>
 
-  <section class="section section-light" id="contact">
+  <section class="section" id="contact">
     <div class="container">
-      <h2 class="section-title">お問い合わせ</h2>
-      <p class="section-lead">ご希望の家電、設置住所、現在お使いの機種をお知らせください。型番や設置場所の写真があると、確認がスムーズです。</p>
+      <h2 class="section-title">エアコン・照明の見積相談</h2>
+      <p class="section-lead">設置場所の写真をLINEで送るだけで、必要な商品・工事・費用をご案内します。急ぎの場合はお電話でもご相談ください。</p>
       <div class="contact-box">
         <div class="cta-row">
-          <a href="https://lin.ee/tsilra6" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで相談</a>
-          <a href="tel:05017241338" class="btn btn-brand">電話で相談</a>
-          <a href="mailto:bc.teruya@gmail.com" class="btn btn-mail">メールで相談</a>
+          <a href="https://lin.ee/tsilra6" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEでエアコンの見積り</a>
+          <a href="https://lin.ee/tsilra6" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで照明・LED交換の見積り</a>
+          <a href="tel:05017241338" class="btn btn-brand">電話で相談する</a>
+          <a href="mailto:bc.teruya@gmail.com" class="btn btn-mail">メールで相談する</a>
         </div>
         <p class="contact-note">押し売りや強引な営業は行いません。まずは機種や設置条件のご相談だけでも構いません。</p>
       </div>
