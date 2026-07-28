@@ -37,14 +37,24 @@
       "addressCountry": "JP"
     },
     "areaServed": [
-      "南城市",
-      "八重瀬町",
-      "豊見城市",
-      "糸満市",
       "那覇市",
+      "糸満市",
+      "豊見城市",
+      "南城市",
       "南風原町",
       "与那原町",
-      "沖縄県中南部"
+      "八重瀬町",
+      "浦添市",
+      "宜野湾市",
+      "西原町",
+      "中城村",
+      "北中城村",
+      "北谷町",
+      "嘉手納町",
+      "読谷村",
+      "沖縄市",
+      "うるま市",
+      "沖縄本島中南部"
     ],
     "description": "沖縄中南部でエアコン販売・交換、照明器具販売・LED化を中心に、商品選びから取付・撤去・処分までご相談いただける販売窓口です。"
   }
@@ -659,6 +669,33 @@
       font-weight: 600;
     }
 
+    .area-groups {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 0 0 18px;
+    }
+
+    .area-group {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      padding: 20px 18px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .area-group h3 {
+      margin: 0 0 12px;
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--brand);
+      line-height: 1.5;
+    }
+
+    .area-group .area-tags {
+      margin-bottom: 0;
+    }
+
     .area-tags {
       display: flex;
       flex-wrap: wrap;
@@ -676,6 +713,10 @@
       font-size: 1rem;
       font-weight: 600;
       color: var(--brand);
+    }
+
+    .area-group .area-tags li {
+      background: var(--bg-light);
     }
 
     .overview-table {
@@ -1212,16 +1253,36 @@
   <section class="section section-light" id="area">
     <div class="container">
       <h2 class="section-title">対応エリア・会社情報</h2>
-      <p class="section-lead">沖縄中南部を中心に対応しています。現在の主な対応エリアは次の7市町です。</p>
-      <ul class="area-tags">
-        <li>南城市</li>
-        <li>八重瀬町</li>
-        <li>豊見城市</li>
-        <li>糸満市</li>
-        <li>那覇市</li>
-        <li>南風原町</li>
-        <li>与那原町</li>
-      </ul>
+      <p class="section-lead">沖縄本島中南部の17市町村に対応しています。商品・工事内容や設置場所により対応条件が異なる場合があるため、詳しくはお問い合わせください。</p>
+      <div class="area-groups">
+        <div class="area-group">
+          <h3>南部エリア</h3>
+          <ul class="area-tags">
+            <li>那覇市</li>
+            <li>糸満市</li>
+            <li>豊見城市</li>
+            <li>南城市</li>
+            <li>南風原町</li>
+            <li>与那原町</li>
+            <li>八重瀬町</li>
+          </ul>
+        </div>
+        <div class="area-group">
+          <h3>中部エリア</h3>
+          <ul class="area-tags">
+            <li>浦添市</li>
+            <li>宜野湾市</li>
+            <li>西原町</li>
+            <li>中城村</li>
+            <li>北中城村</li>
+            <li>北谷町</li>
+            <li>嘉手納町</li>
+            <li>読谷村</li>
+            <li>沖縄市</li>
+            <li>うるま市</li>
+          </ul>
+        </div>
+      </div>
       <div class="card-grid">
         <div class="card">
           <h3>対応エリアについて</h3>
@@ -1279,7 +1340,7 @@
           </tr>
           <tr>
             <th>対応エリア</th>
-            <td>沖縄中南部</td>
+            <td>沖縄本島中南部17市町村</td>
           </tr>
           <tr>
             <th>事業内容</th>
