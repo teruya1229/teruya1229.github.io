@@ -1,4 +1,4 @@
-更新日: 2026-07-27
+更新日: 2026-08-05
 
 ## 前提（読む順）
 
@@ -8,6 +8,15 @@
 4. 公開版参照（任意）：`https://teruya1229.github.io/ops/status/` / `https://teruya1229.github.io/ops/handoff/`
 
 ## フェーズ
+
+**FAQページSEO整理・内部リンク整理 完了（2026-08-05）**
+
+- 対象：`cursor-test/faq.html` と症状記事3本（水漏れ／冷えない／梅雨・カビ臭）
+- 実装commit：`51dfc9e9c6a8038f0312a112ad5bcbaecf90b749`（`fix: clarify FAQ and article internal links`）
+- 内容：FAQから症状記事3本への案内追加／記事からFAQへの文脈リンク／予約方法の直接リンク化／FAQ最下部Airリザーブ補助CTA／冷えない・梅雨記事のJSON-LD不一致修正
+- FAQ質問20問・各記事8問を維持。canonical・sitemap・robots・GA4・料金は変更なし
+- 公開確認：`?v=51dfc9e`（PC／390px）OK。実機確認未完了（物理スマートフォン未使用）
+- **結論：実装・公開確認まで完了。家庭向けLPの追加修正は行わず運用・計測へ戻る**
 
 **家庭向けトップ第2弾・確定6項目 完了（2026-07-27）**
 

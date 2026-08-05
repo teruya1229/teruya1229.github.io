@@ -1,10 +1,43 @@
-更新日: 2026-07-27
+更新日: 2026-08-05
 
 ## 次にやるべき1手
 
 家庭向けLPの追加修正は行わず、GA4・Search Console・問い合わせ実績を計測する。新しい実データまたは明確な不具合が出た場合だけ最小修正する。
 
 ## 本日やったこと
+
+### 2026-08-05（FAQページSEO整理・内部リンク整理 実装・公開確認完了）
+
+FAQと症状記事3本の内部リンクを最小差分で整理し、GitHub Pagesへ公開。公開確認まで完了。
+
+**【公開完了】**
+
+- 日時：2026年8月5日
+- 実装commit：`51dfc9e9c6a8038f0312a112ad5bcbaecf90b749`（`fix: clarify FAQ and article internal links`）
+- 変更ファイル：`cursor-test/faq.html` / `cursor-test/articles/okinawa-aircon-water-leak-causes.html` / `cursor-test/articles/okinawa-aircon-not-cooling-causes.html` / `cursor-test/articles/okinawa-aircon-cleaning-rainy-season.html`
+- 公開確認URL：
+  - `https://teruya1229.github.io/cursor-test/faq.html?v=51dfc9e`
+  - `https://teruya1229.github.io/cursor-test/articles/okinawa-aircon-water-leak-causes.html?v=51dfc9e`
+  - `https://teruya1229.github.io/cursor-test/articles/okinawa-aircon-not-cooling-causes.html?v=51dfc9e`
+  - `https://teruya1229.github.io/cursor-test/articles/okinawa-aircon-cleaning-rainy-season.html?v=51dfc9e`
+
+**【実装内容】**
+
+- FAQ冒頭に「症状・時期から調べる」案内（水漏れ／冷えない／梅雨・カビ臭の3記事リンク）を追加
+- 「予約はどうすればいいですか？」をLINE・電話・メール・Airリザーブの直接リンク化（FAQPage JSON-LDも意味一致で更新）
+- 作業時間回答から完全分解LPへリンク（通常・お掃除機能付きの時間は維持）
+- FAQ最下部にLINE主CTA維持のうえ、Airリザーブ補助CTA（`air-reserve-subcta` / `data-cta-location="bottom"`）と仮予約注意書きを追加
+- 症状記事3本のFAQ直後に、FAQ一覧への文脈リンクを追加
+- 冷えない記事・梅雨記事のFAQPage JSON-LD不一致を実表示に合わせて修正
+- FAQ質問20問、各記事FAQ8問を維持
+- canonical・sitemap・robots・GA4・料金表記は変更なし
+
+**【公開確認】**
+
+- Browser番頭共通Chrome + Chrome DevTools MCPでPC／390px確認
+- 4ページとも新内部リンク反映・canonicalはクエリなし既存URL維持
+- FAQ開閉正常、横スクロールなし、Consoleエラーなし
+- 実機確認未完了（物理スマートフォン未使用）
 
 ### 2026-07-27（家庭向けトップ第2弾・確定6項目 実装・公開・最終確認完了）
 
