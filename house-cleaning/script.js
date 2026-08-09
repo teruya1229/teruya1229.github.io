@@ -40,6 +40,7 @@
       if (/\b(section--final|final-cta)\b/.test(combined)) return 'bottom';
       if (/\b(section--price|price)\b/.test(combined)) return 'price';
       if (/\b(section--water|water)\b/.test(combined)) return 'water';
+      if (/\b(section--floor|floor)\b/.test(combined)) return 'floor';
       if (/\b(section--pressure|pressure)\b/.test(combined)) return 'pressure';
       if (/\b(section--aircon|aircon)\b/.test(combined)) return 'aircon';
       node = node.parentElement;
