@@ -518,17 +518,6 @@ a.header-cta.btn-line {
   object-position: center 62%;
 }
 
-.photo-slot__img--concrete-after,
-.photo-slot__img--during {
-  object-position: center 40%;
-}
-
-.photo-slot--ba {
-  display: block;
-  padding: 8px;
-  background: #f3f9fc;
-}
-
 .inline-ba {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -588,8 +577,29 @@ a.header-cta.btn-line {
   min-height: 0;
 }
 
-.pressure-extra {
-  margin-top: 16px;
+.pressure-case {
+  margin-top: 24px;
+  padding: 14px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 18px rgba(18, 59, 86, 0.06);
+}
+
+.pressure-case__caption {
+  margin: 0 0 10px;
+  color: var(--brand-deepest);
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.pressure-case__ba {
+  height: auto;
+}
+
+.pressure-case__ba .inline-ba__item img {
+  aspect-ratio: 4 / 3;
+  max-height: 280px;
 }
 
 /* ===== Cards ===== */
@@ -695,6 +705,10 @@ a.header-cta.btn-line {
   background: var(--ivory);
 }
 
+.section--floor .container {
+  text-align: center;
+}
+
 .section--floor .section-eyebrow {
   background: rgba(242, 164, 68, 0.18);
   color: var(--warm-foreground);
@@ -702,6 +716,24 @@ a.header-cta.btn-line {
 
 .section--floor .section-title {
   border-bottom-color: var(--warm);
+}
+
+.section--floor .section-lead {
+  margin-inline: auto;
+}
+
+.section--floor .floor-card h3,
+.section--floor .floor-card p,
+.section--floor .floor-card .meta-list {
+  text-align: center;
+}
+
+.section--floor .floor-card .meta-list {
+  justify-items: center;
+}
+
+.section--floor .floor-note {
+  text-align: left;
 }
 
 .floor-card {
@@ -714,6 +746,14 @@ a.header-cta.btn-line {
   background: var(--warm-soft);
   border-color: rgba(242, 164, 68, 0.45);
   color: var(--warm-foreground);
+}
+
+.floor-card .service-card__body {
+  align-items: center;
+}
+
+.floor-card .meta-list {
+  width: 100%;
 }
 
 .floor-note {
@@ -798,6 +838,29 @@ a.header-cta.btn-line {
     display: grid;
     grid-template-columns: 1.1fr 1fr;
   }
+}
+
+.service-card__body--set {
+  justify-content: flex-start;
+}
+
+.service-card__body--set .chip-row {
+  margin-top: 4px;
+}
+
+.set-price {
+  margin-top: 12px;
+  color: var(--brand-deepest);
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.set-price-note {
+  margin-top: 4px;
+  color: var(--muted-foreground);
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
 .chip-row {
@@ -1047,8 +1110,8 @@ a.header-cta.btn-line {
 }
 
 @media (min-width: 768px) {
-  .ba-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .ba-grid--3 {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -1065,6 +1128,7 @@ a.header-cta.btn-line {
 
 .ba-card > h3 {
   margin-bottom: 10px;
+  min-height: 2.8em;
 }
 
 .ba-card .ba-composite,
@@ -1077,6 +1141,26 @@ a.header-cta.btn-line {
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-top: 10px;
+}
+
+.ba-pair--square {
+  aspect-ratio: 1 / 1;
+}
+
+.ba-pair--square > div {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.ba-pair--square .photo-slot {
+  flex: 1;
+  min-height: 0;
+  aspect-ratio: auto;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
 }
 
 .ba-pair .photo-slot--media {
@@ -1111,23 +1195,6 @@ a.header-cta.btn-line {
   color: var(--primary);
 }
 
-.works-scene {
-  margin-top: 20px;
-}
-
-.works-scene .photo-slot--media {
-  position: relative;
-  overflow: hidden;
-}
-
-.works-scene .photo-slot__img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 .hero-grid .photo-slot--media {
   position: relative;
   overflow: hidden;
@@ -1141,21 +1208,12 @@ a.header-cta.btn-line {
   object-fit: cover;
 }
 
-.pressure-card > .photo-slot--ba {
-  flex-shrink: 0;
+.pressure-card--info .service-card__body {
+  padding-top: 18px;
 }
 
-.pressure-extra .photo-slot--media {
-  position: relative;
-  overflow: hidden;
-}
-
-.pressure-extra .photo-slot__img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.section--pressure .card-grid {
+  margin-top: 16px;
 }
 
 /* ===== FAQ ===== */
