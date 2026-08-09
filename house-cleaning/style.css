@@ -43,6 +43,7 @@ body {
   line-height: 1.7;
   overflow-x: hidden;
   padding-bottom: calc(var(--fixed-cta-h) + 16px);
+  text-align: center;
 }
 
 img {
@@ -97,7 +98,8 @@ h1, h2, h3, p {
 .header-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 12px;
   min-height: var(--header-h);
 }
@@ -105,6 +107,7 @@ h1, h2, h3, p {
 .logo {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   font-weight: 800;
   color: var(--brand-deep);
@@ -128,6 +131,8 @@ h1, h2, h3, p {
 .header-nav ul {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 24px;
 }
 
@@ -210,6 +215,7 @@ a.header-cta.btn-line {
 .cta-row {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
   margin-top: 20px;
 }
@@ -256,9 +262,11 @@ a.header-cta.btn-line {
 
 .section-lead {
   margin-top: 16px;
+  margin-inline: auto;
   color: var(--muted-foreground);
   font-size: 0.95rem;
   max-width: 720px;
+  text-align: center;
 }
 
 .section--hero {
@@ -375,21 +383,26 @@ a.header-cta.btn-line {
 .hero-note {
   margin-top: 16px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
   padding: 12px 14px;
   background: var(--warm-soft);
-  border-left: 4px solid var(--warm);
+  border-top: 4px solid var(--warm);
   color: var(--warm-foreground);
   font-size: 0.875rem;
   font-weight: 700;
+  text-align: center;
 }
 
 .hero-cta-row {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 12px;
   margin-top: 20px;
+  margin-inline: auto;
   max-width: 390px;
 }
 
@@ -535,7 +548,7 @@ a.header-cta.btn-line {
 
 .inline-ba__item .ba-label {
   margin-bottom: 4px;
-  text-align: left;
+  text-align: center;
 }
 
 .inline-ba__item img {
@@ -591,6 +604,7 @@ a.header-cta.btn-line {
   color: var(--brand-deepest);
   font-size: 0.95rem;
   font-weight: 800;
+  text-align: center;
 }
 
 .pressure-case__ba {
@@ -635,6 +649,7 @@ a.header-cta.btn-line {
   font-weight: 700;
   color: var(--brand-deepest);
   font-size: 0.95rem;
+  text-align: center;
 }
 
 .service-card,
@@ -659,8 +674,10 @@ a.header-cta.btn-line {
   padding: 16px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
   flex: 1;
+  text-align: center;
 }
 
 /* 水まわり主力カード：写真枠を4:3で揃え、実写真を収める */
@@ -705,10 +722,6 @@ a.header-cta.btn-line {
   background: var(--ivory);
 }
 
-.section--floor .container {
-  text-align: center;
-}
-
 .section--floor .section-eyebrow {
   background: rgba(242, 164, 68, 0.18);
   color: var(--warm-foreground);
@@ -716,24 +729,6 @@ a.header-cta.btn-line {
 
 .section--floor .section-title {
   border-bottom-color: var(--warm);
-}
-
-.section--floor .section-lead {
-  margin-inline: auto;
-}
-
-.section--floor .floor-card h3,
-.section--floor .floor-card p,
-.section--floor .floor-card .meta-list {
-  text-align: center;
-}
-
-.section--floor .floor-card .meta-list {
-  justify-items: center;
-}
-
-.section--floor .floor-note {
-  text-align: left;
 }
 
 .floor-card {
@@ -748,10 +743,6 @@ a.header-cta.btn-line {
   color: var(--warm-foreground);
 }
 
-.floor-card .service-card__body {
-  align-items: center;
-}
-
 .floor-card .meta-list {
   width: 100%;
 }
@@ -761,9 +752,10 @@ a.header-cta.btn-line {
   padding: 16px 18px;
   background: #fff;
   border: 1px solid rgba(242, 164, 68, 0.35);
-  border-left: 4px solid var(--warm);
+  border-top: 4px solid var(--warm);
   border-radius: var(--radius);
   box-shadow: 0 6px 16px rgba(18, 59, 86, 0.05);
+  text-align: center;
 }
 
 .floor-note ul {
@@ -772,21 +764,25 @@ a.header-cta.btn-line {
   margin: 0;
   padding: 0;
   list-style: none;
+  justify-items: center;
 }
 
 .floor-note li {
-  position: relative;
-  padding-left: 1.1em;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.15em;
   color: var(--brand-deep);
   font-size: 0.9rem;
   font-weight: 600;
   line-height: 1.6;
+  text-align: center;
+  max-width: 40rem;
 }
 
 .floor-note li::before {
   content: "・";
-  position: absolute;
-  left: 0;
+  flex-shrink: 0;
   color: var(--warm);
   font-weight: 900;
 }
@@ -815,6 +811,9 @@ a.header-cta.btn-line {
   margin-top: auto;
   padding-top: 8px;
   font-size: 0.875rem;
+  width: 100%;
+  justify-items: center;
+  text-align: center;
 }
 
 .meta-list dt {
@@ -842,10 +841,12 @@ a.header-cta.btn-line {
 
 .service-card__body--set {
   justify-content: flex-start;
+  align-items: center;
 }
 
 .service-card__body--set .chip-row {
   margin-top: 4px;
+  justify-content: center;
 }
 
 .set-price {
@@ -866,12 +867,14 @@ a.header-cta.btn-line {
 .chip-row {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
 }
 
 .chip {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   min-height: 32px;
   padding: 4px 10px;
   border-radius: 999px;
@@ -884,6 +887,7 @@ a.header-cta.btn-line {
 .badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   min-height: 28px;
   padding: 2px 10px;
   border-radius: 999px;
@@ -907,9 +911,10 @@ a.header-cta.btn-line {
   margin-top: 20px;
   padding: 14px 16px;
   background: rgba(255, 255, 255, 0.08);
-  border-left: 4px solid var(--warm);
+  border-top: 4px solid var(--warm);
   color: rgba(255, 255, 255, 0.95);
   font-size: 0.9rem;
+  text-align: center;
 }
 
 /* ===== Pricing ===== */
@@ -919,12 +924,14 @@ a.header-cta.btn-line {
   background: var(--secondary);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  text-align: center;
 }
 
 .price-intro p {
   color: var(--brand-deep);
   font-size: 0.92rem;
   font-weight: 600;
+  text-align: center;
 }
 
 .price-intro p + p {
@@ -937,6 +944,7 @@ a.header-cta.btn-line {
   color: var(--brand-deepest);
   font-size: 1.125rem;
   font-weight: 900;
+  text-align: center;
 }
 
 .price-card {
@@ -944,7 +952,9 @@ a.header-cta.btn-line {
   padding: 18px 16px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
+  text-align: center;
 }
 
 .price-card--set {
@@ -979,9 +989,11 @@ a.header-cta.btn-line {
 .price-sub {
   display: grid;
   gap: 4px;
+  justify-items: center;
   font-size: 0.9rem;
   color: var(--brand-deep);
   font-weight: 700;
+  text-align: center;
 }
 
 .price-note-box {
@@ -994,14 +1006,15 @@ a.header-cta.btn-line {
   padding: 14px 16px;
   border-radius: var(--radius);
   background: var(--muted);
-  border-left: 4px solid var(--primary);
+  border-top: 4px solid var(--primary);
   font-size: 0.875rem;
   color: var(--brand-deep);
+  text-align: center;
 }
 
 .note-card--warm {
   background: var(--warm-soft);
-  border-left-color: var(--warm);
+  border-top-color: var(--warm);
   color: var(--warm-foreground);
 }
 
@@ -1018,7 +1031,7 @@ a.header-cta.btn-line {
 .combo-table td {
   padding: 10px 12px;
   border-bottom: 1px solid var(--border);
-  text-align: left;
+  text-align: center;
 }
 
 .combo-table th {
@@ -1037,6 +1050,7 @@ a.header-cta.btn-line {
   border-radius: var(--radius);
   background: linear-gradient(135deg, var(--secondary), #fff);
   box-shadow: 0 8px 20px rgba(18, 59, 86, 0.06);
+  text-align: center;
 }
 
 @media (min-width: 768px) {
@@ -1064,7 +1078,8 @@ a.header-cta.btn-line {
   flex-direction: column;
   gap: 10px;
   margin-top: 16px;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
 }
 
 .link-text {
@@ -1080,11 +1095,16 @@ a.header-cta.btn-line {
 .flow-card {
   padding: 18px 16px;
   border-top: 4px solid var(--primary);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .flow-step {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   margin-bottom: 8px;
   color: var(--primary);
@@ -1123,12 +1143,15 @@ a.header-cta.btn-line {
   box-shadow: 0 8px 18px rgba(18, 59, 86, 0.06);
   display: flex;
   flex-direction: column;
+  align-items: center;
   height: 100%;
+  text-align: center;
 }
 
 .ba-card > h3 {
   margin-bottom: 10px;
   min-height: 2.8em;
+  text-align: center;
 }
 
 .ba-card .ba-composite,
@@ -1141,6 +1164,7 @@ a.header-cta.btn-line {
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-top: 10px;
+  width: 100%;
 }
 
 .ba-pair--square {
@@ -1178,6 +1202,7 @@ a.header-cta.btn-line {
 
 .ba-composite {
   margin-top: 10px;
+  width: 100%;
 }
 
 .ba-composite .photo-slot__img {
@@ -1193,6 +1218,7 @@ a.header-cta.btn-line {
   font-size: 0.75rem;
   font-weight: 800;
   color: var(--primary);
+  text-align: center;
 }
 
 .hero-grid .photo-slot--media {
@@ -1219,6 +1245,7 @@ a.header-cta.btn-line {
 /* ===== FAQ ===== */
 .faq-list {
   margin-top: 24px;
+  margin-inline: auto;
   display: grid;
   gap: 10px;
   max-width: 760px;
@@ -1236,11 +1263,13 @@ a.header-cta.btn-line {
   list-style: none;
   cursor: pointer;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   gap: 12px;
   padding: 16px;
   font-weight: 800;
   color: var(--brand-deepest);
+  text-align: center;
 }
 
 .faq-item summary::-webkit-details-marker {
@@ -1272,16 +1301,20 @@ a.header-cta.btn-line {
 
 .faq-a {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 12px;
   padding: 0 16px 16px;
   color: var(--muted-foreground);
   font-size: 0.92rem;
+  text-align: center;
 }
 
 /* ===== Area ===== */
 .area-list {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
   margin-top: 24px;
 }
@@ -1295,12 +1328,14 @@ a.header-cta.btn-line {
   color: var(--brand-deepest);
   font-weight: 800;
   box-shadow: 0 4px 10px rgba(18, 59, 86, 0.05);
+  text-align: center;
 }
 
 .area-note {
   margin-top: 16px;
   color: var(--muted-foreground);
   font-size: 0.9rem;
+  text-align: center;
 }
 
 /* ===== Footer ===== */
@@ -1308,11 +1343,14 @@ a.header-cta.btn-line {
   background: var(--brand-deepest);
   color: rgba(255, 255, 255, 0.88);
   padding: 36px 0 28px;
+  text-align: center;
 }
 
 .footer-grid {
   display: grid;
   gap: 24px;
+  justify-items: center;
+  text-align: center;
 }
 
 @media (min-width: 768px) {
@@ -1339,6 +1377,8 @@ a.header-cta.btn-line {
 .footer-nav {
   display: grid;
   gap: 10px;
+  justify-items: center;
+  text-align: center;
 }
 
 .footer-nav a {
@@ -1354,11 +1394,13 @@ a.header-cta.btn-line {
   border-top: 1px solid rgba(255, 255, 255, 0.15);
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.65);
+  text-align: center;
 }
 
 .footer-tel {
   margin-top: 10px;
   font-size: 0.9rem;
+  text-align: center;
 }
 
 .footer-tel a {
