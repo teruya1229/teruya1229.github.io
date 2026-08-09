@@ -450,7 +450,7 @@ a.header-cta.btn-line {
   }
 }
 
-/* ===== Photo placeholders ===== */
+/* ===== Photo placeholders / media ===== */
 .photo-slot {
   display: flex;
   flex-direction: column;
@@ -488,6 +488,108 @@ a.header-cta.btn-line {
 .photo-slot--soft {
   border-color: rgba(7, 89, 133, 0.25);
   color: var(--brand-deep);
+}
+
+.photo-slot--media {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  gap: 0;
+}
+
+.photo-slot--contain {
+  background: #f3f9fc;
+}
+
+.photo-slot__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-slot__img--contain {
+  object-fit: contain;
+  background: #f3f9fc;
+}
+
+.photo-slot__img--hero,
+.photo-slot__img--floor-wax {
+  object-position: center 62%;
+}
+
+.photo-slot__img--concrete-after,
+.photo-slot__img--during {
+  object-position: center 40%;
+}
+
+.photo-slot--ba {
+  display: block;
+  padding: 8px;
+  background: #f3f9fc;
+}
+
+.inline-ba {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  height: 100%;
+}
+
+.inline-ba__item {
+  margin: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.inline-ba__item .ba-label {
+  margin-bottom: 4px;
+  text-align: left;
+}
+
+.inline-ba__item img {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid rgba(7, 89, 133, 0.2);
+  background: #fff;
+}
+
+.photo-collage {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  background: var(--warm-soft);
+}
+
+.photo-collage__main,
+.photo-collage__stack img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid rgba(242, 164, 68, 0.35);
+}
+
+.photo-collage__main {
+  aspect-ratio: auto;
+  min-height: 0;
+}
+
+.photo-collage__stack {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 4px;
+  min-height: 0;
+}
+
+.pressure-extra {
+  margin-top: 16px;
 }
 
 /* ===== Cards ===== */
@@ -551,7 +653,7 @@ a.header-cta.btn-line {
   flex: 1;
 }
 
-/* 水まわり主力カード：写真枠を4:3で揃え、将来の実写真もcoverで収める */
+/* 水まわり主力カード：写真枠を4:3で揃え、実写真を収める */
 .section--water .card-grid--2 > .service-card:not(.service-card--featured) > .photo-slot {
   aspect-ratio: 4 / 3;
   flex-shrink: 0;
@@ -559,12 +661,34 @@ a.header-cta.btn-line {
   overflow: hidden;
 }
 
-.section--water .service-card > .photo-slot img {
+.section--water .service-card > .photo-slot > .photo-slot__img {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.section--water .service-card > .photo-slot--contain > .photo-slot__img {
+  object-fit: contain;
+  background: #f3f9fc;
+}
+
+.section--water .service-card--featured > .photo-collage {
+  aspect-ratio: 4 / 3;
+  flex-shrink: 0;
+}
+
+.floor-card > .photo-slot--media > .photo-slot__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.floor-card > .photo-slot--media {
+  position: relative;
+  overflow: hidden;
 }
 
 .section--floor {
@@ -934,6 +1058,18 @@ a.header-cta.btn-line {
   border-radius: var(--radius);
   padding: 14px;
   box-shadow: 0 8px 18px rgba(18, 59, 86, 0.06);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.ba-card > h3 {
+  margin-bottom: 10px;
+}
+
+.ba-card .ba-composite,
+.ba-card .ba-pair {
+  margin-top: auto;
 }
 
 .ba-pair {
@@ -941,6 +1077,30 @@ a.header-cta.btn-line {
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-top: 10px;
+}
+
+.ba-pair .photo-slot--media {
+  position: relative;
+  overflow: hidden;
+}
+
+.ba-pair .photo-slot__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ba-composite {
+  margin-top: 10px;
+}
+
+.ba-composite .photo-slot__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .ba-label {
@@ -953,6 +1113,49 @@ a.header-cta.btn-line {
 
 .works-scene {
   margin-top: 20px;
+}
+
+.works-scene .photo-slot--media {
+  position: relative;
+  overflow: hidden;
+}
+
+.works-scene .photo-slot__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-grid .photo-slot--media {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid .photo-slot__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pressure-card > .photo-slot--ba {
+  flex-shrink: 0;
+}
+
+.pressure-extra .photo-slot--media {
+  position: relative;
+  overflow: hidden;
+}
+
+.pressure-extra .photo-slot__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* ===== FAQ ===== */
