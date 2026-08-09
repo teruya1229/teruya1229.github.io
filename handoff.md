@@ -1,4 +1,4 @@
-更新日: 2026-08-05
+更新日: 2026-08-09
 
 ## 前提（読む順）
 
@@ -8,6 +8,16 @@
 4. 公開版参照（任意）：`https://teruya1229.github.io/ops/status/` / `https://teruya1229.github.io/ops/handoff/`
 
 ## フェーズ
+
+**ハウスクリーニングLP 新規公開完了（2026-08-09）**
+
+- 対象：`house-cleaning/`（`index.html` / `style.css` / `script.js`）＋家庭向けトップ内部リンク1件＋ルート sitemap
+- 実装commit：`0a467a66be3d26d1194af241e01cfb4d214985db`（`feat: add house cleaning landing page`）
+- 公開URL：`https://teruya1229.github.io/house-cleaning/`
+- 主役：水まわり清掃＋ベランダ／駐車場高圧洗浄。エアコンは同時施工クロスセルのみ（専用LP誘導）
+- 除外：洗濯機・空室清掃・2週間空き時間パック（空室清掃は後日別LP）
+- 公開確認：`?v=0a467a6`（PC／390px）OK。Deploy success（run 31309968485）。実機確認未完了（物理スマートフォン未使用）
+- **結論：新規LPの実装・公開確認まで完了。次は実機確認・実写真差し替え・計測**
 
 **FAQページSEO整理・内部リンク整理 完了（2026-08-05）**
 
@@ -72,13 +82,16 @@
 - 完全分解LP debug：`https://teruya1229.github.io/complete-disassembly/?debug=1`
 - 広告番頭（内部用）：`https://teruya1229.github.io/ops/ad-bantou/`
 - 業務LP：`https://teruya1229.github.io/business-cleaning/`
+- **ハウスクリーニングLP：`https://teruya1229.github.io/house-cleaning/`**
+- ハウスクリーニングLP debug：`https://teruya1229.github.io/house-cleaning/?debug=1`
 - 施工事例一覧：`https://teruya1229.github.io/cursor-test/cases.html`
 
 ## 現在の状態（要約）
 
 | ページ | パス | 状態 |
 |--------|------|------|
-| 家庭LP（南部） | `cursor-test/index.html` | **第2弾完了（2026-07-27 / `77d9b03`）**：mid-cta・bottom-cta削除、料金details3・768–979px1列、画像縮小、767pxナビ横スクロール。公開確認OK・再実装不要。FAQ9 + JSON-LD、AIまとめ、Instagram事例、cases導線、構造化データ、LINE優先維持。**中部LP内部リンク2・浦添LP内部リンク1** |
+| 家庭LP（南部） | `cursor-test/index.html` | **第2弾完了（2026-07-27 / `77d9b03`）**：mid-cta・bottom-cta削除、料金details3・768–979px1列、画像縮小、767pxナビ横スクロール。公開確認OK・再実装不要。FAQ9 + JSON-LD、AIまとめ、Instagram事例、cases導線、構造化データ、LINE優先維持。**中部LP内部リンク2・浦添LP内部リンク1**。**2026-08-09：水回りカードへ house-cleaning 内部リンク1件追加（`0a467a6`）** |
+| **ハウスクリーニングLP** | `house-cleaning/` | **2026-08-09 新規作成・公開確認OK**（`0a467a6`、ゴール達成型）。水まわり＋高圧洗浄。確定料金・セット優先・LINE写真査定最大20％OFF。FAQ8 + JSON-LD一致、構造化データ、GA4 `house_cleaning_lp`、スマホ固定CTA。写真は差し替え枠。実機確認未完了 |
 | **中部家庭LP** | `cursor-test/central.html` | **2026-06-09 新規作成・公開確認済み**。スマホ固定CTA / build表示 / 南城市表現 / ナビ / 料金表調整済み。FAQ9 + JSON-LD、構造化データ、GA4 `central_lp` 計測済み。ルート sitemap 登録済み。**浦添LPへの内部リンク1箇所追加済み** |
 | **南城市LP** | `cursor-test/nanjo.html` | **2026-06-10 既存刷新・公開確認OK**（`dbc94e3`、ゴール達成型）。本拠地大里・南部応援価格8,000円/完全分解14,000円。FAQ8 + JSON-LD一致、構造化データ、GA4 `nanjo_lp` 計測済み。sitemap `lastmod` 更新のみ |
 | **豊見城市LP** | `cursor-test/tomigusuku.html` | **2026-06-10 既存刷新・公開確認OK**（`8322aba`、ゴール達成型）。軽微修正 `b73db60`。南部応援価格8,000円/完全分解14,000円/お掃除機能付き15,000円。FAQ8 + JSON-LD一致、構造化データ、GA4 `tomigusuku_lp` 計測済み。sitemap `lastmod` 更新のみ。index/south/他LP/ブログから内部リンク済み |

@@ -1,10 +1,44 @@
-更新日: 2026-08-05
+更新日: 2026-08-09
 
 ## 次にやるべき1手
 
-家庭向けLPの追加修正は行わず、GA4・Search Console・問い合わせ実績を計測する。新しい実データまたは明確な不具合が出た場合だけ最小修正する。
+ハウスクリーニングLP（`house-cleaning/`）は公開済み。実機確認（物理スマートフォン）と、実写真差し替え・Search Console登録確認を進める。エアコン家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
 
 ## 本日やったこと
+
+### 2026-08-09（ハウスクリーニングLP 新規実装・公開確認完了）
+
+水まわり清掃・ベランダ／駐車場高圧洗浄を主役としたハウスクリーニングLPを新規作成し、GitHub Pagesへ公開。公開確認まで完了。
+
+**【公開完了】**
+
+- 日時：2026年8月9日
+- 実装commit：`0a467a66be3d26d1194af241e01cfb4d214985db`（`feat: add house cleaning landing page`）
+- 変更ファイル：`house-cleaning/index.html` / `house-cleaning/style.css` / `house-cleaning/script.js` / `cursor-test/index.html`（水回りカードへ内部リンク1件） / `sitemap.xml`
+- 公開URL：`https://teruya1229.github.io/house-cleaning/`
+- 公開確認URL：
+  - `https://teruya1229.github.io/house-cleaning/?v=0a467a6`
+  - `https://teruya1229.github.io/house-cleaning/?debug=1&v=0a467a6`
+  - `https://teruya1229.github.io/cursor-test/?v=0a467a6`
+  - `https://teruya1229.github.io/sitemap.xml?v=0a467a6`
+- GitHub Actions「Deploy to GitHub Pages」：completed / success（run 31309968485）
+
+**【実装内容】**
+
+- v0採用版v5の構成・配色を静的HTML/CSSへ変換（水まわり／高圧洗浄／料金／エアコン同時施工案内／理由／ビフォーアフター枠／流れ／FAQ／対応エリア／最終CTA）
+- 確定料金（税込）を掲載。セット料金を単品より大きく先に表示。仮料金・作業時間プレースホルダーなし
+- 写真は差し替え枠のみ（実在しない画像URLなし）。洗濯機・空室清掃・2週間空き時間パックは非掲載
+- LINE主CTA（`https://lin.ee/tsilra6`）、スマホ固定バー、PCヘッダーCTAの同時表示なし
+- SEO：title / description / canonical / OGP / Twitter / robots / LocalBusiness / Service / BreadcrumbList / FAQPage（FAQ実表示とJSON-LD一致）
+- GA4：`G-X8LKLFDL3G` / `page_type: house_cleaning_lp` / `page_slug: /house-cleaning/` / `cta_click` / `?debug=1`で遷移停止＋「計測OK」
+- 家庭向けトップの水回りクリーニングカードへ「水まわり・高圧洗浄の料金を見る」リンク追加（退去時・入居前カードは未変更）
+- ルート `sitemap.xml` に house-cleaning を追加
+
+**【公開確認】**
+
+- Browser番頭共通Chrome + Chrome DevTools MCPでPC（1440）／390px確認
+- HTTP 200、確定料金反映、横スクロールなし、Consoleエラーなし、FAQ開閉OK、debug計測OK
+- 実機確認未完了（物理スマートフォン未使用）
 
 ### 2026-08-05（FAQページSEO整理・内部リンク整理 実装・公開確認完了）
 
