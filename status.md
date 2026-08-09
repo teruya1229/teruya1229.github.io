@@ -6,6 +6,35 @@
 
 ## 本日やったこと
 
+### 2026-08-09（ハウスクリーニングLP 写真構成・セクション整理 公開確認完了）
+
+実施工写真反映後の重複とレイアウトを整理し、公開確認まで完了。
+
+**【公開完了】**
+
+- 日時：2026年8月9日
+- 実装commit：`43f6411c0e80b71057acaf097afa5061386065b9`（`fix: refine cleaning photo hierarchy and section layout`）
+- 変更ファイル：`house-cleaning/index.html` / `house-cleaning/style.css`
+- 公開URL：`https://teruya1229.github.io/house-cleaning/`
+- 公開確認URL：
+  - `https://teruya1229.github.io/house-cleaning/?v=43f6411`
+  - `https://teruya1229.github.io/house-cleaning/?debug=1&v=43f6411`
+- GitHub Pages：completed / success（run 31315859778）
+
+**【整理内容】**
+
+- 大きな単独写真2か所を削除（作業風景 `pressure_concrete_during`／高圧洗浄施工後単独 `pressure_concrete_after`）。画像ファイルは残置・未参照
+- 高圧洗浄：外壁BA（作業前／後）を主役にし、ベランダ・駐車場は写真なしの料金カードへ分離。close写真は未掲載のまま残置
+- 作業事例：3件（レンジフード／浴室／トイレ）。外壁事例を削除し高圧洗浄セクションとの重複解消
+- 床：PC／モバイルともニス左・ワックス右。床セクションのみ中央揃え
+- 水まわり5点セット：本文の5項目再列挙を削除、コンパクト料金表示、大空白解消
+
+**【公開確認】**
+
+- Browser番頭共通Chrome + Chrome DevTools MCPでPC1440／390px確認
+- HTTP 200、画像404なし、横スクロールなし、計測OK、Consoleエラーなし
+- 実機確認未完了（物理スマートフォン未使用）
+
 ### 2026-08-09（ハウスクリーニングLP 実施工写真反映 公開確認完了）
 
 Google Drive整理済みの実際の施工写真をハウスクリーニングLPへ反映し、公開確認まで完了。
