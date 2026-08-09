@@ -13,7 +13,7 @@
 
 - 対象：`house-cleaning/index.html` / `style.css` / `images/`（採用13枚）
 - 実装commit：`31f7fdd8253f71b6a3a301a83423ed44bd78b942`（`feat: add real cleaning photos to house cleaning LP`）
-- 記録commit：別途 `docs: record house cleaning photo update`
+- 記録commit：`b0de0eb03fb888d8958a0fb339f30e6fa8c86762`（`docs: record house cleaning photo update`）
 - 公開URL：`https://teruya1229.github.io/house-cleaning/?v=31f7fdd`
 - debug：`https://teruya1229.github.io/house-cleaning/?debug=1&v=31f7fdd`
 - GitHub Pages：completed / success（run 31314398477）
@@ -335,7 +335,7 @@
 
 ## 次にやるべき1手
 
-家庭向けLPの追加修正は行わず、GA4・Search Console・問い合わせ実績を計測する。新しい実データまたは明確な不具合が出た場合だけ最小修正する。
+ハウスクリーニングLPの物理スマートフォン実機確認。家庭向けLPの追加修正は急がず、GA4・Search Console・問い合わせ実績を計測する。新しい実データまたは明確な不具合が出た場合だけ最小修正する。
 
 ## 判断基準
 
