@@ -2,9 +2,51 @@
 
 ## 次にやるべき1手
 
-ハウスクリーニングLPの実写真差し替えと物理スマートフォン実機確認。Search Console登録確認。エアコン家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
+ハウスクリーニングLPの物理スマートフォン実機確認。Search Console登録確認。エアコン家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
 
 ## 本日やったこと
+
+### 2026-08-09（ハウスクリーニングLP 実施工写真反映 公開確認完了）
+
+Google Drive整理済みの実際の施工写真をハウスクリーニングLPへ反映し、公開確認まで完了。
+
+**【公開完了】**
+
+- 写真反映日：2026年8月9日
+- 実装commit：`31f7fdd8253f71b6a3a301a83423ed44bd78b942`（`feat: add real cleaning photos to house cleaning LP`）
+- 変更ファイル：`house-cleaning/index.html` / `house-cleaning/style.css` / `house-cleaning/images/*`（採用13枚）
+- 公開URL：`https://teruya1229.github.io/house-cleaning/`
+- 公開確認URL：
+  - `https://teruya1229.github.io/house-cleaning/?v=31f7fdd`
+  - `https://teruya1229.github.io/house-cleaning/?debug=1&v=31f7fdd`
+- GitHub Pages run：https://github.com/teruya1229/teruya1229.github.io/actions/runs/31314398477 （completed / success）
+
+**【使用した画像一覧（01_selected 13枚）】**
+
+- `floor_wax_after.jpg`（ヒーロー／床ワックス）
+- `floor_varnish_before_after.jpg`（フローリングニス）
+- `water_range_hood_before_after.jpg`（レンジフード／5点セットコラージュ／作業事例）
+- `water_bath_before_after.jpg`（浴室／5点セットコラージュ／作業事例）
+- `water_small_basin_before_after.jpg`（洗面台／5点セットコラージュ）
+- `water_urinal_after.jpg`（トイレカード／作業事例）
+- `water_urinal_before.jpg`（作業事例）
+- `pressure_wall_before.jpg` / `pressure_wall_after.jpg`（高圧洗浄主事例／作業事例）
+- `pressure_wall_close_before.jpg` / `pressure_wall_close_after.jpg`（高圧洗浄補助事例）
+- `pressure_concrete_after.jpg`（高圧洗浄施工後補助）
+- `pressure_concrete_during.jpg`（作業風景）
+
+**【使用しなかった画像（02_hold 4枚）】**
+
+- `hold_shower_mirror_before_reflection.jpg`：鏡への撮影者映り込み
+- `hold_shower_mirror_after.jpg`：対になる作業前を掲載できないため
+- `hold_bath_apron_before_rotated.jpg` / `hold_bath_apron_after_rotated.jpg`：向き・構図不一致、施工後が弱い
+
+**【公開確認】**
+
+- Browser番頭共通Chrome + Chrome DevTools MCPでPC1440／390px確認
+- HTTP 200、新写真反映、画像404なし、横スクロールなし、LINE CTA／FAQ／debug「計測OK」、Consoleエラーなし
+- キッチン・エアコン枠は該当写真なしのためプレースホルダー維持（別サービス写真で偽装なし）
+- 実機確認未完了（物理スマートフォン未使用）
 
 ### 2026-08-09（ハウスクリーニングLP 床サービス追加・写真枠揃え 公開確認完了）
 

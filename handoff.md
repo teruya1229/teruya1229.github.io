@@ -9,6 +9,19 @@
 
 ## フェーズ
 
+**ハウスクリーニングLP 実施工写真反映 完了（2026-08-09）**
+
+- 対象：`house-cleaning/index.html` / `style.css` / `images/`（採用13枚）
+- 実装commit：`31f7fdd8253f71b6a3a301a83423ed44bd78b942`（`feat: add real cleaning photos to house cleaning LP`）
+- 記録commit：別途 `docs: record house cleaning photo update`
+- 公開URL：`https://teruya1229.github.io/house-cleaning/?v=31f7fdd`
+- debug：`https://teruya1229.github.io/house-cleaning/?debug=1&v=31f7fdd`
+- GitHub Pages：completed / success（run 31314398477）
+- 使用画像：`01_selected` 13枚（床・水まわり・高圧洗浄・作業事例）。`02_hold` 4枚は未使用（映り込み／構図不一致）
+- Browser番頭確認：PC1440／390px OK。写真404なし、横スクロールなし、計測OK、Consoleエラーなし
+- 実機確認未完了（物理スマートフォン未使用）
+- **結論：実施工写真の反映・公開確認まで完了。次は物理スマホ実機確認**
+
 **ハウスクリーニングLP 床サービス追加・写真枠揃え 完了（2026-08-09）**
 
 - 対象：`house-cleaning/index.html` / `style.css` / `script.js`
@@ -17,7 +30,7 @@
 - 変更：水まわり写真枠4:3統一／主力②床洗浄＋ワックス・フローリング水性ニス追加／高圧洗浄を③へ／FAQ10件一致
 - 税込：ワックス550円/㎡（最低16,500／50㎡例27,500）・ニス1,430円/㎡（最低27,500／40㎡例57,200）。最大20％OFF対象外
 - Deploy success（run 31311685447）。実機確認未完了（物理スマートフォン未使用）
-- **結論：床サービス追加の実装・公開確認まで完了。次は実写真差し替えと物理スマホ確認**
+- **結論：床サービス追加の実装・公開確認まで完了。実写真差し替えは上記フェーズを正とする**
 
 **ハウスクリーニングLP 新規公開完了（2026-08-09）**
 
