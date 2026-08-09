@@ -2,9 +2,38 @@
 
 ## 次にやるべき1手
 
-ハウスクリーニングLP（`house-cleaning/`）は公開済み。実機確認（物理スマートフォン）と、実写真差し替え・Search Console登録確認を進める。エアコン家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
+ハウスクリーニングLPの実写真差し替えと物理スマートフォン実機確認。Search Console登録確認。エアコン家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
 
 ## 本日やったこと
+
+### 2026-08-09（ハウスクリーニングLP 床サービス追加・写真枠揃え 公開確認完了）
+
+公開済みハウスクリーニングLPへ床主力サービスを追加し、水まわりカード写真枠をPCで揃えて公開確認まで完了。
+
+**【公開完了】**
+
+- 日時：2026年8月9日
+- 実装commit：`956170a1a0d450e9fbb46e079a87f9b08b821c09`（`feat: add floor coating services to house cleaning LP`）
+- 変更ファイル：`house-cleaning/index.html` / `house-cleaning/style.css` / `house-cleaning/script.js`
+- 公開確認URL：
+  - `https://teruya1229.github.io/house-cleaning/?v=956170a`
+  - `https://teruya1229.github.io/house-cleaning/?debug=1&v=956170a`
+- GitHub Actions「Deploy to GitHub Pages」：completed / success（run 31311685447）
+
+**【実装内容】**
+
+- 水まわりサービスカード写真枠をすべて4:3に統一。PC2列で同一行の写真枠・カード高さを揃え、将来の実写真は`object-fit: cover`前提
+- 主力サービス②として床洗浄＋高耐久ワックス／フローリング水性ウレタンニスを追加。高圧洗浄は③へ変更
+- 税込料金：ワックス550円/㎡・最低16,500円・50㎡例27,500円／ニス1,430円/㎡・最低27,500円・40㎡例57,200円
+- 床は組み合わせ割・最大20％OFF対象外を明記。FAQ2件追加（表示10件＝JSON-LD一致）
+- H1・SEO・Service構造化データへ床を反映。canonical・GA4・既存料金・LINE URLは維持
+
+**【公開確認】**
+
+- Browser番頭共通Chrome + Chrome DevTools MCPでPC1440／390px確認
+- 写真枠揃え・床セクション順・税込価格・FAQ10・debug「計測OK」・横スクロールなし・Consoleエラーなし
+- 実機確認未完了（物理スマートフォン未使用）
+- 次の作業：実写真差し替えと物理スマホ確認
 
 ### 2026-08-09（ハウスクリーニングLP 新規実装・公開確認完了）
 
