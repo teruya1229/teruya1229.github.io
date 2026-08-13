@@ -1,4 +1,4 @@
-更新日: 2026-08-09
+更新日: 2026-08-13
 
 ## 前提（読む順）
 
@@ -8,6 +8,19 @@
 4. 公開版参照（任意）：`https://teruya1229.github.io/ops/status/` / `https://teruya1229.github.io/ops/handoff/`
 
 ## フェーズ
+
+**ハウスクリーニングLP 写真・料金表示のピンポイント修正 完了（2026-08-13）**
+
+- 対象：`house-cleaning/index.html`（`style.css` は変更なし）
+- 実装commit：`2945524bfcf40d59d4c54707d46349acad9166c7`（`fix: refine house cleaning service cards and pricing`）
+- 公開URL：`https://teruya1229.github.io/house-cleaning/?v=2945524`
+- 内容：キッチンの写真なし紹介カードを削除／キッチンサービス・セット料金・単品料金は維持／エアコン欄へ家庭LPの1枚型ビフォーアフター画像を反映／セット料金3枚へ「一般的な汚れ」「軽い汚れの最安」を追加
+- title・description・H1・canonical・GA4・CTA・既存上限料金は変更なし
+- ローカルPC・390px：Browser番頭共通Chromeで確認済み
+- 公開URL：ユーザー本人が目視確認し「OK」
+- 公開画面のBrowser番頭確認は未実施
+- 物理スマートフォン実機確認は未完了
+- **結論：ピンポイント修正の実装・push・ユーザー公開確認OKまで完了。次は物理スマホ実機確認**
 
 **ハウスクリーニングLP 写真構成・セクション整理 完了（2026-08-09）**
 
@@ -125,7 +138,7 @@
 | ページ | パス | 状態 |
 |--------|------|------|
 | 家庭LP（南部） | `cursor-test/index.html` | **第2弾完了（2026-07-27 / `77d9b03`）**：mid-cta・bottom-cta削除、料金details3・768–979px1列、画像縮小、767pxナビ横スクロール。公開確認OK・再実装不要。FAQ9 + JSON-LD、AIまとめ、Instagram事例、cases導線、構造化データ、LINE優先維持。**中部LP内部リンク2・浦添LP内部リンク1**。**2026-08-09：水回りカードへ house-cleaning 内部リンク1件追加（`0a467a6`）** |
-| **ハウスクリーニングLP** | `house-cleaning/` | **2026-08-09 新規作成**（`0a467a6`）＋**床サービス追加・写真枠揃え公開確認OK**（`956170a`）。主力①水まわり／②床ワックス・ニス／③高圧洗浄。床は税込㎡単価・最大20％OFF対象外。FAQ10 + JSON-LD一致、GA4 `house_cleaning_lp`維持。写真は差し替え枠。実機確認未完了 |
+| **ハウスクリーニングLP** | `house-cleaning/` | **2026-08-13 ピンポイント修正**（`2945524`）。キッチン写真なし紹介カード削除（サービス・セット・単品料金は維持）。エアコン欄へ家庭LPの1枚型BA画像反映。セット料金3枚へ一般／最安料金追加。ローカルPC・390pxはBrowser番頭確認済み。公開URLはユーザー本人が目視確認しOK。公開画面のBrowser番頭確認は未実施。実機確認未完了。title／description／H1／canonical／GA4／CTA／上限料金は変更なし |
 | **中部家庭LP** | `cursor-test/central.html` | **2026-06-09 新規作成・公開確認済み**。スマホ固定CTA / build表示 / 南城市表現 / ナビ / 料金表調整済み。FAQ9 + JSON-LD、構造化データ、GA4 `central_lp` 計測済み。ルート sitemap 登録済み。**浦添LPへの内部リンク1箇所追加済み** |
 | **南城市LP** | `cursor-test/nanjo.html` | **2026-06-10 既存刷新・公開確認OK**（`dbc94e3`、ゴール達成型）。本拠地大里・南部応援価格8,000円/完全分解14,000円。FAQ8 + JSON-LD一致、構造化データ、GA4 `nanjo_lp` 計測済み。sitemap `lastmod` 更新のみ |
 | **豊見城市LP** | `cursor-test/tomigusuku.html` | **2026-06-10 既存刷新・公開確認OK**（`8322aba`、ゴール達成型）。軽微修正 `b73db60`。南部応援価格8,000円/完全分解14,000円/お掃除機能付き15,000円。FAQ8 + JSON-LD一致、構造化データ、GA4 `tomigusuku_lp` 計測済み。sitemap `lastmod` 更新のみ。index/south/他LP/ブログから内部リンク済み |
