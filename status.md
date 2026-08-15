@@ -6,6 +6,58 @@
 
 ## 本日やったこと
 
+### 2026-08-15（LP信頼表現整合・south LocalBusiness補強）
+
+料金・割引・デザインには触れず、信頼表現の矛盾解消と `south.html` の事業者構造化データ補強のみ実施。実装・ローカル確認・push・公開URL確認まで完了。
+
+**【LP trust consistency 公開確認完了】**
+
+- 日時：2026年8月15日
+- 実装commit：`4b787ef28f2fca9b2076ea8414e15f315454b6e3`（`fix: align LP trust claims and entity data`）
+- 変更ファイル：`complete-disassembly/index.html` / `cursor-test/index.html` / `cursor-test/south.html` / `cursor-test/central.html` / `cursor-test/urasoe.html` / `cursor-test/nanjo.html` / `cursor-test/yaese.html` / `cursor-test/yonabaru.html` / `cursor-test/haebaru.html` / `cursor-test/naha.html` / `cursor-test/itoman.html` / `cursor-test/tomigusuku.html`
+- CSS・JavaScript・画像は未変更
+- title・meta description・H1・canonical・GA4・CTA・電話番号・料金・複数台割引・作業時間は未変更
+
+**【追加料金表現】**
+
+- 「追加料金なし」断定を、事前案内・作業前説明の方針表現へ置換
+- 既存の「説明なく請求しない」「ご納得いただいてから作業」等の方針表現は維持
+
+**【改善断定の中立化】**
+
+- 完全分解LPの「改善しなかった」表現を作業範囲の中立表現へ置換
+- index／central のカビ風断定を中立化
+- yonabaru／haebaru／naha／tomigusuku の成功率・改善期待断定を中立化
+- yaese の咳相談・断定回避文、itoman の相談傾向は維持
+
+**【south.html LocalBusiness】**
+
+- `@id`：`https://teruya1229.github.io/#bc-service`
+- `openingHoursSpecification`：月〜日 09:00〜18:00
+- `sameAs`：Instagram `bcservicenanjyo`
+- description へ那覇市を追加し、areaServed（南部7市町）と整合
+- 評価5.0・口コミ13件・住所・電話・geo・priceRange・OfferCatalogは未変更
+- GBP再確認・再編集は未実施（2026-08-15確認済み情報を使用）
+
+**【確認】**
+
+- Browser番頭確認環境：共通Chrome CDP / Chrome DevTools MCP
+- ローカルPC 1440px・390px：修正文・CTA・料金・割引・横スクロールなし・Consoleエラーなし
+- 公開URL（クエリなし）を同環境で確認：
+  - `https://teruya1229.github.io/complete-disassembly/`
+  - `https://teruya1229.github.io/cursor-test/`
+  - `https://teruya1229.github.io/cursor-test/south.html`
+  - `https://teruya1229.github.io/cursor-test/central.html`
+  - `https://teruya1229.github.io/cursor-test/urasoe.html`
+  - `https://teruya1229.github.io/cursor-test/yonabaru.html`
+  - `https://teruya1229.github.io/cursor-test/haebaru.html`
+  - `https://teruya1229.github.io/cursor-test/naha.html`
+  - `https://teruya1229.github.io/cursor-test/tomigusuku.html`
+- 公開画面で修正文・CTA・料金・割引・横スクロールなし・Consoleエラーなしを確認
+- 物理スマートフォン実機確認は未完了
+- 作業時間統一は未実施
+- 地域別施工事例追加は未実施
+
 ### 2026-08-15（AEO LP 料金明確化・複数台割引）
 
 既存LPへ地域別料金の確認と2台目以降1台につき1,000円引きを最小追加。実装・ローカル確認・push・公開URL確認まで完了。

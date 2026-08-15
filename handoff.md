@@ -9,6 +9,29 @@
 
 ## フェーズ
 
+**LP信頼表現整合・south LocalBusiness補強 完了（2026-08-15）**
+
+- 対象：`complete-disassembly/index.html` と `cursor-test` の家庭向け／地域LP 12ファイル
+- 実装commit：`4b787ef28f2fca9b2076ea8414e15f315454b6e3`（`fix: align LP trust claims and entity data`）
+- 公開URL：
+  - `https://teruya1229.github.io/complete-disassembly/`
+  - `https://teruya1229.github.io/cursor-test/`
+  - `https://teruya1229.github.io/cursor-test/south.html`
+  - `https://teruya1229.github.io/cursor-test/central.html`
+  - `https://teruya1229.github.io/cursor-test/urasoe.html`
+  - `https://teruya1229.github.io/cursor-test/yonabaru.html`
+  - `https://teruya1229.github.io/cursor-test/haebaru.html`
+  - `https://teruya1229.github.io/cursor-test/naha.html`
+  - `https://teruya1229.github.io/cursor-test/tomigusuku.html`
+- 内容：「追加料金なし」断定の解消／改善・成功率断定の中立化／south LocalBusiness に `@id`・営業時間・sameAs を追加し description を南部7市町へ整合
+- 料金・複数台割引・作業時間・title・description・H1・canonical・GA4・CTAは未変更
+- Browser番頭共通Chrome：ローカルと公開URLを PC1440／390px で確認。横スクロールなし、Consoleエラーなし
+- GBP再編集は未実施
+- 物理スマートフォン実機確認は未完了
+- 作業時間統一は未実施
+- 地域別施工事例追加は未実施
+- **結論：信頼表現整合の実装・push・公開確認まで完了。次は物理スマホ実機確認**
+
 **AEO LP 料金明確化・複数台割引 完了（2026-08-15）**
 
 - 対象：`complete-disassembly/index.html` と `cursor-test` の家庭向け／地域LP／FAQ 13ファイル
