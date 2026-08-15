@@ -9,6 +9,31 @@
 
 ## フェーズ
 
+**エアコン作業時間表記の統一 完了（2026-08-15）**
+
+- 対象：`complete-disassembly/index.html` と `cursor-test` の家庭向け／中部／浦添／市町村／FAQ 12ファイル（`south.html` は対象外）
+- 実装commit：`eb51ef9873b8c7c72fe052884ec0376095feb4f4`（`fix: standardize aircon service time estimates`）
+- 公開URL：
+  - `https://teruya1229.github.io/complete-disassembly/`
+  - `https://teruya1229.github.io/cursor-test/`
+  - `https://teruya1229.github.io/cursor-test/central.html`
+  - `https://teruya1229.github.io/cursor-test/urasoe.html`
+  - `https://teruya1229.github.io/cursor-test/nanjo.html`
+  - `https://teruya1229.github.io/cursor-test/yaese.html`
+  - `https://teruya1229.github.io/cursor-test/yonabaru.html`
+  - `https://teruya1229.github.io/cursor-test/haebaru.html`
+  - `https://teruya1229.github.io/cursor-test/naha.html`
+  - `https://teruya1229.github.io/cursor-test/itoman.html`
+  - `https://teruya1229.github.io/cursor-test/tomigusuku.html`
+  - `https://teruya1229.github.io/cursor-test/faq.html`
+- 内容：照屋さん確定の実作業基準（通常60〜90／お掃除通常90〜120／通常完全90〜150／お掃除完全120〜180）へFAQ・FAQPage・料金付近の時間表記を統一。内部記号は非表示
+- 料金・複数台割引・信頼表現・title・description・H1・canonical・GA4・CTA・施工事例実績時間は未変更
+- Browser番頭共通Chrome：ローカルと公開URLを PC1440／390px で確認。横スクロールなし、Consoleエラーなし
+- 物理スマートフォン実機確認は未完了
+- 地域別施工事例追加は未実施
+- Google Search Console再登録は未実施（今回対象外）
+- **結論：作業時間統一の実装・push・公開確認まで完了。次は物理スマホ実機確認**
+
 **LP信頼表現整合・south LocalBusiness補強 完了（2026-08-15）**
 
 - 対象：`complete-disassembly/index.html` と `cursor-test` の家庭向け／地域LP 12ファイル

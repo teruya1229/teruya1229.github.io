@@ -2,9 +2,55 @@
 
 ## 次にやるべき1手
 
-物理スマートフォン実機確認。作業時間統一は未実施。地域別施工事例追加は未実施。エアコン家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
+物理スマートフォン実機確認。地域別施工事例追加は未実施。エアコン家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
 
 ## 本日やったこと
+
+### 2026-08-15（エアコン作業時間表記の統一）
+
+照屋さん確定の実作業基準へ、家庭向け／地域／完全分解／FAQの作業時間表記を統一。実装・ローカル確認・push・公開URL確認まで完了。
+
+**【aircon service time 公開確認完了】**
+
+- 日時：2026年8月15日
+- 実装commit：`eb51ef9873b8c7c72fe052884ec0376095feb4f4`（`fix: standardize aircon service time estimates`）
+- 変更ファイル：`complete-disassembly/index.html` / `cursor-test/index.html` / `cursor-test/central.html` / `cursor-test/urasoe.html` / `cursor-test/nanjo.html` / `cursor-test/yaese.html` / `cursor-test/yonabaru.html` / `cursor-test/haebaru.html` / `cursor-test/naha.html` / `cursor-test/itoman.html` / `cursor-test/tomigusuku.html` / `cursor-test/faq.html`
+- CSS・JavaScript・画像・レイアウトは未変更
+- title・meta description・H1・canonical・GA4・CTA・LINE・電話・料金・複数台割引・信頼表現・施工事例の実績時間は未変更
+- `cursor-test/south.html` は対象外（変更なし）
+
+**【確定した作業時間（1台あたり）】**
+
+- 通常エアコン通常分解：60〜90分
+- お掃除機能付き通常分解：90〜120分
+- 通常エアコン完全分解：90〜150分
+- お掃除機能付き完全分解：120〜180分
+- 完全分解は通常分解へ30〜60分追加の目安
+- 機種・汚れ・設置状況により前後する旨を併記
+- 公開文面では N1／R1／KN1 等の内部記号は未使用
+
+**【確認】**
+
+- Browser番頭確認環境：共通Chrome CDP / Chrome DevTools MCP
+- ローカルPC 1440px・390px：確定時間・FAQ／FAQPage同期・CTA・料金・割引・横スクロールなし・Consoleエラーなし
+- 公開URL（クエリなし）を同環境で確認：
+  - `https://teruya1229.github.io/complete-disassembly/`
+  - `https://teruya1229.github.io/cursor-test/`
+  - `https://teruya1229.github.io/cursor-test/central.html`
+  - `https://teruya1229.github.io/cursor-test/urasoe.html`
+  - `https://teruya1229.github.io/cursor-test/nanjo.html`
+  - `https://teruya1229.github.io/cursor-test/yaese.html`
+  - `https://teruya1229.github.io/cursor-test/yonabaru.html`
+  - `https://teruya1229.github.io/cursor-test/haebaru.html`
+  - `https://teruya1229.github.io/cursor-test/naha.html`
+  - `https://teruya1229.github.io/cursor-test/itoman.html`
+  - `https://teruya1229.github.io/cursor-test/tomigusuku.html`
+  - `https://teruya1229.github.io/cursor-test/faq.html`
+- 公開画面で確定時間・FAQ／FAQPage同期・CTA・料金・割引・横スクロールなし・Consoleエラーなしを確認
+- 施工事例の「約2時間」等の実績値は維持
+- 物理スマートフォン実機確認は未完了
+- 地域別施工事例追加は未実施
+- Google Search Console再登録は未実施（今回対象外）
 
 ### 2026-08-15（LP信頼表現整合・south LocalBusiness補強）
 
