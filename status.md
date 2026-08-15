@@ -6,6 +6,64 @@
 
 ## 本日やったこと
 
+### 2026-08-15（AEO LP 料金明確化・複数台割引）
+
+既存LPへ地域別料金の確認と2台目以降1台につき1,000円引きを最小追加。実装・ローカル確認・push・公開URL確認まで完了。
+
+**【AEO LP pricing and discount 公開確認完了】**
+
+- 日時：2026年8月15日
+- 実装commit：`4f3c41f3e6eb3bc7234b7f18e3b83eaef2ff6bf9`（`fix: clarify LP pricing discounts and trust wording`）
+- 変更ファイル：`complete-disassembly/index.html` / `cursor-test/index.html` / `cursor-test/south.html` / `cursor-test/central.html` / `cursor-test/urasoe.html` / `cursor-test/nanjo.html` / `cursor-test/yaese.html` / `cursor-test/yonabaru.html` / `cursor-test/haebaru.html` / `cursor-test/naha.html` / `cursor-test/itoman.html` / `cursor-test/tomigusuku.html` / `cursor-test/faq.html`
+- CSS・JavaScript・画像は未変更
+- title・meta description・H1・canonical・GA4・CTA・電話番号・既存施工事例・作業時間・既存基本料金は未変更
+
+**【地域別料金】**
+
+- 完全分解LPの通常エアコンは `14,000円〜` を維持し、南部7市町14,000円／中部・浦添15,000円〜の注記を維持
+- お掃除機能付き完全分解は `23,000円〜` を維持
+- 南城市施工事例の14,000円は未変更
+
+**【複数台割引】**
+
+- 対象LPの主要料金欄へ「2台以上の同時予約で、2台目以降は1台につき1,000円引き」を1箇所追加
+- 完全分解LPの料金FAQ（画面・FAQPage）末尾へ「2台以上を同時にご予約の場合は、2台目以降を1台につき1,000円引きします。」を追記
+- `cursor-test/faq.html` の料金カテゴリーへ2台以上割引Q&Aを追加し、画面表示とFAQPageを一致
+
+**【医療・期間保証表現】**
+
+- 指定の年数保証フレーズは対象LPに残存なし（前回置換済み）
+- 症状の原因・改善断定の新規置換はなし。相談事例の「咳」等は断定せず残置
+
+**【GBP】**
+
+- Browser番頭共通ChromeでGoogleマップ公開ページを読取専用確認
+- 正式店名：BCサービス｜沖縄南部のエアコンクリーニング
+- 評価点：5.0／口コミ件数：13件
+- 住所：〒901-1204 沖縄県南城市大里稲嶺2127-34
+- 電話：050-1724-1338
+- 営業時間：月〜日 9:00〜18:00
+- GBP編集は未実施
+- 既存LP表示（5.0・13件）と一致したため数値は未変更
+
+**【確認】**
+
+- Browser番頭確認環境：共通Chrome CDP / Chrome DevTools MCP
+- ローカルPC 1440px・390px：地域別料金・複数台割引・FAQ・本文・CTA・横スクロールなし・Consoleエラーなし
+- 公開URL（クエリなし）を同環境で確認：
+  - `https://teruya1229.github.io/complete-disassembly/`
+  - `https://teruya1229.github.io/cursor-test/`
+  - `https://teruya1229.github.io/cursor-test/south.html`
+  - `https://teruya1229.github.io/cursor-test/central.html`
+  - `https://teruya1229.github.io/cursor-test/urasoe.html`
+  - `https://teruya1229.github.io/cursor-test/nanjo.html`
+  - `https://teruya1229.github.io/cursor-test/naha.html`
+  - `https://teruya1229.github.io/cursor-test/faq.html`
+- 公開画面で料金・複数台割引・本文・FAQ・CTA・横スクロールなし・Consoleエラーなしを確認
+- 物理スマートフォン実機確認は未完了
+- 作業時間統一は未実施
+- 地域別施工事例追加は未実施
+
 ### 2026-08-15（BCサービスLP AEO/GEO最小改善）
 
 既存LPの料金表示と信頼表現を最小修正。実装・ローカル確認・push・公開URL確認まで完了。

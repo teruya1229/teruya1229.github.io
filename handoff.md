@@ -9,6 +9,28 @@
 
 ## フェーズ
 
+**AEO LP 料金明確化・複数台割引 完了（2026-08-15）**
+
+- 対象：`complete-disassembly/index.html` と `cursor-test` の家庭向け／地域LP／FAQ 13ファイル
+- 実装commit：`4f3c41f3e6eb3bc7234b7f18e3b83eaef2ff6bf9`（`fix: clarify LP pricing discounts and trust wording`）
+- 公開URL：
+  - `https://teruya1229.github.io/complete-disassembly/`
+  - `https://teruya1229.github.io/cursor-test/`
+  - `https://teruya1229.github.io/cursor-test/south.html`
+  - `https://teruya1229.github.io/cursor-test/central.html`
+  - `https://teruya1229.github.io/cursor-test/urasoe.html`
+  - `https://teruya1229.github.io/cursor-test/nanjo.html`
+  - `https://teruya1229.github.io/cursor-test/naha.html`
+  - `https://teruya1229.github.io/cursor-test/faq.html`
+- 内容：完全分解の地域別料金維持／2台目以降1台につき1,000円引きを各LPへ追加／医療・期間保証の残存断定なし／GBP 5.0・13件を確認し既存表示と一致したため未変更
+- title・description・H1・canonical・GA4・CTA・作業時間・既存施工事例・既存基本料金は未変更
+- Browser番頭共通Chrome：ローカルと公開URLを PC1440／390px で確認。横スクロールなし、Consoleエラーなし
+- GBP編集は未実施
+- 物理スマートフォン実機確認は未完了
+- 作業時間統一は未実施
+- 地域別施工事例追加は未実施
+- **結論：料金明確化と複数台割引の実装・push・公開確認まで完了。次は物理スマホ実機確認**
+
 **BCサービスLP AEO/GEO最小改善 完了（2026-08-15）**
 
 - 対象：`complete-disassembly/index.html` と `cursor-test` の家庭向け／地域LP 11ファイル
