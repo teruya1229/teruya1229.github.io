@@ -1,4 +1,4 @@
-更新日: 2026-08-13
+更新日: 2026-08-15
 
 ## 前提（読む順）
 
@@ -8,6 +8,26 @@
 4. 公開版参照（任意）：`https://teruya1229.github.io/ops/status/` / `https://teruya1229.github.io/ops/handoff/`
 
 ## フェーズ
+
+**BCサービスLP AEO/GEO最小改善 完了（2026-08-15）**
+
+- 対象：`complete-disassembly/index.html` と `cursor-test` の家庭向け／地域LP 11ファイル
+- 実装commit：`b066d834db1b327438123b365ada34ce505a1c38`（`fix: clarify LP pricing and trust wording`）
+- 公開URL：
+  - `https://teruya1229.github.io/complete-disassembly/`
+  - `https://teruya1229.github.io/cursor-test/`
+  - `https://teruya1229.github.io/cursor-test/south.html`
+  - `https://teruya1229.github.io/cursor-test/central.html`
+  - `https://teruya1229.github.io/cursor-test/urasoe.html`
+  - `https://teruya1229.github.io/cursor-test/naha.html`
+- 内容：完全分解の地域別料金明確化／年数保証・医療効果断定の中立化／GBP 5.0・13件を確認できた画面と構造化データへ同期
+- title・description・H1・canonical・GA4・CTA・作業時間・既存施工事例は未変更
+- Browser番頭共通Chrome：ローカルと公開URLを PC1440／390px で確認。横スクロールなし、Consoleエラーなし
+- GBP編集は未実施
+- 物理スマートフォン実機確認は未完了
+- 作業時間統一は未実施
+- 地域別施工事例追加は未実施
+- **結論：AEO/GEO最小改善の実装・push・公開確認まで完了。次は物理スマホ実機確認**
 
 **ハウスクリーニングLP 写真・料金表示のピンポイント修正 完了（2026-08-13）**
 

@@ -1,10 +1,62 @@
-更新日: 2026-08-13
+更新日: 2026-08-15
 
 ## 次にやるべき1手
 
-ハウスクリーニングLPの物理スマートフォン実機確認。Search Console登録確認。エアコン家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
+物理スマートフォン実機確認。作業時間統一は未実施。地域別施工事例追加は未実施。エアコン家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
 
 ## 本日やったこと
+
+### 2026-08-15（BCサービスLP AEO/GEO最小改善）
+
+既存LPの料金表示と信頼表現を最小修正。実装・ローカル確認・push・公開URL確認まで完了。
+
+**【AEO/GEO最小改善 公開確認完了】**
+
+- 日時：2026年8月15日
+- 実装commit：`b066d834db1b327438123b365ada34ce505a1c38`（`fix: clarify LP pricing and trust wording`）
+- 変更ファイル：`complete-disassembly/index.html` / `cursor-test/index.html` / `cursor-test/south.html` / `cursor-test/central.html` / `cursor-test/urasoe.html` / `cursor-test/nanjo.html` / `cursor-test/yaese.html` / `cursor-test/yonabaru.html` / `cursor-test/haebaru.html` / `cursor-test/naha.html` / `cursor-test/itoman.html` / `cursor-test/tomigusuku.html`
+- CSS・JavaScript・画像は未変更
+- title・meta description・H1・canonical・GA4・CTA・電話番号・既存施工事例・作業時間は未変更
+
+**【料金】**
+
+- 完全分解LPの通常エアコン表示を `14,000円〜` にし、南部7市町14,000円／中部・浦添15,000円〜を注記
+- お掃除機能付き完全分解は `23,000円〜` を維持
+- AI検索向け概要・料金FAQ・FAQPage・Offer description を同じ地域差へ同期
+- 構造化データの最低価格 `14000` は維持
+- 南城市施工事例の14,000円は実案件表示のため未変更
+
+**【信頼表現】**
+
+- 年数による効果保証表現を作業範囲の中立表現へ置換
+- 症状の原因・改善断定を中立化。相談事例そのものは架空事例へ書き換えず、確認した汚れと実施作業のみ記載
+
+**【GBP】**
+
+- Browser番頭共通ChromeでGoogleマップ公開ページを読取専用確認
+- 正式店名：BCサービス｜沖縄南部のエアコンクリーニング
+- 評価点：5.0／口コミ件数：13件
+- 住所：〒901-1204 沖縄県南城市大里稲嶺2127-34
+- 電話：050-1724-1338
+- 営業時間：月〜日 9:00〜18:00
+- GBP編集は未実施
+- 確認できたため、`cursor-test/index.html` / `central.html` / `south.html` の画面表示と `south.html` の AggregateRating を 5.0・13件へ同期
+
+**【確認】**
+
+- Browser番頭確認環境：共通Chrome CDP / Chrome DevTools MCP
+- ローカルPC 1440px・390px：料金・FAQ・本文・CTA・横スクロールなし・Consoleエラーなし
+- 公開URL（クエリなし）を同環境で確認：
+  - `https://teruya1229.github.io/complete-disassembly/`
+  - `https://teruya1229.github.io/cursor-test/`
+  - `https://teruya1229.github.io/cursor-test/south.html`
+  - `https://teruya1229.github.io/cursor-test/central.html`
+  - `https://teruya1229.github.io/cursor-test/urasoe.html`
+  - `https://teruya1229.github.io/cursor-test/naha.html`
+- 公開画面で地域別料金・修正文・CTA・横スクロールなし・Consoleエラーなしを確認
+- 物理スマートフォン実機確認は未完了
+- 作業時間統一は未実施
+- 地域別施工事例追加は未実施
 
 ### 2026-08-13（ハウスクリーニングLP 写真・料金表示のピンポイント修正）
 
