@@ -1,10 +1,61 @@
-更新日: 2026-08-15
+更新日: 2026-08-17
 
 ## 次にやるべき1手
 
-物理スマートフォン実機確認。地域別施工事例追加は未実施。エアコン家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
+物理スマートフォン実機確認。地域別施工事例追加は未実施。MI.BCSエアコン販売LPのSearch Consoleインデックス反映（クロール完了）は未確認。家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
 
 ## 本日やったこと
+
+### 2026-08-17（MI.BCSエアコン販売LPを工事込み価格主役へ改修）
+
+既存のMI.BCS法人・家電販売LPを、「エアコン本体＋標準取付工事込み価格」が最初から分かる構成へ改修。実装・ローカル確認・push・公開URL確認・Search Console URL検査まで完了。
+
+**【MI.BCS aircon sales LP 公開確認完了】**
+
+- 日時：2026年8月17日
+- 対象リポジトリ：`C:\dev\bc-service\teruya1229-github-io`（Windows側正本）
+- 実装commit：`599bec24b91f6f542f500928f8eb2ecfbd8fffe9`（`feat: add installation-inclusive aircon pricing to MI.BCS LP`）
+- 変更ファイル：`mi-bcs/index.html` / `sitemap.xml`
+- 既存未追跡ファイルは未操作
+- CSSはHTML内`<style>`へ追加のみ。新規CSSファイル・JSライブラリは未追加
+- LINE：`https://lin.ee/tsilra6` 維持
+- 電話：`050-1724-1338` / `tel:05017241338` 維持
+- メール：`bc.teruya@gmail.com` 維持
+- GA4：`G-X8LKLFDL3G` / `send_page_view: false` / `page_type: mi_bcs_lp` / `page_slug: /mi-bcs/` / CTAリスナー1つのまま
+
+**【公開内容】**
+
+- title：沖縄中南部のエアコン販売・取付｜標準工事込み79,800円〜｜MI.BCS
+- H1：工事費まで、最初から分かる。沖縄のエアコン販売。
+- 畳数別税込・本体＋標準取付工事込み：6畳79,800円〜／8畳84,800円〜／10畳99,800円〜／14畳129,800円〜
+- Panasonic沖縄仕様（FZシリーズ対象商品の耐塩害仕様室外機・ヤモリガード）をテキスト＋既存施工写真で訴求。特定型番の常時在庫約束なし
+- 標準工事：冷媒配管4mまで／連絡電線／ドレンホース／室外機の平地・ベランダ置き／真空引き／試運転
+- 追加料金（確定）：取外し5,500円〜7,700円／別階等取外し11,000円〜／屋根置き・壁面・天吊り等取外し12,100円〜／リサイクル550円／収集運搬3,300円
+- 照明・その他家電・会社情報・代表者・その他事業は削除せず後半へ維持
+- 内部リンク：家庭向けLP `https://teruya1229.github.io/cursor-test/` ／完全分解LP `https://teruya1229.github.io/complete-disassembly/`
+- sitemapの `https://teruya1229.github.io/mi-bcs/` は重複追加せず lastmod を 2026-08-17 に更新
+
+**【確認】**
+
+- Browser番頭確認環境：共通Chrome CDP / Chrome DevTools MCP
+- ローカル `http://127.0.0.1:8765/mi-bcs/`：PC1440・390px。ファーストビュー、4価格、標準工事込み、Panasonic沖縄仕様、追加料金、FAQ、照明・会社情報、LINE・電話・メール、内部リンク、横スクロールなし、Consoleエラーなし
+- `?debug=1`：page_view 1回、LINEは cta_click＋line_click、電話は cta_click＋phone_click、二重送信なし、計測OKトースト表示
+- 公開URL（クエリなし）同環境で確認：`https://teruya1229.github.io/mi-bcs/`
+- 公開画面で79,800円〜の新ファーストビュー、4つの畳数別価格、標準工事込み、Panasonic沖縄仕様、追加料金、LINE CTA、内部リンク、横スクロールなし、Consoleエラーなし
+- 物理スマートフォン実機確認は未完了。390pxブラウザ確認は実機確認扱いではない
+
+**【Search Console】**
+
+- プロパティ：`https://teruya1229.github.io/`
+- 検査URL：`https://teruya1229.github.io/mi-bcs/`（クエリなし）
+- アカウント：BCサービス
+- 結果：URL は Google に登録されています
+- ユーザー指定の正規URL：`https://teruya1229.github.io/mi-bcs/`
+- HTTPS：このページは HTTPS で配信されています
+- インデックス上の前回クロール：2026/07/28 21:31:56（今回更新前）
+- 検査画面の拡張は HTTPS のみ表示。構造化データエラー表示なし。これは旧クロール時点の結果であり、今回追加した FAQPage 等の反映確認ではない
+- インデックス登録を1回リクエスト。表示：「インデックス登録をリクエスト済み。URL を優先クロール キューに追加しました。」
+- インデックス反映完了と、登録リクエスト完了は別。反映確認は未完了
 
 ### 2026-08-15（エアコン作業時間表記の統一）
 

@@ -1,4 +1,4 @@
-更新日: 2026-08-15
+更新日: 2026-08-17
 
 ## 前提（読む順）
 
@@ -8,6 +8,18 @@
 4. 公開版参照（任意）：`https://teruya1229.github.io/ops/status/` / `https://teruya1229.github.io/ops/handoff/`
 
 ## フェーズ
+
+**MI.BCSエアコン販売LP 工事込み価格改修 完了（2026-08-17）**
+
+- 対象：`mi-bcs/index.html` / `sitemap.xml`（Windows側正本 `C:\dev\bc-service\teruya1229-github-io`）
+- 実装commit：`599bec24b91f6f542f500928f8eb2ecfbd8fffe9`（`feat: add installation-inclusive aircon pricing to MI.BCS LP`）
+- 公開URL：`https://teruya1229.github.io/mi-bcs/`（クエリなしで確認）
+- 内容：エアコン本体＋標準取付工事込み価格を主役化。6／8／10／14畳の税込価格、Panasonic沖縄仕様、標準工事内容、追加料金、FAQ／FAQPage同期、Service／OfferCatalog／BreadcrumbList追加。照明・会社情報は後半に維持
+- LINE・電話・メール・GA4測定ID・CTAイベント仕様は未変更
+- Browser番頭共通Chrome：ローカル `http://127.0.0.1:8765/mi-bcs/` と公開URLを PC1440／390px で確認。横スクロールなし、Consoleエラーなし。debug=1で page_view1回・cta_click＋line_click／phone_click、二重送信なし
+- Search Console（プロパティ `https://teruya1229.github.io/`、検査URLは正規URL）：インデックス登録済み、HTTPS、正規URL一致。前回クロールは 2026/07/28。インデックス登録を1回リクエスト済み。反映確認は未完了
+- 物理スマートフォン実機確認は未完了。390pxブラウザ確認は実機確認扱いではない
+- **結論：実装・push・公開確認・Search Consoleリクエストまで完了。次は物理スマホ実機確認**
 
 **エアコン作業時間表記の統一 完了（2026-08-15）**
 
