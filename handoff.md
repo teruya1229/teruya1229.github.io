@@ -9,6 +9,19 @@
 
 ## フェーズ
 
+**地域LPへYouTube実施工事例を追加 完了（2026-08-17）**
+
+- 対象：浦添市を除く7地域LP（`nanjo` / `yaese` / `yonabaru` / `haebaru` / `naha` / `itoman` / `tomigusuku`）＋共通CSS＋sitemap lastmod
+- 実装commit：`c5885eb0d2c3a3739254fd1de02755384137fed4`（`feat: add verified regional YouTube case studies`）
+- 正本：YouTubeタイトル・説明欄の施工地域。確認できた動画だけ使用
+- 対応：南城市 ETByM3P35jk ダイキン分解洗浄／八重瀬町 tY_QGWpMrOM 三菱完全分解／与那原町 ch9F4yll0AE 三菱完全分解／南風原町 1ZQZzwoAtJY フィルター確認（メーカー未記載）／那覇市 45nbeuVxRSk シャープお掃除機能付き完全分解／糸満市 -pD6oKVSXdY 三菱完全分解／豊見城市 FKww4leiw8o Panasonic ドレンパン確認
+- 浦添LPは未変更。YouTube側の地域記載未完了
+- title / meta / H1 / canonical / OGP / GA4 / LINE / 料金 / FAQ / JSON-LD は未変更
+- Browser番頭共通Chrome：ローカルと公開URLを PC1440／390px で確認。横スクロールなし、Consoleエラーなし。公開LPのYouTube直接リンク7件の動画ID一致。南城市Shorts（ETByM3P35jk）を実際に開き到達確認
+- Search Console未操作
+- 物理スマートフォン実機確認は未完了。390pxブラウザ確認は実機確認扱いではない
+- **結論：7地域LPへ実施工事例を追加・push・公開確認まで完了。浦添市は未実施。次は物理スマホ実機確認**
+
 **MI.BCS信頼表現・CTA導線の最小修正 完了（2026-08-17）**
 
 - 対象：`mi-bcs/index.html` のみ（Windows側正本 `C:\dev\bc-service\teruya1229-github-io`）

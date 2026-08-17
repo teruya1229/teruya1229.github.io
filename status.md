@@ -2,9 +2,39 @@
 
 ## 次にやるべき1手
 
-物理スマートフォン実機確認。地域別施工事例追加は未実施。MI.BCSエアコン販売LPのSearch Consoleインデックス反映（クロール完了）は未確認。2026-08-17に正規URLのインデックス登録をリクエスト済みのため、短期間の再リクエストはしない。家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
+物理スマートフォン実機確認。浦添市のYouTube施工地域記載が完了したら浦添LPへ実施工事例を追加する。MI.BCSエアコン販売LPのSearch Consoleインデックス反映（クロール完了）は未確認。2026-08-17に正規URLのインデックス登録をリクエスト済みのため、短期間の再リクエストはしない。家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
 
 ## 本日やったこと
+
+### 2026-08-17（地域LPへYouTube実施工事例を追加）
+
+YouTube Shortsのタイトル・説明欄で施工地域が確認できた7本を、浦添市を除く7地域LPへ実施工事例として追加。実装・ローカル確認・push・公開URL確認まで完了。Search Consoleは未操作。物理スマートフォン実機確認は未完了。
+
+**【verified regional YouTube case studies 公開確認完了】**
+
+- 日時：2026年8月17日
+- 対象リポジトリ：`C:\dev\bc-service\teruya1229-github-io`（Windows側正本）
+- 実装commit：`c5885eb0d2c3a3739254fd1de02755384137fed4`（`feat: add verified regional YouTube case studies`）
+- 変更ファイル：`cursor-test/nanjo.html` / `yaese.html` / `yonabaru.html` / `haebaru.html` / `naha.html` / `itoman.html` / `tomigusuku.html` / `style.css` / `sitemap.xml`
+- 浦添LP（`urasoe.html`）は未変更
+- 既存未追跡ファイルは未操作
+- Search Console未操作
+- 物理スマートフォン実機確認未完了（390pxブラウザ確認は実機扱いではない）
+
+**【動画と地域LPの対応】**
+
+| 地域 | 対象LP | Shorts | メーカー・機種 | 作業内容 |
+|---|---|---|---|---|
+| 南城市 | nanjo.html | ETByM3P35jk | ダイキン（シリーズ未記載） | 送風ファンまわりの分解洗浄 |
+| 八重瀬町 | yaese.html | tY_QGWpMrOM | 三菱（シリーズ未記載） | 完全分解クリーニング |
+| 与那原町 | yonabaru.html | ch9F4yll0AE | 三菱（シリーズ未記載） | 完全分解洗浄 |
+| 南風原町 | haebaru.html | 1ZQZzwoAtJY | 動画上未記載 | フィルターのホコリ確認・洗浄 |
+| 那覇市 | naha.html | 45nbeuVxRSk | シャープ お掃除機能付き | 完全分解クリーニング |
+| 糸満市 | itoman.html | -pD6oKVSXdY | 三菱（シリーズ未記載） | 完全分解クリーニング |
+| 豊見城市 | tomigusuku.html | FKww4leiw8o | Panasonic（シリーズ未記載） | ドレンパンまわり確認を含むエアコンクリーニング |
+
+- 浦添市はYouTube側の地域記載未完了のため未実施
+- 施工地域は各動画タイトルの【市町村名】で確認。那覇市の「お掃除機能付き」は動画内テロップで確認
 
 ### 2026-08-17（MI.BCS信頼表現・CTA導線の最小修正）
 
