@@ -2626,3 +2626,133 @@ img {
   color: var(--text-muted);
   line-height: 1.5;
 }
+
+/* ==========================================================================
+   地域LP 実施工事例（YouTube Shorts）
+   ========================================================================== */
+.regional-case-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.regional-case-video {
+  flex: 0 0 300px;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+  position: relative;
+  aspect-ratio: 9 / 16;
+}
+
+.regional-case-video iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 12px;
+  background: #111;
+}
+
+.regional-case-details {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+
+.regional-case-heading {
+  margin: 0 0 14px;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--brand-dark);
+  line-height: 1.5;
+}
+
+.regional-case-meta {
+  margin: 0 0 14px;
+  padding: 0;
+}
+
+.regional-case-meta > div {
+  display: grid;
+  grid-template-columns: 7.5em 1fr;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.regional-case-meta dt {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.regional-case-meta dd {
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.regional-case-text {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.regional-case-link {
+  display: inline-block;
+  margin: 0 0 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--brand);
+  text-decoration: underline;
+}
+
+.regional-case-details .line-cta {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .regional-case-card {
+    flex-wrap: nowrap;
+    padding: 24px;
+  }
+
+  .regional-case-video {
+    flex: 0 0 320px;
+    width: 320px;
+    max-width: 340px;
+    margin: 0;
+    aspect-ratio: 9 / 16;
+  }
+}
+
+@media (max-width: 767px) {
+  .regional-case-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .regional-case-video {
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+
+  .regional-case-details {
+    width: 100%;
+  }
+
+  .regional-case-meta > div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
