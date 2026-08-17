@@ -220,7 +220,7 @@
         "name": "100Vから200Vへの変更も相談できますか？",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "ご相談いただけます。コンセント、専用回路、電圧切替などは標準工事に含まれず、別途お見積りです。写真または現地確認後に対応内容をご案内します。"
+          "text": "ご相談いただけます。コンセント、専用回路、電圧切替などは標準工事に含まれず、別途お見積りです。写真または現地確認後に対応内容をご案内します。標準的な100Vエアコンの設置は原則として代表が対応し、200V機種や専用回路・電圧切替など登録電気工事業者による対応が必要な工事は、提携業者と連携してご案内します。"
         }
       },
       {
@@ -1113,6 +1113,41 @@
       line-height: 1.5;
     }
 
+    .tatami-caution {
+      margin: 12px 0 0;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      text-align: left;
+    }
+
+    .note-box h3,
+    .mid-cta h3 {
+      margin: 0 0 10px;
+      font-size: 1.08rem;
+      font-weight: 800;
+      color: var(--brand);
+      line-height: 1.5;
+    }
+
+    .relation-box {
+      margin: 0 0 24px;
+    }
+
+    .install-role-box {
+      margin-top: 16px;
+    }
+
+    .mid-cta {
+      margin-top: 28px;
+    }
+
+    .mid-cta .section-lead {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     .tatami-tax {
       display: block;
       margin-top: 4px;
@@ -1501,6 +1536,10 @@
         font-size: 2rem;
       }
 
+      .tatami-caution {
+        font-size: 0.95rem;
+      }
+
       .fee-row {
         flex-direction: column;
         align-items: flex-start;
@@ -1610,6 +1649,7 @@
           <h3 class="tatami-size">14畳用</h3>
           <p class="tatami-amount">129,800円〜</p>
           <p class="tatami-include">本体＋標準取付工事込み<span class="tatami-tax">税込</span></p>
+          <p class="tatami-caution">※選定機種や既存設備により、200Vへの電圧切替・専用回路の確認が必要な場合があります。</p>
         </article>
       </div>
       <div class="note-box">
@@ -1671,6 +1711,10 @@
       <div class="note-box">
         <p>穴あけ、化粧カバー、専用回路、電圧切替、高所作業などは標準工事に含まれません。必要な場合は追加料金として、作業前にご説明します。</p>
       </div>
+      <div class="note-box install-role-box">
+        <h3>設置工事の対応について</h3>
+        <p>標準的な100Vエアコンの設置は、代表の照屋昴が対応します。200V機種や専用回路・電圧切替など、登録電気工事業者による対応が必要な工事は、提携業者と連携してご案内します。</p>
+      </div>
     </div>
   </section>
 
@@ -1726,7 +1770,10 @@
 
   <section class="section" id="value">
     <div class="container">
-      <h2 class="section-title">BCサービス・MI.BCSを選ぶ理由</h2>
+      <h2 class="section-title">MI.BCSとBCサービスを選ぶ理由</h2>
+      <div class="note-box relation-box">
+        <p>エアコン本体の販売は合同会社MI.BCS、標準的な100Vエアコンの設置やエアコンクリーニングなどの現場対応はBCサービスが担当し、代表の照屋昴が窓口をまとめてご案内します。</p>
+      </div>
       <p class="section-lead">商品選び、現地・写真確認、エアコン本体、標準取付工事、既設取外し、リサイクル・収集運搬、エアコンクリーニング、完全分解洗浄、故障・交換相談、買替え相談まで、窓口を分けずにご相談いただけます。</p>
       <ol class="value-list value-list-detail">
         <li>
@@ -1859,13 +1906,21 @@
         </li>
         <li class="faq-item">
           <h3>Q. 100Vから200Vへの変更も相談できますか？</h3>
-          <p>A. ご相談いただけます。コンセント、専用回路、電圧切替などは標準工事に含まれず、別途お見積りです。写真または現地確認後に対応内容をご案内します。</p>
+          <p>A. ご相談いただけます。コンセント、専用回路、電圧切替などは標準工事に含まれず、別途お見積りです。写真または現地確認後に対応内容をご案内します。標準的な100Vエアコンの設置は原則として代表が対応し、200V機種や専用回路・電圧切替など登録電気工事業者による対応が必要な工事は、提携業者と連携してご案内します。</p>
         </li>
         <li class="faq-item">
           <h3>Q. 購入後に故障した場合はどうなりますか？</h3>
           <p>A. メーカー保証や修理手配について、購入後も窓口としてご相談いただけます。保証内容・保証期間は各メーカーおよび製品の規定によります。</p>
         </li>
       </ul>
+      <div class="contact-box mid-cta">
+        <h3>工事込みの総額を確認したい方へ</h3>
+        <p class="section-lead">設置場所の写真をLINEで送るだけで、本体・標準工事・取外し・追加工事を含めた総額の目安をご案内します。</p>
+        <div class="cta-row">
+          <a href="https://lin.ee/tsilra6" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで総額を確認する</a>
+          <a href="tel:05017241338" class="btn btn-brand">電話で相談する</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -2041,7 +2096,7 @@
       <p class="section-lead">設置場所の写真をLINEで送るだけで、本体・標準工事・追加工事を含めた総額をご案内します。急ぎの場合はお電話でもご相談ください。</p>
       <div class="contact-box">
         <div class="cta-row">
-          <a href="https://lin.ee/tsilra6" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEでエアコンの総額を確認する</a>
+          <a href="https://lin.ee/tsilra6" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで総額を確認する</a>
           <a href="https://lin.ee/tsilra6" class="btn btn-line" target="_blank" rel="noopener noreferrer">LINEで照明・LED交換の見積り</a>
           <a href="tel:05017241338" class="btn btn-brand">電話で相談する</a>
           <a href="mailto:bc.teruya@gmail.com" class="btn btn-mail">メールで相談する</a>
