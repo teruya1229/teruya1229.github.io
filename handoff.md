@@ -9,6 +9,18 @@
 
 ## フェーズ
 
+**200世帯カウンター更新＋sitemap lastmod整合 完了（2026-08-17）**
+
+- 対象：`cursor-test/index.html` の `.project-counter` のみ、および `sitemap.xml` の指定6 URL lastmod
+- 実装commit：`e80fedd0302fb78e25841aa4a4735d2725b2a69a`（`chore: update campaign counter and sitemap dates`）
+- カウンター：現在60世帯達成／目標200世帯／残り140世帯。洗濯機応援予定文は未変更
+- sitemap：`cursor-test/` 2026-08-17、south/central/urasoe/complete-disassembly/faq 2026-08-15。地域LP7本・mi-bcs・他URLは未変更
+- title / meta / H1 / canonical / GA4 / LINE / 料金 / FAQ は未変更
+- Browser番頭共通Chrome：ローカルと公開URLを PC1440／390px で確認。60/200/140、旧36/164なし、横スクロールなし、Consoleエラーなし
+- Search Console未操作
+- 物理スマートフォン実機確認は未完了。390pxブラウザ確認は実機確認扱いではない
+- **結論：カウンター更新とsitemap整合を実装・push・公開確認まで完了。次は物理スマホ実機確認**
+
 **地域LPへYouTube実施工事例を追加 完了（2026-08-17）**
 
 - 対象：浦添市を除く7地域LP（`nanjo` / `yaese` / `yonabaru` / `haebaru` / `naha` / `itoman` / `tomigusuku`）＋共通CSS＋sitemap lastmod

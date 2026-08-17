@@ -6,6 +6,25 @@
 
 ## 本日やったこと
 
+### 2026-08-17（200世帯カウンター更新＋sitemap lastmod整合）
+
+家庭向けメインLPの200世帯キャンペーン実績を60世帯・残り140世帯へ更新。あわせて最近更新済みエアコンLPのsitemap lastmodを実更新日へ整合。実装・ローカル確認・push・公開URL確認まで完了。Search Console未操作。物理スマートフォン実機確認未完了。
+
+**【campaign counter and sitemap dates 公開確認完了】**
+
+- 日時：2026年8月17日
+- 対象リポジトリ：`C:\dev\bc-service\teruya1229-github-io`
+- 実装commit：`e80fedd0302fb78e25841aa4a4735d2725b2a69a`（`chore: update campaign counter and sitemap dates`）
+- 変更ファイル：`cursor-test/index.html` / `sitemap.xml`
+- カウンター：36世帯・残り164世帯 → **60世帯・目標200世帯・残り140世帯**
+- 「200世帯達成後は洗濯機応援価格をスタート予定です。」は未変更
+- sitemap lastmod：`cursor-test/`=2026-08-17、`south.html` / `central.html` / `urasoe.html` / `complete-disassembly/` / `faq.html`=2026-08-15
+- 地域LP7本・mi-bcs・その他URLのlastmodは未変更
+- title / meta / H1 / canonical / GA4 / LINE / 電話 / 料金 / 割引 / 作業時間 / FAQ は未変更
+- Browser番頭共通Chrome：ローカル `http://127.0.0.1:8765/cursor-test/` と公開 `https://teruya1229.github.io/cursor-test/` を PC1440／390px で確認。60/200/140表示、旧36/164なし、横スクロールなし、Consoleエラーなし、LINE CTA維持
+- Search Console未操作
+- 物理スマートフォン実機確認未完了（390pxブラウザ確認は実機扱いではない）
+
 ### 2026-08-17（地域LPへYouTube実施工事例を追加）
 
 YouTube Shortsのタイトル・説明欄で施工地域が確認できた7本を、浦添市を除く7地域LPへ実施工事例として追加。実装・ローカル確認・push・公開URL確認まで完了。Search Consoleは未操作。物理スマートフォン実機確認は未完了。
