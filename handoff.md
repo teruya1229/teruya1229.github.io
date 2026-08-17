@@ -9,6 +9,19 @@
 
 ## フェーズ
 
+**MI.BCS信頼表現・CTA導線の最小修正 完了（2026-08-17）**
+
+- 対象：`mi-bcs/index.html` のみ（Windows側正本 `C:\dev\bc-service\teruya1229-github-io`）
+- 実装commit：`ce759a2f2360ac171d7ec35246d7a4a3d2fbf650`（`fix: clarify MI.BCS service roles and CTA flow`）
+- 公開URL：`https://teruya1229.github.io/mi-bcs/`（クエリなしで確認）
+- 内容：MI.BCSとBCサービスの役割分担を1か所で明記／標準工事セクションへ100V代表対応と200V等の提携連携を追加／14畳カードのみ注意書き／FAQ 100V回答とFAQPage同期／FAQ直後中間CTA／最下部LINE文言短縮
+- 価格・Panasonic・標準工事内容・追加料金・SEO・OfferCatalog・GA4・代表者紹介文・sitemapは未変更
+- 「運営するブランド」「全工事自社施工」表現は未使用
+- Browser番頭共通Chrome：ローカルと公開URLを PC1440／390px で確認。横スクロールなし、Consoleエラーなし。debug=1で page_view1回・FAQ直後 cta_click＋line_click／phone_click、二重送信なし
+- Search Console再リクエストは未実施
+- 物理スマートフォン実機確認は未完了。390pxブラウザ確認は実機確認扱いではない
+- **結論：信頼表現とCTA導線の最小修正を実装・push・公開確認まで完了。次は物理スマホ実機確認**
+
 **MI.BCSエアコン販売LP 工事込み価格改修 完了（2026-08-17）**
 
 - 対象：`mi-bcs/index.html` / `sitemap.xml`（Windows側正本 `C:\dev\bc-service\teruya1229-github-io`）

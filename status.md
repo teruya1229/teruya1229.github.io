@@ -2,9 +2,43 @@
 
 ## 次にやるべき1手
 
-物理スマートフォン実機確認。地域別施工事例追加は未実施。MI.BCSエアコン販売LPのSearch Consoleインデックス反映（クロール完了）は未確認。家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
+物理スマートフォン実機確認。地域別施工事例追加は未実施。MI.BCSエアコン販売LPのSearch Consoleインデックス反映（クロール完了）は未確認。2026-08-17に正規URLのインデックス登録をリクエスト済みのため、短期間の再リクエストはしない。家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
 
 ## 本日やったこと
+
+### 2026-08-17（MI.BCS信頼表現・CTA導線の最小修正）
+
+クロクロのレビューを踏まえ、価格・Panasonic・標準工事・追加料金・SEO・構造化データ・GA4は維持したまま、信頼表現とCTA導線だけを最小修正。実装・ローカル確認・push・公開URL確認まで完了。Search Console再リクエストは未実施。
+
+**【MI.BCS trust and CTA refinement 公開確認完了】**
+
+- 日時：2026年8月17日
+- 対象リポジトリ：`C:\dev\bc-service\teruya1229-github-io`（Windows側正本）
+- 実装commit：`ce759a2f2360ac171d7ec35246d7a4a3d2fbf650`（`fix: clarify MI.BCS service roles and CTA flow`）
+- 変更ファイル：`mi-bcs/index.html` のみ
+- sitemap.xml は未変更
+- 既存未追跡ファイルは未操作
+- 代表者紹介文は未変更
+- 価格・Panasonic表現・標準工事内容・追加料金・title・meta・canonical・OGP・OfferCatalog・Organization・GA4・LINE・電話・メールは未変更
+
+**【修正内容】**
+
+- 選ぶ理由見出しを「MI.BCSとBCサービスを選ぶ理由」へ変更し、販売は合同会社MI.BCS、標準的な100V設置やクリーニング等の現場対応はBCサービス、代表の照屋昴が窓口、と1か所で明記
+- 「BCサービスは合同会社MI.BCSが運営するブランド」とは未記載。同一事業主体としては未表現
+- 標準工事セクションへ「設置工事の対応について」を追加。標準的な100Vは代表対応、200V・専用回路・電圧切替等は提携登録電気工事業者と連携
+- 14畳カードのみ200V／専用回路確認の注意書きを追加。価格129,800円〜は維持
+- FAQ「100Vから200Vへの変更も相談できますか？」の回答末尾を補強し、FAQPageと同期。他9問は未変更
+- FAQ直後に中間CTA（LINEで総額を確認する／電話で相談する）を追加。新規JSリスナーなし
+- 最下部エアコンLINEボタンを「LINEで総額を確認する」へ短縮。390pxで1行表示を確認
+
+**【確認】**
+
+- Browser番頭確認環境：共通Chrome CDP / Chrome DevTools MCP
+- ローカル `http://127.0.0.1:8765/mi-bcs/`：PC1440・390px。関係説明、100V／200V役割、14畳注意、FAQ後CTA、最下部LINE1行、横スクロールなし、Consoleエラーなし
+- `?debug=1`：page_view 1回、FAQ直後LINEは cta_click＋line_click、電話は cta_click＋phone_click、二重送信なし、計測OKトースト
+- 公開URL（クエリなし）同環境で確認：`https://teruya1229.github.io/mi-bcs/`
+- Search Console再リクエストは未実施（同日に同一正規URLをリクエスト済み）
+- 物理スマートフォン実機確認は未完了。390pxブラウザ確認は実機確認扱いではない
 
 ### 2026-08-17（MI.BCSエアコン販売LPを工事込み価格主役へ改修）
 
