@@ -1,4 +1,4 @@
-更新日: 2026-08-17
+更新日: 2026-08-18
 
 ## 前提（読む順）
 
@@ -8,6 +8,20 @@
 4. 公開版参照（任意）：`https://teruya1229.github.io/ops/status/` / `https://teruya1229.github.io/ops/handoff/`
 
 ## フェーズ
+
+**照明器具販売・交換LP 新設 完了（2026-08-18）**
+
+- 対象：`lighting/index.html` / `lighting/style.css` / `mi-bcs/index.html`（照明案内から `/lighting/` へ1リンク） / `sitemap.xml`（lighting URLを1回追加、lastmod=2026-08-18）
+- 実装commit：`09ab82ff776bcb0f658f7f06aa468f218c3f28f4`（`feat: add BC lighting sales and exchange LP`）
+- 公開URL：`https://teruya1229.github.io/lighting/`（クエリなしで確認）
+- 内容：沖縄南部向けの照明器具選定・販売・標準取付・既存器具取り外し・処分の一括LP。V0構成を静的HTML/CSSへ移植
+- 価格：6畳用14,300円〜 / 8畳用16,500円〜 / 12畳用19,800円〜。2台目以降は1台につき1,100円引き
+- 実写真未追加。施工事例未掲載。V0仮素材・17年・即日・在庫あり表現は未使用
+- LINE・電話・GA4測定IDは既存仕様を維持。新LPとして page_type=`lighting_lp` で分離
+- Browser番頭共通Chrome：ローカル `http://127.0.0.1:8765/lighting/` と公開URLを PC1440／390px で確認。横スクロールなし、Consoleエラーなし。debug=1で page_view1回・cta_click＋line_click／phone_click、二重送信なし
+- Search Console（プロパティ `https://teruya1229.github.io/`、検査URLは正規URL）：URL が Google に登録されていません。インデックス登録を1回リクエスト済み。反映確認は未完了
+- 物理スマートフォン実機確認は未完了。390pxブラウザ確認は実機確認扱いではない
+- **結論：照明LPを実装・push・公開確認・Search Consoleリクエストまで完了。次は物理スマホ実機確認。実写真が揃い次第施工事例を追加**
 
 **200世帯カウンター更新＋sitemap lastmod整合 完了（2026-08-17）**
 

@@ -1,10 +1,33 @@
-更新日: 2026-08-17
+更新日: 2026-08-18
 
 ## 次にやるべき1手
 
-物理スマートフォン実機確認。浦添市のYouTube施工地域記載が完了したら浦添LPへ実施工事例を追加する。MI.BCSエアコン販売LPのSearch Consoleインデックス反映（クロール完了）は未確認。2026-08-17に正規URLのインデックス登録をリクエスト済みのため、短期間の再リクエストはしない。家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
+物理スマートフォン実機確認。照明LPは実写真・施工事例未掲載のため、実写真が揃い次第Before／Afterカードを追加する。照明LPのSearch Consoleインデックス反映（クロール完了）は未確認。2026-08-18に正規URLのインデックス登録を1回リクエスト済みのため、短期間の再リクエストはしない。浦添市のYouTube施工地域記載が完了したら浦添LPへ実施工事例を追加する。家庭向けLPの追加修正は急がず、GA4・問い合わせ実績を計測する。
 
 ## 本日やったこと
+
+### 2026-08-18（照明器具販売・交換LP 新設）
+
+沖縄南部向けの照明器具販売・交換専用LPを新設。V0 ZIPをデザイン原本として静的HTML/CSSへ移植し、実装・ローカル確認・push・公開URL確認・Search Console URL検査まで完了。実写真未追加。施工事例未掲載。物理スマートフォン実機確認未完了。
+
+**【lighting LP launch 公開確認完了】**
+
+- 日時：2026年8月18日
+- 対象リポジトリ：`C:\dev\bc-service\teruya1229-github-io`（Windows側正本）
+- 実装commit：`09ab82ff776bcb0f658f7f06aa468f218c3f28f4`（`feat: add BC lighting sales and exchange LP`）
+- 変更ファイル：`lighting/index.html`（新規） / `lighting/style.css`（新規） / `mi-bcs/index.html` / `sitemap.xml`
+- 公開URL：`https://teruya1229.github.io/lighting/`（クエリなしで確認）
+- 価格：6畳用14,300円〜 / 8畳用16,500円〜 / 12畳用19,800円〜（器具＋標準取付＋既存器具の取り外し・処分込み）
+- まとめ割：同日・同一住所で2台以上の標準交換を予約する場合、2台目以降は1台につき1,100円引き
+- 施工事例セクションは非公開。V0のBefore／After用CSS構造のみ残置
+- 実写真・AI生成写真・ストック写真は未追加
+- 既存未追跡ファイルは未操作
+- LINE：`https://lin.ee/tsilra6` 維持
+- 電話：`050-1724-1338` / `tel:05017241338` 維持
+- GA4：`G-X8LKLFDL3G`、`send_page_view: false`、`page_type: lighting_lp`、`page_slug: /lighting/`、`page_path: /lighting/`
+- Browser番頭共通Chrome：ローカル `http://127.0.0.1:8765/lighting/` と公開URLを PC1440／390px で確認。横スクロールなし、Consoleエラーなし。debug=1で page_view1回・cta_click＋line_click／phone_click、二重送信なし
+- Search Console（プロパティ `https://teruya1229.github.io/`、検査URLは正規URL、アカウント BCサービス）：URL が Google に登録されていません。インデックス登録を1回リクエスト済み。反映確認は未完了
+- 物理スマートフォン実機確認未完了（390pxブラウザ確認は実機扱いではない）
 
 ### 2026-08-17（200世帯カウンター更新＋sitemap lastmod整合）
 
