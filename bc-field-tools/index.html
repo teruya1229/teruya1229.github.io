@@ -9,7 +9,7 @@
 <style>
   :root{
     --bg:#f4f5f7;--card:#fff;--text:#111;--muted:#667085;--line:#dfe3e8;
-    --accent:#111;--soft:#f7f8fa;--candidate:#fff8d8;--candidate-line:#e8c95d;
+    --soft:#f7f8fa;--candidate:#fff8d8;--candidate-line:#e8c95d;
     --ok:#0a6b2d;--warn:#8a5a00;--danger:#9f1b1b;
   }
   *{box-sizing:border-box}
@@ -33,12 +33,21 @@
   details.bridge-card>summary::-webkit-details-marker{display:none}
   details.bridge-card>summary:after{content:"＋";font-size:18px}
   details.bridge-card[open]>summary:after{content:"－"}
-  .bridge-body{border-top:1px solid var(--line);padding:10px 12px;background:#fff;max-height:46dvh;overflow:auto}
+  .bridge-body{border-top:1px solid var(--line);padding:10px 12px;background:#fff;max-height:52dvh;overflow:auto}
   .lead{margin:0 0 10px;font-size:12px;line-height:1.5;color:var(--muted)}
+  .mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:0 0 10px}
+  .mode-btn{border:1px solid var(--line);background:#fff;border-radius:10px;min-height:44px;padding:9px 10px;font-weight:800;color:#111}
+  .mode-btn[aria-pressed="true"]{background:#111;color:#fff;border-color:#111}
+  .manual-panel{border:1px solid var(--line);background:var(--soft);border-radius:10px;padding:10px;margin-bottom:10px}
+  .manual-panel[hidden]{display:none}
+  .manual-title{font-size:13px;font-weight:900;margin:0 0 8px}
   .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
   .field{min-width:0}
   .field label{display:block;font-size:11px;color:var(--muted);margin:0 0 4px}
   .field input,.field select{width:100%;min-height:42px;border:1px solid var(--line);border-radius:9px;padding:8px;background:#fff;font-size:16px}
+  .condition-box{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+  .condition{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:9px;padding:9px 10px;background:#fff;font-size:13px;font-weight:700}
+  .condition input{width:20px;height:20px;margin:0;accent-color:#111}
   .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
   .btn{border:0;border-radius:10px;min-height:42px;padding:10px 14px;font-weight:800}
   .btn-primary{background:#111;color:#fff}
@@ -55,7 +64,7 @@
   .candidate-row{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;align-items:start;background:#fff;border:1px solid #eadc9a;border-radius:9px;padding:9px}
   .candidate-row input{width:22px;height:22px;margin:0;accent-color:#111}
   .candidate-name{font-weight:800;font-size:14px;line-height:1.3}
-  .candidate-meta{font-size:11px;color:var(--muted);line-height:1.45;margin-top:2px}
+  .candidate-meta{display:block;font-size:11px;color:var(--muted);line-height:1.45;margin-top:2px}
   .split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .mini{border:1px solid var(--line);border-radius:10px;padding:9px;background:#fff}
   .mini h3{font-size:12px;margin:0 0 6px}
@@ -73,15 +82,15 @@
     .tabs{min-width:0;width:100%}
     .tab{padding:9px 8px}
     .bridge-inner{padding:6px}
-    .bridge-body{max-height:52dvh;padding:9px}
+    .bridge-body{max-height:58dvh;padding:9px}
     .grid{grid-template-columns:1fr 1fr}
     .split{grid-template-columns:1fr}
   }
   @media(max-width:390px){
     .brand b{font-size:15px}
     .brand span{font-size:10px}
-    .grid{grid-template-columns:1fr 1fr}
     .field label{font-size:10px}
+    .mode-btn{font-size:13px}
   }
 </style>
 </head>
@@ -91,24 +100,48 @@
     <div class="topline">
       <div class="brand">
         <b>BCサービス 現場ツール</b>
-        <span>写真判定＋内部見積</span>
+        <span>写真あり・写真なし → 内部見積</span>
       </div>
       <nav class="tabs" aria-label="現場ツール切替">
-        <button id="tabDiagnosis" class="tab" type="button" aria-selected="true">写真判定</button>
+        <button id="tabDiagnosis" class="tab" type="button" aria-selected="true">現場入力</button>
         <button id="tabEstimate" class="tab" type="button" aria-selected="false">見積</button>
       </nav>
     </div>
   </header>
 
-  <section class="bridge" aria-label="写真判定と見積の連携">
+  <section class="bridge" aria-label="現場入力と見積の連携">
     <div class="bridge-inner">
-      <details id="diagnosisBridge" class="bridge-card">
-        <summary>見積連携入力 <span style="font-size:11px;color:#667085;font-weight:600">候補だけ作成・自動加算なし</span></summary>
+      <details id="diagnosisBridge" class="bridge-card" open>
+        <summary>見積連携入力 <span style="font-size:11px;color:#667085;font-weight:600">写真なしでも進めます</span></summary>
         <div class="bridge-body">
-          <p class="lead">写真判定の入力を読み取り、見積候補だけを別保存します。既存の写真・案件保存、AI経路、料金マスター、<code>bc_quote_state</code>はここでは変更しません。</p>
+          <div class="mode-switch" aria-label="入力方法">
+            <button id="modePhoto" class="mode-btn" type="button" aria-pressed="true">写真判定から読む</button>
+            <button id="modeManual" class="mode-btn" type="button" aria-pressed="false">写真なし手入力</button>
+          </div>
+
+          <p id="modeHelp" class="lead">下の写真判定画面の入力を読み取ります。写真自体は必須ではありません。</p>
+
+          <div id="manualPanel" class="manual-panel" hidden>
+            <p class="manual-title">写真なし用 基本条件</p>
+            <div class="grid">
+              <div class="field"><label for="manualCaseName">案件名</label><input id="manualCaseName" type="text" autocomplete="off" placeholder="例：○○様 エアコン交換"></div>
+              <div class="field"><label for="manualWorkType">工事種別</label><select id="manualWorkType"><option value="">未選択</option><option value="エアコン新設">エアコン新設</option><option value="エアコン交換">エアコン交換</option><option value="専用コンセント新設">専用コンセント新設</option><option value="電圧切替を含む可能性">電圧切替を含む可能性</option><option value="その他">その他</option></select></div>
+              <div class="field"><label for="manualDedicated">専用回路</label><select id="manualDedicated"><option value="不明">不明</option><option value="あり">あり</option><option value="なし">なし</option></select></div>
+              <div class="field"><label for="manualVoltage">エアコン電源</label><select id="manualVoltage"><option value="不明">不明</option><option value="100V">100V</option><option value="200V">200V</option></select></div>
+              <div class="field"><label for="manualWiringRoute">配線ルート</label><select id="manualWiringRoute"><option value="不明">不明</option><option value="隠蔽できそう">隠蔽できそう</option><option value="露出配線になりそう">露出配線になりそう</option><option value="現地確認が必要">現地確認が必要</option></select></div>
+              <div class="field"><label for="manualWireDistance">想定総配線距離m</label><input id="manualWireDistance" type="number" min="0" step="0.1" inputmode="decimal" placeholder="未確認可"></div>
+            </div>
+            <div class="condition-box" aria-label="追加工事候補">
+              <label class="condition"><input id="manualHigh" type="checkbox">高所作業候補</label>
+              <label class="condition"><input id="manualHole" type="checkbox">穴あけ候補</label>
+              <label class="condition"><input id="manualCover" type="checkbox">化粧カバー候補</label>
+            </div>
+          </div>
+
+          <p class="manual-title">見積用の数量確認</p>
           <div class="grid">
-            <div class="field"><label for="installCount">取付台数</label><input id="installCount" type="number" min="0" step="1" inputmode="numeric" placeholder="自動候補"></div>
-            <div class="field"><label for="removeCount">取外し台数</label><input id="removeCount" type="number" min="0" step="1" inputmode="numeric" placeholder="自動候補"></div>
+            <div class="field"><label for="installCount">取付台数</label><input id="installCount" type="number" min="0" step="1" inputmode="numeric" placeholder="工事種別から候補"></div>
+            <div class="field"><label for="removeCount">取外し台数</label><input id="removeCount" type="number" min="0" step="1" inputmode="numeric" placeholder="交換なら候補1"></div>
             <div class="field"><label for="pipeExtension">標準超過 配管延長m</label><input id="pipeExtension" type="number" min="0" step="0.5" inputmode="decimal" placeholder="0"></div>
             <div class="field"><label for="billableWire">課金対象 配線延長m</label><input id="billableWire" type="number" min="0" step="0.5" inputmode="decimal" placeholder="0"></div>
             <div class="field"><label for="holeCount">穴あけ箇所数</label><input id="holeCount" type="number" min="0" step="1" inputmode="numeric" placeholder="候補なら1"></div>
@@ -120,12 +153,12 @@
             <button id="createCandidatesBtn" class="btn btn-primary" type="button">見積候補を作成して見積へ</button>
             <button id="previewCandidatesBtn" class="btn btn-secondary" type="button">候補だけ確認</button>
           </div>
-          <p id="diagnosisStatus" class="status">見積へ反映するまでは金額は変わりません。</p>
+          <p id="diagnosisStatus" class="status">候補を作るだけでは見積金額は変わりません。</p>
         </div>
       </details>
 
       <details id="estimateBridge" class="bridge-card" hidden open>
-        <summary>写真判定候補 <span style="font-size:11px;color:#667085;font-weight:600">チェックした項目だけ見積へ反映</span></summary>
+        <summary>現場入力候補 <span style="font-size:11px;color:#667085;font-weight:600">チェックした項目だけ見積へ反映</span></summary>
         <div class="bridge-body">
           <div id="candidateArea"></div>
           <div class="actions">
@@ -150,16 +183,11 @@
   'use strict';
 
   const CANDIDATE_KEY = 'bc_estimate_candidates_v1';
+  const MODE_KEY = 'bc_field_tools_source_mode';
   const ESTIMATE_LABELS = {
-    install_std: '標準取付',
-    remove_std: '既設取外し',
-    roof_wall: '屋根置き・壁面など',
-    pipe_ext: '配管延長',
-    cover: '化粧カバー追加',
-    dedicated: '専用回路',
-    volt_change: '100V / 200V 電圧切替',
-    hole: '穴あけ追加',
-    wire_ext: '配線延長'
+    install_std:'標準取付',remove_std:'既設取外し',roof_wall:'屋根置き・壁面など',
+    pipe_ext:'配管延長',cover:'化粧カバー追加',dedicated:'専用回路',
+    volt_change:'100V / 200V 電圧切替',hole:'穴あけ追加',wire_ext:'配線延長'
   };
 
   const el = id => document.getElementById(id);
@@ -169,330 +197,254 @@
   const estimateBridge = el('estimateBridge');
   const tabDiagnosis = el('tabDiagnosis');
   const tabEstimate = el('tabEstimate');
-  let currentView = 'diagnosis';
+  let sourceMode = localStorage.getItem(MODE_KEY) === 'manual' ? 'manual' : 'photo';
   let estimateLoaded = false;
 
   function childDoc(frame){
-    try { return frame.contentDocument || frame.contentWindow.document; }
-    catch (_) { return null; }
+    try{return frame.contentDocument || frame.contentWindow.document;}catch(_){return null;}
   }
-
-  function checkedValue(doc, name){
-    const node = doc && doc.querySelector(`input[name="${name}"]:checked`);
-    return node ? node.value : '';
+  function checkedValue(doc,name){
+    const node=doc&&doc.querySelector(`input[name="${name}"]:checked`);return node?node.value:'';
   }
-
-  function checkedValues(doc, name){
-    return doc ? Array.from(doc.querySelectorAll(`input[name="${name}"]:checked`)).map(x => x.value) : [];
+  function checkedValues(doc,name){
+    return doc?Array.from(doc.querySelectorAll(`input[name="${name}"]:checked`)).map(x=>x.value):[];
   }
-
   function numberValue(id){
-    const raw = el(id).value.trim();
-    if(raw === '') return null;
-    const n = Number(raw);
-    return Number.isFinite(n) && n >= 0 ? n : null;
+    const raw=el(id).value.trim();if(raw==='')return null;const n=Number(raw);return Number.isFinite(n)&&n>=0?n:null;
+  }
+  function selectMode(mode){
+    sourceMode=mode==='manual'?'manual':'photo';
+    localStorage.setItem(MODE_KEY,sourceMode);
+    const manual=sourceMode==='manual';
+    el('modePhoto').setAttribute('aria-pressed',String(!manual));
+    el('modeManual').setAttribute('aria-pressed',String(manual));
+    el('manualPanel').hidden=!manual;
+    el('modeHelp').textContent=manual
+      ? '写真は不要です。この欄に分かる条件だけ入力して見積候補を作れます。不明は不明のままで進めます。'
+      : '下の写真判定画面の入力を読み取ります。写真自体は必須ではありません。';
+    el('diagnosisStatus').textContent=manual
+      ? '写真なしモードです。写真アプリを操作せず、そのまま候補作成できます。'
+      : '写真判定の入力を使います。候補を作るだけでは見積金額は変わりません。';
+    el('diagnosisStatus').className='status';
   }
 
-  function addCandidate(list, catalogId, qty, reason){
-    if(!ESTIMATE_LABELS[catalogId] || !(qty > 0)) return;
-    const existing = list.find(x => x.catalogId === catalogId);
-    if(existing){
-      existing.qty = Math.max(existing.qty, qty);
-      if(reason && !existing.reason.includes(reason)) existing.reason += ` / ${reason}`;
-      return;
-    }
-    list.push({
-      catalogId,
-      label: ESTIMATE_LABELS[catalogId],
-      qty,
-      reason,
-      accepted: false
-    });
+  function addCandidate(list,catalogId,qty,reason){
+    if(!ESTIMATE_LABELS[catalogId]||!(qty>0))return;
+    const existing=list.find(x=>x.catalogId===catalogId);
+    if(existing){existing.qty=Math.max(existing.qty,qty);if(reason&&!existing.reason.includes(reason))existing.reason+=` / ${reason}`;return;}
+    list.push({catalogId,label:ESTIMATE_LABELS[catalogId],qty,reason,accepted:false});
   }
 
-  function readDiagnosisSnapshot(){
-    const doc = childDoc(diagnosisFrame);
-    if(!doc) throw new Error('写真判定画面をまだ読み取れません。');
-    const caseName = doc.getElementById('case-name')?.value?.trim() || '';
-    const siteMemo = doc.getElementById('site-memo')?.value?.trim() || '';
-    const workType = checkedValue(doc, 'workType');
-    const dedicatedCircuit = checkedValue(doc, 'dedicatedCircuit');
-    const acVoltage = checkedValue(doc, 'acVoltage');
-    const wiringRoute = checkedValue(doc, 'wiringRoute');
-    const wireDistanceRaw = doc.getElementById('wire-distance')?.value ?? '';
-    const wireDistance = wireDistanceRaw === '' ? null : Number(wireDistanceRaw);
-    const wireDistanceUnknown = !!doc.getElementById('wire-distance-unknown')?.checked;
-    const outdoor = checkedValues(doc, 'outdoor');
-    return {caseName, siteMemo, workType, dedicatedCircuit, acVoltage, wiringRoute, wireDistance, wireDistanceUnknown, outdoor};
-  }
-
-  function buildCandidatePayload(){
-    const source = readDiagnosisSnapshot();
-    const explicitInstall = numberValue('installCount');
-    const explicitRemove = numberValue('removeCount');
-    const pipeExtensionM = numberValue('pipeExtension') || 0;
-    const billableWireM = numberValue('billableWire') || 0;
-    const explicitHole = numberValue('holeCount');
-    const coverLengthM = numberValue('coverLength');
-    const coverFittingsCount = numberValue('coverFittings') || 0;
-    const highWorkDetail = el('highWorkDetail').value;
-
-    let installCount = explicitInstall;
-    let removeCount = explicitRemove;
-    if(installCount === null){
-      installCount = (source.workType === 'エアコン新設' || source.workType === 'エアコン交換') ? 1 : 0;
-    }
-    if(removeCount === null){
-      removeCount = source.workType === 'エアコン交換' ? 1 : 0;
-    }
-
-    const hasHoleCandidate = source.outdoor.includes('穴あけ候補');
-    const hasCoverCandidate = source.outdoor.includes('化粧カバー候補');
-    const hasHighCandidate = source.outdoor.includes('高所作業候補');
-    const holeCount = explicitHole === null ? (hasHoleCandidate ? 1 : 0) : explicitHole;
-
-    const candidates = [];
-    addCandidate(candidates, 'install_std', installCount, `工事種別: ${source.workType || '未選択'}`);
-    addCandidate(candidates, 'remove_std', removeCount, 'エアコン交換の取外し候補');
-
-    if(source.workType === '専用コンセント新設' || source.dedicatedCircuit === 'なし'){
-      addCandidate(candidates, 'dedicated', 1, source.workType === '専用コンセント新設' ? '工事種別で専用コンセント新設' : '専用回路なし');
-    }
-    if(source.workType === '電圧切替を含む可能性'){
-      addCandidate(candidates, 'volt_change', 1, '工事種別で電圧切替の可能性');
-    }
-    if(pipeExtensionM > 0) addCandidate(candidates, 'pipe_ext', pipeExtensionM, '標準超過の配管延長');
-    if(billableWireM > 0) addCandidate(candidates, 'wire_ext', billableWireM, '課金対象として確認した配線延長');
-    if(hasHoleCandidate && holeCount > 0) addCandidate(candidates, 'hole', holeCount, '屋外条件で穴あけ候補');
-    if(hasCoverCandidate) addCandidate(candidates, 'cover', 1, '屋外条件で化粧カバー候補');
-    if(hasHighCandidate && highWorkDetail === 'roof_wall') addCandidate(candidates, 'roof_wall', 1, '高所区分を「屋根置き・壁面など」と確認');
-
-    const materials = [];
-    const unresolved = [];
-    const needsDedicated = candidates.some(x => x.catalogId === 'dedicated');
-
-    if(needsDedicated){
-      const wiringQty = (Number.isFinite(source.wireDistance) && !source.wireDistanceUnknown && source.wireDistance > 0) ? source.wireDistance : (billableWireM || null);
-      materials.push({name:'配線材', qty:wiringQty, unit:'m', note:'電線サイズは自動確定しない'});
-      materials.push({name:'ブレーカー', qty:1, unit:'個', note:'定格・種類は現地確認'});
-      materials.push({name:'専用コンセント', qty:1, unit:'個', note:'形状・定格は現地確認'});
-      if(source.wiringRoute === '露出配線になりそう') materials.push({name:'配線保護材', qty:wiringQty, unit:'m', note:'ルート確定後に数量確認'});
-      unresolved.push('電線サイズ・遮断器定格・施工可否は現地確認後に確定');
-    }
-    if(hasHoleCandidate) materials.push({name:'貫通処理材', qty:holeCount || null, unit:'箇所分', note:'壁材・貫通条件を現地確認'});
-    if(hasCoverCandidate){
-      materials.push({name:'化粧カバー直管', qty:coverLengthM, unit:'m', note:'実測値を確認'});
-      materials.push({name:'化粧カバー曲がり等', qty:coverFittingsCount || null, unit:'個', note:'種類別の内訳は現地確認'});
-      if(!(coverLengthM > 0)) unresolved.push('化粧カバー実長が未確認');
-    }
-    if(hasHighCandidate && !highWorkDetail) unresolved.push('高所作業候補あり。屋根置き・壁面などに該当するか未確認');
-    if(source.dedicatedCircuit === '不明' || !source.dedicatedCircuit) unresolved.push('専用回路の有無が未確認');
-    if(source.acVoltage === '不明' || !source.acVoltage) unresolved.push('エアコン電源100V/200Vが未確認');
-    if(source.wireDistanceUnknown || !Number.isFinite(source.wireDistance)) unresolved.push('総配線距離が未確認。課金対象mとは別扱い');
-    if(source.workType === '電圧切替を含む可能性') unresolved.push('電圧切替の可否は測定・現地確認後に確定');
-    if(billableWireM > 0 && Number.isFinite(source.wireDistance) && billableWireM > source.wireDistance) unresolved.push('課金対象配線mが総配線距離を超えているため数値確認');
-
+  function readPhotoSnapshot(){
+    const doc=childDoc(diagnosisFrame);
+    if(!doc||!doc.getElementById('case-name'))throw new Error('写真判定画面をまだ読み取れません。写真なしなら「写真なし手入力」に切り替えてください。');
+    const wireRaw=doc.getElementById('wire-distance')?.value??'';
     return {
-      type: 'bc_estimate_candidates',
-      version: 1,
-      sourceApp: 'bc-field-diagnosis',
-      createdAt: new Date().toISOString(),
-      caseName: source.caseName,
-      sourceSnapshot: source,
-      quantities: {installCount, removeCount, pipeExtensionM, billableWireM, holeCount, coverLengthM, coverFittingsCount, highWorkDetail},
-      candidates,
-      materials,
-      unresolved: Array.from(new Set(unresolved))
+      inputMode:'photo',
+      caseName:doc.getElementById('case-name')?.value?.trim()||'',
+      siteMemo:doc.getElementById('site-memo')?.value?.trim()||'',
+      workType:checkedValue(doc,'workType'),
+      dedicatedCircuit:checkedValue(doc,'dedicatedCircuit'),
+      acVoltage:checkedValue(doc,'acVoltage'),
+      wiringRoute:checkedValue(doc,'wiringRoute'),
+      wireDistance:wireRaw===''?null:Number(wireRaw),
+      wireDistanceUnknown:!!doc.getElementById('wire-distance-unknown')?.checked,
+      outdoor:checkedValues(doc,'outdoor')
     };
   }
 
-  function savePayload(payload){
-    localStorage.setItem(CANDIDATE_KEY, JSON.stringify(payload));
+  function readManualSnapshot(){
+    const outdoor=[];
+    if(el('manualHigh').checked)outdoor.push('高所作業候補');
+    if(el('manualHole').checked)outdoor.push('穴あけ候補');
+    if(el('manualCover').checked)outdoor.push('化粧カバー候補');
+    const wireDistance=numberValue('manualWireDistance');
+    return {
+      inputMode:'manual',
+      caseName:el('manualCaseName').value.trim(),
+      siteMemo:'',
+      workType:el('manualWorkType').value,
+      dedicatedCircuit:el('manualDedicated').value,
+      acVoltage:el('manualVoltage').value,
+      wiringRoute:el('manualWiringRoute').value,
+      wireDistance,
+      wireDistanceUnknown:wireDistance===null,
+      outdoor
+    };
   }
 
-  function loadPayload(){
-    try{
-      const data = JSON.parse(localStorage.getItem(CANDIDATE_KEY) || 'null');
-      return data && data.type === 'bc_estimate_candidates' && data.version === 1 ? data : null;
-    }catch(_){ return null; }
+  function readSourceSnapshot(){return sourceMode==='manual'?readManualSnapshot():readPhotoSnapshot();}
+
+  function buildCandidatePayload(){
+    const source=readSourceSnapshot();
+    const explicitInstall=numberValue('installCount');
+    const explicitRemove=numberValue('removeCount');
+    const pipeExtensionM=numberValue('pipeExtension')||0;
+    const billableWireM=numberValue('billableWire')||0;
+    const explicitHole=numberValue('holeCount');
+    const coverLengthM=numberValue('coverLength');
+    const coverFittingsCount=numberValue('coverFittings')||0;
+    const highWorkDetail=el('highWorkDetail').value;
+
+    let installCount=explicitInstall;
+    let removeCount=explicitRemove;
+    if(installCount===null)installCount=(source.workType==='エアコン新設'||source.workType==='エアコン交換')?1:0;
+    if(removeCount===null)removeCount=source.workType==='エアコン交換'?1:0;
+
+    const hasHole=source.outdoor.includes('穴あけ候補');
+    const hasCover=source.outdoor.includes('化粧カバー候補');
+    const hasHigh=source.outdoor.includes('高所作業候補');
+    const holeCount=explicitHole===null?(hasHole?1:0):explicitHole;
+    const candidates=[];
+
+    addCandidate(candidates,'install_std',installCount,`工事種別: ${source.workType||'未選択'}`);
+    addCandidate(candidates,'remove_std',removeCount,'エアコン交換の取外し候補');
+    if(source.workType==='専用コンセント新設'||source.dedicatedCircuit==='なし'){
+      addCandidate(candidates,'dedicated',1,source.workType==='専用コンセント新設'?'専用コンセント新設':'専用回路なし');
+    }
+    if(source.workType==='電圧切替を含む可能性')addCandidate(candidates,'volt_change',1,'電圧切替の可能性');
+    if(pipeExtensionM>0)addCandidate(candidates,'pipe_ext',pipeExtensionM,'標準超過の配管延長');
+    if(billableWireM>0)addCandidate(candidates,'wire_ext',billableWireM,'課金対象として確認した配線延長');
+    if(hasHole&&holeCount>0)addCandidate(candidates,'hole',holeCount,'穴あけ候補');
+    if(hasCover)addCandidate(candidates,'cover',1,'化粧カバー候補');
+    if(hasHigh&&highWorkDetail==='roof_wall')addCandidate(candidates,'roof_wall',1,'屋根置き・壁面などを確認');
+
+    const materials=[];
+    const unresolved=[];
+    const needsDedicated=candidates.some(x=>x.catalogId==='dedicated');
+    if(needsDedicated){
+      const wiringQty=(Number.isFinite(source.wireDistance)&&!source.wireDistanceUnknown&&source.wireDistance>0)?source.wireDistance:(billableWireM||null);
+      materials.push({name:'配線材',qty:wiringQty,unit:'m',note:'電線サイズは自動確定しない'});
+      materials.push({name:'ブレーカー',qty:1,unit:'個',note:'定格・種類は現地確認'});
+      materials.push({name:'専用コンセント',qty:1,unit:'個',note:'形状・定格は現地確認'});
+      if(source.wiringRoute==='露出配線になりそう')materials.push({name:'配線保護材',qty:wiringQty,unit:'m',note:'ルート確定後に数量確認'});
+      unresolved.push('電線サイズ・遮断器定格・施工可否は現地確認後に確定');
+    }
+    if(hasHole)materials.push({name:'貫通処理材',qty:holeCount||null,unit:'箇所分',note:'壁材・貫通条件を現地確認'});
+    if(hasCover){
+      materials.push({name:'化粧カバー直管',qty:coverLengthM,unit:'m',note:'実測値を確認'});
+      materials.push({name:'化粧カバー曲がり等',qty:coverFittingsCount||null,unit:'個',note:'種類別の内訳は現地確認'});
+      if(!(coverLengthM>0))unresolved.push('化粧カバー実長が未確認');
+    }
+    if(hasHigh&&!highWorkDetail)unresolved.push('高所作業候補あり。屋根置き・壁面などに該当するか未確認');
+    if(source.dedicatedCircuit==='不明'||!source.dedicatedCircuit)unresolved.push('専用回路の有無が未確認');
+    if(source.acVoltage==='不明'||!source.acVoltage)unresolved.push('エアコン電源100V/200Vが未確認');
+    if(source.wireDistanceUnknown||!Number.isFinite(source.wireDistance))unresolved.push('総配線距離が未確認。課金対象mとは別扱い');
+    if(source.workType==='電圧切替を含む可能性')unresolved.push('電圧切替の可否は測定・現地確認後に確定');
+    if(billableWireM>0&&Number.isFinite(source.wireDistance)&&billableWireM>source.wireDistance)unresolved.push('課金対象配線mが総配線距離を超えているため数値確認');
+    if(!source.workType)unresolved.push('工事種別が未選択');
+
+    return {
+      type:'bc_estimate_candidates',version:1,
+      sourceApp:source.inputMode==='manual'?'bc-field-tools-manual':'bc-field-diagnosis',
+      inputMode:source.inputMode,
+      createdAt:new Date().toISOString(),caseName:source.caseName,sourceSnapshot:source,
+      quantities:{installCount,removeCount,pipeExtensionM,billableWireM,holeCount,coverLengthM,coverFittingsCount,highWorkDetail},
+      candidates,materials,unresolved:Array.from(new Set(unresolved))
+    };
   }
 
-  function escapeHtml(value){
-    return String(value ?? '').replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+  function savePayload(payload){localStorage.setItem(CANDIDATE_KEY,JSON.stringify(payload));}
+  function loadPayload(){try{const d=JSON.parse(localStorage.getItem(CANDIDATE_KEY)||'null');return d&&d.type==='bc_estimate_candidates'&&d.version===1?d:null;}catch(_){return null;}}
+  function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));}
+
+  function renderPreview(payload,target){
+    const cand=payload.candidates.length?payload.candidates.map(x=>`<li>${escapeHtml(x.label)} × ${escapeHtml(x.qty)} <small>(${escapeHtml(x.reason)})</small></li>`).join(''):'<li>見積候補なし</li>';
+    const mats=payload.materials.length?payload.materials.map(x=>`<li>${escapeHtml(x.name)}: ${x.qty==null?'数量未確認':`${escapeHtml(x.qty)}${escapeHtml(x.unit)}`} — ${escapeHtml(x.note)}</li>`).join(''):'<li>部材候補なし</li>';
+    const unresolved=payload.unresolved.length?payload.unresolved.map(x=>`<li>${escapeHtml(x)}</li>`).join(''):'<li>追加の未確認事項なし</li>';
+    target.innerHTML=`<div class="candidate-box"><div class="candidate-head"><b>作成候補 ${payload.candidates.length}件</b><span>${payload.inputMode==='manual'?'写真なし手入力':'写真判定'} / ${payload.caseName?escapeHtml(payload.caseName):'案件名未入力'}</span></div><div class="split" style="margin-top:8px"><div class="mini"><h3>見積候補</h3><ul>${cand}</ul></div><div class="mini"><h3>部材候補</h3><ul>${mats}</ul></div></div><div class="mini" style="margin-top:8px"><h3>未確認事項</h3><ul>${unresolved}</ul></div></div>`;
   }
 
-  function renderPreview(payload, target){
-    const c = payload.candidates;
-    const candidateHtml = c.length ? c.map(x => `<li>${escapeHtml(x.label)} × ${escapeHtml(x.qty)} <small>(${escapeHtml(x.reason)})</small></li>`).join('') : '<li>見積候補なし</li>';
-    const matHtml = payload.materials.length ? payload.materials.map(x => `<li>${escapeHtml(x.name)}: ${x.qty == null ? '数量未確認' : `${escapeHtml(x.qty)}${escapeHtml(x.unit)}`} — ${escapeHtml(x.note)}</li>`).join('') : '<li>部材候補なし</li>';
-    const unresolvedHtml = payload.unresolved.length ? payload.unresolved.map(x => `<li>${escapeHtml(x)}</li>`).join('') : '<li>追加の未確認事項なし</li>';
-    target.innerHTML = `
-      <div class="candidate-box">
-        <div class="candidate-head"><b>作成候補 ${c.length}件</b><span>${payload.caseName ? escapeHtml(payload.caseName) : '案件名未入力'}</span></div>
-        <div class="split" style="margin-top:8px">
-          <div class="mini"><h3>見積候補</h3><ul>${candidateHtml}</ul></div>
-          <div class="mini"><h3>部材候補</h3><ul>${matHtml}</ul></div>
-        </div>
-        <div class="mini" style="margin-top:8px"><h3>未確認事項</h3><ul>${unresolvedHtml}</ul></div>
-      </div>`;
+  function findEstimateRow(label){
+    const doc=childDoc(estimateFrame);if(!doc)return null;
+    const check=Array.from(doc.querySelectorAll('#catalog input[type="checkbox"][aria-label]')).find(x=>x.getAttribute('aria-label')===label);
+    return check?{check,row:check.closest('.item')}:null;
+  }
+  function applyCandidateToEstimate(candidate,checked){
+    const found=findEstimateRow(candidate.label);
+    if(!found||!found.row)throw new Error(`内部見積に「${candidate.label}」が見つかりません。既存料金は変更していません。`);
+    const qty=found.row.querySelector('.qty');
+    if(qty&&candidate.qty!=null){qty.value=String(candidate.qty);qty.dispatchEvent(new Event('input',{bubbles:true}));}
+    if(found.check.checked!==checked){found.check.checked=checked;found.check.dispatchEvent(new Event('change',{bubbles:true}));}
+  }
+  function ensureEstimateLoaded(){
+    if(estimateLoaded&&childDoc(estimateFrame)?.getElementById('catalog'))return Promise.resolve();
+    if(!estimateFrame.getAttribute('src'))estimateFrame.src=estimateFrame.dataset.src;
+    return new Promise((resolve,reject)=>{
+      const deadline=Date.now()+12000;
+      const timer=setInterval(()=>{
+        if(childDoc(estimateFrame)?.getElementById('catalog')){clearInterval(timer);estimateLoaded=true;resolve();}
+        else if(Date.now()>deadline){clearInterval(timer);reject(new Error('内部見積の読み込みを確認できませんでした。'));}
+      },150);
+    });
   }
 
   function renderEstimateCandidates(){
-    const area = el('candidateArea');
-    const payload = loadPayload();
-    if(!payload){
-      area.innerHTML = '<p class="empty">写真判定候補はまだありません。写真判定側で「見積候補を作成して見積へ」を押してください。</p>';
-      return;
-    }
-    const rows = payload.candidates.length ? payload.candidates.map((x,i) => `
-      <label class="candidate-row">
-        <input class="candidate-check" type="checkbox" data-index="${i}" ${x.accepted ? 'checked' : ''}>
-        <span>
-          <span class="candidate-name">${escapeHtml(x.label)} × ${escapeHtml(x.qty)}</span>
-          <span class="candidate-meta">${escapeHtml(x.reason)}。単価は内部見積の現在値を使用。</span>
-        </span>
-      </label>`).join('') : '<p class="empty">現在の入力から見積項目候補は出ていません。</p>';
-    const mats = payload.materials.length ? payload.materials.map(x => `<li>${escapeHtml(x.name)}: ${x.qty == null ? '数量未確認' : `${escapeHtml(x.qty)}${escapeHtml(x.unit)}`} — ${escapeHtml(x.note)}</li>`).join('') : '<li>部材候補なし</li>';
-    const unresolved = payload.unresolved.length ? payload.unresolved.map(x => `<li>${escapeHtml(x)}</li>`).join('') : '<li>追加の未確認事項なし</li>';
-    area.innerHTML = `
-      <div class="candidate-box">
-        <div class="candidate-head"><b>写真判定候補 ${payload.candidates.length}件</b><span>${payload.caseName ? escapeHtml(payload.caseName) : '案件名未入力'} / ${new Date(payload.createdAt).toLocaleString('ja-JP')}</span></div>
-        <div class="candidate-list">${rows}</div>
-      </div>
-      <div class="split">
-        <div class="mini"><h3>部材候補（見積へ自動加算しない）</h3><ul>${mats}</ul></div>
-        <div class="mini"><h3>未確認事項</h3><ul>${unresolved}</ul></div>
-      </div>`;
-    area.querySelectorAll('.candidate-check').forEach(check => {
-      check.addEventListener('change', async () => {
-        const fresh = loadPayload();
-        if(!fresh) return;
-        const index = Number(check.dataset.index);
-        const candidate = fresh.candidates[index];
-        if(!candidate) return;
-        check.disabled = true;
+    const area=el('candidateArea');const payload=loadPayload();
+    if(!payload){area.innerHTML='<p class="empty">現場入力候補はまだありません。「現場入力」で候補を作成してください。</p>';return;}
+    const rows=payload.candidates.length?payload.candidates.map((x,i)=>`<label class="candidate-row"><input class="candidate-check" type="checkbox" data-index="${i}" ${x.accepted?'checked':''}><span><span class="candidate-name">${escapeHtml(x.label)} × ${escapeHtml(x.qty)}</span><span class="candidate-meta">${escapeHtml(x.reason)}。単価は内部見積の現在値を使用。</span></span></label>`).join(''):'<p class="empty">現在の入力から見積項目候補は出ていません。</p>';
+    const mats=payload.materials.length?payload.materials.map(x=>`<li>${escapeHtml(x.name)}: ${x.qty==null?'数量未確認':`${escapeHtml(x.qty)}${escapeHtml(x.unit)}`} — ${escapeHtml(x.note)}</li>`).join(''):'<li>部材候補なし</li>';
+    const unresolved=payload.unresolved.length?payload.unresolved.map(x=>`<li>${escapeHtml(x)}</li>`).join(''):'<li>追加の未確認事項なし</li>';
+    area.innerHTML=`<div class="candidate-box"><div class="candidate-head"><b>現場入力候補 ${payload.candidates.length}件</b><span>${payload.inputMode==='manual'?'写真なし':'写真判定'} / ${payload.caseName?escapeHtml(payload.caseName):'案件名未入力'}</span></div><div class="candidate-list">${rows}</div></div><div class="split"><div class="mini"><h3>部材候補（自動加算しない）</h3><ul>${mats}</ul></div><div class="mini"><h3>未確認事項</h3><ul>${unresolved}</ul></div></div>`;
+    area.querySelectorAll('.candidate-check').forEach(check=>{
+      check.addEventListener('change',async()=>{
+        const fresh=loadPayload();if(!fresh)return;
+        const index=Number(check.dataset.index),candidate=fresh.candidates[index];if(!candidate)return;
+        check.disabled=true;
         try{
-          await ensureEstimateLoaded();
-          applyCandidateToEstimate(candidate, check.checked);
-          candidate.accepted = check.checked;
-          fresh.candidates[index] = candidate;
-          savePayload(fresh);
-          el('estimateStatus').textContent = check.checked ? `${candidate.label}を見積へ反映しました。金額は見積側の現在単価です。` : `${candidate.label}を見積から外しました。`;
-          el('estimateStatus').className = 'status ok';
-        }catch(err){
-          check.checked = !check.checked;
-          el('estimateStatus').textContent = err.message || '見積への反映に失敗しました。';
-          el('estimateStatus').className = 'status warn';
-        }finally{ check.disabled = false; }
+          await ensureEstimateLoaded();applyCandidateToEstimate(candidate,check.checked);
+          candidate.accepted=check.checked;fresh.candidates[index]=candidate;savePayload(fresh);
+          el('estimateStatus').textContent=check.checked?`${candidate.label}を見積へ反映しました。金額は見積側の現在単価です。`:`${candidate.label}を見積から外しました。`;
+          el('estimateStatus').className='status ok';
+        }catch(err){check.checked=!check.checked;el('estimateStatus').textContent=err.message||'見積への反映に失敗しました。';el('estimateStatus').className='status warn';}
+        finally{check.disabled=false;}
       });
     });
   }
 
-  function findEstimateRow(label){
-    const doc = childDoc(estimateFrame);
-    if(!doc) return null;
-    const check = Array.from(doc.querySelectorAll('#catalog input[type="checkbox"][aria-label]')).find(x => x.getAttribute('aria-label') === label);
-    return check ? {check, row: check.closest('.item')} : null;
-  }
-
-  function applyCandidateToEstimate(candidate, checked){
-    const found = findEstimateRow(candidate.label);
-    if(!found || !found.row) throw new Error(`内部見積に「${candidate.label}」が見つかりません。料金マスターや項目名は変更していません。`);
-    const qty = found.row.querySelector('.qty');
-    if(qty && candidate.qty != null){
-      qty.value = String(candidate.qty);
-      qty.dispatchEvent(new Event('input', {bubbles:true}));
-    }
-    if(found.check.checked !== checked){
-      found.check.checked = checked;
-      found.check.dispatchEvent(new Event('change', {bubbles:true}));
-    }
-  }
-
-  function ensureEstimateLoaded(){
-    if(estimateLoaded && childDoc(estimateFrame)?.getElementById('catalog')) return Promise.resolve();
-    if(!estimateFrame.getAttribute('src')) estimateFrame.src = estimateFrame.dataset.src;
-    return new Promise((resolve,reject) => {
-      const deadline = Date.now() + 12000;
-      const timer = setInterval(() => {
-        if(childDoc(estimateFrame)?.getElementById('catalog')){
-          clearInterval(timer); estimateLoaded = true; resolve();
-        }else if(Date.now() > deadline){
-          clearInterval(timer); reject(new Error('内部見積の読み込みを確認できませんでした。'));
-        }
-      }, 150);
-    });
-  }
-
   function switchView(view){
-    currentView = view;
-    const showEstimate = view === 'estimate';
-    tabDiagnosis.setAttribute('aria-selected', String(!showEstimate));
-    tabEstimate.setAttribute('aria-selected', String(showEstimate));
-    diagnosisFrame.hidden = showEstimate;
-    estimateFrame.hidden = !showEstimate;
-    diagnosisBridge.hidden = showEstimate;
-    estimateBridge.hidden = !showEstimate;
-    el('diagnosisLoading').hidden = showEstimate || !!childDoc(diagnosisFrame)?.getElementById('case-name');
-    el('estimateLoading').hidden = !showEstimate || estimateLoaded;
-    if(showEstimate){
-      if(!estimateFrame.getAttribute('src')) estimateFrame.src = estimateFrame.dataset.src;
-      renderEstimateCandidates();
-    }
-    history.replaceState(null, '', `?view=${showEstimate ? 'estimate' : 'diagnosis'}`);
+    const showEstimate=view==='estimate';
+    tabDiagnosis.setAttribute('aria-selected',String(!showEstimate));
+    tabEstimate.setAttribute('aria-selected',String(showEstimate));
+    diagnosisFrame.hidden=showEstimate;estimateFrame.hidden=!showEstimate;
+    diagnosisBridge.hidden=showEstimate;estimateBridge.hidden=!showEstimate;
+    el('diagnosisLoading').hidden=showEstimate||sourceMode==='manual'||!!childDoc(diagnosisFrame)?.getElementById('case-name');
+    el('estimateLoading').hidden=!showEstimate||estimateLoaded;
+    if(showEstimate){if(!estimateFrame.getAttribute('src'))estimateFrame.src=estimateFrame.dataset.src;renderEstimateCandidates();}
+    history.replaceState(null,'',`?view=${showEstimate?'estimate':'diagnosis'}`);
   }
 
-  diagnosisFrame.addEventListener('load', () => {
-    el('diagnosisLoading').hidden = true;
-  });
-  estimateFrame.addEventListener('load', () => {
-    estimateLoaded = true;
-    el('estimateLoading').hidden = true;
-    renderEstimateCandidates();
-  });
+  diagnosisFrame.addEventListener('load',()=>{el('diagnosisLoading').hidden=true;});
+  estimateFrame.addEventListener('load',()=>{estimateLoaded=true;el('estimateLoading').hidden=true;renderEstimateCandidates();});
+  tabDiagnosis.addEventListener('click',()=>switchView('diagnosis'));
+  tabEstimate.addEventListener('click',()=>switchView('estimate'));
+  el('modePhoto').addEventListener('click',()=>{selectMode('photo');el('diagnosisLoading').hidden=!!childDoc(diagnosisFrame)?.getElementById('case-name');});
+  el('modeManual').addEventListener('click',()=>{selectMode('manual');el('diagnosisLoading').hidden=true;});
 
-  tabDiagnosis.addEventListener('click', () => switchView('diagnosis'));
-  tabEstimate.addEventListener('click', () => switchView('estimate'));
-
-  el('previewCandidatesBtn').addEventListener('click', () => {
+  el('previewCandidatesBtn').addEventListener('click',()=>{
     try{
-      const payload = buildCandidatePayload();
-      const holder = document.createElement('div');
-      renderPreview(payload, holder);
-      const body = diagnosisBridge.querySelector('.bridge-body');
-      const old = body.querySelector('.preview-holder');
-      if(old) old.remove();
-      holder.className = 'preview-holder';
-      body.insertBefore(holder, body.querySelector('.actions'));
-      el('diagnosisStatus').textContent = '候補を確認しました。まだ保存・見積反映はしていません。';
-      el('diagnosisStatus').className = 'status ok';
-    }catch(err){
-      el('diagnosisStatus').textContent = err.message || '写真判定の入力を読み取れませんでした。';
-      el('diagnosisStatus').className = 'status warn';
-    }
+      const payload=buildCandidatePayload(),holder=document.createElement('div');renderPreview(payload,holder);
+      const body=diagnosisBridge.querySelector('.bridge-body'),old=body.querySelector('.preview-holder');if(old)old.remove();
+      holder.className='preview-holder';body.insertBefore(holder,body.querySelector('.actions'));
+      el('diagnosisStatus').textContent='候補を確認しました。まだ保存・見積反映はしていません。';el('diagnosisStatus').className='status ok';
+    }catch(err){el('diagnosisStatus').textContent=err.message||'入力を読み取れませんでした。';el('diagnosisStatus').className='status warn';}
   });
 
-  el('createCandidatesBtn').addEventListener('click', () => {
+  el('createCandidatesBtn').addEventListener('click',()=>{
     try{
-      const payload = buildCandidatePayload();
-      savePayload(payload);
-      el('diagnosisStatus').textContent = `写真判定候補 ${payload.candidates.length}件を保存しました。見積側では未チェック状態です。`;
-      el('diagnosisStatus').className = 'status ok';
-      switchView('estimate');
-    }catch(err){
-      el('diagnosisStatus').textContent = err.message || '候補作成に失敗しました。';
-      el('diagnosisStatus').className = 'status warn';
-    }
+      const payload=buildCandidatePayload();savePayload(payload);
+      el('diagnosisStatus').textContent=`${payload.inputMode==='manual'?'写真なし入力':'写真判定'}から候補 ${payload.candidates.length}件を保存しました。見積側では未チェック状態です。`;
+      el('diagnosisStatus').className='status ok';switchView('estimate');
+    }catch(err){el('diagnosisStatus').textContent=err.message||'候補作成に失敗しました。';el('diagnosisStatus').className='status warn';}
   });
 
-  el('clearCandidatesBtn').addEventListener('click', () => {
-    localStorage.removeItem(CANDIDATE_KEY);
-    renderEstimateCandidates();
-    el('estimateStatus').textContent = '候補データだけ削除しました。内部見積の選択・単価は変更していません。';
-    el('estimateStatus').className = 'status ok';
+  el('clearCandidatesBtn').addEventListener('click',()=>{
+    localStorage.removeItem(CANDIDATE_KEY);renderEstimateCandidates();
+    el('estimateStatus').textContent='候補データだけ削除しました。内部見積の選択・単価は変更していません。';el('estimateStatus').className='status ok';
   });
 
-  const initialView = new URLSearchParams(location.search).get('view') === 'estimate' ? 'estimate' : 'diagnosis';
+  selectMode(sourceMode);
+  const initialView=new URLSearchParams(location.search).get('view')==='estimate'?'estimate':'diagnosis';
   switchView(initialView);
 })();
 </script>
