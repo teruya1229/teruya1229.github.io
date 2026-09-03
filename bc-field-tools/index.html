@@ -1,452 +1,249 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#111111">
-<title>BCサービス 現場ツール</title>
-<style>
-  :root{
-    --bg:#f4f5f7;--card:#fff;--text:#111;--muted:#667085;--line:#dfe3e8;
-    --soft:#f7f8fa;--candidate:#fff8d8;--candidate-line:#e8c95d;
-    --ok:#0a6b2d;--warn:#8a5a00;--danger:#9f1b1b;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
-  body{overflow:hidden}
-  button,input,select{font:inherit}
-  button{cursor:pointer}
-  .app{height:100dvh;display:flex;flex-direction:column;min-height:0}
-  .top{background:#fff;border-bottom:1px solid var(--line);padding:8px max(10px,env(safe-area-inset-left)) 8px max(10px,env(safe-area-inset-right));z-index:10}
-  .topline{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1180px;margin:0 auto}
-  .brand{min-width:0}
-  .brand b{display:block;font-size:16px;line-height:1.2}
-  .brand span{display:block;font-size:11px;color:var(--muted);margin-top:2px}
-  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;min-width:240px}
-  .tab{border:1px solid var(--line);background:#fff;color:#111;border-radius:10px;padding:10px 12px;font-weight:800;min-height:42px}
-  .tab[aria-selected="true"]{background:#111;color:#fff;border-color:#111}
-  .bridge{background:#fff;border-bottom:1px solid var(--line);z-index:9}
-  .bridge-inner{max-width:1180px;margin:0 auto;padding:8px 10px}
-  details.bridge-card{background:var(--soft);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-  details.bridge-card>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;font-weight:800;cursor:pointer}
-  details.bridge-card>summary::-webkit-details-marker{display:none}
-  details.bridge-card>summary:after{content:"＋";font-size:18px}
-  details.bridge-card[open]>summary:after{content:"－"}
-  .bridge-body{border-top:1px solid var(--line);padding:10px 12px;background:#fff;max-height:52dvh;overflow:auto}
-  .lead{margin:0 0 10px;font-size:12px;line-height:1.5;color:var(--muted)}
-  .mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:0 0 10px}
-  .mode-btn{border:1px solid var(--line);background:#fff;border-radius:10px;min-height:44px;padding:9px 10px;font-weight:800;color:#111}
-  .mode-btn[aria-pressed="true"]{background:#111;color:#fff;border-color:#111}
-  .manual-panel{border:1px solid var(--line);background:var(--soft);border-radius:10px;padding:10px;margin-bottom:10px}
-  .manual-panel[hidden]{display:none}
-  .manual-title{font-size:13px;font-weight:900;margin:0 0 8px}
-  .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-  .field{min-width:0}
-  .field label{display:block;font-size:11px;color:var(--muted);margin:0 0 4px}
-  .field input,.field select{width:100%;min-height:42px;border:1px solid var(--line);border-radius:9px;padding:8px;background:#fff;font-size:16px}
-  .condition-box{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
-  .condition{display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:9px;padding:9px 10px;background:#fff;font-size:13px;font-weight:700}
-  .condition input{width:20px;height:20px;margin:0;accent-color:#111}
-  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-  .btn{border:0;border-radius:10px;min-height:42px;padding:10px 14px;font-weight:800}
-  .btn-primary{background:#111;color:#fff}
-  .btn-secondary{background:#eceff2;color:#111}
-  .btn-danger{background:#fff0f0;color:var(--danger);border:1px solid #f0c8c8}
-  .status{font-size:12px;margin:8px 0 0;color:var(--muted);line-height:1.5}
-  .status.ok{color:var(--ok)}
-  .status.warn{color:var(--warn)}
-  .candidate-box{background:var(--candidate);border:1px solid var(--candidate-line);border-radius:10px;padding:10px;margin-bottom:10px}
-  .candidate-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
-  .candidate-head b{font-size:14px}
-  .candidate-head span{font-size:11px;color:#6b5700}
-  .candidate-list{display:grid;gap:7px;margin-top:8px}
-  .candidate-row{display:grid;grid-template-columns:30px minmax(0,1fr);gap:8px;align-items:start;background:#fff;border:1px solid #eadc9a;border-radius:9px;padding:9px}
-  .candidate-row input{width:22px;height:22px;margin:0;accent-color:#111}
-  .candidate-name{font-weight:800;font-size:14px;line-height:1.3}
-  .candidate-meta{display:block;font-size:11px;color:var(--muted);line-height:1.45;margin-top:2px}
-  .split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .mini{border:1px solid var(--line);border-radius:10px;padding:9px;background:#fff}
-  .mini h3{font-size:12px;margin:0 0 6px}
-  .mini ul{margin:0;padding-left:18px;font-size:12px;line-height:1.55}
-  .empty{font-size:12px;color:var(--muted);margin:0}
-  .workspace{flex:1;min-height:0;position:relative;background:#e9ecef}
-  .frame{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
-  .frame[hidden]{display:none}
-  .loading{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;color:var(--muted);pointer-events:none}
-  .loading[hidden]{display:none}
-  @media(max-width:760px){
-    .topline{align-items:stretch;flex-direction:column;gap:7px}
-    .brand{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-    .brand span{margin:0;text-align:right}
-    .tabs{min-width:0;width:100%}
-    .tab{padding:9px 8px}
-    .bridge-inner{padding:6px}
-    .bridge-body{max-height:58dvh;padding:9px}
-    .grid{grid-template-columns:1fr 1fr}
-    .split{grid-template-columns:1fr}
-  }
-  @media(max-width:390px){
-    .brand b{font-size:15px}
-    .brand span{font-size:10px}
-    .field label{font-size:10px}
-    .mode-btn{font-size:13px}
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#1c3d5a" />
+  <title>BCサービス 現場アプリ</title>
+  <link rel="stylesheet" href="./style.css?v=20260904-001" />
 </head>
 <body>
-<div class="app">
-  <header class="top">
-    <div class="topline">
-      <div class="brand">
-        <b>BCサービス 現場ツール</b>
-        <span>写真あり・写真なし → 内部見積</span>
+  <div class="app">
+    <header class="topbar">
+      <div class="top-inner">
+        <div class="brand-row">
+          <div class="brand"><b>BCサービス</b></div>
+          <div class="case-chip">
+            <p id="save-status" class="save-status save-idle" aria-live="polite">保存待ち</p>
+            <button id="more-menu-btn" class="icon-btn" type="button" aria-label="メニュー">⋯</button>
+          </div>
+        </div>
+        <p id="save-status-detail" class="save-status-detail" hidden></p>
+        <nav class="nav-tabs" aria-label="画面切替">
+          <button id="tab-field" class="nav-tab" type="button" aria-selected="true">現場</button>
+          <button id="tab-estimate" class="nav-tab" type="button" aria-selected="false">見積</button>
+        </nav>
       </div>
-      <nav class="tabs" aria-label="現場ツール切替">
-        <button id="tabDiagnosis" class="tab" type="button" aria-selected="true">現場入力</button>
-        <button id="tabEstimate" class="tab" type="button" aria-selected="false">見積</button>
-      </nav>
+    </header>
+
+    <div id="conflict-panel" class="wrap" hidden role="alert">
+      <div class="warn-card">別タブで更新されています。現在の入力を自動破棄しません。</div>
+      <div class="cta-actions">
+        <button id="conflict-reload-btn" class="btn btn-secondary" type="button">DB版を開き直す</button>
+        <button id="conflict-save-as-new-btn" class="btn btn-primary" type="button">現在の入力を新規案件として保存</button>
+      </div>
     </div>
-  </header>
 
-  <section class="bridge" aria-label="現場入力と見積の連携">
-    <div class="bridge-inner">
-      <details id="diagnosisBridge" class="bridge-card" open>
-        <summary>見積連携入力 <span style="font-size:11px;color:#667085;font-weight:600">写真なしでも進めます</span></summary>
-        <div class="bridge-body">
-          <div class="mode-switch" aria-label="入力方法">
-            <button id="modePhoto" class="mode-btn" type="button" aria-pressed="true">写真判定から読む</button>
-            <button id="modeManual" class="mode-btn" type="button" aria-pressed="false">写真なし手入力</button>
-          </div>
+    <main id="view-field" class="wrap">
+      <p class="safety-line">AI判定は参考です。施工条件は現場確認で決定してください。</p>
+      <nav class="phase-switch" aria-label="工程">
+        <button class="phase-btn" type="button" data-phase="survey" aria-selected="true">調査</button>
+        <button class="phase-btn" type="button" data-phase="preparation" aria-selected="false">準備</button>
+        <button class="phase-btn" type="button" data-phase="execution" aria-selected="false">施工</button>
+        <button class="phase-btn" type="button" data-phase="completion" aria-selected="false">完了</button>
+      </nav>
 
-          <p id="modeHelp" class="lead">下の写真判定画面の入力を読み取ります。写真自体は必須ではありません。</p>
+      <section id="phase-survey">
+        <label class="section-label" for="case-name">お客様名 / 案件名（任意）</label>
+        <input id="case-name" class="field-input" type="text" autocomplete="off" placeholder="空欄でも進めます" />
+        <label class="section-label" for="site-memo">現場メモ（任意）</label>
+        <textarea id="site-memo" class="text-input" placeholder="分かっていることだけ"></textarea>
 
-          <div id="manualPanel" class="manual-panel" hidden>
-            <p class="manual-title">写真なし用 基本条件</p>
-            <div class="grid">
-              <div class="field"><label for="manualCaseName">案件名</label><input id="manualCaseName" type="text" autocomplete="off" placeholder="例：○○様 エアコン交換"></div>
-              <div class="field"><label for="manualWorkType">工事種別</label><select id="manualWorkType"><option value="">未選択</option><option value="エアコン新設">エアコン新設</option><option value="エアコン交換">エアコン交換</option><option value="専用コンセント新設">専用コンセント新設</option><option value="電圧切替を含む可能性">電圧切替を含む可能性</option><option value="その他">その他</option></select></div>
-              <div class="field"><label for="manualDedicated">専用回路</label><select id="manualDedicated"><option value="不明">不明</option><option value="あり">あり</option><option value="なし">なし</option></select></div>
-              <div class="field"><label for="manualVoltage">エアコン電源</label><select id="manualVoltage"><option value="不明">不明</option><option value="100V">100V</option><option value="200V">200V</option></select></div>
-              <div class="field"><label for="manualWiringRoute">配線ルート</label><select id="manualWiringRoute"><option value="不明">不明</option><option value="隠蔽できそう">隠蔽できそう</option><option value="露出配線になりそう">露出配線になりそう</option><option value="現地確認が必要">現地確認が必要</option></select></div>
-              <div class="field"><label for="manualWireDistance">想定総配線距離m</label><input id="manualWireDistance" type="number" min="0" step="0.1" inputmode="decimal" placeholder="未確認可"></div>
-            </div>
-            <div class="condition-box" aria-label="追加工事候補">
-              <label class="condition"><input id="manualHigh" type="checkbox">高所作業候補</label>
-              <label class="condition"><input id="manualHole" type="checkbox">穴あけ候補</label>
-              <label class="condition"><input id="manualCover" type="checkbox">化粧カバー候補</label>
-            </div>
-          </div>
+        <h2 class="q">今日は何の作業？</h2>
+        <div id="work-type-grid" class="choice-grid"></div>
+        <div id="survey-questions"></div>
+        <div id="ai-suggestions"></div>
 
-          <p class="manual-title">見積用の数量確認</p>
-          <div class="grid">
-            <div class="field"><label for="installCount">取付台数</label><input id="installCount" type="number" min="0" step="1" inputmode="numeric" placeholder="工事種別から候補"></div>
-            <div class="field"><label for="removeCount">取外し台数</label><input id="removeCount" type="number" min="0" step="1" inputmode="numeric" placeholder="交換なら候補1"></div>
-            <div class="field"><label for="pipeExtension">標準超過 配管延長m</label><input id="pipeExtension" type="number" min="0" step="0.5" inputmode="decimal" placeholder="0"></div>
-            <div class="field"><label for="billableWire">課金対象 配線延長m</label><input id="billableWire" type="number" min="0" step="0.5" inputmode="decimal" placeholder="0"></div>
-            <div class="field"><label for="holeCount">穴あけ箇所数</label><input id="holeCount" type="number" min="0" step="1" inputmode="numeric" placeholder="候補なら1"></div>
-            <div class="field"><label for="coverLength">化粧カバー実長m</label><input id="coverLength" type="number" min="0" step="0.1" inputmode="decimal" placeholder="未確認可"></div>
-            <div class="field"><label for="coverFittings">カバー曲がり等 部材数</label><input id="coverFittings" type="number" min="0" step="1" inputmode="numeric" placeholder="0"></div>
-            <div class="field"><label for="highWorkDetail">高所区分</label><select id="highWorkDetail"><option value="">未確認</option><option value="roof_wall">屋根置き・壁面など</option><option value="other">その他高所</option><option value="none">高所なし</option></select></div>
-          </div>
-          <div class="actions">
-            <button id="createCandidatesBtn" class="btn btn-primary" type="button">見積候補を作成して見積へ</button>
-            <button id="previewCandidatesBtn" class="btn btn-secondary" type="button">候補だけ確認</button>
-          </div>
-          <p id="diagnosisStatus" class="status">候補を作るだけでは見積金額は変わりません。</p>
+        <p class="section-label">写真　任意・後から追加できます</p>
+        <div id="photo-cards" class="photo-grid"></div>
+        <p class="hint" style="margin-top:8px">分電盤は外から見える範囲だけ。カバーは外さないでください。</p>
+
+        <div id="survey-materials"></div>
+        <div id="survey-notices"></div>
+      </section>
+
+      <section id="phase-preparation" hidden>
+        <h2 class="q">施工の前に</h2>
+        <div id="prep-fields"></div>
+        <div id="prep-checks"></div>
+        <div id="prep-photos" class="photo-grid" hidden></div>
+        <p class="section-label">作業停止</p>
+        <button id="prep-stop-btn" class="btn btn-danger" type="button">作業を止める</button>
+        <div id="prep-stop-form" hidden></div>
+        <div id="prep-resume-form" hidden></div>
+      </section>
+
+      <section id="phase-execution" hidden>
+        <h2 class="q">施工の記録</h2>
+        <div id="exec-fields"></div>
+        <p class="section-label">施工中の写真</p>
+        <div id="exec-photo-cards" class="photo-grid"></div>
+        <div id="exec-lists"></div>
+        <button id="exec-stop-btn" class="btn btn-danger" type="button">作業を止める</button>
+        <div id="exec-stop-form" hidden></div>
+        <div id="exec-resume-form" hidden></div>
+      </section>
+
+      <section id="phase-completion" hidden>
+        <h2 class="q">完了の確認</h2>
+        <div id="comp-fields"></div>
+        <p class="section-label">完了写真</p>
+        <div id="comp-photo-cards" class="photo-grid"></div>
+        <div id="comp-checks"></div>
+        <div id="comp-lists"></div>
+      </section>
+    </main>
+
+    <main id="view-estimate" class="wrap" hidden>
+      <label class="section-label" for="est-customer">お客様名 / 案件名（任意）</label>
+      <input id="est-customer" class="field-input" type="text" autocomplete="off" placeholder="空欄でも進めます" />
+      <label class="section-label" for="est-memo">見積メモ（任意）</label>
+      <input id="est-memo" class="field-input" type="text" autocomplete="off" placeholder="現地確認後に正式確定 など" />
+
+      <div id="est-notices"></div>
+      <div id="est-materials"></div>
+
+      <div id="est-cats" class="cat-tabs" role="tablist"></div>
+      <div id="est-catalog"></div>
+
+      <p class="section-label">自由追加</p>
+      <div class="sheet">
+        <input id="customName" class="field-input" type="text" placeholder="作業名" autocomplete="off" />
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+          <input id="customPrice" class="field-input" type="number" inputmode="decimal" placeholder="単価" />
+          <input id="customQty" class="field-input" type="number" inputmode="decimal" min="1" step="1" value="1" placeholder="数量" />
         </div>
-      </details>
+        <button id="add-custom-btn" class="btn btn-secondary" type="button" style="margin-top:8px;width:100%">追加</button>
+      </div>
 
-      <details id="estimateBridge" class="bridge-card" hidden open>
-        <summary>現場入力候補 <span style="font-size:11px;color:#667085;font-weight:600">チェックした項目だけ見積へ反映</span></summary>
-        <div class="bridge-body">
-          <div id="candidateArea"></div>
-          <div class="actions">
-            <button id="clearCandidatesBtn" class="btn btn-danger" type="button">候補データだけ削除</button>
+      <p class="section-label">選択中の明細</p>
+      <div id="est-selected" class="sheet"></div>
+      <button id="open-prices-btn" class="info-link" type="button">料金設定</button>
+    </main>
+  </div>
+
+  <footer id="cta-bar" class="cta-bar">
+    <div class="cta-inner" id="cta-inner"></div>
+  </footer>
+
+  <div id="more-overlay" class="overlay" hidden>
+    <div class="sheet-bottom" role="dialog" aria-label="メニュー">
+      <div class="sheet-handle"></div>
+      <p class="section-label" style="margin-top:0">案件</p>
+      <p><span id="current-case-name">—</span></p>
+      <p class="hint">番号 <span id="current-case-number">—</span>　工程 <span id="current-case-phase">—</span></p>
+      <p class="hint">更新 <span id="current-case-updated">—</span></p>
+      <div id="storage-estimate" hidden></div>
+      <div class="menu-list">
+        <button id="open-case-list-btn" class="btn btn-secondary" type="button">案件一覧</button>
+        <button id="new-case-btn" class="btn btn-secondary" type="button">新規案件</button>
+        <button id="save-now-btn" class="btn btn-primary" type="button">今すぐ保存</button>
+        <button id="save-retry-btn" class="btn btn-secondary" type="button" hidden>保存を再試行</button>
+        <button id="delete-case-btn" class="btn btn-danger" type="button">この案件を削除</button>
+        <button id="backup-export-btn" class="btn btn-secondary" type="button">バックアップ</button>
+        <button id="backup-import-btn" class="btn btn-secondary" type="button">復元</button>
+      </div>
+      <div id="backup-panel">
+        <p id="backup-progress" class="hint" hidden></p>
+        <p id="backup-success" class="hint" hidden></p>
+        <p id="backup-error" class="hint" role="alert" hidden></p>
+        <div id="backup-import-confirm" hidden>
+          <p class="warn-card">復元内容を確認してください。ファイルは暗号化されていません。</p>
+          <div id="backup-import-details"></div>
+          <div class="cta-actions">
+            <button id="backup-import-confirm-btn" class="btn btn-primary" type="button">新しい案件として復元</button>
+            <button id="backup-import-cancel-btn" class="btn btn-ghost" type="button">キャンセル</button>
           </div>
-          <p id="estimateStatus" class="status">単価は内部見積の現在値だけを使います。候補側から単価は変更しません。</p>
         </div>
-      </details>
+      </div>
+      <p class="section-label">案内</p>
+      <div class="menu-list">
+        <button id="open-safety-btn" class="btn btn-ghost" type="button">安全について</button>
+        <button id="open-saveinfo-btn" class="btn btn-ghost" type="button">保存について</button>
+        <button id="open-ai-auth-btn" class="btn btn-ghost" type="button">写真AIのログイン</button>
+      </div>
+      <button id="close-more-btn" class="btn btn-secondary" type="button" style="margin-top:12px;width:100%">閉じる</button>
+    </div>
+  </div>
+
+  <div id="info-overlay" class="overlay" hidden>
+    <div class="sheet-bottom" role="dialog" aria-label="説明">
+      <div class="sheet-handle"></div>
+      <div id="info-content"></div>
+      <button id="close-info-btn" class="btn btn-primary" type="button" style="margin-top:12px;width:100%">閉じる</button>
+    </div>
+  </div>
+
+  <div id="prices-overlay" class="overlay" hidden>
+    <div class="sheet-bottom" role="dialog" aria-label="料金設定">
+      <div class="sheet-handle"></div>
+      <h2 class="q">料金設定</h2>
+      <p class="hint">日常の見積では使いません。単価を変えるときだけ開きます。既存の金額は勝手に変わりません。</p>
+      <div id="price-list"></div>
+      <p class="section-label">料金のコピー / 読込</p>
+      <textarea id="masterJson" class="text-input" placeholder="ここに貼り付け"></textarea>
+      <div class="menu-list" style="margin-top:8px">
+        <button id="copy-prices-btn" class="btn btn-secondary" type="button">料金をコピー</button>
+        <button id="load-prices-btn" class="btn btn-secondary" type="button">貼り付けて読み込み</button>
+        <button id="reset-prices-btn" class="btn btn-danger" type="button">初期値に戻す</button>
+      </div>
+      <p id="masterMsg" class="hint"></p>
+      <button id="close-prices-btn" class="btn btn-primary" type="button" style="margin-top:12px;width:100%">閉じる</button>
+    </div>
+  </div>
+
+  <div id="case-list-panel" class="overlay" hidden>
+    <div class="sheet-bottom" role="dialog" aria-label="案件一覧">
+      <div class="sheet-handle"></div>
+      <h2 class="q">案件一覧</h2>
+      <div id="case-list" class="case-list"></div>
+      <button id="close-case-list-btn" class="btn btn-secondary" type="button" style="margin-top:12px;width:100%">閉じる</button>
+    </div>
+  </div>
+
+  <section id="ai-auth-panel" class="wrap" hidden>
+    <div class="sheet">
+      <h2 class="q">写真AIのログイン</h2>
+      <p class="hint">案件の保存・見積はログインなしで使えます。写真をAIで読むときだけ必要です。</p>
+      <div id="ai-auth-signed-out">
+        <label class="section-label" for="ai-auth-email">メール</label>
+        <input id="ai-auth-email" class="field-input" type="email" autocomplete="username" inputmode="email" />
+        <label class="section-label" for="ai-auth-password">パスワード</label>
+        <input id="ai-auth-password" class="field-input" type="password" autocomplete="current-password" />
+        <div class="menu-list" style="margin-top:10px">
+          <button id="ai-auth-login-btn" class="btn btn-primary" type="button">ログイン</button>
+          <button id="ai-auth-reset-btn" class="btn btn-ghost" type="button">パスワード再設定メールを送る</button>
+        </div>
+        <p id="ai-auth-error" class="hint" role="alert" hidden></p>
+        <p id="ai-auth-info" class="hint" hidden></p>
+      </div>
+      <div id="ai-auth-recovery" hidden>
+        <label class="section-label" for="ai-auth-new-password">新しいパスワード</label>
+        <input id="ai-auth-new-password" class="field-input" type="password" autocomplete="new-password" />
+        <label class="section-label" for="ai-auth-new-password-confirm">確認</label>
+        <input id="ai-auth-new-password-confirm" class="field-input" type="password" autocomplete="new-password" />
+        <div class="menu-list" style="margin-top:10px">
+          <button id="ai-auth-save-password-btn" class="btn btn-primary" type="button">新しいパスワードを保存</button>
+          <button id="ai-auth-cancel-recovery-btn" class="btn btn-ghost" type="button">キャンセル</button>
+        </div>
+        <p id="ai-auth-recovery-error" class="hint" role="alert" hidden></p>
+      </div>
+      <div id="ai-auth-signed-in" hidden>
+        <p class="hint">ログイン中: <span id="ai-auth-email-display"></span></p>
+        <button id="ai-auth-logout-btn" class="btn btn-ghost" type="button">ログアウト</button>
+      </div>
+      <button id="close-ai-auth-btn" class="btn btn-secondary" type="button" style="margin-top:12px;width:100%">閉じる</button>
     </div>
   </section>
 
-  <main class="workspace">
-    <div id="diagnosisLoading" class="loading">写真判定を読み込み中…</div>
-    <iframe id="diagnosisFrame" class="frame" title="BC現場写真診断" src="/bc-field-diagnosis/"></iframe>
-    <div id="estimateLoading" class="loading" hidden>内部見積を読み込み中…</div>
-    <iframe id="estimateFrame" class="frame" title="BCサービス 内部見積" data-src="/bc-estimate/?v=20260903-001" hidden></iframe>
-  </main>
-</div>
+  <input id="backup-import-input" type="file" accept=".bcfd,application/vnd.bc-field-diagnosis,application/octet-stream" hidden />
 
-<script>
-(() => {
-  'use strict';
-
-  const CANDIDATE_KEY = 'bc_estimate_candidates_v1';
-  const MODE_KEY = 'bc_field_tools_source_mode';
-  const ESTIMATE_LABELS = {
-    install_std:'標準取付',remove_std:'既設取外し',roof_wall:'屋根置き・壁面など',
-    pipe_ext:'配管延長',cover:'化粧カバー追加',dedicated:'専用回路',
-    volt_change:'100V / 200V 電圧切替',hole:'穴あけ追加',wire_ext:'配線延長'
-  };
-
-  const el = id => document.getElementById(id);
-  const diagnosisFrame = el('diagnosisFrame');
-  const estimateFrame = el('estimateFrame');
-  const diagnosisBridge = el('diagnosisBridge');
-  const estimateBridge = el('estimateBridge');
-  const tabDiagnosis = el('tabDiagnosis');
-  const tabEstimate = el('tabEstimate');
-  let sourceMode = localStorage.getItem(MODE_KEY) === 'manual' ? 'manual' : 'photo';
-  let estimateLoaded = false;
-
-  function childDoc(frame){
-    try{return frame.contentDocument || frame.contentWindow.document;}catch(_){return null;}
-  }
-  function checkedValue(doc,name){
-    const node=doc&&doc.querySelector(`input[name="${name}"]:checked`);return node?node.value:'';
-  }
-  function checkedValues(doc,name){
-    return doc?Array.from(doc.querySelectorAll(`input[name="${name}"]:checked`)).map(x=>x.value):[];
-  }
-  function numberValue(id){
-    const raw=el(id).value.trim();if(raw==='')return null;const n=Number(raw);return Number.isFinite(n)&&n>=0?n:null;
-  }
-  function selectMode(mode){
-    sourceMode=mode==='manual'?'manual':'photo';
-    localStorage.setItem(MODE_KEY,sourceMode);
-    const manual=sourceMode==='manual';
-    el('modePhoto').setAttribute('aria-pressed',String(!manual));
-    el('modeManual').setAttribute('aria-pressed',String(manual));
-    el('manualPanel').hidden=!manual;
-    el('modeHelp').textContent=manual
-      ? '写真は不要です。この欄に分かる条件だけ入力して見積候補を作れます。不明は不明のままで進めます。'
-      : '下の写真判定画面の入力を読み取ります。写真自体は必須ではありません。';
-    el('diagnosisStatus').textContent=manual
-      ? '写真なしモードです。写真アプリを操作せず、そのまま候補作成できます。'
-      : '写真判定の入力を使います。候補を作るだけでは見積金額は変わりません。';
-    el('diagnosisStatus').className='status';
-  }
-
-  function addCandidate(list,catalogId,qty,reason){
-    if(!ESTIMATE_LABELS[catalogId]||!(qty>0))return;
-    const existing=list.find(x=>x.catalogId===catalogId);
-    if(existing){existing.qty=Math.max(existing.qty,qty);if(reason&&!existing.reason.includes(reason))existing.reason+=` / ${reason}`;return;}
-    list.push({catalogId,label:ESTIMATE_LABELS[catalogId],qty,reason,accepted:false});
-  }
-
-  function readPhotoSnapshot(){
-    const doc=childDoc(diagnosisFrame);
-    if(!doc||!doc.getElementById('case-name'))throw new Error('写真判定画面をまだ読み取れません。写真なしなら「写真なし手入力」に切り替えてください。');
-    const wireRaw=doc.getElementById('wire-distance')?.value??'';
-    return {
-      inputMode:'photo',
-      caseName:doc.getElementById('case-name')?.value?.trim()||'',
-      siteMemo:doc.getElementById('site-memo')?.value?.trim()||'',
-      workType:checkedValue(doc,'workType'),
-      dedicatedCircuit:checkedValue(doc,'dedicatedCircuit'),
-      acVoltage:checkedValue(doc,'acVoltage'),
-      wiringRoute:checkedValue(doc,'wiringRoute'),
-      wireDistance:wireRaw===''?null:Number(wireRaw),
-      wireDistanceUnknown:!!doc.getElementById('wire-distance-unknown')?.checked,
-      outdoor:checkedValues(doc,'outdoor')
-    };
-  }
-
-  function readManualSnapshot(){
-    const outdoor=[];
-    if(el('manualHigh').checked)outdoor.push('高所作業候補');
-    if(el('manualHole').checked)outdoor.push('穴あけ候補');
-    if(el('manualCover').checked)outdoor.push('化粧カバー候補');
-    const wireDistance=numberValue('manualWireDistance');
-    return {
-      inputMode:'manual',
-      caseName:el('manualCaseName').value.trim(),
-      siteMemo:'',
-      workType:el('manualWorkType').value,
-      dedicatedCircuit:el('manualDedicated').value,
-      acVoltage:el('manualVoltage').value,
-      wiringRoute:el('manualWiringRoute').value,
-      wireDistance,
-      wireDistanceUnknown:wireDistance===null,
-      outdoor
-    };
-  }
-
-  function readSourceSnapshot(){return sourceMode==='manual'?readManualSnapshot():readPhotoSnapshot();}
-
-  function buildCandidatePayload(){
-    const source=readSourceSnapshot();
-    const explicitInstall=numberValue('installCount');
-    const explicitRemove=numberValue('removeCount');
-    const pipeExtensionM=numberValue('pipeExtension')||0;
-    const billableWireM=numberValue('billableWire')||0;
-    const explicitHole=numberValue('holeCount');
-    const coverLengthM=numberValue('coverLength');
-    const coverFittingsCount=numberValue('coverFittings')||0;
-    const highWorkDetail=el('highWorkDetail').value;
-
-    let installCount=explicitInstall;
-    let removeCount=explicitRemove;
-    if(installCount===null)installCount=(source.workType==='エアコン新設'||source.workType==='エアコン交換')?1:0;
-    if(removeCount===null)removeCount=source.workType==='エアコン交換'?1:0;
-
-    const hasHole=source.outdoor.includes('穴あけ候補');
-    const hasCover=source.outdoor.includes('化粧カバー候補');
-    const hasHigh=source.outdoor.includes('高所作業候補');
-    const holeCount=explicitHole===null?(hasHole?1:0):explicitHole;
-    const candidates=[];
-
-    addCandidate(candidates,'install_std',installCount,`工事種別: ${source.workType||'未選択'}`);
-    addCandidate(candidates,'remove_std',removeCount,'エアコン交換の取外し候補');
-    if(source.workType==='専用コンセント新設'||source.dedicatedCircuit==='なし'){
-      addCandidate(candidates,'dedicated',1,source.workType==='専用コンセント新設'?'専用コンセント新設':'専用回路なし');
-    }
-    if(source.workType==='電圧切替を含む可能性')addCandidate(candidates,'volt_change',1,'電圧切替の可能性');
-    if(pipeExtensionM>0)addCandidate(candidates,'pipe_ext',pipeExtensionM,'標準超過の配管延長');
-    if(billableWireM>0)addCandidate(candidates,'wire_ext',billableWireM,'課金対象として確認した配線延長');
-    if(hasHole&&holeCount>0)addCandidate(candidates,'hole',holeCount,'穴あけ候補');
-    if(hasCover)addCandidate(candidates,'cover',1,'化粧カバー候補');
-    if(hasHigh&&highWorkDetail==='roof_wall')addCandidate(candidates,'roof_wall',1,'屋根置き・壁面などを確認');
-
-    const materials=[];
-    const unresolved=[];
-    const needsDedicated=candidates.some(x=>x.catalogId==='dedicated');
-    if(needsDedicated){
-      const wiringQty=(Number.isFinite(source.wireDistance)&&!source.wireDistanceUnknown&&source.wireDistance>0)?source.wireDistance:(billableWireM||null);
-      materials.push({name:'配線材',qty:wiringQty,unit:'m',note:'電線サイズは自動確定しない'});
-      materials.push({name:'ブレーカー',qty:1,unit:'個',note:'定格・種類は現地確認'});
-      materials.push({name:'専用コンセント',qty:1,unit:'個',note:'形状・定格は現地確認'});
-      if(source.wiringRoute==='露出配線になりそう')materials.push({name:'配線保護材',qty:wiringQty,unit:'m',note:'ルート確定後に数量確認'});
-      unresolved.push('電線サイズ・遮断器定格・施工可否は現地確認後に確定');
-    }
-    if(hasHole)materials.push({name:'貫通処理材',qty:holeCount||null,unit:'箇所分',note:'壁材・貫通条件を現地確認'});
-    if(hasCover){
-      materials.push({name:'化粧カバー直管',qty:coverLengthM,unit:'m',note:'実測値を確認'});
-      materials.push({name:'化粧カバー曲がり等',qty:coverFittingsCount||null,unit:'個',note:'種類別の内訳は現地確認'});
-      if(!(coverLengthM>0))unresolved.push('化粧カバー実長が未確認');
-    }
-    if(hasHigh&&!highWorkDetail)unresolved.push('高所作業候補あり。屋根置き・壁面などに該当するか未確認');
-    if(source.dedicatedCircuit==='不明'||!source.dedicatedCircuit)unresolved.push('専用回路の有無が未確認');
-    if(source.acVoltage==='不明'||!source.acVoltage)unresolved.push('エアコン電源100V/200Vが未確認');
-    if(source.wireDistanceUnknown||!Number.isFinite(source.wireDistance))unresolved.push('総配線距離が未確認。課金対象mとは別扱い');
-    if(source.workType==='電圧切替を含む可能性')unresolved.push('電圧切替の可否は測定・現地確認後に確定');
-    if(billableWireM>0&&Number.isFinite(source.wireDistance)&&billableWireM>source.wireDistance)unresolved.push('課金対象配線mが総配線距離を超えているため数値確認');
-    if(!source.workType)unresolved.push('工事種別が未選択');
-
-    return {
-      type:'bc_estimate_candidates',version:1,
-      sourceApp:source.inputMode==='manual'?'bc-field-tools-manual':'bc-field-diagnosis',
-      inputMode:source.inputMode,
-      createdAt:new Date().toISOString(),caseName:source.caseName,sourceSnapshot:source,
-      quantities:{installCount,removeCount,pipeExtensionM,billableWireM,holeCount,coverLengthM,coverFittingsCount,highWorkDetail},
-      candidates,materials,unresolved:Array.from(new Set(unresolved))
-    };
-  }
-
-  function savePayload(payload){localStorage.setItem(CANDIDATE_KEY,JSON.stringify(payload));}
-  function loadPayload(){try{const d=JSON.parse(localStorage.getItem(CANDIDATE_KEY)||'null');return d&&d.type==='bc_estimate_candidates'&&d.version===1?d:null;}catch(_){return null;}}
-  function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));}
-
-  function renderPreview(payload,target){
-    const cand=payload.candidates.length?payload.candidates.map(x=>`<li>${escapeHtml(x.label)} × ${escapeHtml(x.qty)} <small>(${escapeHtml(x.reason)})</small></li>`).join(''):'<li>見積候補なし</li>';
-    const mats=payload.materials.length?payload.materials.map(x=>`<li>${escapeHtml(x.name)}: ${x.qty==null?'数量未確認':`${escapeHtml(x.qty)}${escapeHtml(x.unit)}`} — ${escapeHtml(x.note)}</li>`).join(''):'<li>部材候補なし</li>';
-    const unresolved=payload.unresolved.length?payload.unresolved.map(x=>`<li>${escapeHtml(x)}</li>`).join(''):'<li>追加の未確認事項なし</li>';
-    target.innerHTML=`<div class="candidate-box"><div class="candidate-head"><b>作成候補 ${payload.candidates.length}件</b><span>${payload.inputMode==='manual'?'写真なし手入力':'写真判定'} / ${payload.caseName?escapeHtml(payload.caseName):'案件名未入力'}</span></div><div class="split" style="margin-top:8px"><div class="mini"><h3>見積候補</h3><ul>${cand}</ul></div><div class="mini"><h3>部材候補</h3><ul>${mats}</ul></div></div><div class="mini" style="margin-top:8px"><h3>未確認事項</h3><ul>${unresolved}</ul></div></div>`;
-  }
-
-  function findEstimateRow(label){
-    const doc=childDoc(estimateFrame);if(!doc)return null;
-    const check=Array.from(doc.querySelectorAll('#catalog input[type="checkbox"][aria-label]')).find(x=>x.getAttribute('aria-label')===label);
-    return check?{check,row:check.closest('.item')}:null;
-  }
-  function applyCandidateToEstimate(candidate,checked){
-    const found=findEstimateRow(candidate.label);
-    if(!found||!found.row)throw new Error(`内部見積に「${candidate.label}」が見つかりません。既存料金は変更していません。`);
-    const qty=found.row.querySelector('.qty');
-    if(qty&&candidate.qty!=null){qty.value=String(candidate.qty);qty.dispatchEvent(new Event('input',{bubbles:true}));}
-    if(found.check.checked!==checked){found.check.checked=checked;found.check.dispatchEvent(new Event('change',{bubbles:true}));}
-  }
-  function ensureEstimateLoaded(){
-    if(estimateLoaded&&childDoc(estimateFrame)?.getElementById('catalog'))return Promise.resolve();
-    if(!estimateFrame.getAttribute('src'))estimateFrame.src=estimateFrame.dataset.src;
-    return new Promise((resolve,reject)=>{
-      const deadline=Date.now()+12000;
-      const timer=setInterval(()=>{
-        if(childDoc(estimateFrame)?.getElementById('catalog')){clearInterval(timer);estimateLoaded=true;resolve();}
-        else if(Date.now()>deadline){clearInterval(timer);reject(new Error('内部見積の読み込みを確認できませんでした。'));}
-      },150);
-    });
-  }
-
-  function renderEstimateCandidates(){
-    const area=el('candidateArea');const payload=loadPayload();
-    if(!payload){area.innerHTML='<p class="empty">現場入力候補はまだありません。「現場入力」で候補を作成してください。</p>';return;}
-    const rows=payload.candidates.length?payload.candidates.map((x,i)=>`<label class="candidate-row"><input class="candidate-check" type="checkbox" data-index="${i}" ${x.accepted?'checked':''}><span><span class="candidate-name">${escapeHtml(x.label)} × ${escapeHtml(x.qty)}</span><span class="candidate-meta">${escapeHtml(x.reason)}。単価は内部見積の現在値を使用。</span></span></label>`).join(''):'<p class="empty">現在の入力から見積項目候補は出ていません。</p>';
-    const mats=payload.materials.length?payload.materials.map(x=>`<li>${escapeHtml(x.name)}: ${x.qty==null?'数量未確認':`${escapeHtml(x.qty)}${escapeHtml(x.unit)}`} — ${escapeHtml(x.note)}</li>`).join(''):'<li>部材候補なし</li>';
-    const unresolved=payload.unresolved.length?payload.unresolved.map(x=>`<li>${escapeHtml(x)}</li>`).join(''):'<li>追加の未確認事項なし</li>';
-    area.innerHTML=`<div class="candidate-box"><div class="candidate-head"><b>現場入力候補 ${payload.candidates.length}件</b><span>${payload.inputMode==='manual'?'写真なし':'写真判定'} / ${payload.caseName?escapeHtml(payload.caseName):'案件名未入力'}</span></div><div class="candidate-list">${rows}</div></div><div class="split"><div class="mini"><h3>部材候補（自動加算しない）</h3><ul>${mats}</ul></div><div class="mini"><h3>未確認事項</h3><ul>${unresolved}</ul></div></div>`;
-    area.querySelectorAll('.candidate-check').forEach(check=>{
-      check.addEventListener('change',async()=>{
-        const fresh=loadPayload();if(!fresh)return;
-        const index=Number(check.dataset.index),candidate=fresh.candidates[index];if(!candidate)return;
-        check.disabled=true;
-        try{
-          await ensureEstimateLoaded();applyCandidateToEstimate(candidate,check.checked);
-          candidate.accepted=check.checked;fresh.candidates[index]=candidate;savePayload(fresh);
-          el('estimateStatus').textContent=check.checked?`${candidate.label}を見積へ反映しました。金額は見積側の現在単価です。`:`${candidate.label}を見積から外しました。`;
-          el('estimateStatus').className='status ok';
-        }catch(err){check.checked=!check.checked;el('estimateStatus').textContent=err.message||'見積への反映に失敗しました。';el('estimateStatus').className='status warn';}
-        finally{check.disabled=false;}
-      });
-    });
-  }
-
-  function switchView(view){
-    const showEstimate=view==='estimate';
-    tabDiagnosis.setAttribute('aria-selected',String(!showEstimate));
-    tabEstimate.setAttribute('aria-selected',String(showEstimate));
-    diagnosisFrame.hidden=showEstimate;estimateFrame.hidden=!showEstimate;
-    diagnosisBridge.hidden=showEstimate;estimateBridge.hidden=!showEstimate;
-    el('diagnosisLoading').hidden=showEstimate||sourceMode==='manual'||!!childDoc(diagnosisFrame)?.getElementById('case-name');
-    el('estimateLoading').hidden=!showEstimate||estimateLoaded;
-    if(showEstimate){if(!estimateFrame.getAttribute('src'))estimateFrame.src=estimateFrame.dataset.src;renderEstimateCandidates();}
-    history.replaceState(null,'',`?view=${showEstimate?'estimate':'diagnosis'}`);
-  }
-
-  diagnosisFrame.addEventListener('load',()=>{el('diagnosisLoading').hidden=true;});
-  estimateFrame.addEventListener('load',()=>{estimateLoaded=true;el('estimateLoading').hidden=true;renderEstimateCandidates();});
-  tabDiagnosis.addEventListener('click',()=>switchView('diagnosis'));
-  tabEstimate.addEventListener('click',()=>switchView('estimate'));
-  el('modePhoto').addEventListener('click',()=>{selectMode('photo');el('diagnosisLoading').hidden=!!childDoc(diagnosisFrame)?.getElementById('case-name');});
-  el('modeManual').addEventListener('click',()=>{selectMode('manual');el('diagnosisLoading').hidden=true;});
-
-  el('previewCandidatesBtn').addEventListener('click',()=>{
-    try{
-      const payload=buildCandidatePayload(),holder=document.createElement('div');renderPreview(payload,holder);
-      const body=diagnosisBridge.querySelector('.bridge-body'),old=body.querySelector('.preview-holder');if(old)old.remove();
-      holder.className='preview-holder';body.insertBefore(holder,body.querySelector('.actions'));
-      el('diagnosisStatus').textContent='候補を確認しました。まだ保存・見積反映はしていません。';el('diagnosisStatus').className='status ok';
-    }catch(err){el('diagnosisStatus').textContent=err.message||'入力を読み取れませんでした。';el('diagnosisStatus').className='status warn';}
-  });
-
-  el('createCandidatesBtn').addEventListener('click',()=>{
-    try{
-      const payload=buildCandidatePayload();savePayload(payload);
-      el('diagnosisStatus').textContent=`${payload.inputMode==='manual'?'写真なし入力':'写真判定'}から候補 ${payload.candidates.length}件を保存しました。見積側では未チェック状態です。`;
-      el('diagnosisStatus').className='status ok';switchView('estimate');
-    }catch(err){el('diagnosisStatus').textContent=err.message||'候補作成に失敗しました。';el('diagnosisStatus').className='status warn';}
-  });
-
-  el('clearCandidatesBtn').addEventListener('click',()=>{
-    localStorage.removeItem(CANDIDATE_KEY);renderEstimateCandidates();
-    el('estimateStatus').textContent='候補データだけ削除しました。内部見積の選択・単価は変更していません。';el('estimateStatus').className='status ok';
-  });
-
-  selectMode(sourceMode);
-  const initialView=new URLSearchParams(location.search).get('view')==='estimate'?'estimate':'diagnosis';
-  switchView(initialView);
-})();
-</script>
+  <script src="./storage.js?v=20260904-001"></script>
+  <script src="./auth-client.js?v=20260904-001"></script>
+  <script src="./estimate.js?v=20260904-001"></script>
+  <script src="./app.js?v=20260904-001"></script>
+  <script src="./backup.js?v=20260904-001"></script>
+  <script src="./case-persistence.js?v=20260904-001"></script>
 </body>
 </html>
