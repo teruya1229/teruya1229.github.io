@@ -596,6 +596,18 @@ h3 {
   object-position: center 52%;
 }
 
+.service-card-visual img.pos-home-ac {
+  object-position: center 46%;
+}
+
+.service-card-visual img.pos-sales {
+  object-position: center 36%;
+}
+
+.service-card-visual img.pos-light {
+  object-position: center 28%;
+}
+
 .service-card-body {
   display: flex;
   flex-direction: column;
