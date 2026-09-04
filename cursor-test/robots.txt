@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Sitemap: https://teruya1229.github.io/cursor-test/sitemap-gsc.xml
+Sitemap: https://teruya1229.github.io/cursor-test/sitemap.xml

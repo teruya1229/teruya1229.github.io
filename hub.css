@@ -1,0 +1,395 @@
+:root {
+  --bg: #ffffff;
+  --fg: #1f2937;
+  --muted: #4b5563;
+  --brand: #075985;
+  --brand-deep: #123b56;
+  --aqua: #e7f6f8;
+  --line: #06c755;
+  --line-hover: #05b34c;
+  --border: #dbe6ee;
+  --card: #f7fbfe;
+  --radius: 12px;
+  --container: 1080px;
+  --header-h: 64px;
+  --font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "YuGothic", Meiryo, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--fg);
+  background: var(--bg);
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h1, h2, h3, p {
+  margin: 0;
+}
+
+.container {
+  width: min(100% - 32px, var(--container));
+  margin-inline: auto;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #fff;
+  border-bottom: 2px solid var(--brand);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: var(--header-h);
+  flex-wrap: wrap;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-weight: 800;
+  color: var(--brand-deep);
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.header-nav ul {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.header-nav a {
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--brand-deep);
+}
+
+.btn-line,
+.btn-outline,
+.btn-tel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+}
+
+.btn-line {
+  background: var(--line);
+  color: #fff;
+}
+
+.btn-line:hover {
+  background: var(--line-hover);
+}
+
+.btn-outline {
+  border: 1px solid var(--brand);
+  color: var(--brand-deep);
+  background: #fff;
+}
+
+.btn-tel {
+  background: var(--brand);
+  color: #fff;
+}
+
+.hero {
+  background: linear-gradient(180deg, var(--aqua) 0%, #fff 100%);
+  padding: 40px 0 48px;
+}
+
+.hero-inner {
+  text-align: center;
+}
+
+.hero-brand {
+  color: var(--brand);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.hero h1 {
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  line-height: 1.45;
+  color: var(--brand-deep);
+}
+
+.hero-lead {
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.hero-cta,
+.section-cta .hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.hero-note {
+  margin-top: 16px;
+  font-size: 0.95rem;
+}
+
+.hero-note a,
+.footer-brand a {
+  color: var(--brand);
+  font-weight: 700;
+}
+
+.section {
+  padding: 48px 0;
+}
+
+.section-alt {
+  background: var(--card);
+}
+
+.section-cta {
+  background: var(--aqua);
+  text-align: center;
+}
+
+.kicker {
+  color: var(--brand);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.section h2 {
+  font-size: 1.4rem;
+  color: var(--brand-deep);
+}
+
+.section-lead {
+  margin-top: 12px;
+  color: var(--muted);
+  max-width: 42rem;
+}
+
+.section-cta .section-lead {
+  margin-inline: auto;
+}
+
+.about-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.about-list li {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.about-list strong {
+  display: block;
+  color: var(--brand-deep);
+  margin-bottom: 4px;
+}
+
+.about-list span {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.service-card {
+  display: block;
+  height: 100%;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(18, 59, 86, 0.04);
+}
+
+.service-card:hover,
+.service-card:focus-visible {
+  border-color: var(--brand);
+}
+
+.service-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--brand);
+  background: var(--aqua);
+  border-radius: 999px;
+  padding: 2px 10px;
+  margin-bottom: 8px;
+}
+
+.service-card h3 {
+  font-size: 1.1rem;
+  color: var(--brand-deep);
+}
+
+.service-card p {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.service-more {
+  display: inline-block;
+  margin-top: 14px;
+  color: var(--brand);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.feature-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.feature-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  background: #fff;
+}
+
+.feature-card h3 {
+  color: var(--brand-deep);
+  font-size: 1.05rem;
+}
+
+.feature-card p {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.site-footer {
+  background: var(--brand-deep);
+  color: #e8f2f7;
+  padding: 32px 0 20px;
+}
+
+.footer-inner {
+  display: grid;
+  gap: 20px;
+}
+
+.footer-name {
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.footer-nav {
+  display: grid;
+  gap: 8px;
+}
+
+.footer-nav a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.footer-copy {
+  margin: 24px auto 0;
+  width: min(100% - 32px, var(--container));
+  font-size: 0.85rem;
+  color: #c5d6e0;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-h: 72px;
+  }
+
+  .service-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .feature-grid,
+  .about-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-inner {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: start;
+  }
+
+  .header-cta {
+    margin-left: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .service-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .about-list,
+  .feature-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .service-grid li:last-child {
+    grid-column: auto;
+  }
+}

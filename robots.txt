@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Sitemap: https://teruya1229.github.io/sitemap-index.xml
 Sitemap: https://teruya1229.github.io/sitemap.xml
 Sitemap: https://teruya1229.github.io/sitemap-main.xml

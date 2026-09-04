@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://teruya1229.github.io/</loc>
+    <lastmod>2026-09-04</lastmod>
+  </url>
+  <url>
     <loc>https://teruya1229.github.io/cursor-test/</loc>
     <lastmod>2026-07-08</lastmod>
   </url>
@@ -27,6 +31,10 @@
   <url>
     <loc>https://teruya1229.github.io/business-cleaning/</loc>
     <lastmod>2026-06-03</lastmod>
+  </url>
+  <url>
+    <loc>https://teruya1229.github.io/house-cleaning/</loc>
+    <lastmod>2026-08-09</lastmod>
   </url>
   <url>
     <loc>https://teruya1229.github.io/ai-chouhyou-bantou/</loc>
@@ -99,5 +107,9 @@
   <url>
     <loc>https://teruya1229.github.io/mi-bcs/aircon-replacement/</loc>
     <lastmod>2026-08-30</lastmod>
+  </url>
+  <url>
+    <loc>https://teruya1229.github.io/lighting/</loc>
+    <lastmod>2026-08-18</lastmod>
   </url>
 </urlset>
