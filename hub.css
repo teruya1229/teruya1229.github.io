@@ -608,6 +608,10 @@ h3 {
   object-position: center 28%;
 }
 
+.service-card-visual img.pos-consult {
+  object-position: center 72%;
+}
+
 .service-card-body {
   display: flex;
   flex-direction: column;
