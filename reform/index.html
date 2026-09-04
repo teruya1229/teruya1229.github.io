@@ -142,11 +142,14 @@
     <div class="site-header__inner container">
       <div class="site-header__brand">
         <p class="site-header__name">BCサービス</p>
-        <p class="site-header__tagline">那覇市・浦添市 住宅設備のご相談</p>
+        <p class="site-header__tagline">那覇市・浦添市｜住宅設備のご相談</p>
       </div>
-      <div class="site-header__tel">
-        <a href="tel:05017241338" data-ga-event="reform_phone_click" data-ga-location="header">050-1724-1338</a>
-        <p class="hours">受付時間 9:00〜18:00</p>
+      <div class="site-header__actions">
+        <div class="site-header__tel">
+          <a href="tel:05017241338" data-ga-event="reform_phone_click" data-ga-location="header">050-1724-1338</a>
+          <p class="hours">受付時間 9:00〜18:00</p>
+        </div>
+        <a class="btn btn--primary btn--header-line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="header">LINEで相談</a>
       </div>
     </div>
   </header>
@@ -157,7 +160,6 @@
       <div class="container">
         <div class="fv__grid">
           <div class="fv__text">
-            <!-- TODO: 実写FV画像 -->
             <p class="fv__kicker">那覇市・浦添市｜分譲マンションの水回り・住宅設備</p>
             <h1 class="fv__title">マンションの水回り、<br>何社にも<span class="h1-break-narrow"><br></span>相談しなくていい。</h1>
             <p class="fv__lead">
@@ -179,13 +181,40 @@
               <p class="phone-note">施工中などで出られない場合は折り返します。</p>
             </div>
           </div>
+          <aside class="fv__panel" aria-label="相談窓口の担当者">
+            <img
+              src="./assets/img/reform-profile-teruya.webp"
+              alt="BCサービス代表 照屋昴"
+              width="600"
+              height="600"
+              decoding="async"
+            >
+            <p class="fv__panel-role">BCサービス代表</p>
+            <p class="fv__panel-name">照屋 昴</p>
+            <ul class="fv__panel-creds">
+              <li>清掃・現場経験17年</li>
+              <li>第二種電気工事士</li>
+              <li>認定電気工事従事者</li>
+            </ul>
+          </aside>
         </div>
+      </div>
+    </section>
+
+    <section class="trust-strip" aria-label="BCサービスの基本情報">
+      <div class="container">
+        <ul class="trust-strip__list">
+          <li>現場経験17年</li>
+          <li>第二種電工</li>
+          <li>認定電工従事者</li>
+          <li>那覇・浦添</li>
+        </ul>
       </div>
     </section>
 
     <!-- S2 こんなお悩みありませんか？ -->
     <section id="worry" class="sec sec--soft">
-      <div class="container">
+      <div class="container worry-layout">
         <h2>こんなこと、思っていませんか。</h2>
         <ul class="worry-list">
           <li>キッチンの扉や天板が、そろそろ限界かもしれない</li>
@@ -301,7 +330,7 @@
             <p>完了まで窓口はBCサービスが担当します。</p>
           </li>
         </ol>
-        <p class="sec-note">
+        <p class="structure-message">
           お客様は、どこに何を頼むかを考える必要がありません。<br>
           連絡先は、BCサービス一つで済みます。
         </p>
@@ -349,6 +378,7 @@
         <h2>こんなご相談の仕方で大丈夫です。</h2>
         <div class="consult-list">
           <article class="consult-pattern">
+            <p class="consult-label">相談例 01</p>
             <h3>まだ何も決まっていない</h3>
             <blockquote>
               <p>浴室とキッチンが古いのですが、どちらから手をつけるべきか分かりません</p>
@@ -356,6 +386,7 @@
             <p class="consult-answer">現状を確認したうえで、優先度をお伝えします。すぐに工事をしなくても構いません。</p>
           </article>
           <article class="consult-pattern">
+            <p class="consult-label">相談例 02</p>
             <h3>1か所だけ</h3>
             <blockquote>
               <p>トイレだけ替えたいのですが、対応できますか</p>
@@ -363,6 +394,7 @@
             <p class="consult-answer">1か所だけのご相談も歓迎です。そのうえで、他に気になる箇所があればあわせてお聞きします。</p>
           </article>
           <article class="consult-pattern">
+            <p class="consult-label">相談例 03</p>
             <h3>まとめて</h3>
             <blockquote>
               <p>築25年の分譲マンションで、水回りを一通り見直したいと考えています</p>
@@ -404,18 +436,18 @@
             <p>設備の交換は、本体を入れ替えるだけで終わらないことがあります。電気の状態、換気の状態、周辺の劣化。現場で見てきたからこそ、設備の周辺まで含めてご相談をお受けできます。</p>
             <p>内容に応じた専門業者と連携しながら、窓口としてお客様の側に立って進めます。</p>
           </div>
+          <figure class="about__work">
+            <img
+              src="./assets/img/reform-work-01.webp"
+              alt="天井埋込エアコンの内部を確認している作業の様子"
+              width="533"
+              height="871"
+              loading="lazy"
+              decoding="async"
+            >
+            <figcaption>天井埋込エアコンの内部を確認している作業の様子</figcaption>
+          </figure>
         </div>
-        <figure class="about__work">
-          <img
-            src="./assets/img/reform-work-01.webp"
-            alt="天井埋込エアコンの内部を確認している作業の様子"
-            width="533"
-            height="871"
-            loading="lazy"
-            decoding="async"
-          >
-          <figcaption>天井埋込エアコンの内部を確認している作業の様子</figcaption>
-        </figure>
       </div>
     </section>
 
@@ -460,20 +492,20 @@
 
     <!-- S10 費用の考え方 -->
     <section id="cost" class="sec sec--soft">
-      <div class="container">
-        <div class="text-narrow">
+      <div class="container cost-layout">
+        <div class="cost-copy">
           <h2>費用の考え方</h2>
           <p>BCサービスは、最初から一律の価格を掲げていません。</p>
           <p>同じ「キッチン交換」でも、設備のグレード、配管や電気の状態、搬入経路、マンションの規約によって、必要な工事は変わります。</p>
           <p>実際に見ないまま出した安い金額は、あとから追加費用が発生する原因になります。</p>
           <p>そのため、現地を確認し、必要な内容を整理したうえでお見積りをお出しします。</p>
-          <ul class="cost-points">
-            <li>何にいくらかかるのかを分けてご説明します</li>
-            <li>今やるべきものと、待てるものを分けてお伝えします</li>
-            <li>ご予算がある場合は、その範囲で優先順位を整理します</li>
-          </ul>
-          <p>金額をご覧いただいてから、ご検討ください。</p>
         </div>
+        <ul class="cost-points">
+          <li>何にいくらかかるのかを分けてご説明します</li>
+          <li>今やるべきものと、待てるものを分けてお伝えします</li>
+          <li>ご予算がある場合は、その範囲で優先順位を整理します</li>
+        </ul>
+        <p class="cost-close">金額をご覧いただいてから、ご検討ください。</p>
       </div>
     </section>
 
@@ -545,17 +577,21 @@
 
     <!-- S13 最終CTA -->
     <section id="cta" class="sec-cta">
-      <div class="container">
-        <h2>家の設備のこと、まとめてご相談ください。</h2>
-        <p>どこから手をつけるべきか分からない、という段階で構いません。気になっている場所を教えていただければ、そこから整理します。</p>
-        <p class="cta__btn">
-          <a class="btn btn--primary" href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="final">LINEでまとめて相談する</a>
-        </p>
-        <div class="cta__phone">
-          <p>お電話：</p>
-          <p><a class="btn btn--secondary" href="tel:05017241338" data-ga-event="reform_phone_click" data-ga-location="final">050-1724-1338</a></p>
-          <p class="hours">受付時間 9:00〜18:00</p>
-          <p class="phone-note">施工中などで出られない場合は折り返します。</p>
+      <div class="container cta-layout">
+        <div class="cta__copy">
+          <h2>家の設備のこと、まとめてご相談ください。</h2>
+          <p>どこから手をつけるべきか分からない、という段階で構いません。気になっている場所を教えていただければ、そこから整理します。</p>
+        </div>
+        <div class="cta__panel">
+          <p class="cta__btn">
+            <a class="btn btn--primary" href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="final">LINEでまとめて相談する</a>
+          </p>
+          <div class="cta__phone">
+            <p>お電話：</p>
+            <p><a class="btn btn--secondary" href="tel:05017241338" data-ga-event="reform_phone_click" data-ga-location="final">050-1724-1338</a></p>
+            <p class="hours">受付時間 9:00〜18:00</p>
+            <p class="phone-note">施工中などで出られない場合は折り返します。</p>
+          </div>
         </div>
         <ul class="cta__points">
           <li>1か所だけでも、家全体でも大丈夫です</li>
