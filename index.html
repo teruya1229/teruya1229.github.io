@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>BCサービス｜家電・エアコン・清掃・電気・住宅設備の総合窓口</title>
   <meta name="description" content="沖縄のBCサービス。エアコンクリーニング、ハウスクリーニング、家電・エアコン販売、照明・電気設備まで、家のことをまとめて相談できる窓口です。まずはLINEでご相談ください。">
   <meta name="robots" content="index,follow">
@@ -122,7 +122,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <a class="logo" href="/" aria-label="BCサービス ホーム">
-        <img src="./cursor-test/images/logo-bc.png" alt="BCサービス" width="40" height="40">
+        <img src="./cursor-test/images/logo-bc.png" alt="" width="40" height="40">
         <span class="logo-text">BCサービス</span>
       </a>
       <nav class="header-nav" aria-label="メインメニュー">
@@ -144,20 +144,28 @@
         <div class="hero-copy">
           <p class="hero-brand">BCサービス</p>
           <h1 id="hero-title">家のこと、まとめて相談できる窓口へ。</h1>
-          <p class="hero-lead">エアコン・清掃・家電・電気まで。<br>南城市を拠点に、沖縄南部の暮らしをまとめてご相談いただけます。</p>
+          <p class="hero-lead">エアコン・清掃・家電・電気まで。<br>家のことをまとめて相談できる窓口です。</p>
+          <p class="hero-note">南城市を拠点に、沖縄南部を中心に対応しています。</p>
         </div>
         <div class="hero-visual">
-          <img
-            src="./cursor-test/assets/hero-fv-home-v2-768.webp"
-            srcset="./cursor-test/assets/hero-fv-home-v2-768.webp 768w, ./cursor-test/assets/hero-fv-home-v2-1440.webp 1440w"
-            sizes="(min-width: 768px) 46vw, 92vw"
-            width="768"
-            height="1024"
-            alt="天井カセットエアコンを高圧洗浄している現場の作業風景"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          >
+          <figure class="hero-figure">
+            <img
+              class="hero-work"
+              src="./cursor-test/assets/hero-fv-home-v2-768.webp"
+              srcset="./cursor-test/assets/hero-fv-home-v2-768.webp 768w, ./cursor-test/assets/hero-fv-home-v2-1440.webp 1440w"
+              sizes="(min-width: 768px) 46vw, 92vw"
+              width="768"
+              height="1024"
+              alt="天井カセットエアコンを高圧洗浄している現場の作業風景"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            >
+            <figcaption class="hero-person">
+              <img src="./assets/rep-teruya.webp" width="600" height="600" alt="" loading="eager" decoding="async">
+              <span>代表 照屋 昴</span>
+            </figcaption>
+          </figure>
         </div>
         <div class="hero-actions">
           <div class="hero-cta">
@@ -401,14 +409,14 @@
             <h3>完全分解洗浄</h3>
             <div class="ba-grid">
               <figure class="ba-item">
-                <div class="ba-frame ratio-43">
-                  <img src="./assets/case-ac-fan-before.webp" width="900" height="1200" alt="洗浄前のエアコン送風ファン。羽根にホコリが付着している" loading="lazy" decoding="async">
+                <div class="ba-frame">
+                  <img class="pos-fan-before" src="./assets/case-ac-fan-before.webp" width="900" height="1200" alt="洗浄前のエアコン送風ファン。羽根にホコリが付着している" loading="lazy" decoding="async">
                 </div>
                 <figcaption>施工前</figcaption>
               </figure>
               <figure class="ba-item">
-                <div class="ba-frame ratio-43">
-                  <img src="./assets/case-ac-fan-after.webp" width="1200" height="900" alt="洗浄後のエアコン送風ファン。羽根の汚れが落ちている" loading="lazy" decoding="async">
+                <div class="ba-frame">
+                  <img class="pos-fan-after" src="./assets/case-ac-fan-after.webp" width="1200" height="900" alt="洗浄後のエアコン送風ファン。羽根の汚れが落ちている" loading="lazy" decoding="async">
                 </div>
                 <figcaption>施工後</figcaption>
               </figure>
@@ -421,13 +429,13 @@
             <div class="ba-grid">
               <figure class="ba-item">
                 <div class="ba-frame">
-                  <img src="./assets/case-hood-before.webp" width="900" height="1200" alt="交換前の古い壁付けレンジフード" loading="lazy" decoding="async">
+                  <img class="pos-hood" src="./assets/case-hood-before.webp" width="900" height="1200" alt="交換前の古い壁付けレンジフード" loading="lazy" decoding="async">
                 </div>
                 <figcaption>施工前</figcaption>
               </figure>
               <figure class="ba-item">
                 <div class="ba-frame">
-                  <img src="./assets/case-hood-after.webp" width="900" height="1200" alt="交換後の新しい黒色レンジフード" loading="lazy" decoding="async">
+                  <img class="pos-hood" src="./assets/case-hood-after.webp" width="900" height="1200" alt="交換後の新しい黒色レンジフード" loading="lazy" decoding="async">
                 </div>
                 <figcaption>施工後</figcaption>
               </figure>
@@ -613,6 +621,11 @@
     </div>
     <p class="footer-copy">© BCサービス</p>
   </footer>
+
+  <nav class="fixed-cta" aria-label="相談する">
+    <a class="fixed-cta-line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="fixed">LINEで相談</a>
+    <a class="fixed-cta-tel" href="tel:05017241338" data-cta-location="fixed">電話する</a>
+  </nav>
 
   <script src="./hub.js"></script>
 </body>

@@ -26,6 +26,19 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--bc-blue);
+  outline-offset: 2px;
+}
+
 body {
   margin: 0;
   font-family: var(--font);
@@ -203,6 +216,12 @@ h3 {
   order: 2;
 }
 
+.hero-figure {
+  position: relative;
+  margin: 0;
+  height: 100%;
+}
+
 .hero-actions {
   order: 3;
 }
@@ -225,7 +244,7 @@ h3 {
   line-height: 1.9;
 }
 
-.hero-visual img {
+.hero-work {
   width: 100%;
   height: auto;
   aspect-ratio: 3 / 4;
@@ -234,6 +253,39 @@ h3 {
   border-radius: var(--radius-card);
   display: block;
   background: var(--bc-line);
+}
+
+.hero-person {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: calc(100% - 20px);
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 999px;
+  padding: 5px 12px 5px 5px;
+  box-shadow: 0 1px 6px rgba(18, 58, 90, 0.16);
+}
+
+.hero-person img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 18%;
+  display: block;
+  flex-shrink: 0;
+  background: var(--bc-line);
+}
+
+.hero-person span {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--bc-navy);
+  white-space: nowrap;
 }
 
 .trust-bar {
@@ -272,6 +324,25 @@ h3 {
   .trust-bar-list li {
     font-size: 11px;
   }
+
+  .header-cta,
+  .btn-line.header-cta {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .fixed-cta a {
+    font-size: 14px;
+  }
+
+  .hero-person img {
+    width: 44px;
+    height: 44px;
+  }
+
+  .hero-person span {
+    font-size: 12px;
+  }
 }
 
 .hero-cta,
@@ -297,14 +368,21 @@ h3 {
 }
 
 .hero-note {
-  margin-top: 16px;
-  font-size: 15px;
+  margin-top: 8px;
+  color: var(--bc-sub);
+  font-size: 14px;
+  line-height: 1.8;
 }
 
-.hero-note a,
-.footer-brand a {
+.hero-note a {
   color: var(--bc-blue);
   font-weight: 700;
+}
+
+.footer-brand a {
+  color: var(--bc-white);
+  font-weight: 700;
+  text-decoration: underline;
 }
 
 .section {
@@ -493,23 +571,29 @@ h3 {
 
 .service-card-visual {
   display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
   background: var(--bc-line);
 }
 
 .service-card-visual img {
   width: 100%;
-  height: 168px;
+  height: 100%;
   object-fit: cover;
-  object-position: center 32%;
+  object-position: center 40%;
   display: block;
 }
 
 .service-card-visual img.pos-floor {
-  object-position: center 78%;
+  object-position: center 72%;
 }
 
 .service-card-visual img.pos-parts {
-  object-position: 68% 42%;
+  object-position: center 42%;
+}
+
+.service-card-visual img.pos-cassette {
+  object-position: center 52%;
 }
 
 .service-card-body {
@@ -576,6 +660,10 @@ h3 {
   color: var(--bc-sub);
   font-size: 15px;
   line-height: 1.9;
+}
+
+#representative {
+  border-top: 1px solid var(--bc-line);
 }
 
 .rep-inner {
@@ -669,9 +757,12 @@ h3 {
 .ba-item {
   min-width: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .ba-frame {
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   border-radius: 8px;
   background: var(--bc-line);
@@ -679,16 +770,22 @@ h3 {
 
 .ba-frame img {
   width: 100%;
-  height: auto;
-  aspect-ratio: 3 / 4;
+  height: 100%;
   object-fit: cover;
   object-position: center 40%;
   display: block;
 }
 
-.ba-frame.ratio-43 img {
-  aspect-ratio: 4 / 3;
-  object-position: center 55%;
+.ba-frame img.pos-fan-before {
+  object-position: 62% 48%;
+}
+
+.ba-frame img.pos-fan-after {
+  object-position: center 52%;
+}
+
+.ba-frame img.pos-hood {
+  object-position: center 36%;
 }
 
 .ba-item figcaption {
@@ -718,7 +815,7 @@ h3 {
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.06em;
-  color: var(--bc-teal);
+  color: var(--bc-navy);
   padding-top: 0.15em;
   min-width: 1.8em;
 }
@@ -759,7 +856,7 @@ h3 {
   font-size: 11px;
   font-weight: 700;
   color: var(--bc-white);
-  background: var(--bc-teal);
+  background: var(--bc-navy);
   border-radius: 999px;
   padding: 2px 7px;
 }
@@ -783,6 +880,7 @@ h3 {
 .faq-item summary {
   position: relative;
   cursor: pointer;
+  min-height: 44px;
   padding: 16px 28px 16px 0;
   font-weight: 700;
   color: var(--bc-navy);
@@ -847,6 +945,10 @@ h3 {
   color: var(--bc-blue);
   font-weight: 700;
   text-decoration: none;
+}
+
+.fixed-cta {
+  display: none;
 }
 
 .site-footer {
@@ -915,7 +1017,7 @@ h3 {
   }
 
   .section {
-    padding: 104px 0;
+    padding: 80px 0;
   }
 
   .logo img {
@@ -965,10 +1067,25 @@ h3 {
     align-self: stretch;
   }
 
-  .hero-visual img {
+  .hero-work {
     height: 100%;
     min-height: 420px;
     object-position: center 25%;
+  }
+
+  .hero-person {
+    left: 14px;
+    bottom: 14px;
+    padding: 6px 14px 6px 6px;
+  }
+
+  .hero-person img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .hero-person span {
+    font-size: 14px;
   }
 
   .hero-actions .hero-cta {
@@ -1003,7 +1120,6 @@ h3 {
   }
 
   .hero-lead,
-  .hero-note,
   .section-lead,
   .about-body,
   .about-scope-lead,
@@ -1111,10 +1227,6 @@ h3 {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .service-card-visual img {
-    height: 180px;
-  }
-
   .feature-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1128,5 +1240,56 @@ h3 {
 @media (min-width: 1024px) {
   .feature-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .fixed-cta {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    width: 100%;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--bc-white);
+    box-shadow: 0 -2px 10px rgba(18, 58, 90, 0.12);
+  }
+
+  .fixed-cta a {
+    flex: 1 1 50%;
+    width: 50%;
+    min-height: 64px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--bc-white);
+    touch-action: manipulation;
+  }
+
+  .fixed-cta-line {
+    background: var(--bc-line-green);
+  }
+
+  .fixed-cta-line:hover {
+    background: var(--bc-line-green-hover);
+  }
+
+  .fixed-cta-tel {
+    background: var(--bc-navy);
+  }
+
+  .fixed-cta a:focus-visible {
+    outline: 2px solid var(--bc-white);
+    outline-offset: -4px;
   }
 }
