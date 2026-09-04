@@ -137,6 +137,114 @@
   </script>
 </head>
 <body>
+  <!-- 共有SVGスプライト（線画アイコン） -->
+  <svg class="svg-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <symbol id="i-line" viewBox="0 0 24 24">
+        <path d="M12 3.2c5.1 0 9.2 3.3 9.2 7.4 0 4.1-4.1 7.4-9.2 7.4-.6 0-1.2 0-1.7-.1l-4.2 2.6c-.4.2-.8-.1-.7-.5l.7-2.9C3.6 15.7 2.8 13.4 2.8 11c0-4.1 4.1-7.8 9.2-7.8Z" fill="currentColor" stroke="none"/>
+      </symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24">
+        <path d="M6.3 3.8h2.6l1.5 3.7-2 1.4a11.6 11.6 0 0 0 5.9 5.9l1.4-2 3.7 1.5v2.6a2 2 0 0 1-2.2 2A16.4 16.4 0 0 1 4.3 6a2 2 0 0 1 2-2.2Z"/>
+      </symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24">
+        <path d="M12 21c4.2-4.6 6.3-7.8 6.3-10.4A6.3 6.3 0 0 0 5.7 10.6C5.7 13.2 7.8 16.4 12 21Z"/>
+        <circle cx="12" cy="10.3" r="2.4"/>
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <path d="M4.5 12.6l4.6 4.6L19.5 6.8"/>
+      </symbol>
+      <symbol id="i-bolt" viewBox="0 0 24 24">
+        <path d="M13.4 2.8 5.6 13.5h5l-1 7.7 8-10.9h-5.1l.9-7.5Z"/>
+      </symbol>
+      <symbol id="i-badge" viewBox="0 0 24 24">
+        <path d="M12 2.9l2.6 1.6 3-.2 1 2.9 2.3 2-1.2 2.8.5 3-2.8 1.2-1.8 2.4-2.9-.7-2.7 1.3-2.1-2.1-3-.6-.3-3-1.8-2.4 1.8-2.4.3-3 3-.6L12 2.9Z"/>
+        <path d="M8.9 12.1l2.1 2.1 4.1-4.4"/>
+      </symbol>
+      <symbol id="i-years" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8.6"/>
+        <path d="M12 7.3V12l3.4 2.2"/>
+      </symbol>
+      <symbol id="i-kitchen" viewBox="0 0 24 24">
+        <path d="M3.4 11.6h17.2v5.8a3 3 0 0 1-3 3H6.4a3 3 0 0 1-3-3v-5.8Z"/>
+        <path d="M3.4 14.6h17.2"/>
+        <circle cx="12" cy="17.7" r="1.4"/>
+        <path d="M16.8 11.6V6.6a2.2 2.2 0 0 0-2.2-2.2H12"/>
+        <path d="M12 4.4v2.8"/>
+      </symbol>
+      <symbol id="i-bath" viewBox="0 0 24 24">
+        <path d="M3 12.4h18v3.2a3.4 3.4 0 0 1-3.4 3.4H6.4A3.4 3.4 0 0 1 3 15.6v-3.2Z"/>
+        <path d="M6.2 12.4V7.1a2.2 2.2 0 0 1 4.3-.7"/>
+        <path d="M15.6 4.7v3.1M13.9 9.3h3.4"/>
+        <path d="M6.6 19v1.6M17.4 19v1.6"/>
+      </symbol>
+      <symbol id="i-basin" viewBox="0 0 24 24">
+        <rect x="6.2" y="2.9" width="11.6" height="6.4" rx="1.4"/>
+        <path d="M4.2 12.6h15.6l-1.5 4.7a2.4 2.4 0 0 1-2.3 1.7H8a2.4 2.4 0 0 1-2.3-1.7l-1.5-4.7Z"/>
+        <path d="M12 9.3v3.3"/>
+      </symbol>
+      <symbol id="i-toilet" viewBox="0 0 24 24">
+        <path d="M6.4 3.6h9.4v4.2H6.4z"/>
+        <path d="M5.2 10.2h13v2.4a5.4 5.4 0 0 1-5.4 5.4h-2.2a5.4 5.4 0 0 1-5.4-5.4v-2.4Z"/>
+        <path d="M11.1 7.8v2.4M8.6 18v2.4h6.2"/>
+      </symbol>
+      <symbol id="i-water" viewBox="0 0 24 24">
+        <rect x="5.6" y="3.2" width="12.8" height="12" rx="2"/>
+        <path d="M9 6.6h6M9 9.6h3.4"/>
+        <path d="M12 15.2c-1.5 2-2.3 3.2-2.3 4.1a2.3 2.3 0 0 0 4.6 0c0-.9-.8-2.1-2.3-4.1Z"/>
+      </symbol>
+      <symbol id="i-fan" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8.6"/>
+        <path d="M12 3.4c2.6 1.9 3 4.3 1.2 7.2"/>
+        <path d="M20.6 12c-1.9 2.6-4.3 3-7.2 1.2"/>
+        <path d="M12 20.6c-2.6-1.9-3-4.3-1.2-7.2"/>
+        <path d="M3.4 12c1.9-2.6 4.3-3 7.2-1.2"/>
+        <circle cx="12" cy="12" r="1.6"/>
+      </symbol>
+      <symbol id="i-ac" viewBox="0 0 24 24">
+        <rect x="3.2" y="4.4" width="17.6" height="7.2" rx="2"/>
+        <path d="M6.4 9.2h11.2"/>
+        <path d="M7.6 14.6c0 1.6.9 2.2 2.2 2.6M12 14.6c0 2.2.9 3 2.2 3.6M16.4 14.6c0 1.6-.9 2.2-2.2 2.6"/>
+      </symbol>
+      <symbol id="i-light" viewBox="0 0 24 24">
+        <path d="M12 2.6v2.8"/>
+        <path d="M5.4 13.4A6.6 6.6 0 0 1 12 5.4a6.6 6.6 0 0 1 6.6 8h-13.2Z"/>
+        <path d="M9.4 16.9c0 1.4 1.2 2.4 2.6 2.4s2.6-1 2.6-2.4"/>
+        <path d="M3 13.4h18"/>
+      </symbol>
+      <symbol id="i-eye" viewBox="0 0 24 24">
+        <path d="M2.6 12S6 6.4 12 6.4 21.4 12 21.4 12 18 17.6 12 17.6 2.6 12 2.6 12Z"/>
+        <circle cx="12" cy="12" r="2.8"/>
+      </symbol>
+      <symbol id="i-list" viewBox="0 0 24 24">
+        <rect x="4.6" y="3.2" width="14.8" height="17.6" rx="2"/>
+        <path d="M8.4 8.2h7.2M8.4 12h7.2M8.4 15.8h4.2"/>
+      </symbol>
+      <symbol id="i-link" viewBox="0 0 24 24">
+        <circle cx="6" cy="12" r="2.8"/>
+        <circle cx="18" cy="6.6" r="2.8"/>
+        <circle cx="18" cy="17.4" r="2.8"/>
+        <path d="M8.5 10.9l7-3.1M8.5 13.1l7 3.1"/>
+      </symbol>
+      <symbol id="i-house" viewBox="0 0 24 24">
+        <path d="M3.4 10.6 12 3.8l8.6 6.8"/>
+        <path d="M5.6 12.4v7.8h12.8v-7.8"/>
+        <path d="M10 20.2v-4.6h4v4.6"/>
+      </symbol>
+      <symbol id="i-user" viewBox="0 0 24 24">
+        <circle cx="12" cy="8.2" r="3.6"/>
+        <path d="M4.8 20.2a7.2 7.2 0 0 1 14.4 0"/>
+      </symbol>
+      <symbol id="i-tools" viewBox="0 0 24 24">
+        <path d="M14.6 3.4a4.2 4.2 0 0 0 5 5.6l-9.8 9.8a2.6 2.6 0 0 1-3.7-3.7l8.5-8.5"/>
+        <path d="M4.4 4.4l4 4"/>
+      </symbol>
+      <symbol id="i-yen" viewBox="0 0 24 24">
+        <path d="M6.6 4.6 12 12l5.4-7.4"/>
+        <path d="M12 12v7.4M7.4 13.6h9.2M7.4 16.6h9.2"/>
+      </symbol>
+    </defs>
+  </svg>
+
   <!-- S0 ヘッダー -->
   <header class="site-header">
     <div class="site-header__inner container">
@@ -146,10 +254,14 @@
       </div>
       <div class="site-header__actions">
         <div class="site-header__tel">
-          <a href="tel:05017241338" data-ga-event="reform_phone_click" data-ga-location="header">050-1724-1338</a>
+          <a href="tel:05017241338" data-ga-event="reform_phone_click" data-ga-location="header">
+            <svg class="ico" aria-hidden="true"><use href="#i-phone"></use></svg>050-1724-1338
+          </a>
           <p class="hours">受付時間 9:00〜18:00</p>
         </div>
-        <a class="btn btn--primary btn--header-line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="header">LINEで相談</a>
+        <a class="btn btn--line btn--header-line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="header">
+          <svg class="ico" aria-hidden="true"><use href="#i-line"></use></svg>LINEで相談
+        </a>
       </div>
     </div>
   </header>
@@ -157,285 +269,413 @@
   <main>
     <!-- S1 ファーストビュー -->
     <section id="fv" class="sec-fv">
+      <div class="fv__deco" aria-hidden="true">
+        <span class="fv__glow fv__glow--teal"></span>
+        <span class="fv__glow fv__glow--sand"></span>
+        <svg class="fv__plan" viewBox="0 0 320 260" preserveAspectRatio="xMidYMid meet">
+          <g fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M20 240V70l140-52 140 52v170"/>
+            <path d="M20 240h280"/>
+            <path d="M110 240V150h60v90"/>
+            <path d="M200 120h70v60h-70z"/>
+            <path d="M50 120h40v40H50z"/>
+            <circle cx="160" cy="95" r="18"/>
+          </g>
+        </svg>
+      </div>
       <div class="container">
         <div class="fv__grid">
           <div class="fv__text">
-            <p class="fv__kicker">那覇市・浦添市｜分譲マンションの水回り・住宅設備</p>
-            <h1 class="fv__title">マンションの水回り、<br>何社にも<span class="h1-break-narrow"><br></span>相談しなくていい。</h1>
-            <p class="fv__lead">
-              キッチン・浴室・洗面・トイレ・給湯・エアコン・照明。<br>
-              築15〜30年ごろの設備更新を、<br>
-              BCサービスが一つの窓口で整理します。
+            <p class="fv__kicker">
+              <svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg>
+              那覇市・浦添市｜築15〜30年の分譲マンション
             </p>
+            <h1 class="fv__title">マンションの水回り、<br>何社にも<span class="br-narrow"><br></span>相談しなくていい。</h1>
+            <p class="fv__lead">
+              キッチンも、お風呂も、洗面も。<br>
+              そろそろ気になる場所が増えてきたら、<br>
+              まずはまとめて話してください。
+            </p>
+            <p class="fv__fact">
+              水回り・住宅設備のご相談は、BCサービスが窓口になります。<br class="br-pc">
+              内容に応じた専門業者と連携して進めます。
+            </p>
+          </div>
+
+          <aside class="fv__who" aria-label="相談窓口の担当者">
+            <span class="fv__who-ring" aria-hidden="true"></span>
+            <span class="fv__who-disc" aria-hidden="true"></span>
+            <span class="fv__who-dot" aria-hidden="true"></span>
+            <div class="fv__who-photo">
+              <img
+                src="./assets/img/reform-profile-teruya.webp"
+                alt="BCサービス代表 照屋昴"
+                width="600"
+                height="600"
+                decoding="async"
+              >
+            </div>
+            <div class="fv__who-body">
+              <p class="fv__who-role">相談窓口</p>
+              <p class="fv__who-org">BCサービス代表</p>
+              <p class="fv__who-name">照屋 昴</p>
+              <ul class="fv__who-creds">
+                <li><svg class="ico" aria-hidden="true"><use href="#i-years"></use></svg>清掃・現場経験17年</li>
+                <li><svg class="ico" aria-hidden="true"><use href="#i-bolt"></use></svg>第二種電気工事士</li>
+                <li><svg class="ico" aria-hidden="true"><use href="#i-badge"></use></svg>認定電気工事従事者</li>
+              </ul>
+            </div>
+          </aside>
+
+          <div class="fv__act">
             <p class="fv__cta">
-              <a class="btn btn--primary" href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="fv">LINEでまとめて相談する</a>
+              <a class="btn btn--line btn--lg" href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="fv">
+                <svg class="ico" aria-hidden="true"><use href="#i-line"></use></svg>LINEでまとめて相談する
+              </a>
             </p>
             <p class="fv__micro">
-              まずは今気になっている場所を教えてください。<br>
-              1か所だけでも大丈夫です。
+              <span class="fv__micro-strong">1か所だけでも大丈夫です。</span>
+              まずは今気になっている場所を教えてください。
             </p>
-            <div class="fv__phone">
-              <p>お電話でのご相談</p>
-              <p><a class="btn btn--secondary" href="tel:05017241338" data-ga-event="reform_phone_click" data-ga-location="fv">050-1724-1338</a></p>
-              <p class="hours">受付時間 9:00〜18:00</p>
-              <p class="phone-note">施工中などで出られない場合は折り返します。</p>
-            </div>
           </div>
-          <aside class="fv__panel" aria-label="相談窓口の担当者">
-            <img
-              src="./assets/img/reform-profile-teruya.webp"
-              alt="BCサービス代表 照屋昴"
-              width="600"
-              height="600"
-              decoding="async"
-            >
-            <p class="fv__panel-role">BCサービス代表</p>
-            <p class="fv__panel-name">照屋 昴</p>
-            <ul class="fv__panel-creds">
-              <li>清掃・現場経験17年</li>
-              <li>第二種電気工事士</li>
-              <li>認定電気工事従事者</li>
-            </ul>
-          </aside>
+
+          <div class="fv__tel">
+            <p class="fv__tel-label">お電話でのご相談</p>
+            <p class="fv__tel-btn">
+              <a class="btn btn--ghost" href="tel:05017241338" data-ga-event="reform_phone_click" data-ga-location="fv">
+                <svg class="ico" aria-hidden="true"><use href="#i-phone"></use></svg>050-1724-1338
+              </a>
+            </p>
+            <p class="hours">受付時間 9:00〜18:00</p>
+            <p class="phone-note">施工中などで出られない場合は折り返します。</p>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- S1b 信頼ストリップ -->
     <section class="trust-strip" aria-label="BCサービスの基本情報">
       <div class="container">
         <ul class="trust-strip__list">
-          <li>現場経験17年</li>
-          <li>第二種電工</li>
-          <li>認定電工従事者</li>
-          <li>那覇・浦添</li>
+          <li>
+            <svg class="ico" aria-hidden="true"><use href="#i-years"></use></svg>
+            <span class="trust-strip__figure">17<small>年</small></span>
+            <span class="trust-strip__label">清掃・現場経験</span>
+          </li>
+          <li>
+            <svg class="ico" aria-hidden="true"><use href="#i-bolt"></use></svg>
+            <span class="trust-strip__figure">第二種</span>
+            <span class="trust-strip__label">電気工事士</span>
+          </li>
+          <li>
+            <svg class="ico" aria-hidden="true"><use href="#i-badge"></use></svg>
+            <span class="trust-strip__figure">認定</span>
+            <span class="trust-strip__label">電気工事従事者</span>
+          </li>
+          <li>
+            <svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg>
+            <span class="trust-strip__figure">那覇・浦添</span>
+            <span class="trust-strip__label">重点対応エリア</span>
+          </li>
         </ul>
       </div>
     </section>
 
-    <!-- S2 こんなお悩みありませんか？ -->
-    <section id="worry" class="sec sec--soft">
-      <div class="container worry-layout">
-        <h2>こんなこと、思っていませんか。</h2>
+    <!-- S2 共感 -->
+    <section id="worry" class="sec sec--sand">
+      <div class="container">
+        <div class="worry-head">
+          <p class="sec-eyebrow">こんなこと、思っていませんか。</p>
+          <h2 class="worry-title">壊れてはいない。<br>でも、家のあちこちが<br>少しずつ気になってきた。</h2>
+          <p class="sec-note worry-note">
+            築15〜30年ごろの分譲マンションでは、<br class="br-pc">
+            設備の更新時期がまとめて来ることが珍しくありません。
+          </p>
+        </div>
         <ul class="worry-list">
-          <li>キッチンの扉や天板が、そろそろ限界かもしれない</li>
-          <li>浴室が古くて、掃除しても清潔感が戻らない</li>
-          <li>洗面化粧台も同じ時期に替えたほうがいい気がする</li>
-          <li>トイレも古い。でも壊れてはいないから後回しにしている</li>
-          <li>エアコンも給湯も、そういえば同じくらいの年数が経っている</li>
-          <li>一つずつ業者を探して、そのたびに同じ説明をするのが面倒</li>
+          <li>
+            <span class="worry-tag">キッチン</span>
+            <p>扉や天板が、そろそろ限界かもしれない</p>
+          </li>
+          <li>
+            <span class="worry-tag">浴室</span>
+            <p>古くて、掃除しても清潔感が戻らない</p>
+          </li>
+          <li>
+            <span class="worry-tag">洗面</span>
+            <p>化粧台も同じ時期に替えたほうがいい気がする</p>
+          </li>
+          <li>
+            <span class="worry-tag">トイレ</span>
+            <p>古い。でも壊れてはいないから後回しにしている</p>
+          </li>
+          <li>
+            <span class="worry-tag">エアコン・給湯</span>
+            <p>そういえば、同じくらいの年数が経っている</p>
+          </li>
+          <li class="worry-list__last">
+            <span class="worry-tag worry-tag--alt">そして</span>
+            <p>一つずつ業者を探して、そのたびに同じ説明をするのが面倒</p>
+          </li>
         </ul>
-        <p class="sec-note">
-          築15〜30年ごろの分譲マンションでは、<br>
-          設備の更新時期がまとめて来ることが珍しくありません。
-        </p>
       </div>
     </section>
 
-    <!-- S3 まとめて相談できる設備一覧 -->
+    <!-- S3 まとめて相談できる設備 -->
     <section id="items" class="sec">
       <div class="container">
-        <h2>これらの設備を、まとめてご相談いただけます。</h2>
+        <p class="sec-eyebrow sec-eyebrow--center">家の設備、まとめて見られます</p>
+        <h2 class="sec-title-center">これらの設備を、まとめてご相談いただけます。</h2>
         <ul class="item-list">
-          <li class="item-card">
+          <li class="item-card item-card--t1">
+            <span class="item-card__icon"><svg class="ico" aria-hidden="true"><use href="#i-kitchen"></use></svg></span>
             <h3>キッチン</h3>
             <p>システムキッチンの交換・レンジフード</p>
           </li>
-          <li class="item-card">
+          <li class="item-card item-card--t2">
+            <span class="item-card__icon"><svg class="ico" aria-hidden="true"><use href="#i-bath"></use></svg></span>
             <h3>浴室</h3>
             <p>ユニットバスの交換・浴室設備</p>
           </li>
-          <li class="item-card">
+          <li class="item-card item-card--t3">
+            <span class="item-card__icon"><svg class="ico" aria-hidden="true"><use href="#i-basin"></use></svg></span>
             <h3>洗面</h3>
             <p>洗面化粧台の交換</p>
           </li>
-          <li class="item-card">
+          <li class="item-card item-card--t4">
+            <span class="item-card__icon"><svg class="ico" aria-hidden="true"><use href="#i-toilet"></use></svg></span>
             <h3>トイレ</h3>
             <p>便器・温水洗浄便座の交換</p>
           </li>
-          <li class="item-card">
+          <li class="item-card item-card--t3">
+            <span class="item-card__icon"><svg class="ico" aria-hidden="true"><use href="#i-water"></use></svg></span>
             <h3>給湯</h3>
             <p>給湯器の交換・不調のご相談</p>
           </li>
-          <li class="item-card">
+          <li class="item-card item-card--t4">
+            <span class="item-card__icon"><svg class="ico" aria-hidden="true"><use href="#i-fan"></use></svg></span>
             <h3>換気</h3>
             <p>浴室換気扇・レンジフード・換気設備</p>
           </li>
-          <li class="item-card">
+          <li class="item-card item-card--t1">
+            <span class="item-card__icon"><svg class="ico" aria-hidden="true"><use href="#i-ac"></use></svg></span>
             <h3>エアコン</h3>
             <p>買い替え・取付・クリーニング</p>
           </li>
-          <li class="item-card">
+          <li class="item-card item-card--t2">
+            <span class="item-card__icon"><svg class="ico" aria-hidden="true"><use href="#i-light"></use></svg></span>
             <h3>照明・電気</h3>
             <p>照明器具交換・スイッチ・コンセント</p>
           </li>
         </ul>
-        <p class="sec-note">
-          「これは対応していますか」というご相談も歓迎です。<br>
+        <p class="sec-note sec-note--center">
+          「これは対応していますか」というご相談も歓迎です。<br class="br-pc">
           上記以外の住宅設備も、まずはお聞かせください。
         </p>
       </div>
     </section>
 
-    <!-- S4 なぜ「まとめて」相談するのか -->
-    <section id="why" class="sec sec--teal">
+    <!-- S4 まとめて相談する理由 -->
+    <section id="why" class="sec sec--bluegrey">
       <div class="container">
+        <p class="sec-eyebrow">まとめて相談すると、どう変わるか</p>
         <h2>一つずつ頼むより、まとめて相談したほうがいい理由。</h2>
         <ol class="reason-list">
           <li class="reason">
-            <h3>理由1：説明が一度で済む</h3>
+            <p class="reason__num">01</p>
+            <h3>説明が一度で済む</h3>
             <p>業者ごとに、住まいの状況・築年数・管理規約・希望を説明し直す必要がありません。一度お聞きした内容をもとに、必要な設備をまとめて整理します。</p>
           </li>
           <li class="reason">
-            <h3>理由2：工事の順番と日程を整理できる</h3>
+            <p class="reason__num">02</p>
+            <h3>工事の順番と日程を整理できる</h3>
             <p>水回りの工事は、順番によって在宅の負担が変わります。別々に頼むと、そのたびに立ち会いと日程調整が発生します。まとめてご相談いただければ、無理のない順番と時期をご提案できます。</p>
           </li>
-          <li class="reason">
-            <h3>理由3：「今やるもの」と「まだ待てるもの」を切り分けられる</h3>
+          <li class="reason reason--hero">
+            <p class="reason__num">03</p>
+            <p class="reason__shout">全部替えましょう、<br>とは言いません。</p>
+            <h3>「今やるもの」と「まだ待てるもの」を切り分けられる</h3>
             <p>すべてを一度に替える必要はありません。現状を見たうえで、優先度の高いものから整理してお伝えします。</p>
           </li>
         </ol>
         <div class="mini-cta">
-          <p>気になっている場所が1か所でも、まとめてでも構いません。</p>
-          <p>
-            <a class="btn btn--primary" href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="why">LINEで相談する</a>
+          <span class="mini-cta__icon" aria-hidden="true"><svg class="ico"><use href="#i-line"></use></svg></span>
+          <p class="mini-cta__lead">気になっている場所が1か所でも、まとめてでも構いません。</p>
+          <p class="mini-cta__btn">
+            <a class="btn btn--line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="why">
+              <svg class="ico" aria-hidden="true"><use href="#i-line"></use></svg>LINEで相談する
+            </a>
           </p>
         </div>
       </div>
     </section>
 
-    <!-- S5 BCサービスが窓口になる仕組み -->
-    <section id="structure" class="sec">
+    <!-- S5 窓口は、ひとつ。 -->
+    <section id="structure" class="sec sec--deep">
+      <div class="hub__deco" aria-hidden="true">
+        <span class="hub__glow hub__glow--a"></span>
+        <span class="hub__glow hub__glow--b"></span>
+      </div>
       <div class="container">
-        <h2>BCサービスは、ご相談の窓口です。</h2>
-        <p class="sec-lead">
-          すべての工事を一社で抱え込むのではなく、<br>
-          内容に応じた専門業者と連携して進めます。<br>
+        <p class="sec-eyebrow sec-eyebrow--onDark sec-eyebrow--center">BCサービスは、ご相談の窓口です</p>
+        <h2 class="hub__title">窓口は、ひとつ。</h2>
+        <p class="sec-lead sec-lead--center hub__lead">
+          すべての工事を一社で抱え込むのではなく、<br class="br-pc">
+          内容に応じた専門業者と連携して進めます。<br class="br-pc">
           窓口はBCサービスが最後まで担当します。
         </p>
-        <ol class="structure-steps">
-          <li class="structure-step">
-            <h3><span class="step-badge">①</span> BCサービスへ相談</h3>
-            <p>ご相談をお受けします。</p>
+
+        <ol class="hub">
+          <li class="hub__node">
+            <span class="hub__badge">01</span>
+            <span class="hub__icon"><svg class="ico" aria-hidden="true"><use href="#i-user"></use></svg></span>
+            <p class="hub__name">お客様</p>
+            <p class="hub__sub">気になる場所を伝えるだけ</p>
           </li>
-          <li class="structure-step">
-            <h3><span class="step-badge">②</span> 現地確認・内容整理</h3>
-            <p>必要な設備と工事内容を整理します。</p>
+          <li class="hub__node hub__node--bc">
+            <span class="hub__badge hub__badge--bc">02</span>
+            <span class="hub__icon hub__icon--bc"><svg class="ico" aria-hidden="true"><use href="#i-house"></use></svg></span>
+            <p class="hub__flag">ここが窓口</p>
+            <p class="hub__name">BCサービス</p>
+            <p class="hub__sub">ご相談を受け、現地を確認し、<br class="br-pc">内容を整理します</p>
           </li>
-          <li class="structure-step">
-            <h3><span class="step-badge">③</span> 内容に応じた専門業者と連携</h3>
-            <p>内容に応じた専門業者と連携して進めます。</p>
+          <li class="hub__node">
+            <span class="hub__badge">03</span>
+            <span class="hub__icon"><svg class="ico" aria-hidden="true"><use href="#i-link"></use></svg></span>
+            <p class="hub__name">内容に応じた<br>専門業者</p>
+            <p class="hub__sub">工事内容に応じて連携します</p>
           </li>
-          <li class="structure-step">
-            <h3><span class="step-badge">④</span> 工事・お引き渡し</h3>
-            <p>完了まで窓口はBCサービスが担当します。</p>
+          <li class="hub__node">
+            <span class="hub__badge">04</span>
+            <span class="hub__icon"><svg class="ico" aria-hidden="true"><use href="#i-tools"></use></svg></span>
+            <p class="hub__name">工事・<br>お引き渡し</p>
+            <p class="hub__sub">完了まで窓口はBCサービス</p>
           </li>
         </ol>
-        <p class="structure-message">
-          お客様は、どこに何を頼むかを考える必要がありません。<br>
-          連絡先は、BCサービス一つで済みます。
+
+        <p class="hub__message">
+          <span class="hub__message-sub">お客様は、どこに何を頼むかを考える必要がありません。</span>
+          <span class="hub__message-main">連絡先は、BCサービス一つで済みます。</span>
         </p>
       </div>
     </section>
 
-    <!-- S6 「何社にも相談しなくていい」の中身 -->
-    <section id="merit" class="sec sec--soft">
+    <!-- S6 何社にも相談しない、の中身 -->
+    <section id="merit" class="sec">
       <div class="container">
-        <h2>何社にも相談しない、というのはこういうことです。</h2>
+        <p class="sec-eyebrow sec-eyebrow--center">面倒が、どこまで減るか</p>
+        <h2 class="sec-title-center">何社にも相談しない、<br class="br-pc">というのはこういうことです。</h2>
         <div class="compare">
           <div class="compare__col compare__col--before">
             <h3>別々に頼んだ場合</h3>
-            <ul>
+            <ul class="compare__heads">
+              <li>何社も探す</li>
+              <li>何度も説明</li>
+              <li>日程もバラバラ</li>
+            </ul>
+            <ul class="compare__detail">
               <li>設備ごとに業者を探す</li>
-              <li>そのたびに同じ説明をする</li>
               <li>見積の書式がバラバラで比較しにくい</li>
               <li>立ち会い日程を何度も調整する</li>
               <li>工事の順番は自分で考える</li>
               <li>不具合時にどこへ連絡するか迷う</li>
             </ul>
           </div>
+          <p class="compare__arrow" aria-hidden="true"><span>まとめると</span></p>
           <div class="compare__col compare__col--after">
             <h3>BCサービスにまとめてご相談</h3>
-            <ul>
+            <ul class="compare__heads">
               <li>探すのは一度だけ</li>
-              <li>説明は一度で済む</li>
+              <li>説明は一度</li>
+              <li>窓口も一つ</li>
+            </ul>
+            <ul class="compare__detail">
+              <li>一度お聞きした内容をもとに整理します</li>
               <li>内容を整理してお伝えします</li>
               <li>日程をまとめて調整できます</li>
               <li>順番と時期をご提案します</li>
-              <li>連絡先はBCサービス一つ</li>
+              <li>工事後のご相談も同じ窓口</li>
             </ul>
           </div>
         </div>
-        <p class="sec-note">
-          減らせるのは、費用だけではありません。<br>
+        <p class="sec-note sec-note--center">
+          減らせるのは、費用だけではありません。<br class="br-pc">
           考えること、連絡すること、待つこと。その手間が減ります。
         </p>
       </div>
     </section>
 
-    <!-- S7 こんなご相談の仕方で大丈夫です -->
-    <section id="consultation" class="sec">
+    <!-- S7 どの段階でも相談できる -->
+    <section id="consultation" class="sec sec--sand">
       <div class="container">
+        <p class="sec-eyebrow">どの段階でも、ご相談いただけます</p>
         <h2>こんなご相談の仕方で大丈夫です。</h2>
-        <div class="consult-list">
-          <article class="consult-pattern">
-            <p class="consult-label">相談例 01</p>
+        <ol class="consult-list">
+          <li class="consult-pattern consult-pattern--l1">
+            <p class="consult-level"><span class="consult-level__dots" aria-hidden="true"><i class="on"></i><i></i><i></i></span>相談例 01</p>
             <h3>まだ何も決まっていない</h3>
             <blockquote>
               <p>浴室とキッチンが古いのですが、どちらから手をつけるべきか分かりません</p>
             </blockquote>
             <p class="consult-answer">現状を確認したうえで、優先度をお伝えします。すぐに工事をしなくても構いません。</p>
-          </article>
-          <article class="consult-pattern">
-            <p class="consult-label">相談例 02</p>
+          </li>
+          <li class="consult-pattern consult-pattern--l2">
+            <p class="consult-level"><span class="consult-level__dots" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i></span>相談例 02</p>
             <h3>1か所だけ</h3>
             <blockquote>
               <p>トイレだけ替えたいのですが、対応できますか</p>
             </blockquote>
             <p class="consult-answer">1か所だけのご相談も歓迎です。そのうえで、他に気になる箇所があればあわせてお聞きします。</p>
-          </article>
-          <article class="consult-pattern">
-            <p class="consult-label">相談例 03</p>
+          </li>
+          <li class="consult-pattern consult-pattern--l3">
+            <p class="consult-level"><span class="consult-level__dots" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span>相談例 03</p>
             <h3>まとめて</h3>
             <blockquote>
               <p>築25年の分譲マンションで、水回りを一通り見直したいと考えています</p>
             </blockquote>
             <p class="consult-answer">全体を確認し、内容を整理してご提案します。今やるものと、まだ待てるものを分けてお伝えします。</p>
-          </article>
-        </div>
+          </li>
+        </ol>
       </div>
     </section>
 
     <!-- 将来ここに施工実績セクションを追加（現時点では作らない） -->
     <!-- TODO: 施工実績は実写が揃ってから追加 -->
 
-    <!-- S8 BCサービスについて -->
-    <section id="about" class="sec sec--teal">
+    <!-- S8 どんな人が家を見るのか -->
+    <section id="about" class="sec sec--sky">
       <div class="container">
+        <p class="sec-eyebrow">どんな人が、家を見にくるのか</p>
         <h2>BCサービスについて</h2>
+
         <div class="about__grid">
-          <div class="about__media">
-            <img
-              src="./assets/img/reform-profile-teruya.webp"
-              alt="BCサービス代表 照屋昴"
-              width="600"
-              height="600"
-              loading="lazy"
-              decoding="async"
-            >
-          </div>
-          <div class="about__text">
-            <p class="about__name">代表　照屋 昴</p>
-            <p>沖縄県南部を拠点に、住宅の設備まわりのご相談をお受けしています。</p>
-            <p class="about__exp">清掃・現場経験17年。</p>
-            <p>エアコンクリーニング、ハウスクリーニング、家電販売、エアコン販売を通して、住宅設備を実際に触り、内部まで見てきました。</p>
-            <h3>保有資格</h3>
+          <div class="about__card">
+            <div class="about__photo">
+              <img
+                src="./assets/img/reform-profile-teruya.webp"
+                alt="BCサービス代表 照屋昴"
+                width="600"
+                height="600"
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+            <p class="about__role">BCサービス代表</p>
+            <p class="about__name">照屋 昴</p>
+            <p class="about__exp">清掃・現場経験17年</p>
             <ul class="about__certs">
-              <li>第二種電気工事士</li>
-              <li>認定電気工事従事者</li>
+              <li><svg class="ico" aria-hidden="true"><use href="#i-bolt"></use></svg>第二種電気工事士</li>
+              <li><svg class="ico" aria-hidden="true"><use href="#i-badge"></use></svg>認定電気工事従事者</li>
             </ul>
-            <p>設備の交換は、本体を入れ替えるだけで終わらないことがあります。電気の状態、換気の状態、周辺の劣化。現場で見てきたからこそ、設備の周辺まで含めてご相談をお受けできます。</p>
+          </div>
+
+          <div class="about__text">
+            <p class="about__pull">設備の交換は、本体を入れ替えるだけで<br class="br-pc">終わらないことがあります。</p>
+            <p>電気の状態、換気の状態、周辺の劣化。現場で見てきたからこそ、設備の周辺まで含めてご相談をお受けできます。</p>
+            <p>沖縄県南部を拠点に、住宅の設備まわりのご相談をお受けしています。エアコンクリーニング、ハウスクリーニング、家電販売、エアコン販売を通して、住宅設備を実際に触り、内部まで見てきました。</p>
             <p>内容に応じた専門業者と連携しながら、窓口としてお客様の側に立って進めます。</p>
           </div>
+
           <figure class="about__work">
             <img
               src="./assets/img/reform-work-01.webp"
@@ -447,6 +687,24 @@
             >
             <figcaption>天井埋込エアコンの内部を確認している作業の様子</figcaption>
           </figure>
+
+          <ol class="about__role-flow">
+            <li>
+              <span class="about__role-icon"><svg class="ico" aria-hidden="true"><use href="#i-eye"></use></svg></span>
+              <h3>現場を見る</h3>
+              <p>実際の設備、設置状況、周辺の状態を自分の目で確認します。</p>
+            </li>
+            <li>
+              <span class="about__role-icon"><svg class="ico" aria-hidden="true"><use href="#i-list"></use></svg></span>
+              <h3>状況を整理する</h3>
+              <p>必要な工事内容と、優先度の高いものを分けて整理します。</p>
+            </li>
+            <li>
+              <span class="about__role-icon"><svg class="ico" aria-hidden="true"><use href="#i-link"></use></svg></span>
+              <h3>必要なら専門業者につなぐ</h3>
+              <p>内容に応じた専門業者と連携し、窓口は最後までBCサービスが担当します。</p>
+            </li>
+          </ol>
         </div>
       </div>
     </section>
@@ -454,70 +712,95 @@
     <!-- S9 ご相談から工事までの流れ -->
     <section id="flow" class="sec">
       <div class="container">
-        <h2>ご相談から工事までの流れ</h2>
+        <p class="sec-eyebrow sec-eyebrow--center">はじまりは、LINE1通から</p>
+        <h2 class="sec-title-center">ご相談から工事までの流れ</h2>
         <ol class="flow-list">
-          <li class="flow-step">
-            <h3>STEP 1　LINEまたは電話で相談</h3>
+          <li class="flow-step flow-step--first">
+            <p class="flow-step__num"><span>STEP</span>1</p>
+            <h3>
+              <svg class="ico flow-step__line-ico" aria-hidden="true"><use href="#i-line"></use></svg>
+              LINEまたは電話で相談
+            </h3>
+            <p class="flow-step__shout">メッセージ1通から、で大丈夫です。</p>
             <p>気になっている場所、築年数、現在の状態などをお聞きします。写真があればLINEで送っていただけます。</p>
           </li>
           <li class="flow-step">
-            <h3>STEP 2　事前に内容を整理</h3>
+            <p class="flow-step__num"><span>STEP</span>2</p>
+            <h3>事前に内容を整理</h3>
             <p>お伺いした内容から、確認が必要な設備や工事内容を整理します。必要に応じてメーカー資料なども準備します。</p>
           </li>
           <li class="flow-step">
-            <h3>STEP 3　必要に応じて専門担当を準備</h3>
+            <p class="flow-step__num"><span>STEP</span>3</p>
+            <h3>必要に応じて専門担当を準備</h3>
             <p>内容によって専門的な確認が必要な場合は、専門担当・専門業者と連携できる状態を整えます。</p>
           </li>
           <li class="flow-step">
-            <h3>STEP 4　現地確認</h3>
+            <p class="flow-step__num"><span>STEP</span>4</p>
+            <h3>現地確認</h3>
             <p>実際の設備、設置状況、周辺の状態を確認します。マンションでは必要に応じて、管理規約や搬入経路なども確認します。</p>
           </li>
           <li class="flow-step">
-            <h3>STEP 5　商品・工事内容を整理してご提案</h3>
+            <p class="flow-step__num"><span>STEP</span>5</p>
+            <h3>商品・工事内容を整理してご提案</h3>
             <p>必要な内容を整理し、優先度の高いものと、まだ待てるものを分けながらご提案します。</p>
           </li>
-          <li class="flow-step">
-            <h3>STEP 6　工事・お引き渡し</h3>
+          <li class="flow-step flow-step--last">
+            <p class="flow-step__num"><span>STEP</span>6</p>
+            <h3>工事・お引き渡し</h3>
             <p>内容に応じた専門業者と連携して進めます。工事後のご相談もBCサービスが窓口になります。</p>
           </li>
         </ol>
         <div class="mini-cta">
-          <p>STEP1は、メッセージ1通からで大丈夫です。</p>
-          <p>
-            <a class="btn btn--primary" href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="flow">LINEで相談する</a>
+          <span class="mini-cta__icon" aria-hidden="true"><svg class="ico"><use href="#i-line"></use></svg></span>
+          <p class="mini-cta__lead">STEP1は、メッセージ1通からで大丈夫です。</p>
+          <p class="mini-cta__btn">
+            <a class="btn btn--line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="flow">
+              <svg class="ico" aria-hidden="true"><use href="#i-line"></use></svg>LINEで相談する
+            </a>
           </p>
         </div>
       </div>
     </section>
 
     <!-- S10 費用の考え方 -->
-    <section id="cost" class="sec sec--soft">
+    <section id="cost" class="sec sec--warmgrey">
       <div class="container cost-layout">
         <div class="cost-copy">
-          <h2>費用の考え方</h2>
-          <p>BCサービスは、最初から一律の価格を掲げていません。</p>
-          <p>同じ「キッチン交換」でも、設備のグレード、配管や電気の状態、搬入経路、マンションの規約によって、必要な工事は変わります。</p>
-          <p>実際に見ないまま出した安い金額は、あとから追加費用が発生する原因になります。</p>
-          <p>そのため、現地を確認し、必要な内容を整理したうえでお見積りをお出しします。</p>
+          <p class="sec-eyebrow">費用の考え方</p>
+          <h2 class="cost-title">安い数字を先に見せるより、<br class="br-pc">必要な内容を整理してから<br class="br-pc">金額をお出しします。</h2>
+          <p class="cost-lead">BCサービスは、最初から一律の価格を掲げていません。</p>
+          <p>同じ「キッチン交換」でも、設備のグレード、配管や電気の状態、搬入経路、マンションの規約によって、必要な工事は変わります。実際に見ないまま出した安い金額は、あとから追加費用が発生する原因になります。</p>
+          <ol class="cost-flow">
+            <li><span>現地を確認する</span></li>
+            <li><span>必要な内容を整理する</span></li>
+            <li><span>お見積りをお出しする</span></li>
+          </ol>
         </div>
-        <ul class="cost-points">
-          <li>何にいくらかかるのかを分けてご説明します</li>
-          <li>今やるべきものと、待てるものを分けてお伝えします</li>
-          <li>ご予算がある場合は、その範囲で優先順位を整理します</li>
-        </ul>
-        <p class="cost-close">金額をご覧いただいてから、ご検討ください。</p>
+        <div class="cost-panel">
+          <p class="cost-panel__head">
+            <svg class="ico" aria-hidden="true"><use href="#i-yen"></use></svg>
+            お見積りでお伝えすること
+          </p>
+          <ul class="cost-points">
+            <li>何にいくらかかるのかを分けてご説明します</li>
+            <li>今やるべきものと、待てるものを分けてお伝えします</li>
+            <li>ご予算がある場合は、その範囲で優先順位を整理します</li>
+          </ul>
+          <p class="cost-close">金額をご覧いただいてから、ご検討ください。</p>
+        </div>
       </div>
     </section>
 
     <!-- S11 対応エリア -->
-    <section id="area" class="sec">
+    <section id="area" class="sec sec--sky">
       <div class="container">
-        <h2>対応エリア</h2>
+        <p class="sec-eyebrow sec-eyebrow--center">対応エリア</p>
+        <h2 class="sec-title-center">那覇市・浦添市を重点にお伺いします。</h2>
         <div class="area-primary">
           <h3>重点対応エリア</h3>
           <ul>
-            <li>那覇市</li>
-            <li>浦添市</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg>那覇市</li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-pin"></use></svg>浦添市</li>
           </ul>
         </div>
         <div class="area-other">
@@ -530,14 +813,15 @@
             <li>南風原町 ほか</li>
           </ul>
         </div>
-        <p class="sec-note">上記以外の地域についても、内容によりご相談をお受けできる場合があります。まずはお問い合わせください。</p>
+        <p class="sec-note sec-note--center">上記以外の地域についても、内容によりご相談をお受けできる場合があります。まずはお問い合わせください。</p>
       </div>
     </section>
 
     <!-- S12 よくあるご質問 -->
-    <section id="faq" class="sec sec--soft">
+    <section id="faq" class="sec sec--quiet">
       <div class="container">
-        <h2>よくあるご質問</h2>
+        <p class="sec-eyebrow sec-eyebrow--center">よくあるご質問</p>
+        <h2 class="sec-title-center">気になる点は、先にご確認ください。</h2>
         <div class="faq-list">
           <details open>
             <summary>1か所だけの相談でも大丈夫ですか。</summary>
@@ -577,27 +861,65 @@
 
     <!-- S13 最終CTA -->
     <section id="cta" class="sec-cta">
+      <div class="cta__deco" aria-hidden="true">
+        <span class="cta__glow cta__glow--teal"></span>
+        <span class="cta__glow cta__glow--sand"></span>
+        <svg class="cta__plan" viewBox="0 0 320 260" preserveAspectRatio="xMidYMid meet">
+          <g fill="none" stroke="currentColor" stroke-width="1.2">
+            <path d="M20 240V70l140-52 140 52v170"/>
+            <path d="M20 240h280"/>
+            <path d="M110 240V150h60v90"/>
+            <path d="M200 120h70v60h-70z"/>
+            <path d="M50 120h40v40H50z"/>
+            <circle cx="160" cy="95" r="18"/>
+          </g>
+        </svg>
+      </div>
       <div class="container cta-layout">
         <div class="cta__copy">
-          <h2>家の設備のこと、まとめてご相談ください。</h2>
-          <p>どこから手をつけるべきか分からない、という段階で構いません。気になっている場所を教えていただければ、そこから整理します。</p>
+          <p class="sec-eyebrow sec-eyebrow--onDark">ご相談は、ここから</p>
+          <h2>家の設備のこと、<br class="br-pc">まとめてご相談ください。</h2>
+          <p class="cta__lead">どこから手をつけるべきか分からない、という段階で構いません。気になっている場所を教えていただければ、そこから整理します。</p>
+          <ul class="cta__points">
+            <li>1か所だけでも、家全体でも大丈夫です</li>
+            <li>写真があればLINEで送っていただけます</li>
+            <li>その場でお決めいただく必要はありません</li>
+          </ul>
         </div>
         <div class="cta__panel">
+          <div class="cta__who">
+            <div class="cta__who-photo">
+              <img
+                src="./assets/img/reform-profile-teruya.webp"
+                alt="BCサービス代表 照屋昴"
+                width="600"
+                height="600"
+                loading="lazy"
+                decoding="async"
+              >
+            </div>
+            <div>
+              <p class="cta__who-role">相談窓口</p>
+              <p class="cta__who-name">BCサービス代表　照屋 昴</p>
+            </div>
+          </div>
           <p class="cta__btn">
-            <a class="btn btn--primary" href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="final">LINEでまとめて相談する</a>
+            <a class="btn btn--line btn--lg" href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="final">
+              <svg class="ico" aria-hidden="true"><use href="#i-line"></use></svg>LINEでまとめて相談する
+            </a>
           </p>
+          <p class="cta__micro">1か所だけでも大丈夫です。</p>
           <div class="cta__phone">
-            <p>お電話：</p>
-            <p><a class="btn btn--secondary" href="tel:05017241338" data-ga-event="reform_phone_click" data-ga-location="final">050-1724-1338</a></p>
+            <p class="cta__phone-label">お電話でのご相談</p>
+            <p>
+              <a class="btn btn--outline" href="tel:05017241338" data-ga-event="reform_phone_click" data-ga-location="final">
+                <svg class="ico" aria-hidden="true"><use href="#i-phone"></use></svg>050-1724-1338
+              </a>
+            </p>
             <p class="hours">受付時間 9:00〜18:00</p>
             <p class="phone-note">施工中などで出られない場合は折り返します。</p>
           </div>
         </div>
-        <ul class="cta__points">
-          <li>1か所だけでも、家全体でも大丈夫です</li>
-          <li>写真があればLINEで送っていただけます</li>
-          <li>その場でお決めいただく必要はありません</li>
-        </ul>
       </div>
     </section>
   </main>
@@ -620,8 +942,12 @@
   </footer>
 
   <div class="fixed-cta" hidden>
-    <a href="tel:05017241338" data-ga-event="reform_phone_click" data-ga-location="fixed">電話</a>
-    <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="fixed">LINEで相談する</a>
+    <a href="tel:05017241338" data-ga-event="reform_phone_click" data-ga-location="fixed">
+      <svg class="ico" aria-hidden="true"><use href="#i-phone"></use></svg>電話
+    </a>
+    <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener" data-ga-event="reform_line_click" data-ga-location="fixed">
+      <svg class="ico" aria-hidden="true"><use href="#i-line"></use></svg>LINEで相談する
+    </a>
   </div>
   <script src="./assets/js/reform.js" defer></script>
 </body>
