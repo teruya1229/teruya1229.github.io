@@ -1,4 +1,12 @@
 (function () {
+  var lineUrl = "https://lin.ee/Q1s3uqV";
+
+  document.querySelectorAll('a[data-ga-event="reform_line_click"]').forEach(function (a) {
+    a.setAttribute("href", lineUrl);
+  });
+})();
+
+(function () {
   var bar = document.querySelector(".fixed-cta");
   var fv = document.getElementById("fv");
   var finalCta = document.getElementById("cta");
