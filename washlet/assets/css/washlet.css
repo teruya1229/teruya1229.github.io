@@ -488,6 +488,13 @@ ol {
   gap: 24px;
 }
 
+/* 900px未満は1カラム。CTAを担当者カードより先に出し、初回表示内に収める。
+   900px以上は grid-template-areas で配置するため order は効かない。 */
+.fv__text { order: 1; }
+.fv__act  { order: 2; }
+.fv__who  { order: 3; }
+.fv__tel  { order: 4; }
+
 .fv__kicker {
   display: inline-flex;
   align-items: center;
@@ -3240,7 +3247,8 @@ body.is-fixed-cta {
   }
 
   .sec-cta h2 {
-    font-size: 34px;
+    /* 2カラム時のコピー列幅に追従させ、「ら、」だけが行に残るのを防ぐ。 */
+    font-size: clamp(27px, 3.5vw, 40px);
   }
 
   .cta__prices-num {
@@ -3297,7 +3305,9 @@ body.is-fixed-cta {
   .fv__tel  { grid-area: tel; }
 
   .fv__title {
-    font-size: 40px;
+    /* 2行目「TOTOウォシュレットだけ」がカラム幅を超えて4行に割れるため、
+       カラムが広がるまではフォントサイズを追従させる。 */
+    font-size: clamp(34px, 4.2vw, 40px);
   }
 
   .fv__prices {
@@ -3380,7 +3390,7 @@ body.is-fixed-cta {
   }
 
   .fv__title {
-    font-size: 46px;
+    font-size: clamp(40px, 4.3vw, 46px);
     line-height: 1.38;
     margin-bottom: 18px;
   }
@@ -3694,10 +3704,6 @@ body.is-fixed-cta {
     grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
     column-gap: 56px;
     max-width: 1100px;
-  }
-
-  .sec-cta h2 {
-    font-size: 40px;
   }
 
   .cta__prices li {
