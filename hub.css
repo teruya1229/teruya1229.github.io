@@ -612,6 +612,18 @@ h3 {
   object-position: center 72%;
 }
 
+.service-card-visual img.pos-toilet {
+  object-position: center 58%;
+}
+
+/* 商品切り抜き画像はcoverだと商品が切れるため、比率を保って全体を見せる。 */
+.service-card-visual img.pos-washlet {
+  object-fit: contain;
+  object-position: center;
+  background: #ffffff;
+  padding: 10px;
+}
+
 .service-card-body {
   display: flex;
   flex-direction: column;

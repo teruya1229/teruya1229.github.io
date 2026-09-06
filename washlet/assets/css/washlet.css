@@ -3781,14 +3781,16 @@ body.is-fixed-cta {
    ========================================================================== */
 
 /* --- FV 商品カード ------------------------------------------------------- */
+/* スマホでは商品写真を横1列に置く。2カラムに押し込むと商品が判別できない大きさになる。 */
 .fv__offer {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 120px;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    "copy illust"
-    "price illust"
-    "bundle bundle"
-    "cond cond";
+    "copy"
+    "illust"
+    "price"
+    "bundle"
+    "cond";
   gap: 10px 12px;
   align-items: center;
   background: rgba(255, 255, 255, 0.09);
@@ -3842,14 +3844,14 @@ body.is-fixed-cta {
 .fv__illust-photo {
   display: block;
   width: 100%;
-  max-width: 112px;
-  aspect-ratio: 4 / 3;
+  max-width: 288px;
+  aspect-ratio: 18 / 13;
   height: auto;
   object-fit: contain;
   object-position: center;
   border-radius: 8px;
   background: #ffffff;
-  padding: 4px;
+  padding: 0;
 }
 
 .fv__illust-cap {
@@ -3991,14 +3993,14 @@ body.is-fixed-cta {
 .prod-card__photo {
   display: block;
   width: 100%;
-  max-width: 320px;
-  aspect-ratio: 4 / 3;
+  max-width: 460px;
+  aspect-ratio: 18 / 13;
   height: auto;
   object-fit: contain;
   object-position: center;
   border-radius: calc(var(--r-md) - 2px);
   background: #ffffff;
-  padding: 8px;
+  padding: 0;
 }
 
 .prod-card__figcap {
@@ -4183,6 +4185,16 @@ body.is-fixed-cta {
   line-height: 1.75;
   color: var(--c-ink-sub);
   text-align: center;
+}
+
+.fit-note--strong {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: var(--r-sm);
+  background: var(--c-teal-pale);
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--c-teal-deep);
 }
 
 /* --- 便座だけ／丸ごと比較 ----------------------------------------------- */
@@ -4427,10 +4439,6 @@ body.is-fixed-cta {
 
 /* --- レスポンシブ：ウォシュレット専用 --------------------------------- */
 @media (max-width: 359px) {
-  .fv__offer {
-    grid-template-columns: minmax(0, 1fr) 72px;
-  }
-
   .fv__price-hero-num {
     font-size: 30px;
   }
@@ -4464,7 +4472,7 @@ body.is-fixed-cta {
 
 @media (min-width: 768px) {
   .fv__offer {
-    grid-template-columns: minmax(0, 1fr) 150px;
+    grid-template-columns: minmax(0, 1fr) 250px;
     grid-template-areas:
       "copy illust"
       "price illust"
@@ -4480,7 +4488,7 @@ body.is-fixed-cta {
   }
 
   .fv__illust-photo {
-    max-width: 168px;
+    max-width: 100%;
   }
 
   .fv__model-num {
@@ -4560,7 +4568,7 @@ body.is-fixed-cta {
   }
 
   .fv__illust-photo {
-    max-width: 180px;
+    max-width: 100%;
   }
 
   .prod-layout {

@@ -46,7 +46,12 @@ Primary conversion goal is to drive LINE inquiries and bookings.
 - Don’t rewrite the whole design unless explicitly asked
 
 ## Known fixed URLs (do not guess / do not change)
-- Official LINE URL: https://lin.ee/tsilra6
+- LINE accounts are split by service line. Do not merge them, and never bulk-replace across the repo.
+  - BC Service main / hub / residential equipment / reform: https://lin.ee/Q1s3uqV
+    - Pages: hub `/`, `/reform/`, `/toilet/`, `/washlet/`, and any future residential equipment LP
+  - Aircon cleaning focused LPs: https://lin.ee/tsilra6
+    - Pages: the aircon cleaning LPs under `cursor-test/`. Leave these as they are.
+- Never revert the hub `/` back to tsilra6.
 - Google Form URL: https://forms.gle/eVeRnY5vi24dAjbG8
 
 ## When you propose changes, always output

@@ -1020,11 +1020,12 @@ ol {
   background: #e7eef1;
 }
 
-.plan-card__photo--seat {
+/* 商品構成イメージは切り抜き合成のため、比率を保ったまま枠いっぱいに見せる。 */
+.plan-card__photo--combo {
   object-fit: contain;
   object-position: center;
   background: #ffffff;
-  padding: 6px;
+  padding: 0;
 }
 
 .plan-card__photo--premium {
@@ -1072,6 +1073,19 @@ ol {
   font-weight: 700;
   color: var(--c-ink-mute);
   margin-left: 6px;
+}
+
+.plan-card__delta {
+  margin-top: 12px;
+  padding: 8px 12px;
+  border-radius: var(--r-sm);
+  background: var(--c-teal-pale);
+  border: 1px solid var(--c-teal);
+  color: var(--c-teal-deep);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
 }
 
 .plan-card__spec {
