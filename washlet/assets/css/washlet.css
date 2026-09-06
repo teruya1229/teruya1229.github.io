@@ -3783,7 +3783,7 @@ body.is-fixed-cta {
 /* --- FV 商品カード ------------------------------------------------------- */
 .fv__offer {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 88px;
+  grid-template-columns: minmax(0, 1fr) 120px;
   grid-template-areas:
     "copy illust"
     "price illust"
@@ -3843,12 +3843,13 @@ body.is-fixed-cta {
   display: block;
   width: 100%;
   max-width: 112px;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 3;
   height: auto;
-  object-fit: cover;
-  object-position: center 40%;
+  object-fit: contain;
+  object-position: center;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.12);
+  background: #ffffff;
+  padding: 4px;
 }
 
 .fv__illust-cap {
@@ -3993,10 +3994,11 @@ body.is-fixed-cta {
   max-width: 320px;
   aspect-ratio: 4 / 3;
   height: auto;
-  object-fit: cover;
-  object-position: center 40%;
+  object-fit: contain;
+  object-position: center;
   border-radius: calc(var(--r-md) - 2px);
-  background: #e7eef1;
+  background: #ffffff;
+  padding: 8px;
 }
 
 .prod-card__figcap {
@@ -4089,6 +4091,33 @@ body.is-fixed-cta {
 .prod-card__btn .btn {
   max-width: 400px;
   margin-inline: auto;
+}
+
+.assure-note {
+  margin-top: 28px;
+  padding: 16px 16px 14px;
+  border-radius: var(--r-md);
+  border: 1px solid rgba(15, 107, 113, 0.18);
+  background: #f3faf9;
+}
+
+.assure-note__title {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: 0.02em;
+}
+
+.assure-note p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--c-ink-sub);
+}
+
+.assure-note p + p {
+  margin-top: 6px;
 }
 
 /* --- 適合確認 ----------------------------------------------------------- */
@@ -4451,7 +4480,7 @@ body.is-fixed-cta {
   }
 
   .fv__illust-photo {
-    max-width: 140px;
+    max-width: 168px;
   }
 
   .fv__model-num {
@@ -4531,7 +4560,7 @@ body.is-fixed-cta {
   }
 
   .fv__illust-photo {
-    max-width: 160px;
+    max-width: 180px;
   }
 
   .prod-layout {

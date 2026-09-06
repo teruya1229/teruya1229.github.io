@@ -1,39 +1,34 @@
-BCサービス LP 設置イメージ写真 — ライセンス記録
-取得日: 2026-09-06
+BCサービス LP 商品・設置イメージ写真 — 記録
+更新日: 2026-09-06
 
 ────────────────────────────────────────
 1. install-tank-toilet.jpg
-用途: /toilet/ 梅プラン（一般的な白いタンク式トイレの設置イメージ）
+用途: /toilet/ 梅プラン（設置イメージ）
 素材サイト: Pexels
 元ページ: https://www.pexels.com/photo/toilet-in-a-bathroom-19866476/
-作者名: 取得時にページ認証により氏名を確認できず（Pexels Photo ID: 19866476）
-ライセンス: Pexels License（商用利用可・クレジット表記任意）
+作者名: 取得時に氏名未確認（Pexels Photo ID: 19866476）
+ライセンス: Pexels License
 保存先: toilet/assets/img/install-tank-toilet.jpg
+注記: 設置イメージ。実際の販売商品そのものではない。
 
 ────────────────────────────────────────
 2. install-washlet-seat.jpg
 用途:
-  - /toilet/ 竹プラン（温水洗浄便座付きトイレの設置イメージ）
-  - /washlet/ FV価格ブロック・主力商品カード
-素材サイト: Pexels
-元ページ: https://www.pexels.com/photo/close-up-of-modern-white-toilet-in-wc-7545637/
-作者名: Jonas Thomann
-ライセンス: Pexels License（商用利用可・クレジット表記任意）
+  - /toilet/ 竹プラン
+  - /washlet/ FV・主力商品カード
+内容: TOTO ウォシュレット K（TCF8FK58）の商品画像
+出典: BFC/TOTO資料「TOTO トイレおすすめ機種 松竹梅 価格一覧表 2026.08.10」掲載画像（画像番号1）から抽出
 保存先:
   - toilet/assets/img/install-washlet-seat.jpg
   - washlet/assets/img/install-washlet-seat.jpg
+注記: メーカー画像のWeb掲載権限については、本ファイルでは断定しない。
 
 ────────────────────────────────────────
 3. install-premium-toilet.jpg
-用途: /toilet/ 松プラン（プレミアム系トイレの設置イメージ）
+用途: /toilet/ 松プラン（設置イメージ）
 素材サイト: Unsplash
 元ページ: https://unsplash.com/photos/a-white-toilet-sitting-in-a-bathroom-next-to-a-roll-of-toilet-paper-W0nLECYw7Eo
-作者名: Upgraded Points（Unsplash @upgraded-points / ダウンロードファイル名より）
-ライセンス: Unsplash License（商用利用可・クレジット表記任意）
+作者名: Upgraded Points（Unsplash @upgraded-points）
+ライセンス: Unsplash License
 保存先: toilet/assets/img/install-premium-toilet.jpg
-
-────────────────────────────────────────
-注意:
-- いずれもTOTO実商品の公式写真ではない。
-- LP上では「設置イメージ」として表示し、型番との同一視を避ける注記を付与している。
-- LP画面上へのクレジット表示は、各ライセンス上必須ではないため未掲載。
+注記: 設置イメージ。実際の販売商品そのものではない。

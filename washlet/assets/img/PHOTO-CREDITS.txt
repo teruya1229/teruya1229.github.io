@@ -1,12 +1,11 @@
-BCサービス /washlet/ 設置イメージ写真 — ライセンス記録
-取得日: 2026-09-06
+BCサービス /washlet/ 商品画像 — 記録
+更新日: 2026-09-06
 
 詳細は toilet/assets/img/PHOTO-CREDITS.txt を正本とする。
 
 使用ファイル: washlet/assets/img/install-washlet-seat.jpg
-素材サイト: Pexels
-元ページ: https://www.pexels.com/photo/close-up-of-modern-white-toilet-in-wc-7545637/
-作者名: Jonas Thomann
-ライセンス: Pexels License（商用利用可・クレジット表記任意）
+内容: TOTO ウォシュレット K（TCF8FK58）の商品画像
+出典: BFC/TOTO資料「TOTO トイレおすすめ機種 松竹梅 価格一覧表 2026.08.10」掲載画像（画像番号1）から抽出
 
-注意: TCF8FK58そのものの写真ではない。LP上で設置イメージ注記を表示。
+注記: メーカー画像のWeb掲載権限については、本ファイルでは断定しない。
+旧Pexels設置イメージは不採用のため差し替え済み。

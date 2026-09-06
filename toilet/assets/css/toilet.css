@@ -1021,7 +1021,10 @@ ol {
 }
 
 .plan-card__photo--seat {
-  object-position: center 40%;
+  object-fit: contain;
+  object-position: center;
+  background: #ffffff;
+  padding: 6px;
 }
 
 .plan-card__photo--premium {
@@ -1432,6 +1435,33 @@ ol {
   font-weight: 700;
   line-height: 1.7;
   color: var(--c-navy);
+}
+
+.assure-note {
+  margin-top: 28px;
+  padding: 16px 16px 14px;
+  border-radius: var(--r-md);
+  border: 1px solid rgba(15, 107, 113, 0.18);
+  background: #f3faf9;
+}
+
+.assure-note__title {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: 0.02em;
+}
+
+.assure-note p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--c-ink-sub);
+}
+
+.assure-note p + p {
+  margin-top: 6px;
 }
 
 /* --- 13. S5 別途見積 ----------------------------------------------------- */
