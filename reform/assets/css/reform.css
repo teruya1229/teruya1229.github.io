@@ -860,6 +860,11 @@ ol {
   text-underline-offset: 2px;
 }
 
+.item-card--lead {
+  border-color: rgba(15, 107, 113, 0.28);
+  box-shadow: var(--sh-card), 0 0 0 1px rgba(15, 107, 113, 0.08);
+}
+
 /* カテゴリごとの淡い色差 */
 .item-card--t1 { background: linear-gradient(180deg, #f4fafb 0%, #ffffff 62%); }
 .item-card--t1 .item-card__icon { background: var(--c-teal-pale); color: var(--c-teal-deep); }
