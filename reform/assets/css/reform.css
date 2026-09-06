@@ -853,6 +853,13 @@ ol {
   color: var(--c-ink-sub);
 }
 
+.item-card a {
+  color: var(--c-teal-deep);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* カテゴリごとの淡い色差 */
 .item-card--t1 { background: linear-gradient(180deg, #f4fafb 0%, #ffffff 62%); }
 .item-card--t1 .item-card__icon { background: var(--c-teal-pale); color: var(--c-teal-deep); }
@@ -2090,7 +2097,10 @@ ol {
   text-decoration: underline;
 }
 
-.site-footer__privacy {
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
   margin-top: 16px;
 }
 

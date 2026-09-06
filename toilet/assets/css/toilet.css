@@ -1681,6 +1681,13 @@ ol {
   color: var(--c-ink-sub);
 }
 
+.washlet__cta-note a {
+  color: var(--c-teal-deep, #1a6b72);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* --- 15. S6 LINE写真4枚 -------------------------------------------------- */
 .photo__deco {
   position: absolute;
