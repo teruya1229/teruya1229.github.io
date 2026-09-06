@@ -1,0 +1,12 @@
+BCサービス /washlet/ 設置イメージ写真 — ライセンス記録
+取得日: 2026-09-06
+
+詳細は toilet/assets/img/PHOTO-CREDITS.txt を正本とする。
+
+使用ファイル: washlet/assets/img/install-washlet-seat.jpg
+素材サイト: Pexels
+元ページ: https://www.pexels.com/photo/close-up-of-modern-white-toilet-in-wc-7545637/
+作者名: Jonas Thomann
+ライセンス: Pexels License（商用利用可・クレジット表記任意）
+
+注意: TCF8FK58そのものの写真ではない。LP上で設置イメージ注記を表示。

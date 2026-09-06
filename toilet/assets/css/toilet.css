@@ -1001,24 +1001,40 @@ ol {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 8px;
   margin-top: 12px;
-  padding: 8px 0 4px;
+  padding: 8px;
   border-radius: var(--r-md);
   background: linear-gradient(180deg, #f4fafb 0%, #ffffff 78%);
+  overflow: hidden;
 }
 
-.plan-card__fig svg {
+.plan-card__photo {
+  display: block;
   width: 100%;
-  max-width: 168px;
+  aspect-ratio: 4 / 3;
   height: auto;
-  color: var(--c-navy-mid);
+  object-fit: cover;
+  object-position: center 35%;
+  border-radius: calc(var(--r-md) - 2px);
+  background: #e7eef1;
+}
+
+.plan-card__photo--seat {
+  object-position: center 40%;
+}
+
+.plan-card__photo--premium {
+  object-position: center 55%;
 }
 
 .plan-card__figcap {
   font-size: 10.5px;
   line-height: 1.5;
   color: var(--c-ink-mute);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
+  text-align: center;
+  padding: 0 4px 2px;
 }
 
 .plan-card__price {
@@ -3565,8 +3581,8 @@ body.is-fixed-cta {
     font-size: 46px;
   }
 
-  .plan-card__fig svg {
-    max-width: 190px;
+  .plan-card__photo {
+    aspect-ratio: 16 / 11;
   }
 
   .plan-card__spec li {

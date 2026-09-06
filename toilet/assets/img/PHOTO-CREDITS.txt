@@ -1,0 +1,39 @@
+BCサービス LP 設置イメージ写真 — ライセンス記録
+取得日: 2026-09-06
+
+────────────────────────────────────────
+1. install-tank-toilet.jpg
+用途: /toilet/ 梅プラン（一般的な白いタンク式トイレの設置イメージ）
+素材サイト: Pexels
+元ページ: https://www.pexels.com/photo/toilet-in-a-bathroom-19866476/
+作者名: 取得時にページ認証により氏名を確認できず（Pexels Photo ID: 19866476）
+ライセンス: Pexels License（商用利用可・クレジット表記任意）
+保存先: toilet/assets/img/install-tank-toilet.jpg
+
+────────────────────────────────────────
+2. install-washlet-seat.jpg
+用途:
+  - /toilet/ 竹プラン（温水洗浄便座付きトイレの設置イメージ）
+  - /washlet/ FV価格ブロック・主力商品カード
+素材サイト: Pexels
+元ページ: https://www.pexels.com/photo/close-up-of-modern-white-toilet-in-wc-7545637/
+作者名: Jonas Thomann
+ライセンス: Pexels License（商用利用可・クレジット表記任意）
+保存先:
+  - toilet/assets/img/install-washlet-seat.jpg
+  - washlet/assets/img/install-washlet-seat.jpg
+
+────────────────────────────────────────
+3. install-premium-toilet.jpg
+用途: /toilet/ 松プラン（プレミアム系トイレの設置イメージ）
+素材サイト: Unsplash
+元ページ: https://unsplash.com/photos/a-white-toilet-sitting-in-a-bathroom-next-to-a-roll-of-toilet-paper-W0nLECYw7Eo
+作者名: Upgraded Points（Unsplash @upgraded-points / ダウンロードファイル名より）
+ライセンス: Unsplash License（商用利用可・クレジット表記任意）
+保存先: toilet/assets/img/install-premium-toilet.jpg
+
+────────────────────────────────────────
+注意:
+- いずれもTOTO実商品の公式写真ではない。
+- LP上では「設置イメージ」として表示し、型番との同一視を避ける注記を付与している。
+- LP画面上へのクレジット表示は、各ライセンス上必須ではないため未掲載。
