@@ -81,6 +81,13 @@
         margin-left: auto;
         margin-right: auto;
       }
+
+      .consultation-flow .flow-list,
+      .sec-trust-compact .trust-compact-inner {
+        max-width: 680px;
+        margin-left: auto;
+        margin-right: auto;
+      }
     }
 
     .sec-case-studies .case-study-lead {
@@ -376,6 +383,52 @@
       color: rgba(255, 255, 255, 0.92);
     }
 
+    .hero-inner > .line-cta {
+      display: block;
+      width: 100%;
+      max-width: 340px;
+      margin: 0 auto 10px;
+      box-sizing: border-box;
+    }
+
+    .hero-subcta-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      max-width: 340px;
+      margin: 0 auto 8px;
+    }
+
+    .hero-subcta-row .air-reserve-subcta {
+      display: inline-block;
+      flex: 1 1 160px;
+      max-width: 100%;
+      margin-top: 0;
+      padding: 10px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      border-radius: 10px;
+      background: #fff;
+      color: #1F2A44;
+      font-weight: 700;
+      font-size: 0.92rem;
+      line-height: 1.35;
+      text-align: center;
+      text-decoration: none;
+      box-sizing: border-box;
+    }
+
+    .hero-inner .air-reserve-note {
+      max-width: 340px;
+      margin: 6px auto 0;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 0.78rem;
+      line-height: 1.55;
+      font-weight: 500;
+      text-align: center;
+    }
+
     .hero-phone-cta-wrap {
       display: none;
       margin-top: 10px;
@@ -450,6 +503,90 @@
       .hero-phone-cta-wrap {
         display: block;
       }
+
+      .hero-inner > .line-cta {
+        margin-bottom: 8px;
+      }
+
+      .hero-subcta-row {
+        margin-bottom: 4px;
+      }
+    }
+
+    .consultation-flow .flow-lead {
+      text-align: center;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-sub, #4b5563);
+      margin: 0 auto 16px;
+      max-width: 680px;
+    }
+
+    .consultation-flow .flow-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    @media (min-width: 768px) {
+      .consultation-flow .flow-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .consultation-flow .flow-item {
+      background: #fff;
+      border: 1px solid #dbe7f3;
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+      margin: 0;
+    }
+
+    .consultation-flow .flow-step {
+      font-weight: 700;
+      color: var(--brand, #1a56db);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .consultation-flow .flow-desc {
+      display: block;
+      color: #4b5563;
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .consultation-flow .flow-note {
+      text-align: center;
+      margin: 14px auto 0;
+      font-size: 0.875rem;
+      color: #4b5563;
+      max-width: 680px;
+    }
+
+    .sec-trust-compact .trust-rating {
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main, #111827);
+      margin: 0 auto 14px;
+    }
+
+    .sec-trust-compact .trust-compact-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .sec-trust-compact .voice-item {
+      margin: 0;
+    }
+
+    .sec-trust-compact .voice-meta--sub {
+      margin-top: 8px;
+      font-size: 0.82rem;
     }
 
     /* --- 完全分解とは --- */
@@ -1300,6 +1437,9 @@
         <h1 class="hero-title">沖縄中南部のエアコン<br>完全分解クリーニング</h1>
         <p class="hero-lead">南城市を拠点に、沖縄中南部16市町村へ対応。<br>通常洗浄では届かない内部の汚れまで、部品を分解してしっかり洗浄します。</p>
         <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta">LINEで無料相談する</a>
+        <div class="hero-subcta-row">
+          <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="hero" aria-label="Airリザーブで空き状況を見て仮予約する">空き状況を見て仮予約する</a>
+        </div>
         <div class="hero-phone-cta-wrap">
           <a href="tel:05017241338" class="hero-phone-cta" data-cta="tel" data-cta-location="hero">
             <span class="hero-phone-cta-label">電話で相談</span>
@@ -1307,7 +1447,30 @@
           </a>
           <p class="hero-phone-cta-note">作業中は電話に出られない場合があります。写真で確認できるLINE相談がスムーズです。</p>
         </div>
+        <p class="air-reserve-note">※Airリザーブでの受付は仮予約です。内容確認後、LINEまたはお電話にて正式確定となります。</p>
         <p class="cta-note cta-note--line-priority">写真を送れるLINE相談がおすすめです。<br>型番・設置状況・汚れ具合を確認してから、対応可否と目安料金をご案内します。</p>
+      </div>
+    </section>
+
+    <section class="section consultation-flow section-light">
+      <div class="container">
+        <h2 class="section-title">相談から作業までの流れ（3ステップ）</h2>
+        <p class="flow-lead">はじめての方でも、LINEで簡単にご相談いただけます。</p>
+        <ul class="flow-list">
+          <li class="flow-item card">
+            <span class="flow-step">① LINEでエアコンの写真・型番を送る</span>
+            <span class="flow-desc">エアコンの型番や設置状況を確認します</span>
+          </li>
+          <li class="flow-item card">
+            <span class="flow-step">② 完全分解が必要か・料金目安を確認</span>
+            <span class="flow-desc">状態を確認して適した方法をご案内します。通常分解で十分な場合もあります</span>
+          </li>
+          <li class="flow-item card">
+            <span class="flow-step">③ 日程を決めて訪問・施工</span>
+            <span class="flow-desc">通常エアコンの完全分解は90〜150分が目安です</span>
+          </li>
+        </ul>
+        <p class="flow-note">相談だけでも大丈夫です。無理な営業は行いません。</p>
       </div>
     </section>
 
@@ -1535,7 +1698,7 @@
       </div>
     </section>
 
-    <section class="section section-light sec-price">
+    <section class="section section-light sec-price" id="price-section">
       <div class="container">
         <h2 class="section-title">完全分解クリーニング料金</h2>
         <div class="price-cards-grid">
@@ -1602,6 +1765,20 @@
               <h4 class="price-insurance-point-title"><span>3</span>修理手配</h4>
               <p>作業中の破損や不具合が発生した場合は、メーカー修理の手配を含めて対応します。</p>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section sec-trust-compact">
+      <div class="container">
+        <h2 class="section-title">Google口コミ実績</h2>
+        <div class="trust-compact-inner">
+          <p class="trust-rating">Google口コミ 5.0 ★★★★★（13件）</p>
+          <div class="voice-item card">
+            <p class="voice-meta">★★★★★ &nbsp;匿名カズさん・2026年4月22日</p>
+            <p class="voice-text">3台、完全分解を依頼しました。<br>他の業者の方が届かない場所まで綺麗にして頂き、ありがとうございました。</p>
+            <p class="voice-meta voice-meta--sub">エアコンクリーニング / 壁掛けタイプ</p>
           </div>
         </div>
       </div>
@@ -1991,6 +2168,39 @@
         gtag('event', 'phone_click', { link_url: href });
       }
     }, true);
+  })();
+  </script>
+
+  <!-- GA4 section visibility tracking (price) -->
+  <script>
+  (function() {
+    var params = new URLSearchParams(location.search);
+    var isDebug = params.get('debug') === '1' || params.get('debug_mode') === 'true';
+
+    function observeOnce(target, eventName) {
+      if (!target || typeof IntersectionObserver !== 'function') return;
+      var fired = false;
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (fired || !entry.isIntersecting) return;
+          if (typeof window.gtag !== 'function') return;
+          fired = true;
+          gtag('event', eventName, {
+            page_type: 'complete_disassembly_lp',
+            page_slug: '/complete-disassembly/'
+          });
+          if (isDebug) {
+            console.log('[GA4 section_view]', eventName);
+          }
+          observer.disconnect();
+        });
+      }, { threshold: 0.4 });
+      observer.observe(target);
+    }
+
+    window.addEventListener('DOMContentLoaded', function() {
+      observeOnce(document.getElementById('price-section'), 'price_section_view');
+    });
   })();
   </script>
 </body>
