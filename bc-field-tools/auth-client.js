@@ -25,14 +25,14 @@
   const GENERIC_RESET_SENT =
     "入力されたメールアドレス宛に、再設定手順をお送りしました。届かない場合は入力内容をご確認ください。";
   const GENERIC_MAGIC_SENT =
-    "本人用のログイン用リンクを送りました。送った同じブラウザで、届いた最新メールのリンクを開いてください（例: iPhoneのSafariで送ったらSafariで開く）。別のブラウザや別の端末では認証できません。";
+    "本人用のログイン用リンクを送りました。送った同じChromeで、届いた最新メールのリンクを開いてください。別のブラウザや別の端末では認証できません。";
   const ACCESS_SKEW_SEC = 60;
   const MSG_AUTH_EXPIRED = "AIの認証が切れています";
   const MSG_OWNER_ONLY = "このアカウントではAI認証を保存できません。";
   const MSG_MAGIC_SAME_DEVICE =
-    "ログイン用リンクは、このブラウザの「AIを再認証」から送った最新メールを、同じブラウザで開いてください（例: Safariで送ったらSafariで開く）。";
+    "ログイン用リンクは、このリンクを送った同じChromeで開いてください。";
   const MSG_MAGIC_NEED_APP_FLOW =
-    "認証リンクを確認できませんでした。「AIを再認証」から、同じブラウザでもう一度送り直してください。";
+    "認証リンクを確認できませんでした。「AIを再認証」から、同じChromeでもう一度送り直してください。";
   const MAGIC_LINK_TYPES = { magiclink: true, email: true, signup: true };
   const AUTH_CALLBACK_QUERY_KEYS = [
     "code",

@@ -150,8 +150,8 @@ describe("auth-client / app wiring", () => {
   });
 
   it("cache buster bumped for auth assets", () => {
-    assert.match(indexSrc, /auth-client\.js\?v=20260911-009/);
-    assert.match(indexSrc, /app\.js\?v=20260911-009/);
+    assert.match(indexSrc, /auth-client\.js\?v=20260911-010/);
+    assert.match(indexSrc, /app\.js\?v=20260911-010/);
   });
 
   it("hides password login UI and shows magic reauth", () => {
@@ -159,12 +159,13 @@ describe("auth-client / app wiring", () => {
     assert.match(indexSrc, /AIを再認証/);
     assert.match(indexSrc, /id="ai-auth-password-block"/);
     assert.match(indexSrc, /id="ai-auth-magic-block"/);
-    assert.match(indexSrc, /同じブラウザ/);
+    assert.match(indexSrc, /同じChrome/);
+    assert.doesNotMatch(indexSrc, /Safari/);
     assert.doesNotMatch(indexSrc, /同じ端末で届いた/);
   });
 
   it("exposes a single APP_VERSION for menu and footer", () => {
-    assert.match(appSrc, /const APP_VERSION = "2026\.09\.11-009"/);
+    assert.match(appSrc, /const APP_VERSION = "2026\.09\.11-010"/);
     assert.match(appSrc, /CACHE_BUSTER = APP_VERSION\.replace/);
     assert.match(appSrc, /applyAppVersionLabels/);
     assert.match(indexSrc, /id="menu-app-version"/);
@@ -193,7 +194,8 @@ describe("persistent auth wiring", () => {
     assert.match(appSrc, /keepHash/);
     assert.match(appSrc, /token_hash/);
     assert.match(authSrc, /MSG_MAGIC_SAME_DEVICE/);
-    assert.match(authSrc, /同じブラウザ/);
+    assert.match(authSrc, /同じChrome/);
+    assert.doesNotMatch(authSrc, /Safari/);
     assert.match(authSrc, /pkce_exchange_skipped/);
   });
 });

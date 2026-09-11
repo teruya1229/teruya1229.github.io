@@ -2,7 +2,7 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.09.11-009";
+  const APP_VERSION = "2026.09.11-010";
   const CACHE_BUSTER = APP_VERSION.replace(/\./g, "");
 
   const PHOTO_DEFS = [
@@ -1112,7 +1112,7 @@
     if (code === "model_timeout" || status === 504) {
       return "AIの読取りが45秒以内に完了しませんでした。元の写真は保存されています。時間をおいて、もう一度お試しください。";
     }
-    if (status === 401) return "AIの認証が切れています。下の「AIを再認証」から同じブラウザでログインし直してください。";
+    if (status === 401) return "AIの認証が切れています。下の「AIを再認証」から同じChromeでログインし直してください。";
     if (status === 403 && code === "ai_access_denied") {
       return "このアカウントにはAI写真読取の利用権限がありません。写真は保存されています。";
     }
