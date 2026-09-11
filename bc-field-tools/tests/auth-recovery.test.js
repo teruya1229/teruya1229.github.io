@@ -14,19 +14,37 @@ function classifyCallbackUrl(href) {
   const u = new URL(href);
   const keys = Array.from(u.searchParams.keys());
   const hash = String(u.hash || "").replace(/^#/, "");
-  const hashKeys = hash
-    ? hash.split("&").map((p) => decodeURIComponent(p.split("=")[0] || "")).filter(Boolean)
-    : [];
-  if (hashKeys.includes("access_token") && (hashKeys.includes("type") || /type=recovery/.test(hash))) {
-    return "hash";
+  const hashParams = {};
+  if (hash) {
+    hash.split("&").forEach((pair) => {
+      const i = pair.indexOf("=");
+      const k = decodeURIComponent((i < 0 ? pair : pair.slice(0, i)) || "");
+      const v = decodeURIComponent((i < 0 ? "" : pair.slice(i + 1)) || "");
+      if (k) hashParams[k] = v;
+    });
   }
-  if (keys.includes("token_hash") && u.searchParams.get("type") === "recovery") {
-    return "token_hash";
+  const hashKeys = Object.keys(hashParams);
+  if (hashKeys.includes("access_token")) {
+    const type = String(hashParams.type || "").toLowerCase();
+    if (type === "recovery") return "hash_recovery";
+    if (!type || type === "magiclink" || type === "email" || type === "signup") {
+      return "hash_magic";
+    }
+    return "hash_other";
+  }
+  if (keys.includes("token_hash")) {
+    const type = String(u.searchParams.get("type") || "").toLowerCase();
+    if (type === "recovery") return "token_hash_recovery";
+    if (type === "magiclink" || type === "email") return "token_hash_magic";
+    return "token_hash_other";
   }
   if (keys.includes("code") && !keys.includes("token") && !keys.includes("token_hash")) {
     return "code";
   }
-  if (u.pathname.includes("/auth/v1/verify") && keys.includes("token") && u.searchParams.get("type") === "recovery") {
+  if (u.pathname.includes("/auth/v1/verify") && keys.includes("token")) {
+    const type = String(u.searchParams.get("type") || "").toLowerCase();
+    if (type === "recovery") return "verify_token_email_href_recovery";
+    if (type === "magiclink" || type === "email") return "verify_token_email_href_magic";
     return "verify_token_email_href";
   }
   return "other";
@@ -36,7 +54,7 @@ describe("auth recovery callback classification", () => {
   it("classifies production email href as verify_token (not direct app callback)", () => {
     const href =
       "https://ahtmiobqemzrpqxowevc.supabase.co/auth/v1/verify?token=REDACTED&type=recovery&redirect_to=https://teruya1229.github.io/bc-field-tools/";
-    assert.equal(classifyCallbackUrl(href), "verify_token_email_href");
+    assert.equal(classifyCallbackUrl(href), "verify_token_email_href_recovery");
   });
 
   it("AUTH-9: hash / token_hash / code forms", () => {
@@ -44,18 +62,50 @@ describe("auth recovery callback classification", () => {
       classifyCallbackUrl(
         "https://teruya1229.github.io/bc-field-tools/#access_token=REDACTED&refresh_token=REDACTED&type=recovery"
       ),
-      "hash"
+      "hash_recovery"
     );
     assert.equal(
       classifyCallbackUrl(
         "https://teruya1229.github.io/bc-field-tools/?token_hash=REDACTED&type=recovery"
       ),
-      "token_hash"
+      "token_hash_recovery"
     );
     assert.equal(
       classifyCallbackUrl("https://teruya1229.github.io/bc-field-tools/?code=REDACTED"),
       "code"
     );
+  });
+});
+
+describe("magic link callback classification", () => {
+  it("classifies hash magiclink as normal session candidate (not recovery)", () => {
+    assert.equal(
+      classifyCallbackUrl(
+        "https://teruya1229.github.io/bc-field-tools/#access_token=REDACTED&refresh_token=REDACTED&type=magiclink"
+      ),
+      "hash_magic"
+    );
+    assert.equal(
+      classifyCallbackUrl(
+        "https://teruya1229.github.io/bc-field-tools/#access_token=REDACTED&refresh_token=REDACTED"
+      ),
+      "hash_magic"
+    );
+  });
+
+  it("classifies token_hash magiclink", () => {
+    assert.equal(
+      classifyCallbackUrl(
+        "https://teruya1229.github.io/bc-field-tools/?token_hash=REDACTED&type=magiclink"
+      ),
+      "token_hash_magic"
+    );
+  });
+
+  it("classifies dashboard magic verify href", () => {
+    const href =
+      "https://ahtmiobqemzrpqxowevc.supabase.co/auth/v1/verify?token=REDACTED&type=magiclink&redirect_to=https://teruya1229.github.io/bc-field-tools/";
+    assert.equal(classifyCallbackUrl(href), "verify_token_email_href_magic");
   });
 });
 
@@ -71,6 +121,10 @@ describe("auth-client / app wiring", () => {
     assert.match(authSrc, /grant_type=pkce/);
     assert.match(authSrc, /grant_type=refresh_token/);
     assert.match(authSrc, /code_challenge/);
+    assert.match(authSrc, /requestMagicLink/);
+    assert.match(authSrc, /detectAuthCallbackFromUrl/);
+    assert.match(authSrc, /establishOwnerSession/);
+    assert.match(authSrc, /bc\.teruya@gmail\.com/);
     assert.doesNotMatch(authSrc, /localStorage/);
   });
 
@@ -80,6 +134,8 @@ describe("auth-client / app wiring", () => {
     assert.match(appSrc, /typeof auth\.isLoggedIn === "function"/);
     assert.match(appSrc, /openAiAuthEscapeHatch/);
     assert.match(appSrc, /AIの認証が切れています/);
+    assert.match(appSrc, /requestMagicLink/);
+    assert.match(appSrc, /detectAuthCallbackFromUrl/);
   });
 
   it("requestPasswordReset does not always return success on failure path", () => {
@@ -89,8 +145,15 @@ describe("auth-client / app wiring", () => {
   });
 
   it("cache buster bumped for auth assets", () => {
-    assert.match(indexSrc, /auth-client\.js\?v=20260911-005/);
-    assert.match(indexSrc, /app\.js\?v=20260911-005/);
+    assert.match(indexSrc, /auth-client\.js\?v=20260911-006/);
+    assert.match(indexSrc, /app\.js\?v=20260911-006/);
+  });
+
+  it("hides password login UI and shows magic reauth", () => {
+    assert.match(indexSrc, /ai-auth-magic-btn/);
+    assert.match(indexSrc, /AIを再認証/);
+    assert.match(indexSrc, /id="ai-auth-password-block"/);
+    assert.match(indexSrc, /id="ai-auth-magic-block"/);
   });
 });
 
@@ -100,5 +163,11 @@ describe("persistent auth wiring", () => {
     assert.match(storageSrc, /bc-field-diagnosis/);
     assert.match(authSrc, /bcfd-ai-auth-v1/);
     assert.doesNotMatch(authSrc, /DB_NAME\s*=\s*"bc-field-diagnosis"/);
+  });
+
+  it("does not treat magiclink as recovery session", () => {
+    assert.match(authSrc, /MAGIC_LINK_TYPES/);
+    assert.match(authSrc, /kind: "magic"/);
+    assert.match(authSrc, /clearRecovery\(\)/);
   });
 });
