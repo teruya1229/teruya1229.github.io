@@ -8,11 +8,21 @@
   const SESSION_KEY = "bcfd_ai_auth_session_v1";
   const PKCE_VERIFIER_KEY = "bcfd_ai_auth_pkce_verifier_v1";
   const PENDING_RECOVERY_KEY = "bcfd_ai_auth_pending_recovery_v1";
+  /** Auth UI 表示切替（将来販売時は true に戻す）。表示できるだけで認証突破はできない。 */
+  const AUTH_UI_VISIBLE = false;
+  /**
+   * Owner-only persistent session (IndexedDB)。案件DB (bc-field-diagnosis) とは分離。
+   * Edge の AI_ALLOWED_EMAILS が最終権限。ここは端末保持の可否だけ。
+   */
+  const IDB_NAME = "bcfd-ai-auth-v1";
+  const IDB_STORE = "sessions";
+  const OWNER_PERSIST_EMAILS = ["bc.teruya@gmail.com"];
   /** パスワード再設定メールの戻り先（固定） */
   const PASSWORD_RECOVERY_REDIRECT = "https://teruya1229.github.io/bc-field-tools/";
   const GENERIC_RESET_SENT =
     "入力されたメールアドレス宛に、再設定手順をお送りしました。届かない場合は入力内容をご確認ください。";
   const ACCESS_SKEW_SEC = 60;
+  const MSG_AUTH_EXPIRED = "AIの認証が切れています";
 
   /** @type {null | { access_token: string, refresh_token: string, expires_at: number, email: string }} */
   let session = null;
@@ -114,6 +124,140 @@
     }
   }
 
+  /** @type {Promise<{ ok: boolean }> | null} */
+  let bootstrapPromise = null;
+
+  function normalizeEmail(email) {
+    return String(email || "").trim().toLowerCase();
+  }
+
+  function canPersistOwnerSession(email) {
+    return OWNER_PERSIST_EMAILS.indexOf(normalizeEmail(email)) >= 0;
+  }
+
+  function isAuthUiForcedByUrl() {
+    try {
+      return new URL(window.location.href).searchParams.get("bcfd_auth") === "1";
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function isAuthUiVisible() {
+    return AUTH_UI_VISIBLE === true || isAuthUiForcedByUrl();
+  }
+
+  function openIdb() {
+    return new Promise((resolve, reject) => {
+      if (typeof indexedDB === "undefined" || !indexedDB) {
+        reject(new Error("indexedDB_unavailable"));
+        return;
+      }
+      let req;
+      try {
+        req = indexedDB.open(IDB_NAME, 1);
+      } catch (err) {
+        reject(err);
+        return;
+      }
+      req.onupgradeneeded = () => {
+        const db = req.result;
+        if (!db.objectStoreNames.contains(IDB_STORE)) {
+          db.createObjectStore(IDB_STORE);
+        }
+      };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error || new Error("indexedDB_open_failed"));
+      req.onblocked = () => reject(new Error("indexedDB_blocked"));
+    });
+  }
+
+  function idbGet() {
+    return openIdb().then(
+      (db) =>
+        new Promise((resolve, reject) => {
+          const tx = db.transaction(IDB_STORE, "readonly");
+          const store = tx.objectStore(IDB_STORE);
+          const req = store.get(SESSION_KEY);
+          req.onsuccess = () => {
+            const value = req.result;
+            db.close();
+            if (!value || typeof value !== "object") {
+              resolve(null);
+              return;
+            }
+            if (typeof value.access_token !== "string" || typeof value.refresh_token !== "string") {
+              resolve(null);
+              return;
+            }
+            if (!canPersistOwnerSession(value.email)) {
+              resolve(null);
+              return;
+            }
+            resolve({
+              access_token: value.access_token,
+              refresh_token: value.refresh_token,
+              expires_at: Number(value.expires_at) || 0,
+              email: String(value.email || ""),
+            });
+          };
+          req.onerror = () => {
+            db.close();
+            reject(req.error || new Error("indexedDB_get_failed"));
+          };
+        })
+    );
+  }
+
+  function idbSet(next) {
+    if (!next || !canPersistOwnerSession(next.email) || !next.refresh_token) {
+      return idbClear();
+    }
+    const payload = {
+      access_token: next.access_token,
+      refresh_token: next.refresh_token || "",
+      expires_at: next.expires_at || 0,
+      email: next.email,
+    };
+    return openIdb().then(
+      (db) =>
+        new Promise((resolve, reject) => {
+          const tx = db.transaction(IDB_STORE, "readwrite");
+          const store = tx.objectStore(IDB_STORE);
+          const req = store.put(payload, SESSION_KEY);
+          req.onsuccess = () => {
+            db.close();
+            resolve(true);
+          };
+          req.onerror = () => {
+            db.close();
+            reject(req.error || new Error("indexedDB_put_failed"));
+          };
+        })
+    );
+  }
+
+  function idbClear() {
+    return openIdb()
+      .then(
+        (db) =>
+          new Promise((resolve, reject) => {
+            const tx = db.transaction(IDB_STORE, "readwrite");
+            const store = tx.objectStore(IDB_STORE);
+            const req = store.delete(SESSION_KEY);
+            req.onsuccess = () => {
+              db.close();
+              resolve(true);
+            };
+            req.onerror = () => {
+              db.close();
+              reject(req.error || new Error("indexedDB_delete_failed"));
+            };
+          })
+      )
+      .catch(() => false);
+  }
+
   function loadSession() {
     try {
       const raw = sessionStorage.getItem(SESSION_KEY);
@@ -141,19 +285,62 @@
   function saveSession(next) {
     session = next;
     if (!next) {
-      sessionStorage.removeItem(SESSION_KEY);
+      try {
+        sessionStorage.removeItem(SESSION_KEY);
+      } catch (_) {
+        /* ignore */
+      }
+      idbClear().catch(() => {});
     } else {
-      sessionStorage.setItem(
-        SESSION_KEY,
-        JSON.stringify({
-          access_token: next.access_token,
-          refresh_token: next.refresh_token || "",
-          expires_at: next.expires_at || 0,
-          email: next.email,
-        })
-      );
+      try {
+        sessionStorage.setItem(
+          SESSION_KEY,
+          JSON.stringify({
+            access_token: next.access_token,
+            refresh_token: next.refresh_token || "",
+            expires_at: next.expires_at || 0,
+            email: next.email,
+          })
+        );
+      } catch (_) {
+        /* ignore */
+      }
+      if (canPersistOwnerSession(next.email) && next.refresh_token) {
+        idbSet(next).catch(() => {
+          logAuthEvent("idb_persist_failed", {});
+        });
+      } else {
+        idbClear().catch(() => {});
+      }
     }
     notify();
+  }
+
+  async function restoreFromPersistentStore() {
+    if (session && session.refresh_token) return true;
+    try {
+      const stored = await idbGet();
+      if (!stored || !stored.refresh_token) return false;
+      session = stored;
+      try {
+        sessionStorage.setItem(
+          SESSION_KEY,
+          JSON.stringify({
+            access_token: stored.access_token,
+            refresh_token: stored.refresh_token || "",
+            expires_at: stored.expires_at || 0,
+            email: stored.email,
+          })
+        );
+      } catch (_) {
+        /* ignore */
+      }
+      logAuthEvent("idb_restore_ok", { hasExpires: Boolean(stored.expires_at) });
+      return true;
+    } catch (_) {
+      logAuthEvent("idb_restore_failed", {});
+      return false;
+    }
   }
 
   function getSession() {
@@ -448,6 +635,9 @@
   }
 
   async function ensureValidSession() {
+    if (!session || !session.refresh_token) {
+      await restoreFromPersistentStore();
+    }
     if (isAccessTokenFresh(session)) {
       return { ok: true, session };
     }
@@ -458,14 +648,49 @@
       }
       return {
         ok: false,
-        message: refreshed.message || "ログインが切れました。もう一度ログインしてください。",
+        message: MSG_AUTH_EXPIRED,
       };
     }
     if (session) {
       saveSession(null);
-      return { ok: false, message: "ログインが切れました。もう一度ログインしてください。" };
+      return { ok: false, message: MSG_AUTH_EXPIRED };
     }
-    return { ok: false, message: "写真AIにはログインが必要です。写真は保存されています。" };
+    return { ok: false, message: MSG_AUTH_EXPIRED };
+  }
+
+  async function ensureValidAccessToken() {
+    const ensured = await ensureValidSession();
+    if (!ensured || !ensured.ok) {
+      return { ok: false, message: (ensured && ensured.message) || MSG_AUTH_EXPIRED, token: "" };
+    }
+    const token = getAccessToken();
+    if (!token) {
+      return { ok: false, message: MSG_AUTH_EXPIRED, token: "" };
+    }
+    return { ok: true, token, session };
+  }
+
+  async function whenReady() {
+    if (bootstrapPromise) return bootstrapPromise;
+    bootstrapPromise = (async () => {
+      loadSession();
+      if (!session || !session.refresh_token) {
+        await restoreFromPersistentStore();
+      }
+      try {
+        await detectPasswordRecoveryFromUrl();
+      } catch (_) {
+        /* ignore */
+      }
+      if (!isPasswordRecovery()) {
+        if (session && session.refresh_token) {
+          await ensureValidSession();
+        }
+      }
+      notify();
+      return { ok: isLoggedIn() };
+    })();
+    return bootstrapPromise;
   }
 
   async function signInWithPassword(email, password) {
@@ -704,8 +929,8 @@
   }
 
   loadSession();
-  // Fire-and-forget URL detection; UI listens via onChange.
-  detectPasswordRecoveryFromUrl().catch(() => {});
+  // Boot: restore persistent session (owner IndexedDB) then detect recovery URL.
+  whenReady().catch(() => {});
 
   function getAccessToken() {
     if (!isAccessTokenFresh(session)) return "";
@@ -717,9 +942,13 @@
     SUPABASE_ANON_KEY,
     AI_PHOTO_PROXY_URL: SUPABASE_URL + "/functions/v1/ai-photo-proxy",
     PASSWORD_RECOVERY_REDIRECT,
+    AUTH_UI_VISIBLE,
+    SESSION_KEY,
+    IDB_NAME,
     getSession,
     getAccessToken,
     isLoggedIn,
+    isAuthUiVisible,
     isPasswordRecovery,
     getRecoveryEmail,
     clearRecovery,
@@ -731,8 +960,11 @@
     updatePasswordWithRecovery,
     detectPasswordRecoveryFromUrl,
     ensureValidSession,
+    ensureValidAccessToken,
     refreshSession,
+    whenReady,
     recoveryErrorMessage,
     readUrlAuthError,
+    MSG_AUTH_EXPIRED,
   };
 })();

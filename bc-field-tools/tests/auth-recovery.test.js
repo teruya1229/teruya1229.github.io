@@ -64,17 +64,22 @@ describe("auth-client / app wiring", () => {
     assert.match(authSrc, /updatePassword,/);
     assert.match(authSrc, /updatePasswordWithRecovery,/);
     assert.match(authSrc, /ensureValidSession,/);
+    assert.match(authSrc, /ensureValidAccessToken,/);
     assert.match(authSrc, /isLoggedIn,/);
+    assert.match(authSrc, /AUTH_UI_VISIBLE\s*=\s*false/);
+    assert.match(authSrc, /bcfd-ai-auth-v1/);
     assert.match(authSrc, /grant_type=pkce/);
     assert.match(authSrc, /grant_type=refresh_token/);
     assert.match(authSrc, /code_challenge/);
+    assert.doesNotMatch(authSrc, /localStorage/);
   });
 
   it("app.js uses updatePassword and ensureValidSession", () => {
     assert.match(appSrc, /auth\.updatePassword\(/);
-    assert.match(appSrc, /ensureValidSession/);
+    assert.match(appSrc, /ensureValidAccessToken|ensureValidSession/);
     assert.match(appSrc, /typeof auth\.isLoggedIn === "function"/);
-    assert.match(appSrc, /const loggedIn = typeof auth\.isLoggedIn/);
+    assert.match(appSrc, /openAiAuthEscapeHatch/);
+    assert.match(appSrc, /AIの認証が切れています/);
   });
 
   it("requestPasswordReset does not always return success on failure path", () => {
@@ -84,7 +89,16 @@ describe("auth-client / app wiring", () => {
   });
 
   it("cache buster bumped for auth assets", () => {
-    assert.match(indexSrc, /auth-client\.js\?v=20260911-003/);
-    assert.match(indexSrc, /app\.js\?v=20260911-003/);
+    assert.match(indexSrc, /auth-client\.js\?v=20260911-004/);
+    assert.match(indexSrc, /app\.js\?v=20260911-004/);
+  });
+});
+
+describe("persistent auth wiring", () => {
+  it("keeps case IndexedDB name separate from auth IDB", () => {
+    const storageSrc = fs.readFileSync(path.join(root, "storage.js"), "utf8");
+    assert.match(storageSrc, /bc-field-diagnosis/);
+    assert.match(authSrc, /bcfd-ai-auth-v1/);
+    assert.doesNotMatch(authSrc, /DB_NAME\s*=\s*"bc-field-diagnosis"/);
   });
 });

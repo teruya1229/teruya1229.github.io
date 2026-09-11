@@ -1106,37 +1106,46 @@
     if (rt.cooldownUntil && Date.now() < rt.cooldownUntil) return;
 
     const auth = window.BCFDAiAuth;
-    if (auth && typeof auth.ensureValidSession === "function") {
+    if (auth && typeof auth.ensureValidAccessToken === "function") {
+      let ensured = null;
+      try {
+        ensured = await auth.ensureValidAccessToken();
+      } catch (_) {
+        ensured = { ok: false, message: (auth && auth.MSG_AUTH_EXPIRED) || "AIの認証が切れています" };
+      }
+      if (!ensured || ensured.ok === false) {
+        rt.error = (ensured && ensured.message) || (auth && auth.MSG_AUTH_EXPIRED) || "AIの認証が切れています";
+        renderPhotos();
+        return;
+      }
+    } else if (auth && typeof auth.ensureValidSession === "function") {
       let ensured = null;
       try {
         ensured = await auth.ensureValidSession();
       } catch (_) {
-        ensured = { ok: false, message: "通信できませんでした。接続を確認してもう一度お試しください。" };
+        ensured = { ok: false, message: "AIの認証が切れています" };
       }
       if (!ensured || ensured.ok === false) {
-        rt.error =
-          (ensured && ensured.message) ||
-          "ログインが切れました。もう一度ログインしてください。";
+        rt.error = (ensured && ensured.message) || "AIの認証が切れています";
         renderPhotos();
-        openAiAuth();
         return;
       }
     } else if (!isAiLoggedIn()) {
-      rt.error = "写真AIにはログインが必要です。写真は保存されています。";
+      rt.error = "AIの認証が切れています";
       renderPhotos();
-      openAiAuth();
       return;
     }
 
     if (!window.confirm(AI_CONSENT_MESSAGE)) return;
 
-    const token = auth && typeof auth.getAccessToken === "function" ? auth.getAccessToken() : "";
+    const token =
+      (auth && typeof auth.getAccessToken === "function" && auth.getAccessToken()) ||
+      "";
     const proxyUrl = auth && auth.AI_PHOTO_PROXY_URL;
     const anon = auth && auth.SUPABASE_ANON_KEY;
     if (!token || !proxyUrl || !anon) {
-      rt.error = "ログインが切れました。もう一度ログインしてください。";
+      rt.error = "AIの認証が切れています";
       renderPhotos();
-      openAiAuth();
       return;
     }
 
@@ -1484,9 +1493,25 @@
 
   function openMore() { el("more-overlay").hidden = false; }
   function closeMore() { el("more-overlay").hidden = true; }
-  function openAiAuth() {
-    el("ai-auth-panel").hidden = false;
-    window.scrollTo({ top: el("ai-auth-panel").offsetTop - 12, behavior: "smooth" });
+  function openAiAuth(force) {
+    const auth = window.BCFDAiAuth;
+    const allow =
+      force === true ||
+      (auth && typeof auth.isAuthUiVisible === "function" && auth.isAuthUiVisible()) ||
+      (auth && auth.AUTH_UI_VISIBLE === true);
+    if (!allow) return;
+    const panel = el("ai-auth-panel");
+    if (!panel) return;
+    panel.hidden = false;
+    window.scrollTo({ top: panel.offsetTop - 12, behavior: "smooth" });
+  }
+
+  function openAiAuthEscapeHatch() {
+    // 管理メニューからの再認証入口（表示できるだけで認証突破はしない）
+    const panel = el("ai-auth-panel");
+    if (!panel) return;
+    panel.hidden = false;
+    window.scrollTo({ top: panel.offsetTop - 12, behavior: "smooth" });
   }
 
   function initAiAuthUi() {
@@ -1507,17 +1532,34 @@
     const errorEl = el("ai-auth-error");
     const infoEl = el("ai-auth-info");
     const recoveryErrorEl = el("ai-auth-recovery-error");
+    const openAuthBtn = el("open-ai-auth-btn");
+    const authPanel = el("ai-auth-panel");
     if (!auth || !signedOut || !signedIn || !recoveryPanel) return;
     function setMessage(node, msg) {
       if (!(node instanceof HTMLElement)) return;
       node.hidden = !msg;
       node.textContent = msg || "";
     }
+    function shouldShowAuthChrome() {
+      if (typeof auth.isPasswordRecovery === "function" && auth.isPasswordRecovery()) return true;
+      if (typeof auth.isAuthUiVisible === "function") return auth.isAuthUiVisible();
+      return auth.AUTH_UI_VISIBLE === true;
+    }
     function renderAuth() {
       const recovering = typeof auth.isPasswordRecovery === "function" && auth.isPasswordRecovery();
       const loggedIn = typeof auth.isLoggedIn === "function" ? auth.isLoggedIn() : isAiLoggedIn();
       const session = auth.getSession();
+      const showChrome = shouldShowAuthChrome();
+      if (openAuthBtn instanceof HTMLElement) {
+        // 逃げ道は常にメニューに残す（日常導線には載せない）
+        openAuthBtn.hidden = false;
+        openAuthBtn.textContent = showChrome && auth.AUTH_UI_VISIBLE ? "写真AIのログイン" : "AI認証";
+      }
+      if (!showChrome) {
+        if (authPanel && !recovering) authPanel.hidden = true;
+      }
       if (recovering) {
+        if (authPanel) authPanel.hidden = false;
         signedOut.hidden = true;
         signedIn.hidden = true;
         recoveryPanel.hidden = false;
@@ -1535,6 +1577,13 @@
       }
     }
     async function refreshAuthUi() {
+      if (typeof auth.whenReady === "function") {
+        try {
+          await auth.whenReady();
+        } catch (_) {
+          /* ignore */
+        }
+      }
       const urlErrBefore =
         typeof auth.readUrlAuthError === "function" ? auth.readUrlAuthError() : null;
       if (typeof auth.detectPasswordRecoveryFromUrl === "function") {
@@ -1549,10 +1598,7 @@
       }
       if (typeof auth.ensureValidSession === "function" && !auth.isPasswordRecovery()) {
         try {
-          const ensured = await auth.ensureValidSession();
-          if (ensured && ensured.ok === false && ensured.message) {
-            setMessage(infoEl, ensured.message);
-          }
+          await auth.ensureValidSession();
         } catch (_) {
           /* ignore */
         }
@@ -1648,7 +1694,7 @@
         <p>バックアップファイルは暗号化されていません。復元は既存案件を上書きせず、新しい案件として追加します。</p>`;
       el("info-overlay").hidden = false; closeMore(); return;
     }
-    if (t.id === "open-ai-auth-btn") { closeMore(); openAiAuth(); return; }
+    if (t.id === "open-ai-auth-btn") { closeMore(); openAiAuthEscapeHatch(); return; }
     if (t.id === "close-ai-auth-btn") { el("ai-auth-panel").hidden = true; return; }
     if (t.id === "prep-stop-btn" || t.id === "exec-stop-btn") {
       if (stopRecord.active && !stopRecord.resumed) {
