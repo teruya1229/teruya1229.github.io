@@ -71,3 +71,8 @@ Authentication 竊・URL Configuration・域悽逡ｪ謨ｴ蜷域ｸ医∩・・
 - `auth-client.js` 窶ｦ Supabase Auth・・non key縺ｮ縺ｿ・・
 - `supabase/functions/ai-photo-proxy` 窶ｦ AI蜿励￠蜿｣繧ｽ繝ｼ繧ｹ豁｣譛ｬ
 
+
+## 公開版バージョン表記ルール
+
+- APP_VERSION（pp.js）・index.html の cache-buster・公開URLの ?v= は常に一致させる（例: 2026.09.11-008 / 20260911-008）。メニューと画面下部に同じ版を表示する。
+

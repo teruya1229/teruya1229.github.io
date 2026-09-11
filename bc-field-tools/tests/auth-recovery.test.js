@@ -145,8 +145,8 @@ describe("auth-client / app wiring", () => {
   });
 
   it("cache buster bumped for auth assets", () => {
-    assert.match(indexSrc, /auth-client\.js\?v=20260911-007/);
-    assert.match(indexSrc, /app\.js\?v=20260911-007/);
+    assert.match(indexSrc, /auth-client\.js\?v=20260911-008/);
+    assert.match(indexSrc, /app\.js\?v=20260911-008/);
   });
 
   it("hides password login UI and shows magic reauth", () => {
@@ -155,6 +155,14 @@ describe("auth-client / app wiring", () => {
     assert.match(indexSrc, /id="ai-auth-password-block"/);
     assert.match(indexSrc, /id="ai-auth-magic-block"/);
     assert.match(indexSrc, /同じ端末/);
+  });
+
+  it("exposes a single APP_VERSION for menu and footer", () => {
+    assert.match(appSrc, /const APP_VERSION = "2026\.09\.11-008"/);
+    assert.match(appSrc, /CACHE_BUSTER = APP_VERSION\.replace/);
+    assert.match(appSrc, /applyAppVersionLabels/);
+    assert.match(indexSrc, /id="menu-app-version"/);
+    assert.match(indexSrc, /id="app-version-footer"/);
   });
 });
 

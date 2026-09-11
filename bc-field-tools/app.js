@@ -1,6 +1,10 @@
 (() => {
   "use strict";
 
+  /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
+  const APP_VERSION = "2026.09.11-008";
+  const CACHE_BUSTER = APP_VERSION.replace(/\./g, "");
+
   const PHOTO_DEFS = [
     { id: "panel-overview", title: "分電盤", point: "外から全体が分かる位置", important: true, panelWarn: true, phase: "survey", group: "survey" },
     { id: "main-breaker", title: "主幹ブレーカー", point: "表示が読める外観", important: true, panelWarn: true, phase: "survey", group: "survey-more" },
@@ -1565,6 +1569,13 @@
     window.scrollTo({ top: panel.offsetTop - 12, behavior: "smooth" });
   }
 
+  function applyAppVersionLabels() {
+    const menu = el("menu-app-version");
+    const foot = el("app-version-footer");
+    if (menu) menu.textContent = "Version " + APP_VERSION;
+    if (foot) foot.textContent = "v" + APP_VERSION;
+  }
+
   function initAiAuthUi() {
     const auth = window.BCFDAiAuth;
     const signedOut = el("ai-auth-signed-out");
@@ -1933,11 +1944,14 @@
   const initialView = new URLSearchParams(location.search).get("view") === "estimate" ? "estimate" : "field";
   switchView(initialView);
   initEmptyUi();
+  applyAppVersionLabels();
   initAiAuthUi();
 
   window.createCaseSnapshot = createCaseSnapshot;
   window.applyCaseSnapshot = applyCaseSnapshot;
   window.BCFDApp = {
+    APP_VERSION,
+    CACHE_BUSTER,
     PHASE_LABELS,
     ALL_PHOTO_DEFS,
     createCaseSnapshot,
