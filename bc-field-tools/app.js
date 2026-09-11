@@ -2,7 +2,7 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.09.11-008";
+  const APP_VERSION = "2026.09.11-009";
   const CACHE_BUSTER = APP_VERSION.replace(/\./g, "");
 
   const PHOTO_DEFS = [
@@ -228,6 +228,7 @@
     return {
       busy: false,
       error: "",
+      needsReauth: false,
       cooldownUntil: 0,
       candidate: null,
       prepStatus: "idle",
@@ -731,7 +732,7 @@
     try {
       const next = new URL(window.location.href);
       const keep = {};
-      ["code", "token_hash", "type", "error", "error_description", "error_code"].forEach((k) => {
+      ["code", "token_hash", "type", "error", "error_description", "error_code", "v"].forEach((k) => {
         if (next.searchParams.has(k)) keep[k] = next.searchParams.get(k);
       });
       const keepHash =
@@ -959,6 +960,7 @@
         </div>
         ${canAi ? `<button type="button" class="mini-btn" data-action="ai-photo" style="width:100%" ${rt.busy ? "disabled" : ""}>${escapeHtml(aiLabel)}</button>` : ""}
         ${rt.error ? `<p class="hint">${escapeHtml(rt.error)}</p>` : ""}
+        ${rt.needsReauth ? `<button type="button" class="mini-btn primary" data-action="ai-reauth" style="width:100%;min-height:44px">AIを再認証</button>` : ""}
         ${rt.error && has && !state.missingBlob ? `<p class="hint">写真は保存済みです。AIだけ再試行できます。</p>` : ""}
       </div>
       <input class="file-hidden" type="file" accept="image/*,.heic,.heif,image/heic,image/heif" data-action="file-library">
@@ -1001,6 +1003,10 @@
       }
       if (target.closest('[data-action="ai-photo"]')) {
         void runAiReading(id);
+        return;
+      }
+      if (target.closest('[data-action="ai-reauth"]')) {
+        openAiAuthEscapeHatch(true);
         return;
       }
       if (target.closest('[data-action="remove"]')) {
@@ -1106,11 +1112,21 @@
     if (code === "model_timeout" || status === 504) {
       return "AIの読取りが45秒以内に完了しませんでした。元の写真は保存されています。時間をおいて、もう一度お試しください。";
     }
-    if (status === 401 || status === 403) return "写真AIを使うには、BCアカウントのログインが必要です。写真は保存されています。";
+    if (status === 401) return "AIの認証が切れています。下の「AIを再認証」から同じブラウザでログインし直してください。";
+    if (status === 403 && code === "ai_access_denied") {
+      return "このアカウントにはAI写真読取の利用権限がありません。写真は保存されています。";
+    }
+    if (status === 403) return "写真AIを利用できませんでした。写真は保存されています。";
     if (code === "invalid_mime" || code === "payload_too_large") {
       return "AI用の画像準備に失敗しました。元の写真は保存されています。";
     }
     return message || "写真AIを読めませんでした。元の写真は端末に残っています。";
+  }
+
+  function aiErrorNeedsReauth(status, code) {
+    if (status === 401) return true;
+    if (status === 403) return false;
+    return false;
   }
 
   function mapPrepErrorMessage(err) {
@@ -1134,11 +1150,13 @@
     const rt = getAiPhotoRuntime(id);
     if (!isPhotoPresent(state) || !(state.blob instanceof Blob) || state.missingBlob) {
       rt.error = "写真を追加してから実行してください。写真が無い場合は先に撮影または選択してください。";
+      rt.needsReauth = false;
       renderPhotos();
       return;
     }
     if (!isAllowedPhoto(state)) {
       rt.error = "この写真形式ではAI読取できません。写真は保存されています。JPEG / PNG / WebP / HEIC をお試しください。";
+      rt.needsReauth = false;
       renderPhotos();
       return;
     }
@@ -1146,6 +1164,13 @@
     if (rt.cooldownUntil && Date.now() < rt.cooldownUntil) return;
 
     const auth = window.BCFDAiAuth;
+    if (auth && typeof auth.whenReady === "function") {
+      try {
+        await auth.whenReady();
+      } catch (_) {
+        /* continue to ensureValidAccessToken */
+      }
+    }
     if (auth && typeof auth.ensureValidAccessToken === "function") {
       let ensured = null;
       try {
@@ -1155,6 +1180,7 @@
       }
       if (!ensured || ensured.ok === false) {
         rt.error = (ensured && ensured.message) || (auth && auth.MSG_AUTH_EXPIRED) || "AIの認証が切れています";
+        rt.needsReauth = true;
         renderPhotos();
         return;
       }
@@ -1167,11 +1193,13 @@
       }
       if (!ensured || ensured.ok === false) {
         rt.error = (ensured && ensured.message) || "AIの認証が切れています";
+        rt.needsReauth = true;
         renderPhotos();
         return;
       }
     } else if (!isAiLoggedIn()) {
       rt.error = "AIの認証が切れています";
+      rt.needsReauth = true;
       renderPhotos();
       return;
     }
@@ -1185,12 +1213,14 @@
     const anon = auth && auth.SUPABASE_ANON_KEY;
     if (!token || !proxyUrl || !anon) {
       rt.error = "AIの認証が切れています";
+      rt.needsReauth = true;
       renderPhotos();
       return;
     }
 
     rt.busy = true;
     rt.error = "";
+    rt.needsReauth = false;
     rt.candidate = null;
     rt.prepStatus = "preparing";
     renderPhotos();
@@ -1202,6 +1232,7 @@
       rt.busy = false;
       rt.cooldownUntil = Date.now() + AI_COOLDOWN_MS;
       rt.error = mapPrepErrorMessage(err);
+      rt.needsReauth = false;
       renderPhotos();
       return;
     }
@@ -1226,23 +1257,27 @@
       try { data = await res.json(); } catch (_) { data = null; }
       if (!res.ok || !data || data.ok !== true) {
         rt.error = mapAiErrorMessage(res.status, data && data.code, data && data.message);
+        rt.needsReauth = aiErrorNeedsReauth(res.status, data && data.code);
         rt.candidate = null;
         return;
       }
       if (!data.reading || data.status !== "suggested") {
         rt.error = "写真AIの結果を安全に表示できませんでした。現場で確認してください。写真は保存されています。";
+        rt.needsReauth = false;
         rt.candidate = null;
         return;
       }
       const def = PHOTO_DEFS.find((p) => p.id === id);
       rt.candidate = { source: "openai", status: "suggested", slotTitle: (def && def.title) || id, reading: data.reading };
       rt.error = "";
+      rt.needsReauth = false;
       ingestAiReading(id, data.reading);
     } catch (err) {
       const aborted = (err && err.name === "AbortError") || controller.signal.aborted;
       rt.error = aborted
         ? "55秒以内に応答がありませんでした。元の写真は保存されています。自動再送はしていません。"
         : "通信が切れました。元の写真は端末に残っています。";
+      rt.needsReauth = false;
       rt.candidate = null;
     } finally {
       window.clearTimeout(clientTimer);
@@ -1546,8 +1581,8 @@
     window.scrollTo({ top: panel.offsetTop - 12, behavior: "smooth" });
   }
 
-  function openAiAuthEscapeHatch() {
-    // 管理メニューからの再認証入口（表示できるだけで認証突破はしない）
+  function openAiAuthEscapeHatch(forceReauth) {
+    // 管理メニュー／AIエラーカードからの再認証入口（表示できるだけで認証突破はしない）
     try {
       sessionStorage.setItem("bcfd_auth_ui_force_v1", "1");
     } catch (_) {
@@ -1556,8 +1591,13 @@
     const panel = el("ai-auth-panel");
     if (!panel) return;
     const auth = window.BCFDAiAuth;
-    if (auth && typeof auth.isLoggedIn === "function" && auth.isLoggedIn()) {
-      // 既に本人sessionがあるときは再認証UIを出さない
+    if (
+      !forceReauth &&
+      auth &&
+      typeof auth.isLoggedIn === "function" &&
+      auth.isLoggedIn()
+    ) {
+      // 既に本人sessionがあるときは再認証UIを出さない（エラーカードからの強制時は除く）
       panel.hidden = true;
       return;
     }
