@@ -37,9 +37,9 @@ describe("login removed", () => {
     assert.doesNotMatch(appSrc, /"role":"service_role"/);
   });
 
-  it("bumps version to 011", () => {
-    assert.match(appSrc, /const APP_VERSION = "2026\.09\.11-011"/);
-    assert.match(indexSrc, /app\.js\?v=20260911-011/);
+  it("bumps version to 012", () => {
+    assert.match(appSrc, /const APP_VERSION = "2026\.09\.11-012"/);
+    assert.match(indexSrc, /app\.js\?v=20260911-012/);
     assert.match(indexSrc, /id="menu-app-version"/);
     assert.match(indexSrc, /id="app-version-footer"/);
   });

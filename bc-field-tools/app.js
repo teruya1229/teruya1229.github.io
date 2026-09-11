@@ -2,7 +2,7 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.09.11-011";
+  const APP_VERSION = "2026.09.11-012";
   /** 公開可能な anon key のみ（Edge gateway用。特権キーや外部API秘密は載せない） */
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
@@ -933,6 +933,97 @@
     }
   }
 
+  const EVIDENCE_KIND_JA = {
+    visible_text: "文字",
+    visible_mark: "記号・表示",
+    visible_condition: "状態",
+  };
+
+  function formatAiCandidateLine(c) {
+    if (!c || typeof c !== "object") return "";
+    const label = String(c.label || "").trim();
+    const value = String(c.value || "").trim();
+    if (label && value && label !== value) return label + "：" + value;
+    return label || value;
+  }
+
+  function formatAiEvidenceLine(e) {
+    if (!e || typeof e !== "object") return "";
+    const text = String(e.text || "").trim();
+    if (!text) return "";
+    const kindJa = EVIDENCE_KIND_JA[e.kind];
+    return kindJa ? kindJa + "：" + text : text;
+  }
+
+  function aiReadingListHtml(title, lines) {
+    if (!lines.length) return "";
+    return `<p class="ai-reading-h">${escapeHtml(title)}</p><ul>${lines.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}</ul>`;
+  }
+
+  function formatAiReadingHtml(reading) {
+    if (!reading || typeof reading !== "object") return "";
+    const summary = String(reading.summary || "").trim();
+    const candLines = Array.isArray(reading.candidates)
+      ? reading.candidates.map(formatAiCandidateLine).filter(Boolean)
+      : [];
+    const evidLines = Array.isArray(reading.evidence)
+      ? reading.evidence.map(formatAiEvidenceLine).filter(Boolean)
+      : [];
+    if (!summary && !candLines.length && !evidLines.length) return "";
+    return `<div class="ai-reading">
+      <b>【AI読取結果】</b>
+      ${summary ? `<p>${escapeHtml(summary)}</p>` : ""}
+      ${aiReadingListHtml("読み取れた候補", candLines)}
+      ${aiReadingListHtml("写真から見えた根拠", evidLines)}
+    </div>`;
+  }
+
+  function aiSuggestionCardHtml(s) {
+    if (s.status === "applied") {
+      return `<div class="ai-card ai-card-done" data-sug="${escapeAttr(s.id)}"><p>✓ ${escapeHtml(s.label)} を現場情報へ反映しました</p></div>`;
+    }
+    if (s.status === "rejected") {
+      return `<div class="ai-card ai-card-done" data-sug="${escapeAttr(s.id)}"><p>この候補は反映しませんでした</p></div>`;
+    }
+    return `<div class="ai-card" data-sug="${escapeAttr(s.id)}">
+        <b>AI読取・要確認</b>
+        <p>「${escapeHtml(s.label)}」に見えます</p>
+        <div class="ai-actions">
+          <button type="button" class="btn btn-primary" data-ai="apply">反映する</button>
+          <button type="button" class="btn btn-secondary" data-ai="reject">違う</button>
+        </div>
+      </div>`;
+  }
+
+  function photoAiFollowHtml(def, rt, hasPhoto, state) {
+    if (!SURVEY_PHOTO_IDS.has(def.id)) return "";
+    const parts = [];
+    if (rt.busy && rt.prepStatus === "preparing") {
+      parts.push(`<p class="ai-status" aria-live="polite">AI用に写真を準備しています…</p>`);
+    } else if (rt.busy) {
+      parts.push(`<p class="ai-status" aria-live="polite">AI読取中…</p>`);
+    }
+    if (rt.error) {
+      parts.push(`<p class="hint" role="alert">${escapeHtml(rt.error)}</p>`);
+      if (hasPhoto && !state.missingBlob) {
+        parts.push(`<p class="hint">写真は保存済みです。AIだけ再試行できます。</p>`);
+      }
+    }
+    if (rt.candidate && !rt.busy) {
+      parts.push(`<p class="ai-status ai-status-ok" aria-live="polite">✓ AI読取完了</p>`);
+      parts.push(formatAiReadingHtml(rt.candidate.reading));
+      const slotSugs = aiSuggestions.filter((s) => s.slotId === def.id);
+      const actionable = slotSugs.filter((s) => s.status === "pending" || s.status === "applied" || s.status === "rejected");
+      if (!actionable.length) {
+        parts.push(`<p class="hint">見積へ反映できる候補はありません</p>`);
+      }
+      slotSugs.forEach((s) => {
+        parts.push(aiSuggestionCardHtml(s));
+      });
+    }
+    return parts.join("");
+  }
+
   function photoCardHtml(def) {
     const state = photoState[def.id];
     const has = isPhotoPresent(state);
@@ -944,8 +1035,9 @@
     const canAi = SURVEY_PHOTO_IDS.has(def.id);
     let aiLabel = "写真AIで読む";
     if (rt.busy && rt.prepStatus === "preparing") aiLabel = "AI用に写真を準備しています…";
-    else if (rt.busy) aiLabel = "読取中…";
-    return `<article class="photo-card" data-photo-id="${def.id}">
+    else if (rt.busy) aiLabel = "AI読取中…";
+    const follow = canAi ? photoAiFollowHtml(def, rt, has, state) : "";
+    return `<article class="photo-card${follow ? " has-ai" : ""}" data-photo-id="${def.id}">
       <div class="thumb">${thumb}</div>
       <div class="body">
         <div class="name">${escapeHtml(def.title)}</div>
@@ -954,8 +1046,7 @@
           <button type="button" class="mini-btn" data-action="remove" ${has && !rt.busy ? "" : "disabled"}>消す</button>
         </div>
         ${canAi ? `<button type="button" class="mini-btn" data-action="ai-photo" style="width:100%" ${rt.busy ? "disabled" : ""}>${escapeHtml(aiLabel)}</button>` : ""}
-        ${rt.error ? `<p class="hint">${escapeHtml(rt.error)}</p>` : ""}
-        ${rt.error && has && !state.missingBlob ? `<p class="hint">写真は保存済みです。AIだけ再試行できます。</p>` : ""}
+        ${follow}
       </div>
       <input class="file-hidden" type="file" accept="image/*,.heic,.heif,image/heic,image/heif" data-action="file-library">
       <input class="file-hidden" type="file" accept="image/*,.heic,.heif,image/heic,image/heif" capture="environment" data-action="file-camera">
@@ -1174,6 +1265,9 @@
       return;
     }
 
+    rt.prepStatus = "ready";
+    renderPhotos();
+
     const controller = new AbortController();
     const clientTimer = window.setTimeout(() => controller.abort(), AI_CLIENT_TIMEOUT_MS);
     try {
@@ -1250,16 +1344,7 @@
     const box = el("ai-suggestions");
     if (!box) return;
     const pending = aiSuggestions.filter((s) => s.status === "pending");
-    box.innerHTML = pending.map((s) =>
-      `<div class="ai-card" data-sug="${escapeAttr(s.id)}">
-        <b>AI読取・要確認</b>
-        <p>「${escapeHtml(s.label)}」に見えます</p>
-        <div class="ai-actions">
-          <button type="button" class="btn btn-primary" data-ai="apply">反映する</button>
-          <button type="button" class="btn btn-secondary" data-ai="reject">違う</button>
-        </div>
-      </div>`
-    ).join("");
+    box.innerHTML = pending.map(aiSuggestionCardHtml).join("");
   }
 
   function renderPrep() {
@@ -1614,7 +1699,7 @@
     if (sug) {
       const item = aiSuggestions.find((s) => s.id === sug.getAttribute("data-sug"));
       if (item && t.closest('[data-ai="apply"]')) { item.apply(); item.status = "applied"; renderSurvey(); notifyDirty(); }
-      if (item && t.closest('[data-ai="reject"]')) { item.status = "rejected"; renderAiSuggestions(); }
+      if (item && t.closest('[data-ai="reject"]')) { item.status = "rejected"; renderPhotos(); renderAiSuggestions(); }
       return;
     }
     const cat = t.closest("[data-cat]");
@@ -1681,6 +1766,19 @@
     initEmptyUi,
     setDirtyHandler(fn) { dirtyHandler = fn; },
     setClearHandler(fn) { clearHandler = fn; },
-    _test: { getSite: () => site, setSite, goToEstimateFromField, buildFieldLines: (s) => window.BCEstimate.buildFieldLines(s) },
+    _test: {
+      getSite: () => site,
+      setSite,
+      goToEstimateFromField,
+      buildFieldLines: (s) => window.BCEstimate.buildFieldLines(s),
+      getAiPhotoRuntime,
+      ingestAiReading,
+      formatAiReadingHtml,
+      formatAiCandidateLine,
+      formatAiEvidenceLine,
+      renderPhotos,
+      renderAiSuggestions,
+      getAiSuggestions: () => aiSuggestions,
+    },
   };
 })();

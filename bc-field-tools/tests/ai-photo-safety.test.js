@@ -225,6 +225,14 @@ describe("ai photo model / timeout bounds", () => {
     assert.match(appSrc, /AI読取・要確認/);
     assert.match(appSrc, /data-ai="apply"/);
     assert.match(appSrc, /data-ai="reject"/);
+    assert.match(appSrc, /AI読取中…/);
+    assert.match(appSrc, /✓ AI読取完了/);
+    assert.match(appSrc, /見積へ反映できる候補はありません/);
+    assert.match(appSrc, /を現場情報へ反映しました/);
+    assert.match(appSrc, /この候補は反映しませんでした/);
+    assert.match(appSrc, /formatAiReadingHtml/);
+    assert.match(appSrc, /rt\.candidate && !rt\.busy/);
+    assert.doesNotMatch(appSrc, /JSON\.stringify\(\s*(data\.)?reading/);
   });
 
   it("keeps suggested-only runtime candidates and safety filter source", () => {

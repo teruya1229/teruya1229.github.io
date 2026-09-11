@@ -275,6 +275,7 @@ h2.q {
   display: flex;
   flex-direction: column;
 }
+.photo-card.has-ai { grid-column: 1 / -1; }
 .photo-card .thumb {
   height: 92px;
   background: var(--soft);
@@ -308,7 +309,32 @@ h2.q {
 }
 .ai-card b { display: block; margin-bottom: 4px; }
 .ai-card p { margin: 0 0 10px; font-size: 15px; }
+.ai-card-done {
+  background: var(--soft);
+  border-color: var(--line);
+}
+.ai-card-done p { margin: 0; font-weight: 800; }
 .ai-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ai-status {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+.ai-status-ok { color: var(--ok); }
+.ai-reading {
+  background: var(--soft);
+  border-radius: 12px;
+  padding: 10px;
+  margin-top: 6px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.ai-reading b { display: block; margin-bottom: 6px; }
+.ai-reading p { margin: 0; }
+.ai-reading-h { margin: 8px 0 4px !important; font-weight: 800; }
+.ai-reading ul { margin: 0; padding-left: 1.2em; }
+.ai-reading li { margin: 0 0 4px; }
 
 .notice {
   background: var(--warn-bg);
