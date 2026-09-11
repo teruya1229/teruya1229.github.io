@@ -213,8 +213,12 @@
   }
   function isAiLoggedIn() {
     const auth = window.BCFDAiAuth;
+    if (auth && typeof auth.isLoggedIn === "function") return Boolean(auth.isLoggedIn());
     const session = auth && typeof auth.getSession === "function" ? auth.getSession() : null;
-    return Boolean(session && session.email);
+    if (!session || !session.email || !session.access_token) return false;
+    const exp = Number(session.expires_at) || 0;
+    if (!exp) return false;
+    return Math.floor(Date.now() / 1000) < exp - 60;
   }
   function emptyAiRuntime() {
     return {
@@ -1098,23 +1102,41 @@
       renderPhotos();
       return;
     }
-    if (!isAiLoggedIn()) {
+    if (rt.busy) return;
+    if (rt.cooldownUntil && Date.now() < rt.cooldownUntil) return;
+
+    const auth = window.BCFDAiAuth;
+    if (auth && typeof auth.ensureValidSession === "function") {
+      let ensured = null;
+      try {
+        ensured = await auth.ensureValidSession();
+      } catch (_) {
+        ensured = { ok: false, message: "通信できませんでした。接続を確認してもう一度お試しください。" };
+      }
+      if (!ensured || ensured.ok === false) {
+        rt.error =
+          (ensured && ensured.message) ||
+          "ログインが切れました。もう一度ログインしてください。";
+        renderPhotos();
+        openAiAuth();
+        return;
+      }
+    } else if (!isAiLoggedIn()) {
       rt.error = "写真AIにはログインが必要です。写真は保存されています。";
       renderPhotos();
       openAiAuth();
       return;
     }
-    if (rt.busy) return;
-    if (rt.cooldownUntil && Date.now() < rt.cooldownUntil) return;
+
     if (!window.confirm(AI_CONSENT_MESSAGE)) return;
 
-    const auth = window.BCFDAiAuth;
     const token = auth && typeof auth.getAccessToken === "function" ? auth.getAccessToken() : "";
     const proxyUrl = auth && auth.AI_PHOTO_PROXY_URL;
     const anon = auth && auth.SUPABASE_ANON_KEY;
     if (!token || !proxyUrl || !anon) {
-      rt.error = "BCアカウントでログインしてください。写真は保存されています。";
+      rt.error = "ログインが切れました。もう一度ログインしてください。";
       renderPhotos();
+      openAiAuth();
       return;
     }
 
@@ -1493,20 +1515,47 @@
     }
     function renderAuth() {
       const recovering = typeof auth.isPasswordRecovery === "function" && auth.isPasswordRecovery();
+      const loggedIn = typeof auth.isLoggedIn === "function" ? auth.isLoggedIn() : isAiLoggedIn();
       const session = auth.getSession();
-      if (recovering) { signedOut.hidden = true; signedIn.hidden = true; recoveryPanel.hidden = false; return; }
+      if (recovering) {
+        signedOut.hidden = true;
+        signedIn.hidden = true;
+        recoveryPanel.hidden = false;
+        return;
+      }
       recoveryPanel.hidden = true;
-      if (session && session.email) {
-        signedOut.hidden = true; signedIn.hidden = false;
+      if (loggedIn && session && session.email) {
+        signedOut.hidden = true;
+        signedIn.hidden = false;
         if (emailDisplay) emailDisplay.textContent = session.email;
       } else {
-        signedOut.hidden = false; signedIn.hidden = true;
+        signedOut.hidden = false;
+        signedIn.hidden = true;
         if (emailDisplay) emailDisplay.textContent = "";
       }
     }
     async function refreshAuthUi() {
+      const urlErrBefore =
+        typeof auth.readUrlAuthError === "function" ? auth.readUrlAuthError() : null;
       if (typeof auth.detectPasswordRecoveryFromUrl === "function") {
-        try { await auth.detectPasswordRecoveryFromUrl(); } catch (_) { /* ignore */ }
+        try {
+          const recovered = await auth.detectPasswordRecoveryFromUrl();
+          if (!recovered && urlErrBefore && typeof auth.recoveryErrorMessage === "function") {
+            setMessage(errorEl, auth.recoveryErrorMessage(urlErrBefore));
+          }
+        } catch (_) {
+          /* ignore */
+        }
+      }
+      if (typeof auth.ensureValidSession === "function" && !auth.isPasswordRecovery()) {
+        try {
+          const ensured = await auth.ensureValidSession();
+          if (ensured && ensured.ok === false && ensured.message) {
+            setMessage(infoEl, ensured.message);
+          }
+        } catch (_) {
+          /* ignore */
+        }
       }
       renderAuth();
     }
@@ -1519,30 +1568,52 @@
         const result = await auth.signInWithPassword(emailInput.value, passwordInput.value);
         passwordInput.value = "";
         if (!result || result.ok === false) setMessage(errorEl, (result && result.message) || "ログインできませんでした。");
-        else { setMessage(errorEl, ""); el("ai-auth-panel").hidden = true; }
+        else { setMessage(errorEl, ""); setMessage(infoEl, ""); el("ai-auth-panel").hidden = true; }
       } catch (_) {
-        setMessage(errorEl, "ログイン通信に失敗しました。");
+        setMessage(errorEl, "通信できませんでした。接続を確認してもう一度お試しください。");
       } finally { loginBtn.disabled = false; }
     });
     resetBtn.addEventListener("click", async () => {
+      setMessage(errorEl, "");
+      setMessage(infoEl, "");
+      resetBtn.disabled = true;
       try {
         const result = await auth.requestPasswordReset(emailInput.value);
-        setMessage(infoEl, (result && result.message) || "再設定手順を送りました。");
+        if (!result || result.ok === false) {
+          setMessage(errorEl, (result && result.message) || "再設定メールを送れませんでした。");
+        } else {
+          setMessage(infoEl, (result && result.message) || "再設定手順を送りました。");
+        }
       } catch (_) {
-        setMessage(errorEl, "再設定メールを送れませんでした。");
+        setMessage(errorEl, "通信できませんでした。接続を確認してもう一度お試しください。");
+      } finally {
+        resetBtn.disabled = false;
       }
     });
     savePasswordBtn.addEventListener("click", async () => {
+      setMessage(recoveryErrorEl, "");
+      savePasswordBtn.disabled = true;
       try {
         const result = await auth.updatePassword(newPasswordInput.value, newPasswordConfirm.value);
-        if (!result || result.ok === false) setMessage(recoveryErrorEl, (result && result.message) || "更新に失敗しました。");
-        else { setMessage(infoEl, result.message || "パスワードを更新しました。"); renderAuth(); }
+        if (!result || result.ok === false) {
+          setMessage(recoveryErrorEl, (result && result.message) || "更新に失敗しました。");
+        } else {
+          if (newPasswordInput) newPasswordInput.value = "";
+          if (newPasswordConfirm) newPasswordConfirm.value = "";
+          setMessage(infoEl, result.message || "パスワードを更新しました。新しいパスワードでログインしてください。");
+          renderAuth();
+        }
       } catch (_) {
-        setMessage(recoveryErrorEl, "パスワード更新通信に失敗しました。");
+        setMessage(recoveryErrorEl, "通信できませんでした。接続を確認してもう一度お試しください。");
+      } finally {
+        savePasswordBtn.disabled = false;
       }
     });
     cancelRecoveryBtn.addEventListener("click", () => {
       if (typeof auth.clearRecovery === "function") auth.clearRecovery();
+      if (newPasswordInput) newPasswordInput.value = "";
+      if (newPasswordConfirm) newPasswordConfirm.value = "";
+      setMessage(recoveryErrorEl, "");
       renderAuth();
     });
     logoutBtn.addEventListener("click", async () => { await auth.signOut(); });

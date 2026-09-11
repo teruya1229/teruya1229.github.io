@@ -6,10 +6,13 @@
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
   const SESSION_KEY = "bcfd_ai_auth_session_v1";
+  const PKCE_VERIFIER_KEY = "bcfd_ai_auth_pkce_verifier_v1";
+  const PENDING_RECOVERY_KEY = "bcfd_ai_auth_pending_recovery_v1";
   /** パスワード再設定メールの戻り先（固定） */
   const PASSWORD_RECOVERY_REDIRECT = "https://teruya1229.github.io/bc-field-tools/";
   const GENERIC_RESET_SENT =
     "入力されたメールアドレス宛に、再設定手順をお送りしました。届かない場合は入力内容をご確認ください。";
+  const ACCESS_SKEW_SEC = 60;
 
   /** @type {null | { access_token: string, refresh_token: string, expires_at: number, email: string }} */
   let session = null;
@@ -20,6 +23,10 @@
   let recoverySession = null;
   /** @type {Array<() => void>} */
   const listeners = [];
+  /** @type {Promise<{ ok: boolean, message?: string }> | null} */
+  let refreshInFlight = null;
+  /** @type {Promise<boolean> | null} */
+  let recoveryDetectInFlight = null;
 
   function notify() {
     listeners.forEach((fn) => {
@@ -43,6 +50,68 @@
       });
     }
     return headers;
+  }
+
+  function logAuthEvent(event, detail) {
+    try {
+      const safe = detail && typeof detail === "object" ? detail : {};
+      console.info("[BCFDAiAuth]", event, safe);
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  function nowSec() {
+    return Math.floor(Date.now() / 1000);
+  }
+
+  function base64UrlEncode(bytes) {
+    let binary = "";
+    const arr = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+    for (let i = 0; i < arr.length; i++) binary += String.fromCharCode(arr[i]);
+    return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+  }
+
+  async function createPkcePair() {
+    const raw = new Uint8Array(32);
+    crypto.getRandomValues(raw);
+    const verifier = base64UrlEncode(raw);
+    const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(verifier));
+    return { verifier, challenge: base64UrlEncode(digest) };
+  }
+
+  function storePkceVerifier(verifier) {
+    try {
+      sessionStorage.setItem(PKCE_VERIFIER_KEY, verifier);
+      sessionStorage.setItem(PENDING_RECOVERY_KEY, "1");
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  function readPkceVerifier() {
+    try {
+      return sessionStorage.getItem(PKCE_VERIFIER_KEY) || "";
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function clearPkceState() {
+    try {
+      sessionStorage.removeItem(PKCE_VERIFIER_KEY);
+      sessionStorage.removeItem(PENDING_RECOVERY_KEY);
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
+  function hasPendingRecoveryPkce() {
+    try {
+      return sessionStorage.getItem(PENDING_RECOVERY_KEY) === "1";
+    } catch (_) {
+      return false;
+    }
   }
 
   function loadSession() {
@@ -89,6 +158,17 @@
 
   function getSession() {
     return session;
+  }
+
+  function isAccessTokenFresh(s) {
+    if (!s || typeof s.access_token !== "string" || !s.access_token) return false;
+    const exp = Number(s.expires_at) || 0;
+    if (!exp) return false;
+    return nowSec() < exp - ACCESS_SKEW_SEC;
+  }
+
+  function isLoggedIn() {
+    return Boolean(session && session.email && isAccessTokenFresh(session));
   }
 
   function isPasswordRecovery() {
@@ -138,6 +218,35 @@
     return out;
   }
 
+  function readUrlAuthError() {
+    try {
+      const url = new URL(window.location.href);
+      const hash = parseHashParams();
+      const error =
+        url.searchParams.get("error") ||
+        hash.error ||
+        url.searchParams.get("error_code") ||
+        hash.error_code ||
+        "";
+      const desc =
+        url.searchParams.get("error_description") || hash.error_description || "";
+      if (!error && !desc) return null;
+      return { error: String(error || ""), description: String(desc || "") };
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function recoveryErrorMessage(errInfo) {
+    const blob = ((errInfo && (errInfo.error + " " + errInfo.description)) || "").toLowerCase();
+    if (
+      /expir|otp_expired|flow_state_expired|token.*expired|link.*expired/.test(blob)
+    ) {
+      return "再設定リンクの有効期限が切れています。新しい再設定メールを送ってください。";
+    }
+    return "再設定リンクを確認できませんでした。新しいメールからもう一度お試しください。";
+  }
+
   function setRecoveryFromTokens(accessToken, refreshToken, email) {
     if (!accessToken) return false;
     recoverySession = {
@@ -146,9 +255,27 @@
       email: email || "",
     };
     // Do not persist recovery tokens or passwords.
+    clearPkceState();
     clearAuthParamsFromUrl();
     notify();
     return true;
+  }
+
+  function sessionFromTokenResponse(data, fallbackEmail) {
+    const access = data && data.access_token;
+    if (!access) return null;
+    const expiresIn = Number(data.expires_in) || 3600;
+    const email =
+      (data.user && data.user.email) ||
+      (data.email && String(data.email)) ||
+      fallbackEmail ||
+      "";
+    return {
+      access_token: access,
+      refresh_token: (data && data.refresh_token) || "",
+      expires_at: nowSec() + expiresIn,
+      email: String(email || ""),
+    };
   }
 
   async function exchangeTokenHash(tokenHash, type) {
@@ -167,6 +294,10 @@
       data = null;
     }
     if (!res.ok || !data || !data.access_token) {
+      logAuthEvent("token_hash_exchange_failed", {
+        status: res.status,
+        error: data && (data.error_code || data.error || data.msg),
+      });
       return { ok: false };
     }
     const email = (data.user && data.user.email) || "";
@@ -174,25 +305,167 @@
     return { ok: true };
   }
 
-  async function detectPasswordRecoveryFromUrl() {
-    const hash = parseHashParams();
-    if (hash.type === "recovery" && hash.access_token) {
-      setRecoveryFromTokens(hash.access_token, hash.refresh_token || "", "");
-      return true;
+  async function exchangePkceCode(code) {
+    const verifier = readPkceVerifier();
+    if (!code || !verifier) {
+      logAuthEvent("pkce_exchange_skipped", {
+        hasCode: Boolean(code),
+        hasVerifier: Boolean(verifier),
+      });
+      return { ok: false, reason: "missing_verifier" };
     }
-
+    const res = await fetch(SUPABASE_URL + "/auth/v1/token?grant_type=pkce", {
+      method: "POST",
+      headers: authHeaders(),
+      body: JSON.stringify({
+        auth_code: code,
+        code_verifier: verifier,
+      }),
+    });
+    let data = null;
     try {
-      const url = new URL(window.location.href);
-      const type = url.searchParams.get("type") || "";
-      const tokenHash = url.searchParams.get("token_hash") || "";
-      if (type === "recovery" && tokenHash) {
-        const result = await exchangeTokenHash(tokenHash, "recovery");
-        return result.ok;
-      }
+      data = await res.json();
     } catch (_) {
-      /* ignore */
+      data = null;
     }
-    return false;
+    if (!res.ok || !data || !data.access_token) {
+      logAuthEvent("pkce_exchange_failed", {
+        status: res.status,
+        error: data && (data.error_code || data.error || data.error_description || data.msg),
+      });
+      return { ok: false, reason: "exchange_failed" };
+    }
+    const email = (data.user && data.user.email) || "";
+    // Password recovery PKCE returns a recovery session; keep it memory-only.
+    if (hasPendingRecoveryPkce()) {
+      setRecoveryFromTokens(data.access_token, data.refresh_token || "", email);
+      return { ok: true };
+    }
+    // Unexpected non-recovery PKCE: do not auto-login; clear sensitive URL params.
+    clearPkceState();
+    clearAuthParamsFromUrl();
+    logAuthEvent("pkce_exchange_ignored_non_recovery", { status: res.status });
+    return { ok: false, reason: "not_recovery" };
+  }
+
+  async function detectPasswordRecoveryFromUrl() {
+    if (recoveryDetectInFlight) return recoveryDetectInFlight;
+    recoveryDetectInFlight = (async () => {
+      const errInfo = readUrlAuthError();
+      if (errInfo) {
+        logAuthEvent("recovery_url_error", {
+          error: errInfo.error,
+          // description may contain sensitive wording; keep short class only
+          hasDescription: Boolean(errInfo.description),
+        });
+        clearAuthParamsFromUrl();
+        return false;
+      }
+
+      const hash = parseHashParams();
+      if (hash.type === "recovery" && hash.access_token) {
+        setRecoveryFromTokens(hash.access_token, hash.refresh_token || "", "");
+        return true;
+      }
+
+      try {
+        const url = new URL(window.location.href);
+        const type = url.searchParams.get("type") || "";
+        const tokenHash = url.searchParams.get("token_hash") || "";
+        const code = url.searchParams.get("code") || "";
+
+        if (type === "recovery" && tokenHash) {
+          const result = await exchangeTokenHash(tokenHash, "recovery");
+          if (!result.ok) clearAuthParamsFromUrl();
+          return result.ok;
+        }
+
+        // PKCE callback: ?code=... (exchange BEFORE clearing URL params)
+        if (code) {
+          const result = await exchangePkceCode(code);
+          if (!result.ok) {
+            clearAuthParamsFromUrl();
+            clearPkceState();
+          }
+          return result.ok;
+        }
+      } catch (e) {
+        logAuthEvent("recovery_detect_exception", {
+          name: e && e.name ? String(e.name) : "Error",
+        });
+      }
+      return false;
+    })().finally(() => {
+      recoveryDetectInFlight = null;
+    });
+    return recoveryDetectInFlight;
+  }
+
+  async function refreshSession() {
+    if (refreshInFlight) return refreshInFlight;
+    refreshInFlight = (async () => {
+      const current = session;
+      if (!current || !current.refresh_token) {
+        return { ok: false, message: "ログインが切れました。もう一度ログインしてください。" };
+      }
+      try {
+        const res = await fetch(SUPABASE_URL + "/auth/v1/token?grant_type=refresh_token", {
+          method: "POST",
+          headers: authHeaders(),
+          body: JSON.stringify({ refresh_token: current.refresh_token }),
+        });
+        let data = null;
+        try {
+          data = await res.json();
+        } catch (_) {
+          data = null;
+        }
+        if (!res.ok || !data || !data.access_token) {
+          logAuthEvent("refresh_failed", {
+            status: res.status,
+            error: data && (data.error_code || data.error || data.msg),
+          });
+          saveSession(null);
+          return { ok: false, message: "ログインが切れました。もう一度ログインしてください。" };
+        }
+        const next = sessionFromTokenResponse(data, current.email);
+        if (!next) {
+          saveSession(null);
+          return { ok: false, message: "ログインが切れました。もう一度ログインしてください。" };
+        }
+        saveSession(next);
+        logAuthEvent("refresh_ok", { expires_at: next.expires_at });
+        return { ok: true };
+      } catch (_) {
+        logAuthEvent("refresh_network_error", {});
+        saveSession(null);
+        return { ok: false, message: "通信できませんでした。接続を確認してもう一度お試しください。" };
+      }
+    })().finally(() => {
+      refreshInFlight = null;
+    });
+    return refreshInFlight;
+  }
+
+  async function ensureValidSession() {
+    if (isAccessTokenFresh(session)) {
+      return { ok: true, session };
+    }
+    if (session && session.refresh_token) {
+      const refreshed = await refreshSession();
+      if (refreshed.ok && isAccessTokenFresh(session)) {
+        return { ok: true, session };
+      }
+      return {
+        ok: false,
+        message: refreshed.message || "ログインが切れました。もう一度ログインしてください。",
+      };
+    }
+    if (session) {
+      saveSession(null);
+      return { ok: false, message: "ログインが切れました。もう一度ログインしてください。" };
+    }
+    return { ok: false, message: "写真AIにはログインが必要です。写真は保存されています。" };
   }
 
   async function signInWithPassword(email, password) {
@@ -201,39 +474,81 @@
     if (!em || !pw) {
       return { ok: false, message: "メールアドレスとパスワードを入力してください。" };
     }
-    const res = await fetch(SUPABASE_URL + "/auth/v1/token?grant_type=password", {
-      method: "POST",
-      headers: authHeaders(),
-      body: JSON.stringify({ email: em, password: pw }),
-    });
-    let data = null;
     try {
-      data = await res.json();
+      const res = await fetch(SUPABASE_URL + "/auth/v1/token?grant_type=password", {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify({ email: em, password: pw }),
+      });
+      let data = null;
+      try {
+        data = await res.json();
+      } catch (_) {
+        data = null;
+      }
+      if (!res.ok) {
+        return {
+          ok: false,
+          message:
+            "ログインに失敗しました。メールアドレスまたはパスワードを確認するか、パスワードを再設定してください。",
+        };
+      }
+      const next = sessionFromTokenResponse(data, em);
+      if (!next || !next.access_token) {
+        return { ok: false, message: "ログイン応答が不正です。" };
+      }
+      clearRecovery();
+      clearPkceState();
+      saveSession(next);
+      return { ok: true, email: next.email };
     } catch (_) {
-      data = null;
-    }
-    if (!res.ok) {
       return {
         ok: false,
-        message:
-          "ログインに失敗しました。メールアドレスまたはパスワードを確認するか、パスワードを再設定してください。",
+        message: "通信できませんでした。接続を確認してもう一度お試しください。",
       };
     }
-    const access = data && data.access_token;
-    const refresh = data && data.refresh_token;
-    const userEmail = (data && data.user && data.user.email) || em;
-    if (!access) {
-      return { ok: false, message: "ログイン応答が不正です。" };
+  }
+
+  function mapRecoverFailure(status, data, networkError) {
+    if (networkError) {
+      return {
+        ok: false,
+        message: "通信できませんでした。接続を確認してもう一度お試しください。",
+        reason: "network_error",
+      };
     }
-    const expiresIn = Number(data.expires_in) || 3600;
-    clearRecovery();
-    saveSession({
-      access_token: access,
-      refresh_token: refresh || "",
-      expires_at: Math.floor(Date.now() / 1000) + expiresIn,
-      email: String(userEmail),
-    });
-    return { ok: true, email: String(userEmail) };
+    const code = String(
+      (data && (data.error_code || data.error || data.msg || data.message)) || ""
+    ).toLowerCase();
+    if (status === 429 || /rate.?limit|over_request|too_many/.test(code)) {
+      return {
+        ok: false,
+        message: "しばらく時間をおいてから、もう一度お試しください。",
+        reason: "rate_limit",
+      };
+    }
+    if (status === 400 && /redirect/.test(code)) {
+      return {
+        ok: false,
+        message: "再設定メールを送れませんでした。しばらくしてからもう一度お試しください。",
+        reason: "redirect_not_allowed",
+      };
+    }
+    if (status >= 500) {
+      return {
+        ok: false,
+        message: "再設定メールを送れませんでした。しばらくしてからもう一度お試しください。",
+        reason: "server_error",
+      };
+    }
+    if (status >= 400) {
+      return {
+        ok: false,
+        message: "再設定メールを送れませんでした。しばらくしてからもう一度お試しください。",
+        reason: "client_error",
+      };
+    }
+    return null;
   }
 
   async function requestPasswordReset(email) {
@@ -242,57 +557,136 @@
       return { ok: false, message: "メールアドレスを入力してください。" };
     }
     const redirect = encodeURIComponent(PASSWORD_RECOVERY_REDIRECT);
+    let pkce;
     try {
-      await fetch(SUPABASE_URL + "/auth/v1/recover?redirect_to=" + redirect, {
+      pkce = await createPkcePair();
+      storePkceVerifier(pkce.verifier);
+    } catch (_) {
+      clearPkceState();
+      return {
+        ok: false,
+        message: "再設定の準備に失敗しました。ページを再読み込みしてもう一度お試しください。",
+      };
+    }
+
+    try {
+      const res = await fetch(SUPABASE_URL + "/auth/v1/recover?redirect_to=" + redirect, {
         method: "POST",
         headers: authHeaders(),
-        body: JSON.stringify({ email: em }),
+        body: JSON.stringify({
+          email: em,
+          code_challenge: pkce.challenge,
+          code_challenge_method: "s256",
+        }),
       });
+      let data = null;
+      try {
+        data = await res.json();
+      } catch (_) {
+        data = null;
+      }
+
+      const failure = mapRecoverFailure(res.status, data, false);
+      if (failure) {
+        logAuthEvent("recover_failed", {
+          status: res.status,
+          reason: failure.reason,
+          error: data && (data.error_code || data.error || data.msg),
+        });
+        clearPkceState();
+        return { ok: false, message: failure.message };
+      }
+
+      // Success (including cases where Supabase does not reveal whether the email exists).
+      logAuthEvent("recover_accepted", { status: res.status });
+      return { ok: true, message: GENERIC_RESET_SENT };
     } catch (_) {
-      /* still return generic message */
+      logAuthEvent("recover_network_error", {});
+      clearPkceState();
+      return {
+        ok: false,
+        message: "通信できませんでした。接続を確認してもう一度お試しください。",
+      };
     }
-    // Never reveal whether the email exists.
-    return { ok: true, message: GENERIC_RESET_SENT };
   }
 
   async function updatePasswordWithRecovery(newPassword) {
     const pw = String(newPassword || "");
     if (!recoverySession || !recoverySession.access_token) {
-      return { ok: false, message: "再設定セッションが無効です。メールのリンクから再度お試しください。" };
+      return {
+        ok: false,
+        message: "再設定リンクを確認できませんでした。新しいメールからもう一度お試しください。",
+      };
     }
     if (!pw) {
       return { ok: false, message: "新しいパスワードを入力してください。" };
     }
-    const res = await fetch(SUPABASE_URL + "/auth/v1/user", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: "Bearer " + recoverySession.access_token,
-      },
-      body: JSON.stringify({ password: pw }),
-    });
-    let data = null;
     try {
-      data = await res.json();
+      const res = await fetch(SUPABASE_URL + "/auth/v1/user", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: "Bearer " + recoverySession.access_token,
+        },
+        body: JSON.stringify({ password: pw }),
+      });
+      let data = null;
+      try {
+        data = await res.json();
+      } catch (_) {
+        data = null;
+      }
+      if (!res.ok) {
+        const blob = String((data && (data.error_code || data.msg || data.message || data.error)) || "").toLowerCase();
+        logAuthEvent("password_update_failed", {
+          status: res.status,
+          error: data && (data.error_code || data.error || data.msg),
+        });
+        if (/expir|otp_expired|session/.test(blob) || res.status === 401) {
+          clearRecovery();
+          return {
+            ok: false,
+            message: "再設定リンクの有効期限が切れています。新しい再設定メールを送ってください。",
+          };
+        }
+        return {
+          ok: false,
+          message: "パスワードの更新に失敗しました。もう一度お試しください。",
+        };
+      }
+      clearRecovery();
+      clearPkceState();
+      // Stay signed out; user logs in with the new password.
+      saveSession(null);
+      return {
+        ok: true,
+        message: "パスワードを更新しました。新しいパスワードでログインしてください。",
+      };
     } catch (_) {
-      data = null;
-    }
-    if (!res.ok) {
       return {
         ok: false,
-        message: "パスワードの更新に失敗しました。リンクの有効期限切れの可能性があります。",
+        message: "通信できませんでした。接続を確認してもう一度お試しください。",
       };
     }
-    clearRecovery();
-    // Stay signed out; user logs in with the new password.
-    saveSession(null);
-    return { ok: true, message: "パスワードを更新しました。新しいパスワードでログインしてください。" };
+  }
+
+  async function updatePassword(newPassword, confirmPassword) {
+    const pw = String(newPassword || "");
+    const pw2 = String(confirmPassword || "");
+    if (!pw || !pw2) {
+      return { ok: false, message: "新しいパスワードと確認用パスワードを入力してください。" };
+    }
+    if (pw !== pw2) {
+      return { ok: false, message: "確認用パスワードが一致しません。" };
+    }
+    return updatePasswordWithRecovery(pw);
   }
 
   async function signOut() {
     const token = session && session.access_token;
     clearRecovery();
+    clearPkceState();
     saveSession(null);
     if (!token) return { ok: true };
     try {
@@ -314,6 +708,7 @@
   detectPasswordRecoveryFromUrl().catch(() => {});
 
   function getAccessToken() {
+    if (!isAccessTokenFresh(session)) return "";
     return session && typeof session.access_token === "string" ? session.access_token : "";
   }
 
@@ -324,6 +719,7 @@
     PASSWORD_RECOVERY_REDIRECT,
     getSession,
     getAccessToken,
+    isLoggedIn,
     isPasswordRecovery,
     getRecoveryEmail,
     clearRecovery,
@@ -331,7 +727,12 @@
     signInWithPassword,
     signOut,
     requestPasswordReset,
+    updatePassword,
     updatePasswordWithRecovery,
     detectPasswordRecoveryFromUrl,
+    ensureValidSession,
+    refreshSession,
+    recoveryErrorMessage,
+    readUrlAuthError,
   };
 })();
