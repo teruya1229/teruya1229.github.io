@@ -1,0 +1,8 @@
+﻿# BC現場アプリ（bc-field-tools）— AI Edge Function 正本設定（抜粋）
+# デプロイ先プロジェクト変更・secrets変更は本Phaseでは行わない。
+# 既存プロジェクト: bc-field-diagnosis-ai / ref ahtmiobqemzrpqxowevc
+
+[functions.ai-photo-proxy]
+verify_jwt = true
+import_map = "./functions/ai-photo-proxy/deno.json"
+entrypoint = "./functions/ai-photo-proxy/index.ts"

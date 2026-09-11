@@ -96,7 +96,8 @@
 
   const photoState = {};
   const pendingPhotoOps = new Map();
-  const aiMockRuntime = {};
+  /** Runtime-only AI photo reading state (not persisted to IndexedDB / snapshot / .bcfd). */
+  const aiPhotoRuntime = {};
   let dirtyHandler = null;
   let clearHandler = null;
   let suppressDirty = false;
@@ -196,16 +197,16 @@
     const session = auth && typeof auth.getSession === "function" ? auth.getSession() : null;
     return Boolean(session && session.email);
   }
-  function getAiMockRuntime(id) {
-    if (!aiMockRuntime[id]) aiMockRuntime[id] = { busy: false, error: "", cooldownUntil: 0, candidate: null };
-    return aiMockRuntime[id];
+  function getAiPhotoRuntime(id) {
+    if (!aiPhotoRuntime[id]) aiPhotoRuntime[id] = { busy: false, error: "", cooldownUntil: 0, candidate: null };
+    return aiPhotoRuntime[id];
   }
-  function clearAiMock(id) {
-    aiMockRuntime[id] = { busy: false, error: "", cooldownUntil: 0, candidate: null };
+  function clearAiPhoto(id) {
+    aiPhotoRuntime[id] = { busy: false, error: "", cooldownUntil: 0, candidate: null };
     aiSuggestions = aiSuggestions.filter((s) => s.slotId !== id);
   }
-  function clearAllAiMocks() {
-    Object.keys(aiMockRuntime).forEach((id) => clearAiMock(id));
+  function clearAllAiPhotos() {
+    Object.keys(aiPhotoRuntime).forEach((id) => clearAiPhoto(id));
     aiSuggestions = [];
   }
   function revokePhoto(id) {
@@ -446,7 +447,7 @@
     aiSuggestions = [];
     PHASES.forEach((p) => { phaseStatus[p] = "未着手"; });
     if (revoke) revokeAllPhotos();
-    else clearAllAiMocks();
+    else clearAllAiPhotos();
     switchPhase("survey", { silent: true });
     renderAll();
   }
@@ -822,7 +823,7 @@
     if (state.missingBlob) thumb = "再登録が必要";
     else if (state.previewFailed) thumb = "プレビュー不可";
     else if (state.objectUrl) thumb = `<img alt="${escapeAttr(def.title)}" src="${state.objectUrl}">`;
-    const rt = getAiMockRuntime(def.id);
+    const rt = getAiPhotoRuntime(def.id);
     const canAi = SURVEY_PHOTO_IDS.has(def.id);
     return `<article class="photo-card" data-photo-id="${def.id}">
       <div class="thumb">${thumb}</div>
@@ -832,7 +833,7 @@
           <button type="button" class="mini-btn primary" data-action="pick">${has ? "差し替え" : "追加"}</button>
           <button type="button" class="mini-btn" data-action="remove" ${has ? "" : "disabled"}>消す</button>
         </div>
-        ${canAi ? `<button type="button" class="mini-btn" data-action="ai-mock" style="width:100%">${rt.busy ? "読取中…" : "写真AIで読む"}</button>` : ""}
+        ${canAi ? `<button type="button" class="mini-btn" data-action="ai-photo" style="width:100%">${rt.busy ? "読取中…" : "写真AIで読む"}</button>` : ""}
         ${rt.error ? `<p class="hint">${escapeHtml(rt.error)}</p>` : ""}
       </div>
       <input class="file-hidden" type="file" accept="image/*" data-action="file-library">
@@ -872,13 +873,13 @@
         openPhotoPicker(id);
         return;
       }
-      if (target.closest('[data-action="ai-mock"]')) {
+      if (target.closest('[data-action="ai-photo"]')) {
         void runAiReading(id);
         return;
       }
       if (target.closest('[data-action="remove"]')) {
         revokePhoto(id);
-        clearAiMock(id);
+        clearAiPhoto(id);
         markPhotoDelete(id);
         renderPhotos();
         renderAiSuggestions();
@@ -948,14 +949,14 @@
     state.registered = true;
     state.previewFailed = false;
     state.missingBlob = false;
-    clearAiMock(id);
+    clearAiPhoto(id);
     markPhotoPut(id);
     renderPhotos();
     renderAiSuggestions();
   }
 
   function mapAiErrorMessage(status, code, message) {
-    if (code === "model_timeout" || status === 504) return "写真AIの応答が時間切れです。写真は端末に残っています。";
+    if (code === "model_timeout" || status === 504) return "AIの読取りが45秒以内に完了しませんでした。写真は保存されていません。もう一度試す場合は、時間をおいて手動で実行してください。";
     if (status === 401 || status === 403) return "写真AIを使うには、BCアカウントのログインが必要です。";
     return message || "写真AIを読めませんでした。写真は端末に残っています。";
   }
@@ -964,23 +965,23 @@
     if (!SURVEY_PHOTO_IDS.has(id)) return;
     const state = photoState[id];
     if (!isPhotoPresent(state) || !isJpegPhoto(state)) {
-      const rt = getAiMockRuntime(id);
+      const rt = getAiPhotoRuntime(id);
       rt.error = "JPEG写真を追加してから実行してください。";
       renderPhotos();
       return;
     }
     if (typeof state.size === "number" && state.size > AI_JPEG_MAX_BYTES) {
-      getAiMockRuntime(id).error = "写真は4MB以下のJPEGにしてください";
+      getAiPhotoRuntime(id).error = "写真は4MB以下のJPEGにしてください";
       renderPhotos();
       return;
     }
     if (!isAiLoggedIn()) {
-      getAiMockRuntime(id).error = "写真AIにはログインが必要です。";
+      getAiPhotoRuntime(id).error = "写真AIにはログインが必要です。";
       renderPhotos();
       openAiAuth();
       return;
     }
-    const rt = getAiMockRuntime(id);
+    const rt = getAiPhotoRuntime(id);
     if (rt.busy) return;
     if (rt.cooldownUntil && Date.now() < rt.cooldownUntil) return;
     if (!window.confirm(AI_CONSENT_MESSAGE)) return;

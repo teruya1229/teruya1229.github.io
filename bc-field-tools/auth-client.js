@@ -7,7 +7,7 @@
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
   const SESSION_KEY = "bcfd_ai_auth_session_v1";
   /** パスワード再設定メールの戻り先（固定） */
-  const PASSWORD_RECOVERY_REDIRECT = "https://teruya1229.github.io/bc-field-diagnosis/";
+  const PASSWORD_RECOVERY_REDIRECT = "https://teruya1229.github.io/bc-field-tools/";
   const GENERIC_RESET_SENT =
     "入力されたメールアドレス宛に、再設定手順をお送りしました。届かない場合は入力内容をご確認ください。";
 
