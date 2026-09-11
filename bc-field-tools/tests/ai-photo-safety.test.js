@@ -186,8 +186,9 @@ describe("ai photo model / timeout bounds", () => {
     assert.equal(classified.code, "model_timeout");
     assert.match(classified.message, /45秒以内に完了しませんでした/);
     assert.equal(classifyOpenAIFetchError({ name: "TypeError" }), null);
-    assert.doesNotMatch(indexSrc, /retry|setTimeout\(\s*\(\)\s*=>\s*callOpenAI/i);
+    assert.doesNotMatch(indexSrc, /setTimeout\(\s*\(\)\s*=>\s*callOpenAI/i);
     assert.doesNotMatch(indexSrc, /for\s*\(.*callOpenAI/);
+    assert.doesNotMatch(indexSrc, /retryOpenAI|autoRetry|retry\s*:\s*true/i);
   });
 
   it("returns CORS headers with allowed-origin errors including 504 path", () => {

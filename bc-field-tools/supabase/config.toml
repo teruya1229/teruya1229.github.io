@@ -3,6 +3,6 @@
 # 既存プロジェクト: bc-field-diagnosis-ai / ref ahtmiobqemzrpqxowevc
 
 [functions.ai-photo-proxy]
-verify_jwt = true
+verify_jwt = false
 import_map = "./functions/ai-photo-proxy/deno.json"
 entrypoint = "./functions/ai-photo-proxy/index.ts"

@@ -1,21 +1,25 @@
 /**
- * BC現場写真診断 — AI写真解析受け口（Phase 2B-3B）
+ * BC現場写真診断 — AI写真解析受け口（内部ツール・ログイン無し）
  *
- * - プラットフォーム JWT 検証必須（config.toml: verify_jwt = true）
- * - CORS は許可 Origin のみ
- * - AI_ALLOWED_EMAILS fail-closed
- * - 許可済み後のみ multipart を読む（JPEG 1枚 + survey slotKey）
+ * - verify_jwt = false（ユーザーJWT不要）
+ * - CORS は許可 Origin のみ（POSTは Origin 必須）
+ * - 連打対策: クライアント別 rate limit + 日次グローバル上限（in-memory）
+ * - multipart は JPEG 1枚 + survey slotKey のみ
  * - OpenAI Responses API（store:false, detail:high, 1画像, 出力上限）
  * - 構造化JSON + 禁止表現フィルタ後、suggested 候補のみ返却
  * - OpenAI処理全体（fetch〜本文読取り〜JSON解析〜抽出）を45秒で打ち切り
- * - 写真・キー・メール・Authorization・全文レスポンスはログしない
+ * - 写真・キー・Authorization・全文レスポンスはログしない
  */
 
 import {
   MAX_JPEG_BYTES,
   MAX_OUTPUT_TOKENS,
+  MAX_REQUEST_BYTES,
   OPENAI_OPERATION_TIMEOUT_MS,
+  checkClientRateLimit,
+  checkDailyGlobalBudget,
   classifyOpenAIFetchError,
+  clientKeyFromRequest,
   containsUnsafePhrase,
   isSurveySlotKey,
   parseReadingPayload,
@@ -28,6 +32,10 @@ const ALLOWED_ORIGINS = new Set([
 ]);
 
 const OPENAI_MODEL = "gpt-4o-mini";
+
+/** In-memory abuse controls (best-effort per isolate). */
+const clientRateBuckets = new Map<string, number[]>();
+const dailyBudgetState = { day: "", count: 0 };
 
 const SYSTEM_INSTRUCTION = [
   "写真上で直接見える文字・記号・外観の確認候補だけを日本語JSONで返す。",
@@ -121,7 +129,7 @@ function buildCorsHeaders(origin: string | null): Headers {
 }
 
 function isBlockedOrigin(origin: string | null): boolean {
-  return typeof origin === "string" && origin.length > 0 && !ALLOWED_ORIGINS.has(origin);
+  return !(typeof origin === "string" && origin.length > 0 && ALLOWED_ORIGINS.has(origin));
 }
 
 function jsonResponse(
@@ -132,37 +140,6 @@ function jsonResponse(
   const headers = new Headers(extraHeaders);
   headers.set("Content-Type", "application/json; charset=utf-8");
   return new Response(JSON.stringify(body), { status, headers });
-}
-
-function parseAllowedEmails(raw: string | undefined): string[] | null {
-  if (typeof raw !== "string") return null;
-  const list = raw
-    .split(",")
-    .map((s) => s.trim().toLowerCase())
-    .filter((s) => s.length > 0);
-  if (list.length === 0) return null;
-  for (let i = 0; i < list.length; i++) {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(list[i])) return null;
-  }
-  return list;
-}
-
-function emailFromAuthorization(req: Request): string | null {
-  const auth = req.headers.get("Authorization") || "";
-  const m = /^Bearer\s+(\S+)$/i.exec(auth);
-  if (!m) return null;
-  const parts = m[1].split(".");
-  if (parts.length < 2) return null;
-  try {
-    const b64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
-    const pad = b64 + "===".slice((b64.length + 3) % 4);
-    const json = atob(pad);
-    const payload = JSON.parse(json);
-    const email = typeof payload.email === "string" ? payload.email.trim().toLowerCase() : "";
-    return email || null;
-  } catch {
-    return null;
-  }
 }
 
 function bytesToBase64(bytes: Uint8Array): string {
@@ -459,32 +436,37 @@ export default {
       });
     }
 
-    // Do not read body until JWT email allowlist passes.
-    const allowed = parseAllowedEmails(Deno.env.get("AI_ALLOWED_EMAILS"));
-    if (!allowed) {
-      return jsonResponse(
-        503,
-        {
-          ok: false,
-          code: "ai_access_not_configured",
-          requestId,
-          message: "AI利用許可が設定されていません。",
-        },
-        cors,
-      );
+    const contentLengthRaw = req.headers.get("content-length");
+    if (contentLengthRaw) {
+      const contentLength = Number(contentLengthRaw);
+      if (Number.isFinite(contentLength) && contentLength > MAX_REQUEST_BYTES) {
+        return jsonResponse(
+          413,
+          {
+            ok: false,
+            code: "payload_too_large",
+            requestId,
+            message: "写真は4MB以下のJPEGにしてください",
+          },
+          cors,
+        );
+      }
     }
 
-    const email = emailFromAuthorization(req);
-    if (!email || !allowed.includes(email)) {
+    const nowMs = Date.now();
+    const rate = checkClientRateLimit(clientRateBuckets, clientKeyFromRequest(req), nowMs);
+    if (!rate.ok) {
+      const headers = new Headers(cors);
+      headers.set("Retry-After", String(rate.retryAfterSec));
       return jsonResponse(
-        403,
+        429,
         {
           ok: false,
-          code: "ai_access_denied",
+          code: "rate_limited",
           requestId,
-          message: "このアカウントにはAI写真読取の利用権限がありません",
+          message: "AI読取の利用が集中しています。しばらくしてからもう一度お試しください。",
         },
-        cors,
+        headers,
       );
     }
 
@@ -623,6 +605,21 @@ export default {
           code: "payload_too_large",
           requestId,
           message: "写真は4MB以下のJPEGにしてください",
+        },
+        cors,
+      );
+    }
+
+    const budget = checkDailyGlobalBudget(dailyBudgetState, Date.now());
+    if (!budget.ok) {
+      jpegBytes = null;
+      return jsonResponse(
+        503,
+        {
+          ok: false,
+          code: "daily_quota_exceeded",
+          requestId,
+          message: "本日のAI読取上限に達しました。明日以降にもう一度お試しください。",
         },
         cors,
       );

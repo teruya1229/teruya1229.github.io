@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#1c3d5a" />
   <title>BCサービス 現場アプリ</title>
-  <link rel="stylesheet" href="./style.css?v=20260911-010" />
+  <link rel="stylesheet" href="./style.css?v=20260911-011" />
 </head>
 <body>
   <div class="app">
@@ -163,7 +163,6 @@
       <div class="menu-list">
         <button id="open-safety-btn" class="btn btn-ghost" type="button">安全について</button>
         <button id="open-saveinfo-btn" class="btn btn-ghost" type="button">保存について</button>
-        <button id="open-ai-auth-btn" class="btn btn-ghost" type="button">AIを再認証</button>
       </div>
       <p id="menu-app-version" class="hint app-version-menu"></p>
       <button id="close-more-btn" class="btn btn-secondary" type="button" style="margin-top:12px;width:100%">閉じる</button>
@@ -205,58 +204,13 @@
     </div>
   </div>
 
-  <section id="ai-auth-panel" class="wrap" hidden>
-    <div class="sheet">
-      <h2 class="q">AIを再認証</h2>
-      <p class="hint">普段は自動で認証されます。切れたときだけ本人用のログインリンクを使います。</p>
-      <div id="ai-auth-signed-out">
-        <div id="ai-auth-password-block">
-          <label class="section-label" for="ai-auth-email">メール</label>
-          <input id="ai-auth-email" class="field-input" type="email" autocomplete="username" inputmode="email" />
-          <label class="section-label" for="ai-auth-password">パスワード</label>
-          <input id="ai-auth-password" class="field-input" type="password" autocomplete="current-password" />
-          <div class="menu-list" style="margin-top:10px">
-            <button id="ai-auth-login-btn" class="btn btn-primary" type="button">ログイン</button>
-            <button id="ai-auth-reset-btn" class="btn btn-ghost" type="button">パスワード再設定メールを送る</button>
-          </div>
-        </div>
-        <div id="ai-auth-magic-block" hidden>
-          <p class="hint">このChromeでログイン用リンクを本人メールへ送ります。メールアドレスの入力は不要です。</p>
-          <p class="hint">必ず「送る」を押した同じChromeで、届いた最新メールのリンクを開いてください。別のブラウザや別の端末では認証できません。</p>
-          <div class="menu-list" style="margin-top:10px">
-            <button id="ai-auth-magic-btn" class="btn btn-primary" type="button">ログイン用リンクを送る</button>
-          </div>
-        </div>
-        <p id="ai-auth-error" class="hint" role="alert" hidden></p>
-        <p id="ai-auth-info" class="hint" hidden></p>
-      </div>
-      <div id="ai-auth-recovery" hidden>
-        <label class="section-label" for="ai-auth-new-password">新しいパスワード</label>
-        <input id="ai-auth-new-password" class="field-input" type="password" autocomplete="new-password" />
-        <label class="section-label" for="ai-auth-new-password-confirm">確認</label>
-        <input id="ai-auth-new-password-confirm" class="field-input" type="password" autocomplete="new-password" />
-        <div class="menu-list" style="margin-top:10px">
-          <button id="ai-auth-save-password-btn" class="btn btn-primary" type="button">新しいパスワードを保存</button>
-          <button id="ai-auth-cancel-recovery-btn" class="btn btn-ghost" type="button">キャンセル</button>
-        </div>
-        <p id="ai-auth-recovery-error" class="hint" role="alert" hidden></p>
-      </div>
-      <div id="ai-auth-signed-in" hidden>
-        <p class="hint">ログイン中: <span id="ai-auth-email-display"></span></p>
-        <button id="ai-auth-logout-btn" class="btn btn-ghost" type="button">ログアウト</button>
-      </div>
-      <button id="close-ai-auth-btn" class="btn btn-secondary" type="button" style="margin-top:12px;width:100%">閉じる</button>
-    </div>
-  </section>
-
   <input id="backup-import-input" type="file" accept=".bcfd,application/vnd.bc-field-diagnosis,application/octet-stream" hidden />
 
-  <script src="./storage.js?v=20260911-010"></script>
-  <script src="./auth-client.js?v=20260911-010"></script>
-  <script src="./estimate.js?v=20260911-010"></script>
-  <script src="./image-prep.js?v=20260911-010"></script>
-  <script src="./app.js?v=20260911-010"></script>
-  <script src="./backup.js?v=20260911-010"></script>
-  <script src="./case-persistence.js?v=20260911-010"></script>
+  <script src="./storage.js?v=20260911-011"></script>
+  <script src="./estimate.js?v=20260911-011"></script>
+  <script src="./image-prep.js?v=20260911-011"></script>
+  <script src="./app.js?v=20260911-011"></script>
+  <script src="./backup.js?v=20260911-011"></script>
+  <script src="./case-persistence.js?v=20260911-011"></script>
 </body>
 </html>

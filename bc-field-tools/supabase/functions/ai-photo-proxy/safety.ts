@@ -1,9 +1,75 @@
 /** Pure validators / safety filter for AI photo reading (no I/O, no secrets). */
 
 export const MAX_JPEG_BYTES = 4 * 1024 * 1024;
+/** Reject Content-Length above this before reading multipart. */
+export const MAX_REQUEST_BYTES = MAX_JPEG_BYTES + 256 * 1024;
 /** OpenAI wall-clock budget covering fetch + body read + JSON parse + extract. */
 export const OPENAI_OPERATION_TIMEOUT_MS = 45_000;
 export const MAX_OUTPUT_TOKENS = 400;
+
+/** Per-client sliding window (in-memory, best-effort). */
+export const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+export const RATE_LIMIT_MAX_PER_WINDOW = 12;
+/** Soft global OpenAI call cap per UTC day (in-memory, best-effort). */
+export const DAILY_GLOBAL_MAX = 200;
+
+export function utcDayKey(nowMs: number): string {
+  return new Date(nowMs).toISOString().slice(0, 10);
+}
+
+/**
+ * Sliding-window rate check. Mutates `buckets` on success.
+ * @returns ok or retryAfterSec
+ */
+export function checkClientRateLimit(
+  buckets: Map<string, number[]>,
+  clientKey: string,
+  nowMs: number,
+  windowMs: number = RATE_LIMIT_WINDOW_MS,
+  maxPerWindow: number = RATE_LIMIT_MAX_PER_WINDOW,
+): { ok: true } | { ok: false; retryAfterSec: number } {
+  const key = String(clientKey || "unknown").slice(0, 128);
+  const cutoff = nowMs - windowMs;
+  const prev = buckets.get(key) || [];
+  const recent = prev.filter((t) => t > cutoff);
+  if (recent.length >= maxPerWindow) {
+    const oldest = recent[0] || nowMs;
+    const retryAfterSec = Math.max(1, Math.ceil((oldest + windowMs - nowMs) / 1000));
+    buckets.set(key, recent);
+    return { ok: false, retryAfterSec };
+  }
+  recent.push(nowMs);
+  buckets.set(key, recent);
+  return { ok: true };
+}
+
+/**
+ * Daily global OpenAI call budget. Mutates `state` on success.
+ */
+export function checkDailyGlobalBudget(
+  state: { day: string; count: number },
+  nowMs: number,
+  maxPerDay: number = DAILY_GLOBAL_MAX,
+): { ok: true } | { ok: false } {
+  const day = utcDayKey(nowMs);
+  if (state.day !== day) {
+    state.day = day;
+    state.count = 0;
+  }
+  if (state.count >= maxPerDay) return { ok: false };
+  state.count += 1;
+  return { ok: true };
+}
+
+export function clientKeyFromRequest(req: Request): string {
+  const cf = (req.headers.get("cf-connecting-ip") || "").trim();
+  if (cf) return "cf:" + cf;
+  const xff = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim();
+  if (xff) return "xff:" + xff;
+  const realIp = (req.headers.get("x-real-ip") || "").trim();
+  if (realIp) return "rip:" + realIp;
+  return "unknown";
+}
 
 export function classifyOpenAIFetchError(
   err: unknown,

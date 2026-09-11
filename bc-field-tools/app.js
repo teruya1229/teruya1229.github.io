@@ -2,7 +2,12 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.09.11-010";
+  const APP_VERSION = "2026.09.11-011";
+  /** 公開可能な anon key のみ（Edge gateway用。特権キーや外部API秘密は載せない） */
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
+  const AI_PHOTO_PROXY_URL =
+    "https://ahtmiobqemzrpqxowevc.supabase.co/functions/v1/ai-photo-proxy";
   const CACHE_BUSTER = APP_VERSION.replace(/\./g, "");
 
   const PHOTO_DEFS = [
@@ -215,20 +220,10 @@
     if (BLOCKED_IMAGE_TYPES.has(mime)) return false;
     return ALLOWED_IMAGE_TYPES.has(mime) || mime === "image/jpg";
   }
-  function isAiLoggedIn() {
-    const auth = window.BCFDAiAuth;
-    if (auth && typeof auth.isLoggedIn === "function") return Boolean(auth.isLoggedIn());
-    const session = auth && typeof auth.getSession === "function" ? auth.getSession() : null;
-    if (!session || !session.email || !session.access_token) return false;
-    const exp = Number(session.expires_at) || 0;
-    if (!exp) return false;
-    return Math.floor(Date.now() / 1000) < exp - 60;
-  }
   function emptyAiRuntime() {
     return {
       busy: false,
       error: "",
-      needsReauth: false,
       cooldownUntil: 0,
       candidate: null,
       prepStatus: "idle",
@@ -732,7 +727,7 @@
     try {
       const next = new URL(window.location.href);
       const keep = {};
-      ["code", "token_hash", "type", "error", "error_description", "error_code", "v"].forEach((k) => {
+      ["v"].forEach((k) => {
         if (next.searchParams.has(k)) keep[k] = next.searchParams.get(k);
       });
       const keepHash =
@@ -960,7 +955,6 @@
         </div>
         ${canAi ? `<button type="button" class="mini-btn" data-action="ai-photo" style="width:100%" ${rt.busy ? "disabled" : ""}>${escapeHtml(aiLabel)}</button>` : ""}
         ${rt.error ? `<p class="hint">${escapeHtml(rt.error)}</p>` : ""}
-        ${rt.needsReauth ? `<button type="button" class="mini-btn primary" data-action="ai-reauth" style="width:100%;min-height:44px">AIを再認証</button>` : ""}
         ${rt.error && has && !state.missingBlob ? `<p class="hint">写真は保存済みです。AIだけ再試行できます。</p>` : ""}
       </div>
       <input class="file-hidden" type="file" accept="image/*,.heic,.heif,image/heic,image/heif" data-action="file-library">
@@ -1003,10 +997,6 @@
       }
       if (target.closest('[data-action="ai-photo"]')) {
         void runAiReading(id);
-        return;
-      }
-      if (target.closest('[data-action="ai-reauth"]')) {
-        openAiAuthEscapeHatch(true);
         return;
       }
       if (target.closest('[data-action="remove"]')) {
@@ -1112,21 +1102,19 @@
     if (code === "model_timeout" || status === 504) {
       return "AIの読取りが45秒以内に完了しませんでした。元の写真は保存されています。時間をおいて、もう一度お試しください。";
     }
-    if (status === 401) return "AIの認証が切れています。下の「AIを再認証」から同じChromeでログインし直してください。";
-    if (status === 403 && code === "ai_access_denied") {
-      return "このアカウントにはAI写真読取の利用権限がありません。写真は保存されています。";
+    if (status === 429 || code === "rate_limited") {
+      return "AI読取の利用が集中しています。しばらくしてからもう一度お試しください。写真は保存されています。";
     }
-    if (status === 403) return "写真AIを利用できませんでした。写真は保存されています。";
+    if (code === "daily_quota_exceeded") {
+      return "本日のAI読取上限に達しました。写真は保存されています。";
+    }
+    if (status === 403 && code === "origin_forbidden") {
+      return "この場所からは写真AIを利用できません。写真は保存されています。";
+    }
     if (code === "invalid_mime" || code === "payload_too_large") {
       return "AI用の画像準備に失敗しました。元の写真は保存されています。";
     }
     return message || "写真AIを読めませんでした。元の写真は端末に残っています。";
-  }
-
-  function aiErrorNeedsReauth(status, code) {
-    if (status === 401) return true;
-    if (status === 403) return false;
-    return false;
   }
 
   function mapPrepErrorMessage(err) {
@@ -1150,77 +1138,27 @@
     const rt = getAiPhotoRuntime(id);
     if (!isPhotoPresent(state) || !(state.blob instanceof Blob) || state.missingBlob) {
       rt.error = "写真を追加してから実行してください。写真が無い場合は先に撮影または選択してください。";
-      rt.needsReauth = false;
       renderPhotos();
       return;
     }
     if (!isAllowedPhoto(state)) {
       rt.error = "この写真形式ではAI読取できません。写真は保存されています。JPEG / PNG / WebP / HEIC をお試しください。";
-      rt.needsReauth = false;
       renderPhotos();
       return;
     }
     if (rt.busy) return;
     if (rt.cooldownUntil && Date.now() < rt.cooldownUntil) return;
 
-    const auth = window.BCFDAiAuth;
-    if (auth && typeof auth.whenReady === "function") {
-      try {
-        await auth.whenReady();
-      } catch (_) {
-        /* continue to ensureValidAccessToken */
-      }
-    }
-    if (auth && typeof auth.ensureValidAccessToken === "function") {
-      let ensured = null;
-      try {
-        ensured = await auth.ensureValidAccessToken();
-      } catch (_) {
-        ensured = { ok: false, message: (auth && auth.MSG_AUTH_EXPIRED) || "AIの認証が切れています" };
-      }
-      if (!ensured || ensured.ok === false) {
-        rt.error = (ensured && ensured.message) || (auth && auth.MSG_AUTH_EXPIRED) || "AIの認証が切れています";
-        rt.needsReauth = true;
-        renderPhotos();
-        return;
-      }
-    } else if (auth && typeof auth.ensureValidSession === "function") {
-      let ensured = null;
-      try {
-        ensured = await auth.ensureValidSession();
-      } catch (_) {
-        ensured = { ok: false, message: "AIの認証が切れています" };
-      }
-      if (!ensured || ensured.ok === false) {
-        rt.error = (ensured && ensured.message) || "AIの認証が切れています";
-        rt.needsReauth = true;
-        renderPhotos();
-        return;
-      }
-    } else if (!isAiLoggedIn()) {
-      rt.error = "AIの認証が切れています";
-      rt.needsReauth = true;
-      renderPhotos();
-      return;
-    }
-
     if (!window.confirm(AI_CONSENT_MESSAGE)) return;
 
-    const token =
-      (auth && typeof auth.getAccessToken === "function" && auth.getAccessToken()) ||
-      "";
-    const proxyUrl = auth && auth.AI_PHOTO_PROXY_URL;
-    const anon = auth && auth.SUPABASE_ANON_KEY;
-    if (!token || !proxyUrl || !anon) {
-      rt.error = "AIの認証が切れています";
-      rt.needsReauth = true;
+    if (!AI_PHOTO_PROXY_URL || !SUPABASE_ANON_KEY) {
+      rt.error = "写真AIを利用できません。写真は保存されています。";
       renderPhotos();
       return;
     }
 
     rt.busy = true;
     rt.error = "";
-    rt.needsReauth = false;
     rt.candidate = null;
     rt.prepStatus = "preparing";
     renderPhotos();
@@ -1232,7 +1170,6 @@
       rt.busy = false;
       rt.cooldownUntil = Date.now() + AI_COOLDOWN_MS;
       rt.error = mapPrepErrorMessage(err);
-      rt.needsReauth = false;
       renderPhotos();
       return;
     }
@@ -1247,9 +1184,9 @@
         prepared.blob,
         "photo.jpg",
       );
-      const res = await fetch(proxyUrl, {
+      const res = await fetch(AI_PHOTO_PROXY_URL, {
         method: "POST",
-        headers: { Authorization: "Bearer " + token, apikey: anon },
+        headers: { Authorization: "Bearer " + SUPABASE_ANON_KEY, apikey: SUPABASE_ANON_KEY },
         body: form,
         signal: controller.signal,
       });
@@ -1257,27 +1194,23 @@
       try { data = await res.json(); } catch (_) { data = null; }
       if (!res.ok || !data || data.ok !== true) {
         rt.error = mapAiErrorMessage(res.status, data && data.code, data && data.message);
-        rt.needsReauth = aiErrorNeedsReauth(res.status, data && data.code);
         rt.candidate = null;
         return;
       }
       if (!data.reading || data.status !== "suggested") {
         rt.error = "写真AIの結果を安全に表示できませんでした。現場で確認してください。写真は保存されています。";
-        rt.needsReauth = false;
         rt.candidate = null;
         return;
       }
       const def = PHOTO_DEFS.find((p) => p.id === id);
       rt.candidate = { source: "openai", status: "suggested", slotTitle: (def && def.title) || id, reading: data.reading };
       rt.error = "";
-      rt.needsReauth = false;
       ingestAiReading(id, data.reading);
     } catch (err) {
       const aborted = (err && err.name === "AbortError") || controller.signal.aborted;
       rt.error = aborted
         ? "55秒以内に応答がありませんでした。元の写真は保存されています。自動再送はしていません。"
         : "通信が切れました。元の写真は端末に残っています。";
-      rt.needsReauth = false;
       rt.candidate = null;
     } finally {
       window.clearTimeout(clientTimer);
@@ -1568,267 +1501,11 @@
 
   function openMore() { el("more-overlay").hidden = false; }
   function closeMore() { el("more-overlay").hidden = true; }
-  function openAiAuth(force) {
-    const auth = window.BCFDAiAuth;
-    const allow =
-      force === true ||
-      (auth && typeof auth.isAuthUiVisible === "function" && auth.isAuthUiVisible()) ||
-      (auth && auth.AUTH_UI_VISIBLE === true);
-    if (!allow) return;
-    const panel = el("ai-auth-panel");
-    if (!panel) return;
-    panel.hidden = false;
-    window.scrollTo({ top: panel.offsetTop - 12, behavior: "smooth" });
-  }
-
-  function openAiAuthEscapeHatch(forceReauth) {
-    // 管理メニュー／AIエラーカードからの再認証入口（表示できるだけで認証突破はしない）
-    try {
-      sessionStorage.setItem("bcfd_auth_ui_force_v1", "1");
-    } catch (_) {
-      /* ignore */
-    }
-    const panel = el("ai-auth-panel");
-    if (!panel) return;
-    const auth = window.BCFDAiAuth;
-    if (
-      !forceReauth &&
-      auth &&
-      typeof auth.isLoggedIn === "function" &&
-      auth.isLoggedIn()
-    ) {
-      // 既に本人sessionがあるときは再認証UIを出さない（エラーカードからの強制時は除く）
-      panel.hidden = true;
-      return;
-    }
-    panel.hidden = false;
-    const passwordBlock = el("ai-auth-password-block");
-    const magicBlock = el("ai-auth-magic-block");
-    if (passwordBlock) passwordBlock.hidden = !(auth && auth.AUTH_UI_VISIBLE === true);
-    if (magicBlock) magicBlock.hidden = !!(auth && auth.AUTH_UI_VISIBLE === true);
-    window.scrollTo({ top: panel.offsetTop - 12, behavior: "smooth" });
-  }
-
   function applyAppVersionLabels() {
     const menu = el("menu-app-version");
     const foot = el("app-version-footer");
     if (menu) menu.textContent = "Version " + APP_VERSION;
     if (foot) foot.textContent = "v" + APP_VERSION;
-  }
-
-  function initAiAuthUi() {
-    const auth = window.BCFDAiAuth;
-    const signedOut = el("ai-auth-signed-out");
-    const signedIn = el("ai-auth-signed-in");
-    const recoveryPanel = el("ai-auth-recovery");
-    const passwordBlock = el("ai-auth-password-block");
-    const magicBlock = el("ai-auth-magic-block");
-    const emailInput = el("ai-auth-email");
-    const passwordInput = el("ai-auth-password");
-    const newPasswordInput = el("ai-auth-new-password");
-    const newPasswordConfirm = el("ai-auth-new-password-confirm");
-    const loginBtn = el("ai-auth-login-btn");
-    const resetBtn = el("ai-auth-reset-btn");
-    const magicBtn = el("ai-auth-magic-btn");
-    const savePasswordBtn = el("ai-auth-save-password-btn");
-    const cancelRecoveryBtn = el("ai-auth-cancel-recovery-btn");
-    const logoutBtn = el("ai-auth-logout-btn");
-    const emailDisplay = el("ai-auth-email-display");
-    const errorEl = el("ai-auth-error");
-    const infoEl = el("ai-auth-info");
-    const recoveryErrorEl = el("ai-auth-recovery-error");
-    const openAuthBtn = el("open-ai-auth-btn");
-    const authPanel = el("ai-auth-panel");
-    if (!auth || !signedOut || !signedIn || !recoveryPanel) return;
-    function setMessage(node, msg) {
-      if (!(node instanceof HTMLElement)) return;
-      node.hidden = !msg;
-      node.textContent = msg || "";
-    }
-    function passwordUiEnabled() {
-      return auth.AUTH_UI_VISIBLE === true;
-    }
-    function shouldShowAuthChrome() {
-      if (passwordUiEnabled() && typeof auth.isPasswordRecovery === "function" && auth.isPasswordRecovery()) {
-        return true;
-      }
-      if (typeof auth.isAuthUiVisible === "function") return auth.isAuthUiVisible();
-      return auth.AUTH_UI_VISIBLE === true;
-    }
-    function renderAuth() {
-      const recovering =
-        passwordUiEnabled() &&
-        typeof auth.isPasswordRecovery === "function" &&
-        auth.isPasswordRecovery();
-      const loggedIn = typeof auth.isLoggedIn === "function" ? auth.isLoggedIn() : isAiLoggedIn();
-      const session = auth.getSession();
-      const showChrome = shouldShowAuthChrome();
-      if (openAuthBtn instanceof HTMLElement) {
-        openAuthBtn.hidden = false;
-        openAuthBtn.textContent = passwordUiEnabled() ? "写真AIのログイン" : "AIを再認証";
-      }
-      if (passwordBlock) passwordBlock.hidden = !passwordUiEnabled();
-      if (magicBlock) magicBlock.hidden = passwordUiEnabled();
-      if (!showChrome) {
-        if (authPanel && !recovering) authPanel.hidden = true;
-      }
-      if (recovering) {
-        if (authPanel) authPanel.hidden = false;
-        signedOut.hidden = true;
-        signedIn.hidden = true;
-        recoveryPanel.hidden = false;
-        return;
-      }
-      recoveryPanel.hidden = true;
-      if (loggedIn && session && session.email) {
-        signedOut.hidden = true;
-        signedIn.hidden = false;
-        if (emailDisplay) emailDisplay.textContent = session.email;
-        if (!passwordUiEnabled() && authPanel) authPanel.hidden = true;
-      } else {
-        signedOut.hidden = false;
-        signedIn.hidden = true;
-        if (emailDisplay) emailDisplay.textContent = "";
-      }
-    }
-    async function refreshAuthUi() {
-      if (typeof auth.whenReady === "function") {
-        try {
-          await auth.whenReady();
-        } catch (_) {
-          /* ignore */
-        }
-      }
-      const urlErrBefore =
-        typeof auth.readUrlAuthError === "function" ? auth.readUrlAuthError() : null;
-      if (typeof auth.detectAuthCallbackFromUrl === "function") {
-        try {
-          const detected = await auth.detectAuthCallbackFromUrl();
-          if (detected && detected.ok && detected.kind === "magic") {
-            setMessage(infoEl, "");
-            setMessage(errorEl, "");
-            try {
-              sessionStorage.removeItem("bcfd_auth_ui_force_v1");
-            } catch (_) {
-              /* ignore */
-            }
-            if (authPanel) authPanel.hidden = true;
-          } else if (detected && detected.ok === false && detected.message) {
-            setMessage(errorEl, detected.message);
-            if (shouldShowAuthChrome() && authPanel) authPanel.hidden = false;
-          } else if (
-            (!detected || detected.ok === false) &&
-            urlErrBefore &&
-            typeof auth.recoveryErrorMessage === "function"
-          ) {
-            setMessage(errorEl, auth.recoveryErrorMessage(urlErrBefore));
-          }
-        } catch (_) {
-          /* ignore */
-        }
-      } else if (typeof auth.detectPasswordRecoveryFromUrl === "function") {
-        try {
-          await auth.detectPasswordRecoveryFromUrl();
-        } catch (_) {
-          /* ignore */
-        }
-      }
-      if (typeof auth.ensureValidSession === "function" && !auth.isPasswordRecovery()) {
-        try {
-          await auth.ensureValidSession();
-        } catch (_) {
-          /* ignore */
-        }
-      }
-      renderAuth();
-    }
-    refreshAuthUi();
-    auth.onChange(() => { renderAuth(); renderPhotos(); });
-    window.addEventListener("hashchange", () => { refreshAuthUi(); });
-    if (loginBtn) {
-      loginBtn.addEventListener("click", async () => {
-        loginBtn.disabled = true;
-        try {
-          const result = await auth.signInWithPassword(emailInput.value, passwordInput.value);
-          passwordInput.value = "";
-          if (!result || result.ok === false) setMessage(errorEl, (result && result.message) || "ログインできませんでした。");
-          else { setMessage(errorEl, ""); setMessage(infoEl, ""); el("ai-auth-panel").hidden = true; }
-        } catch (_) {
-          setMessage(errorEl, "通信できませんでした。接続を確認してもう一度お試しください。");
-        } finally { loginBtn.disabled = false; }
-      });
-    }
-    if (resetBtn) {
-      resetBtn.addEventListener("click", async () => {
-        setMessage(errorEl, "");
-        setMessage(infoEl, "");
-        resetBtn.disabled = true;
-        try {
-          const result = await auth.requestPasswordReset(emailInput.value);
-          if (!result || result.ok === false) {
-            setMessage(errorEl, (result && result.message) || "再設定メールを送れませんでした。");
-          } else {
-            setMessage(infoEl, (result && result.message) || "再設定手順を送りました。");
-          }
-        } catch (_) {
-          setMessage(errorEl, "通信できませんでした。接続を確認してもう一度お試しください。");
-        } finally {
-          resetBtn.disabled = false;
-        }
-      });
-    }
-    if (magicBtn) {
-      magicBtn.addEventListener("click", async () => {
-        setMessage(errorEl, "");
-        setMessage(infoEl, "");
-        magicBtn.disabled = true;
-        try {
-          const result = await auth.requestMagicLink(auth.OWNER_EMAIL || "bc.teruya@gmail.com");
-          if (!result || result.ok === false) {
-            setMessage(errorEl, (result && result.message) || "ログイン用リンクを送れませんでした。");
-          } else {
-            setMessage(infoEl, (result && result.message) || "ログイン用リンクを送りました。");
-          }
-        } catch (_) {
-          setMessage(errorEl, "通信できませんでした。接続を確認してもう一度お試しください。");
-        } finally {
-          magicBtn.disabled = false;
-        }
-      });
-    }
-    if (savePasswordBtn) {
-      savePasswordBtn.addEventListener("click", async () => {
-        setMessage(recoveryErrorEl, "");
-        savePasswordBtn.disabled = true;
-        try {
-          const result = await auth.updatePassword(newPasswordInput.value, newPasswordConfirm.value);
-          if (!result || result.ok === false) {
-            setMessage(recoveryErrorEl, (result && result.message) || "更新に失敗しました。");
-          } else {
-            if (newPasswordInput) newPasswordInput.value = "";
-            if (newPasswordConfirm) newPasswordConfirm.value = "";
-            setMessage(infoEl, result.message || "パスワードを更新しました。新しいパスワードでログインしてください。");
-            renderAuth();
-          }
-        } catch (_) {
-          setMessage(recoveryErrorEl, "通信できませんでした。接続を確認してもう一度お試しください。");
-        } finally {
-          savePasswordBtn.disabled = false;
-        }
-      });
-    }
-    if (cancelRecoveryBtn) {
-      cancelRecoveryBtn.addEventListener("click", () => {
-        if (typeof auth.clearRecovery === "function") auth.clearRecovery();
-        if (newPasswordInput) newPasswordInput.value = "";
-        if (newPasswordConfirm) newPasswordConfirm.value = "";
-        setMessage(recoveryErrorEl, "");
-        renderAuth();
-      });
-    }
-    if (logoutBtn) {
-      logoutBtn.addEventListener("click", async () => { await auth.signOut(); });
-    }
   }
 
   document.addEventListener("click", (event) => {
@@ -1860,8 +1537,6 @@
         <p>バックアップファイルは暗号化されていません。復元は既存案件を上書きせず、新しい案件として追加します。</p>`;
       el("info-overlay").hidden = false; closeMore(); return;
     }
-    if (t.id === "open-ai-auth-btn") { closeMore(); openAiAuthEscapeHatch(); return; }
-    if (t.id === "close-ai-auth-btn") { el("ai-auth-panel").hidden = true; return; }
     if (t.id === "prep-stop-btn" || t.id === "exec-stop-btn") {
       if (stopRecord.active && !stopRecord.resumed) {
         window.alert("すでに作業停止中です。再開の記録を入れてください。");
@@ -1985,7 +1660,6 @@
   switchView(initialView);
   initEmptyUi();
   applyAppVersionLabels();
-  initAiAuthUi();
 
   window.createCaseSnapshot = createCaseSnapshot;
   window.applyCaseSnapshot = applyCaseSnapshot;
