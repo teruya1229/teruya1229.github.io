@@ -162,6 +162,11 @@ describe("ai photo model / timeout bounds", () => {
     assert.match(indexSrc, /await res\.text\(\)/);
     assert.match(indexSrc, /JSON\.parse\(bodyText\)/);
     assert.match(indexSrc, /extractOutputText/);
+    // output_text を二重に結合すると JSON.parse が壊れるため else-if 必須
+    assert.match(
+      indexSrc,
+      /if\s*\(\s*p\.type\s*===\s*"output_text"[\s\S]*?\}\s*else if\s*\(\s*typeof p\.text\s*===\s*"string"/,
+    );
     assert.match(indexSrc, /Do NOT clear deadline here/);
     assert.match(indexSrc, /waitUntil/);
     assert.match(indexSrc, /safeOperation/);

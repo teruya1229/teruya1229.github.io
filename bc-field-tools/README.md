@@ -14,7 +14,7 @@
 - **複数案件**: 作成・一覧切替・削除（二段階確認）・`.bcfd` backup / restore（新UUID・既存非上書き・SHA-256・暗号化なし）
 - **クラウド案件同期**: **未実装**。案件と写真は端末ブラウザ内のみ
 - **見積**: `localStorage` キー `bc_quote_state`（selected / prices / custom を維持）。料金マスター型 `bc_estimate_price_master`
-- **AI写真読取**: **実装済み**（モックではない）。調査8枠の JPEG 1枚のみ、明示同意後に BC専用 Edge Function `ai-photo-proxy` 経由で OpenAI へ送信。ブラウザに APIキーは置かない
+- **AI写真読取**: **実装済み**（モックではない）。調査8枠の JPEG 1枚のみ、明示同意後に BC専用 Edge Function `ai-photo-proxy` 経由で OpenAI（**model: `gpt-4o-mini`** / max output tokens 400 / 全体45秒 timeout）へ送信。ブラウザに APIキーは置かない
 - **AIが送信するデータ**: multipart の `photo`（JPEG）と `slotKey` のみ（最大4MiB）。案件全文や見積金額は送らない
 - **AI結果**: runtime の `suggested` 候補のみ。IndexedDB / snapshot / `.bcfd` に保存しない。施工可否・電線サイズ・遮断器・接続方法は自動確定しない
 - **人間確認**: AI候補は「反映する / 違う」で現場条件へ入れるまで見積金額に入らない。人間確認済みの現場条件は「見積へ」で `bc_quote_state` へマージ可能（二重の「候補確認」はしない）
@@ -36,12 +36,12 @@ node --test tests/backup-format.test.js
 node --test tests/ai-photo-safety.test.js
 ```
 
-## Supabase管理画面（コード外・手動）
+## Supabase管理画面（コード外）
 
-パスワード再設定を正本URLへ揃えるには、Dashboard → Authentication → URL Configuration で次を確認してください（本リポジトリからは変更しません）。
+Authentication → URL Configuration（本番整合済み）:
 
 - Site URL: `https://teruya1229.github.io/bc-field-tools/`
-- Redirect URLs に同URLを追加（旧 `bc-field-diagnosis` を当面残す場合は併記可）
+- Redirect URLs: `https://teruya1229.github.io/bc-field-tools/`（旧 `bc-field-diagnosis` を当面残す場合は併記可）
 
 ## ファイル
 

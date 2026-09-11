@@ -190,8 +190,12 @@ function extractOutputText(data: Record<string, unknown>): string {
       const part = content[j];
       if (!part || typeof part !== "object") continue;
       const p = part as Record<string, unknown>;
-      if (p.type === "output_text" && typeof p.text === "string") chunks.push(p.text);
-      if (typeof p.text === "string" && p.type !== "refusal") chunks.push(p.text);
+      // Prefer output_text once; do not also match the generic text branch (would duplicate JSON).
+      if (p.type === "output_text" && typeof p.text === "string") {
+        chunks.push(p.text);
+      } else if (typeof p.text === "string" && p.type !== "refusal") {
+        chunks.push(p.text);
+      }
     }
   }
   return chunks.join("\n").trim();
