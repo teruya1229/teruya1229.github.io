@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <title>BC image-prep harness</title>
+</head>
+<body>
+  <pre id="out">running窶ｦ</pre>
+  <script src="../image-prep.js"></script>
+  <script>
+    (async () => {
+      const out = document.getElementById("out");
+      const cases = [
+        { id: "IMG-1", path: "./fixtures/img1-general.jpg", mime: "image/jpeg", name: "img1-general.jpg" },
+        { id: "IMG-2", path: "./fixtures/img2-large.jpg", mime: "image/jpeg", name: "img2-large.jpg" },
+        { id: "IMG-3", path: "./fixtures/img3-alpha.png", mime: "image/png", name: "img3-alpha.png" },
+        { id: "IMG-4", path: "./fixtures/img4.webp", mime: "image/webp", name: "img4.webp" },
+        { id: "IMG-5", path: "./fixtures/img5-sample.heic", mime: "image/heic", name: "img5-sample.heic" },
+        { id: "IMG-6", path: "./fixtures/img6-portrait-orient6.jpg", mime: "image/jpeg", name: "img6-portrait-orient6.jpg" },
+        { id: "IMG-7", path: "./fixtures/img7-orient8.jpg", mime: "image/jpeg", name: "img7-orient8.jpg" },
+        { id: "IMG-8", path: "./fixtures/img8-highres.jpg", mime: "image/jpeg", name: "img8-highres.jpg" },
+        { id: "IMG-9", path: "./fixtures/img9-nameplate.jpg", mime: "image/jpeg", name: "img9-nameplate.jpg" },
+        { id: "IMG-10", path: "./fixtures/img10-corrupt.jpg", mime: "image/jpeg", name: "img10-corrupt.jpg", expectFail: true },
+      ];
+      const results = [];
+      for (const c of cases) {
+        const started = performance.now();
+        try {
+          const res = await fetch(c.path);
+          const blob = await res.blob();
+          const originalBytes = blob.size;
+          // clone for integrity check
+          const originalCopy = blob.slice(0, blob.size, c.mime || blob.type);
+          const prepared = await window.BCFDImagePrep.prepareForAi(blob, {
+            fileName: c.name,
+            mimeType: c.mime,
+            size: blob.size,
+            lastModified: 1,
+          });
+          // original unchanged: same size reference (we never mutate blob)
+          const stillSameSize = blob.size === originalBytes;
+          const second = await window.BCFDImagePrep.prepareForAi(blob, {
+            fileName: c.name,
+            mimeType: c.mime,
+            size: blob.size,
+            lastModified: 1,
+          });
+          results.push({
+            id: c.id,
+            ok: !c.expectFail,
+            expectFail: !!c.expectFail,
+            originalBytes,
+            preparedBytes: prepared.bytes,
+            width: prepared.width,
+            height: prepared.height,
+            quality: prepared.quality,
+            longEdge: prepared.longEdge,
+            elapsedMs: Math.round(prepared.elapsedMs),
+            wallMs: Math.round(performance.now() - started),
+            mime: prepared.blob.type,
+            underHardMax: prepared.bytes <= window.BCFDImagePrep.HARD_MAX_BYTES,
+            originalUnchanged: stillSameSize && originalCopy.size === originalBytes,
+            cacheKeyStable: prepared.sourceKey === second.sourceKey,
+            prepVersion: prepared.prepVersion,
+            error: null,
+          });
+        } catch (err) {
+          results.push({
+            id: c.id,
+            ok: !!c.expectFail,
+            expectFail: !!c.expectFail,
+            error: String((err && err.message) || err),
+            code: err && err.code,
+            wallMs: Math.round(performance.now() - started),
+          });
+        }
+      }
+      window.__prepResults = results;
+      out.textContent = JSON.stringify(results, null, 2);
+    })().catch((e) => {
+      document.getElementById("out").textContent = String(e && e.stack || e);
+    });
+  </script>
+</body>
+</html>
+

@@ -85,11 +85,11 @@
   const PLACE_OPTIONS = ["通常", "屋根", "壁面", "天吊り", "二段置き", "別階", "その他", "未確認"];
   const ALLOWED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"]);
   const BLOCKED_IMAGE_TYPES = new Set(["image/svg+xml", "text/html"]);
-  const AI_JPEG_MAX_BYTES = 4 * 1024 * 1024;
   const AI_COOLDOWN_MS = 20000;
   const AI_CLIENT_TIMEOUT_MS = 55000;
   const AI_CONSENT_MESSAGE =
-    "このJPEG写真1枚をOpenAIへ送信して、現地確認用の読取結果を作成します。\n" +
+    "この写真1枚をOpenAIへ送信して、現地確認用の読取結果を作成します。\n" +
+    "端末内で向き補正・サイズ調整した送信用画像を使います。元の写真は端末に残ります。\n" +
     "写真内容は外部AIサービスへ送信されます。\n" +
     "施工可否・電線サイズ・遮断器・接続方法は断定しません。\n" +
     "送信しますか？";
@@ -135,7 +135,17 @@
   function el(id) { return document.getElementById(id); }
   function nowIso() { return new Date().toISOString(); }
   function emptyPhoto() {
-    return { objectUrl: null, blob: null, fileName: "", mimeType: "", size: null, lastModified: null, registered: false, previewFailed: false, missingBlob: false };
+    return {
+      objectUrl: null,
+      blob: null,
+      fileName: "",
+      mimeType: "",
+      size: null,
+      lastModified: null,
+      registered: false,
+      previewFailed: false,
+      missingBlob: false,
+    };
   }
   function emptyChecks(items) {
     return items.map((item) => ({ key: item.key, label: item.label, state: "未確認", naReason: "" }));
@@ -188,22 +198,89 @@
   function isPhotoPresent(state) {
     return Boolean(state && (state.blob || state.objectUrl || state.registered || state.missingBlob));
   }
-  function isJpegPhoto(state) {
-    const mime = String((state && state.mimeType) || (state && state.blob && state.blob.type) || "").toLowerCase();
-    return mime === "image/jpeg" || mime === "image/jpg";
+  function isAllowedPhoto(state) {
+    if (!state || !(state.blob instanceof Blob)) return false;
+    const prep = window.BCFDImagePrep;
+    const mime = prep
+      ? prep.normalizeMime(state.mimeType || state.blob.type || "", state.fileName)
+      : String(state.mimeType || state.blob.type || "").toLowerCase();
+    if (!mime) {
+      // 一部端末は type 空。拡張子で許可判定。
+      return /\.(jpe?g|png|webp|heic|heif)$/i.test(String(state.fileName || ""));
+    }
+    if (BLOCKED_IMAGE_TYPES.has(mime)) return false;
+    return ALLOWED_IMAGE_TYPES.has(mime) || mime === "image/jpg";
   }
   function isAiLoggedIn() {
     const auth = window.BCFDAiAuth;
     const session = auth && typeof auth.getSession === "function" ? auth.getSession() : null;
     return Boolean(session && session.email);
   }
+  function emptyAiRuntime() {
+    return {
+      busy: false,
+      error: "",
+      cooldownUntil: 0,
+      candidate: null,
+      prepStatus: "idle",
+      aiPrepared: null,
+    };
+  }
   function getAiPhotoRuntime(id) {
-    if (!aiPhotoRuntime[id]) aiPhotoRuntime[id] = { busy: false, error: "", cooldownUntil: 0, candidate: null };
+    if (!aiPhotoRuntime[id]) aiPhotoRuntime[id] = emptyAiRuntime();
     return aiPhotoRuntime[id];
   }
   function clearAiPhoto(id) {
-    aiPhotoRuntime[id] = { busy: false, error: "", cooldownUntil: 0, candidate: null };
+    aiPhotoRuntime[id] = emptyAiRuntime();
     aiSuggestions = aiSuggestions.filter((s) => s.slotId !== id);
+  }
+  function photoSourceKey(state) {
+    const prep = window.BCFDImagePrep;
+    if (!prep || !state) return "";
+    return prep.buildSourceKey({
+      size: state.size,
+      lastModified: state.lastModified,
+      fileName: state.fileName,
+      mimeType: state.mimeType || (state.blob && state.blob.type) || "",
+    });
+  }
+  function getCachedAiPrepared(id, state) {
+    const rt = getAiPhotoRuntime(id);
+    const prep = window.BCFDImagePrep;
+    if (!rt.aiPrepared || !rt.aiPrepared.blob || !prep) return null;
+    if (rt.aiPrepared.prepVersion !== prep.PREP_VERSION) return null;
+    if (rt.aiPrepared.sourceKey !== photoSourceKey(state)) return null;
+    if (!(rt.aiPrepared.blob instanceof Blob)) return null;
+    if (rt.aiPrepared.blob.size > prep.HARD_MAX_BYTES) return null;
+    return rt.aiPrepared;
+  }
+  async function ensureAiPrepared(id, state) {
+    const cached = getCachedAiPrepared(id, state);
+    if (cached) return cached;
+    const prep = window.BCFDImagePrep;
+    if (!prep || typeof prep.prepareForAi !== "function") {
+      throw Object.assign(new Error("AI用の画像準備に失敗しました。元の写真は保存されています。"), {
+        code: "prep_unavailable",
+      });
+    }
+    const rt = getAiPhotoRuntime(id);
+    rt.prepStatus = "preparing";
+    renderPhotos();
+    try {
+      const prepared = await prep.prepareForAi(state.blob, {
+        fileName: state.fileName,
+        mimeType: state.mimeType || (state.blob && state.blob.type) || "",
+        size: state.size,
+        lastModified: state.lastModified,
+      });
+      rt.aiPrepared = prepared;
+      rt.prepStatus = "ready";
+      return prepared;
+    } catch (err) {
+      rt.prepStatus = "failed";
+      rt.aiPrepared = null;
+      throw err;
+    }
   }
   function clearAllAiPhotos() {
     Object.keys(aiPhotoRuntime).forEach((id) => clearAiPhoto(id));
@@ -822,22 +899,26 @@
     let thumb = "未選択";
     if (state.missingBlob) thumb = "再登録が必要";
     else if (state.previewFailed) thumb = "プレビュー不可";
-    else if (state.objectUrl) thumb = `<img alt="${escapeAttr(def.title)}" src="${state.objectUrl}">`;
+    else if (state.objectUrl) thumb = `<img alt="${escapeAttr(def.title)}" src="${state.objectUrl}" data-photo-preview="1">`;
     const rt = getAiPhotoRuntime(def.id);
     const canAi = SURVEY_PHOTO_IDS.has(def.id);
+    let aiLabel = "写真AIで読む";
+    if (rt.busy && rt.prepStatus === "preparing") aiLabel = "AI用に写真を準備しています…";
+    else if (rt.busy) aiLabel = "読取中…";
     return `<article class="photo-card" data-photo-id="${def.id}">
       <div class="thumb">${thumb}</div>
       <div class="body">
         <div class="name">${escapeHtml(def.title)}</div>
         <div class="actions">
-          <button type="button" class="mini-btn primary" data-action="pick">${has ? "差し替え" : "追加"}</button>
-          <button type="button" class="mini-btn" data-action="remove" ${has ? "" : "disabled"}>消す</button>
+          <button type="button" class="mini-btn primary" data-action="pick" ${rt.busy ? "disabled" : ""}>${has ? "差し替え" : "追加"}</button>
+          <button type="button" class="mini-btn" data-action="remove" ${has && !rt.busy ? "" : "disabled"}>消す</button>
         </div>
-        ${canAi ? `<button type="button" class="mini-btn" data-action="ai-photo" style="width:100%">${rt.busy ? "読取中…" : "写真AIで読む"}</button>` : ""}
+        ${canAi ? `<button type="button" class="mini-btn" data-action="ai-photo" style="width:100%" ${rt.busy ? "disabled" : ""}>${escapeHtml(aiLabel)}</button>` : ""}
         ${rt.error ? `<p class="hint">${escapeHtml(rt.error)}</p>` : ""}
+        ${rt.error && has && !state.missingBlob ? `<p class="hint">写真は保存済みです。AIだけ再試行できます。</p>` : ""}
       </div>
-      <input class="file-hidden" type="file" accept="image/*" data-action="file-library">
-      <input class="file-hidden" type="file" accept="image/*" capture="environment" data-action="file-camera">
+      <input class="file-hidden" type="file" accept="image/*,.heic,.heif,image/heic,image/heif" data-action="file-library">
+      <input class="file-hidden" type="file" accept="image/*,.heic,.heif,image/heic,image/heif" capture="environment" data-action="file-camera">
     </article>`;
   }
 
@@ -870,6 +951,7 @@
       if (!(card instanceof HTMLElement)) return;
       const id = card.getAttribute("data-photo-id");
       if (target.closest('[data-action="pick"]')) {
+        if (getAiPhotoRuntime(id).busy) return;
         openPhotoPicker(id);
         return;
       }
@@ -878,6 +960,7 @@
         return;
       }
       if (target.closest('[data-action="remove"]')) {
+        if (getAiPhotoRuntime(id).busy) return;
         revokePhoto(id);
         clearAiPhoto(id);
         markPhotoDelete(id);
@@ -886,6 +969,18 @@
         notifyDirty();
       }
     });
+    root.addEventListener("error", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLImageElement)) return;
+      if (!target.hasAttribute("data-photo-preview")) return;
+      const card = target.closest("[data-photo-id]");
+      if (!(card instanceof HTMLElement)) return;
+      const id = card.getAttribute("data-photo-id");
+      const state = photoState[id];
+      if (!state) return;
+      state.previewFailed = true;
+      renderPhotos();
+    }, true);
     root.addEventListener("change", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLInputElement) || target.type !== "file") return;
@@ -929,21 +1024,29 @@
 
   function setPhotoFromFile(id, file) {
     if (!file) { window.alert("画像ファイルを選択してください。"); return; }
-    const mime = String(file.type || "").toLowerCase();
-    if (BLOCKED_IMAGE_TYPES.has(mime) || (!mime.startsWith("image/") && mime !== "")) {
-      window.alert("JPEG / PNG / WebP / HEIC / HEIF を選択してください。");
+    const prep = window.BCFDImagePrep;
+    const mime = prep
+      ? prep.normalizeMime(file.type || "", file.name || "")
+      : String(file.type || "").toLowerCase();
+    if (BLOCKED_IMAGE_TYPES.has(mime) || (mime && !mime.startsWith("image/") && mime !== "")) {
+      window.alert("写真ファイルを選択してください。");
       return;
     }
-    if (mime && !ALLOWED_IMAGE_TYPES.has(mime) && mime.startsWith("image/")) {
-      window.alert("JPEG / PNG / WebP / HEIC / HEIF を選択してください。");
+    if (mime && !ALLOWED_IMAGE_TYPES.has(mime) && mime !== "image/jpg") {
+      window.alert("写真ファイルを選択してください。");
+      return;
+    }
+    if (!mime && !/\.(jpe?g|png|webp|heic|heif)$/i.test(String(file.name || ""))) {
+      window.alert("写真ファイルを選択してください。");
       return;
     }
     revokePhoto(id);
     const state = photoState[id];
+    // original: ユーザー選択のまま保持（変換で上書きしない）
     state.blob = file;
     state.objectUrl = URL.createObjectURL(file);
     state.fileName = file.name || "選択済み画像";
-    state.mimeType = file.type || "";
+    state.mimeType = mime || file.type || "";
     state.size = typeof file.size === "number" ? file.size : null;
     state.lastModified = typeof file.lastModified === "number" ? file.lastModified : null;
     state.registered = true;
@@ -956,32 +1059,51 @@
   }
 
   function mapAiErrorMessage(status, code, message) {
-    if (code === "model_timeout" || status === 504) return "AIの読取りが45秒以内に完了しませんでした。写真は保存されていません。もう一度試す場合は、時間をおいて手動で実行してください。";
-    if (status === 401 || status === 403) return "写真AIを使うには、BCアカウントのログインが必要です。";
-    return message || "写真AIを読めませんでした。写真は端末に残っています。";
+    if (code === "model_timeout" || status === 504) {
+      return "AIの読取りが45秒以内に完了しませんでした。元の写真は保存されています。時間をおいて、もう一度お試しください。";
+    }
+    if (status === 401 || status === 403) return "写真AIを使うには、BCアカウントのログインが必要です。写真は保存されています。";
+    if (code === "invalid_mime" || code === "payload_too_large") {
+      return "AI用の画像準備に失敗しました。元の写真は保存されています。";
+    }
+    return message || "写真AIを読めませんでした。元の写真は端末に残っています。";
+  }
+
+  function mapPrepErrorMessage(err) {
+    const code = err && err.code;
+    if (code === "heic_convert_failed" || code === "heic_unavailable") {
+      return "この写真をAI用に変換できませんでした。写真は保存されています。別の写真を選ぶか、もう一度撮影してください。";
+    }
+    if (code === "decode_failed") {
+      return "写真を読み込めませんでした。元の写真は保存されています。別の写真を選ぶか、もう一度撮影してください。";
+    }
+    if (code === "too_large" || code === "encode_failed" || code === "prepare_failed" || code === "canvas_unavailable") {
+      return "AI用の画像準備に失敗しました。元の写真は保存されています。";
+    }
+    if (err && err.message) return String(err.message);
+    return "AI用の画像準備に失敗しました。元の写真は保存されています。";
   }
 
   async function runAiReading(id) {
     if (!SURVEY_PHOTO_IDS.has(id)) return;
     const state = photoState[id];
-    if (!isPhotoPresent(state) || !isJpegPhoto(state)) {
-      const rt = getAiPhotoRuntime(id);
-      rt.error = "JPEG写真を追加してから実行してください。";
+    const rt = getAiPhotoRuntime(id);
+    if (!isPhotoPresent(state) || !(state.blob instanceof Blob) || state.missingBlob) {
+      rt.error = "写真を追加してから実行してください。写真が無い場合は先に撮影または選択してください。";
       renderPhotos();
       return;
     }
-    if (typeof state.size === "number" && state.size > AI_JPEG_MAX_BYTES) {
-      getAiPhotoRuntime(id).error = "写真は4MB以下のJPEGにしてください";
+    if (!isAllowedPhoto(state)) {
+      rt.error = "この写真形式ではAI読取できません。写真は保存されています。JPEG / PNG / WebP / HEIC をお試しください。";
       renderPhotos();
       return;
     }
     if (!isAiLoggedIn()) {
-      getAiPhotoRuntime(id).error = "写真AIにはログインが必要です。";
+      rt.error = "写真AIにはログインが必要です。写真は保存されています。";
       renderPhotos();
       openAiAuth();
       return;
     }
-    const rt = getAiPhotoRuntime(id);
     if (rt.busy) return;
     if (rt.cooldownUntil && Date.now() < rt.cooldownUntil) return;
     if (!window.confirm(AI_CONSENT_MESSAGE)) return;
@@ -991,18 +1113,38 @@
     const proxyUrl = auth && auth.AI_PHOTO_PROXY_URL;
     const anon = auth && auth.SUPABASE_ANON_KEY;
     if (!token || !proxyUrl || !anon) {
-      rt.error = "BCアカウントでログインしてください";
+      rt.error = "BCアカウントでログインしてください。写真は保存されています。";
       renderPhotos();
       return;
     }
-    rt.busy = true; rt.error = ""; rt.candidate = null;
+
+    rt.busy = true;
+    rt.error = "";
+    rt.candidate = null;
+    rt.prepStatus = "preparing";
     renderPhotos();
+
+    let prepared = null;
+    try {
+      prepared = await ensureAiPrepared(id, state);
+    } catch (err) {
+      rt.busy = false;
+      rt.cooldownUntil = Date.now() + AI_COOLDOWN_MS;
+      rt.error = mapPrepErrorMessage(err);
+      renderPhotos();
+      return;
+    }
+
     const controller = new AbortController();
     const clientTimer = window.setTimeout(() => controller.abort(), AI_CLIENT_TIMEOUT_MS);
     try {
       const form = new FormData();
       form.append("slotKey", id);
-      form.append("photo", state.blob, state.fileName && /\.jpe?g$/i.test(state.fileName) ? state.fileName : "photo.jpg");
+      form.append(
+        "photo",
+        prepared.blob,
+        "photo.jpg",
+      );
       const res = await fetch(proxyUrl, {
         method: "POST",
         headers: { Authorization: "Bearer " + token, apikey: anon },
@@ -1017,7 +1159,7 @@
         return;
       }
       if (!data.reading || data.status !== "suggested") {
-        rt.error = "写真AIの結果を安全に表示できませんでした。現場で確認してください。";
+        rt.error = "写真AIの結果を安全に表示できませんでした。現場で確認してください。写真は保存されています。";
         rt.candidate = null;
         return;
       }
@@ -1028,12 +1170,13 @@
     } catch (err) {
       const aborted = (err && err.name === "AbortError") || controller.signal.aborted;
       rt.error = aborted
-        ? "55秒以内に応答がありませんでした。写真は保存されていません。自動再送はしていません。"
-        : "通信が切れました。写真は端末に残っています。";
+        ? "55秒以内に応答がありませんでした。元の写真は保存されています。自動再送はしていません。"
+        : "通信が切れました。元の写真は端末に残っています。";
       rt.candidate = null;
     } finally {
       window.clearTimeout(clientTimer);
       rt.busy = false;
+      if (rt.prepStatus === "preparing") rt.prepStatus = prepared ? "ready" : "failed";
       rt.cooldownUntil = Date.now() + AI_COOLDOWN_MS;
       renderPhotos();
       renderAiSuggestions();

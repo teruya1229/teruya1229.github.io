@@ -208,12 +208,16 @@ describe("ai photo model / timeout bounds", () => {
     assert.match(appSrc, /controller\.abort\(\)/);
     assert.match(
       appSrc,
-      /55秒以内に応答がありませんでした。写真は保存されていません。自動再送はしていません。/
+      /55秒以内に応答がありませんでした。元の写真は保存されています。自動再送はしていません。/
     );
     assert.match(
       appSrc,
-      /AIの読取りが45秒以内に完了しませんでした。写真は保存されていません。もう一度試す場合は、時間をおいて手動で実行してください。/
+      /AIの読取りが45秒以内に完了しませんでした。元の写真は保存されています/
     );
+    assert.match(appSrc, /ensureAiPrepared|prepareForAi|BCFDImagePrep/);
+    assert.match(appSrc, /AI用に写真を準備しています/);
+    assert.doesNotMatch(appSrc, /写真は4MB以下のJPEGにしてください/);
+    assert.doesNotMatch(appSrc, /JPEG写真を追加してから実行してください/);
     assert.match(appSrc, /if\s*\(\s*rt\.busy\s*\)\s*return/);
     assert.doesNotMatch(appSrc, /runAiReading\([^)]*\)[\s\S]{0,80}runAiReading/);
     assert.match(appSrc, /status:\s*"suggested"/);
