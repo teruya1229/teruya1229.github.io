@@ -724,7 +724,28 @@
       renderEstimate();
     }
     renderCta();
-    history.replaceState(null, "", currentView === "estimate" ? "?view=estimate" : "?view=field");
+    try {
+      const next = new URL(window.location.href);
+      next.search = "";
+      next.searchParams.set("view", currentView === "estimate" ? "estimate" : "field");
+      if (nextUrlForceAuth()) next.searchParams.set("bcfd_auth", "1");
+      history.replaceState(null, "", next.pathname + "?" + next.searchParams.toString());
+    } catch (_) {
+      history.replaceState(null, "", currentView === "estimate" ? "?view=estimate" : "?view=field");
+    }
+  }
+
+  function nextUrlForceAuth() {
+    try {
+      if (new URL(window.location.href).searchParams.get("bcfd_auth") === "1") return true;
+    } catch (_) {
+      /* ignore */
+    }
+    try {
+      return sessionStorage.getItem("bcfd_auth_ui_force_v1") === "1";
+    } catch (_) {
+      return false;
+    }
   }
 
   function setSite(key, value) {
@@ -1508,6 +1529,11 @@
 
   function openAiAuthEscapeHatch() {
     // 管理メニューからの再認証入口（表示できるだけで認証突破はしない）
+    try {
+      sessionStorage.setItem("bcfd_auth_ui_force_v1", "1");
+    } catch (_) {
+      /* ignore */
+    }
     const panel = el("ai-auth-panel");
     if (!panel) return;
     panel.hidden = false;

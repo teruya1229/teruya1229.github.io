@@ -135,9 +135,24 @@
     return OWNER_PERSIST_EMAILS.indexOf(normalizeEmail(email)) >= 0;
   }
 
+  function captureAuthUiForceFlag() {
+    try {
+      if (new URL(window.location.href).searchParams.get("bcfd_auth") === "1") {
+        sessionStorage.setItem("bcfd_auth_ui_force_v1", "1");
+      }
+    } catch (_) {
+      /* ignore */
+    }
+  }
+
   function isAuthUiForcedByUrl() {
     try {
-      return new URL(window.location.href).searchParams.get("bcfd_auth") === "1";
+      if (new URL(window.location.href).searchParams.get("bcfd_auth") === "1") return true;
+    } catch (_) {
+      /* ignore */
+    }
+    try {
+      return sessionStorage.getItem("bcfd_auth_ui_force_v1") === "1";
     } catch (_) {
       return false;
     }
@@ -929,6 +944,7 @@
   }
 
   loadSession();
+  captureAuthUiForceFlag();
   // Boot: restore persistent session (owner IndexedDB) then detect recovery URL.
   whenReady().catch(() => {});
 

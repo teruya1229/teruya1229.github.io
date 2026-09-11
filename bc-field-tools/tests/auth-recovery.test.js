@@ -89,8 +89,8 @@ describe("auth-client / app wiring", () => {
   });
 
   it("cache buster bumped for auth assets", () => {
-    assert.match(indexSrc, /auth-client\.js\?v=20260911-004/);
-    assert.match(indexSrc, /app\.js\?v=20260911-004/);
+    assert.match(indexSrc, /auth-client\.js\?v=20260911-005/);
+    assert.match(indexSrc, /app\.js\?v=20260911-005/);
   });
 });
 
