@@ -134,13 +134,13 @@ describe("ai photo model / timeout bounds", () => {
   );
   const appPath = path.join(__dirname, "..", "app.js");
 
-  it("uses gpt-4o-mini without reasoning and max_output_tokens 400", () => {
+  it("uses gpt-4o-mini without reasoning and max_output_tokens 1200", () => {
     const indexSrc = fs.readFileSync(indexPath, "utf8");
     const safetySrc = fs.readFileSync(safetyPath, "utf8");
     assert.match(indexSrc, /OPENAI_MODEL\s*=\s*"gpt-4o-mini"/);
     assert.doesNotMatch(indexSrc, /gpt-5\.6-terra/);
     assert.doesNotMatch(indexSrc, /reasoning\s*:/);
-    assert.match(safetySrc, /MAX_OUTPUT_TOKENS\s*=\s*400/);
+    assert.match(safetySrc, /MAX_OUTPUT_TOKENS\s*=\s*1200/);
     assert.match(indexSrc, /max_output_tokens:\s*MAX_OUTPUT_TOKENS/);
     assert.match(indexSrc, /detail:\s*"high"/);
     assert.match(indexSrc, /store:\s*false/);
@@ -235,15 +235,21 @@ describe("ai photo model / timeout bounds", () => {
     assert.doesNotMatch(appSrc, /JSON\.stringify\(\s*(data\.)?reading/);
   });
 
-  it("keeps suggested-only runtime candidates and safety filter source", () => {
+  it("persists AI readings in snapshot and keeps safety filter source", () => {
     const indexSrc = fs.readFileSync(indexPath, "utf8");
     const safetySrc = fs.readFileSync(safetyPath, "utf8");
     const appSrc = fs.readFileSync(appPath, "utf8");
+    const htmlSrc = fs.readFileSync(path.join(__dirname, "..", "index.html"), "utf8");
     assert.match(indexSrc, /containsUnsafePhrase/);
+    assert.match(indexSrc, /fieldCandidates/);
+    assert.match(indexSrc, /SLOT_GUIDANCE/);
     assert.match(safetySrc, /施工可能/);
     assert.match(safetySrc, /活線ではない/);
-    assert.match(appSrc, /aiPhotoRuntime/);
-    assert.doesNotMatch(appSrc, /candidate.*IndexedDB|putAiCandidate|saveAiReading/i);
+    assert.match(appSrc, /aiReadings/);
+    assert.match(appSrc, /persistSlotAi/);
+    assert.match(appSrc, /BILLING_FIELDS/);
+    assert.match(appSrc, /form\.append\("context"/);
+    assert.match(htmlSrc, /id="ai-case-brief"/);
     assert.match(appSrc, /status:\s*"suggested"/);
   });
 });

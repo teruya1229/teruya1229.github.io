@@ -2,7 +2,7 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.09.11-012";
+  const APP_VERSION = "2026.09.11-013";
   /** 公開可能な anon key のみ（Edge gateway用。特権キーや外部API秘密は載せない） */
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
@@ -130,6 +130,7 @@
   let compMemo = "";
   let site = emptySite();
   let aiSuggestions = [];
+  let aiReadings = { schemaVersion: "ai-1", slots: {} };
   let quoteState = window.BCEstimate.loadState();
   let estCategory = "エアコン工事";
   let showMorePhotos = false;
@@ -237,6 +238,7 @@
   function clearAiPhoto(id) {
     aiPhotoRuntime[id] = emptyAiRuntime();
     aiSuggestions = aiSuggestions.filter((s) => s.slotId !== id);
+    if (aiReadings && aiReadings.slots) delete aiReadings.slots[id];
   }
   function photoSourceKey(state) {
     const prep = window.BCFDImagePrep;
@@ -289,6 +291,86 @@
   function clearAllAiPhotos() {
     Object.keys(aiPhotoRuntime).forEach((id) => clearAiPhoto(id));
     aiSuggestions = [];
+    aiReadings = { schemaVersion: "ai-1", slots: {} };
+  }
+  function persistableAiReadings() {
+    try {
+      return JSON.parse(JSON.stringify(aiReadings || { schemaVersion: "ai-1", slots: {} }));
+    } catch (_) {
+      return { schemaVersion: "ai-1", slots: {} };
+    }
+  }
+  function applySiteField(field, value) {
+    const F = window.BCFDAiField;
+    if (!F || !F.canApplyField(site, field, value)) return false;
+    if (F.BILLING_FIELDS.has(field)) return false;
+    if (field === "hole") {
+      site.hole = value;
+      if (value === "あり" && !site.holeCount) site.holeCount = 1;
+      return true;
+    }
+    site[field] = value;
+    return true;
+  }
+  function bindSuggestion(item) {
+    item.apply = () => applySiteField(item.targetField, item.proposedValue);
+    return item;
+  }
+  function persistSlotAi(slotId) {
+    const F = window.BCFDAiField;
+    if (!F) return;
+    const rt = getAiPhotoRuntime(slotId);
+    const def = PHOTO_DEFS.find((p) => p.id === slotId);
+    const slotSugs = aiSuggestions.filter((s) => s.slotId === slotId);
+    if (!aiReadings || typeof aiReadings !== "object") aiReadings = { schemaVersion: F.AI_READING_SCHEMA_VERSION, slots: {} };
+    if (!aiReadings.slots) aiReadings.slots = {};
+    if (rt.candidate && rt.candidate.reading) {
+      aiReadings.slots[slotId] = F.persistableSlot(
+        slotId,
+        (def && def.title) || slotId,
+        rt.candidate.reading,
+        slotSugs
+      );
+    } else {
+      delete aiReadings.slots[slotId];
+    }
+  }
+  function restoreAiFromSnapshot(stored) {
+    const F = window.BCFDAiField;
+    aiReadings = { schemaVersion: (F && F.AI_READING_SCHEMA_VERSION) || "ai-1", slots: {} };
+    Object.keys(aiPhotoRuntime).forEach((id) => { aiPhotoRuntime[id] = emptyAiRuntime(); });
+    aiSuggestions = [];
+    if (!F || !stored || typeof stored !== "object" || !stored.slots) return;
+    Object.keys(stored.slots).forEach((id) => {
+      const row = stored.slots[id];
+      if (!row || !row.reading) return;
+      const reading = F.normalizeReading(row.reading);
+      const rt = getAiPhotoRuntime(id);
+      rt.candidate = { source: "saved", status: "suggested", slotTitle: row.slotTitle || id, reading };
+      rt.error = "";
+      aiReadings.slots[id] = row;
+      (row.suggestions || []).forEach((s) => {
+        aiSuggestions.push(bindSuggestion({
+          id: s.id || id + "-" + s.key,
+          slotId: id,
+          key: s.key,
+          targetField: s.targetField,
+          proposedValue: s.proposedValue,
+          label: s.label,
+          reason: s.reason || "",
+          conflict: Boolean(s.conflict),
+          status: s.status || "pending",
+        }));
+      });
+    });
+  }
+  function otherPhotoSummaries(exceptId) {
+    return PHOTO_DEFS.filter((d) => d.id !== exceptId).map((d) => {
+      const row = aiReadings.slots && aiReadings.slots[d.id];
+      const summary = row && row.reading && row.reading.summary;
+      if (!summary) return null;
+      return { slotId: d.id, title: d.title, summary: String(summary).slice(0, 160) };
+    }).filter(Boolean);
   }
   function revokePhoto(id) {
     const state = photoState[id];
@@ -404,6 +486,7 @@
         siteConfirm: emptySite(),
         diagnosis: null,
         unresolved: [],
+        aiReadings: { schemaVersion: "ai-1", slots: {} },
       },
       preparation: {
         workSummary: "", method: "", route: "", worker: "", supervisor: "",
@@ -463,6 +546,7 @@
             }
           : null,
         unresolved: [],
+        aiReadings: persistableAiReadings(),
       },
       preparation: {
         workSummary: prepText.workSummary,
@@ -625,6 +709,7 @@
       }
       switchPhase(wf.currentPhase || "survey", { silent: true });
       pendingPhotoOps.clear();
+      restoreAiFromSnapshot(snap.survey && snap.survey.aiReadings);
       renderAll();
     } finally {
       suppressDirty = false;
@@ -805,6 +890,7 @@
       renderPhotos();
       renderAiSuggestions();
       renderFieldExtras();
+      renderAiCaseBrief();
       return;
     }
 
@@ -889,6 +975,7 @@
     renderPhotos();
     renderAiSuggestions();
     renderFieldExtras();
+    renderAiCaseBrief();
   }
 
   function wireDistancePreset() {
@@ -961,20 +1048,41 @@
   }
 
   function formatAiReadingHtml(reading) {
-    if (!reading || typeof reading !== "object") return "";
-    const summary = String(reading.summary || "").trim();
-    const candLines = Array.isArray(reading.candidates)
-      ? reading.candidates.map(formatAiCandidateLine).filter(Boolean)
+    const F = window.BCFDAiField;
+    const n = F ? F.normalizeReading(reading) : reading;
+    if (!n || typeof n !== "object") return "";
+    const summary = String(n.summary || "").trim();
+    const factLines = Array.isArray(n.visibleFacts) ? n.visibleFacts.map(String).filter(Boolean) : [];
+    const candLines = Array.isArray(n.candidates) ? n.candidates.map(formatAiCandidateLine).filter(Boolean) : [];
+    const evidLines = Array.isArray(n.evidence) ? n.evidence.map(formatAiEvidenceLine).filter(Boolean) : [];
+    const workLines = Array.isArray(n.workCandidates) ? n.workCandidates.map((w) => w.label + (w.reason ? "（" + w.reason + "）" : "")).filter(Boolean) : [];
+    const matLines = Array.isArray(n.materialPlanCandidates) && F
+      ? n.materialPlanCandidates.map((m) => F.materialLine(m)).filter(Boolean)
       : [];
-    const evidLines = Array.isArray(reading.evidence)
-      ? reading.evidence.map(formatAiEvidenceLine).filter(Boolean)
+    const measLines = Array.isArray(n.requiredMeasurements) ? n.requiredMeasurements.map(String).filter(Boolean) : [];
+    const missLines = Array.isArray(n.missingInformation) ? n.missingInformation.map(String).filter(Boolean) : [];
+    const nextLines = Array.isArray(n.nextPhotos) ? n.nextPhotos.map((p) => p.instruction || p).filter(Boolean) : [];
+    const warnLines = Array.isArray(n.warnings) ? n.warnings.map(String).filter(Boolean) : [];
+    const known = window.BCEstimate && window.BCEstimate.knownIds;
+    const estLines = Array.isArray(n.estimateCandidates)
+      ? n.estimateCandidates.map((e) => {
+          const st = F ? F.estimateStatus(e.catalogId, known) : { mapped: false };
+          if (!st.mapped) return (e.label || "工事候補") + "：料金マスターに対応項目なし";
+          return (e.label || st.catalogId) + (e.reason ? "（" + e.reason + "）" : "") + " ※人間確認後に見積へ";
+        })
       : [];
-    if (!summary && !candLines.length && !evidLines.length) return "";
     return `<div class="ai-reading">
-      <b>【AI読取結果】</b>
-      ${summary ? `<p>${escapeHtml(summary)}</p>` : ""}
-      ${aiReadingListHtml("読み取れた候補", candLines)}
+      <b>【読み取れた内容】</b>
+      ${summary ? `<p>${escapeHtml(summary)}</p>` : `<p>読み取れた内容はありません</p>`}
+      ${aiReadingListHtml("見える事実候補", factLines.length ? factLines : candLines)}
       ${aiReadingListHtml("写真から見えた根拠", evidLines)}
+      ${aiReadingListHtml("必要工事候補", workLines)}
+      ${aiReadingListHtml("持参材料候補（準備用・未確定）", matLines)}
+      ${aiReadingListHtml("想定長 / 要実測", measLines)}
+      ${aiReadingListHtml("見積候補", estLines)}
+      ${aiReadingListHtml("追加確認", missLines)}
+      ${aiReadingListHtml("追加で撮る写真", nextLines)}
+      ${aiReadingListHtml("注意・食い違い", warnLines)}
     </div>`;
   }
 
@@ -988,6 +1096,8 @@
     return `<div class="ai-card" data-sug="${escapeAttr(s.id)}">
         <b>AI読取・要確認</b>
         <p>「${escapeHtml(s.label)}」に見えます</p>
+        ${s.conflict ? `<p class="hint">現在の入力は「${escapeHtml(s.currentValue || "")}」です。勝手には上書きしません。</p>` : ""}
+        ${s.reason ? `<p class="hint">${escapeHtml(s.reason)}</p>` : ""}
         <div class="ai-actions">
           <button type="button" class="btn btn-primary" data-ai="apply">反映する</button>
           <button type="button" class="btn btn-secondary" data-ai="reject">違う</button>
@@ -1273,11 +1383,12 @@
     try {
       const form = new FormData();
       form.append("slotKey", id);
-      form.append(
-        "photo",
-        prepared.blob,
-        "photo.jpg",
-      );
+      form.append("photo", prepared.blob, "photo.jpg");
+      const F = window.BCFDAiField;
+      if (F) {
+        const ctx = F.buildAiContext(id, site, site.workType, otherPhotoSummaries(id));
+        form.append("context", JSON.stringify(ctx));
+      }
       const res = await fetch(AI_PHOTO_PROXY_URL, {
         method: "POST",
         headers: { Authorization: "Bearer " + SUPABASE_ANON_KEY, apikey: SUPABASE_ANON_KEY },
@@ -1297,9 +1408,12 @@
         return;
       }
       const def = PHOTO_DEFS.find((p) => p.id === id);
-      rt.candidate = { source: "openai", status: "suggested", slotTitle: (def && def.title) || id, reading: data.reading };
+      const reading = F ? F.normalizeReading(data.reading) : data.reading;
+      rt.candidate = { source: "openai", status: "suggested", slotTitle: (def && def.title) || id, reading };
       rt.error = "";
-      ingestAiReading(id, data.reading);
+      ingestAiReading(id, reading);
+      persistSlotAi(id);
+      notifyDirty();
     } catch (err) {
       const aborted = (err && err.name === "AbortError") || controller.signal.aborted;
       rt.error = aborted
@@ -1313,31 +1427,43 @@
       rt.cooldownUntil = Date.now() + AI_COOLDOWN_MS;
       renderPhotos();
       renderAiSuggestions();
+      renderAiCaseBrief();
     }
   }
 
   function ingestAiReading(slotId, reading) {
+    const F = window.BCFDAiField;
+    const n = F ? F.normalizeReading(reading) : reading;
+    if (F && n && Array.isArray(n.fieldCandidates) && n.fieldCandidates.length) {
+      n.fieldCandidates.forEach((cand) => {
+        const item = F.suggestionFromField(slotId, cand, site);
+        if (!item) return;
+        if (aiSuggestions.some((s) => s.id === item.id && (s.status === "pending" || s.status === "applied"))) return;
+        aiSuggestions.push(bindSuggestion(item));
+      });
+      return;
+    }
     const texts = [];
-    if (reading && reading.summary) texts.push(String(reading.summary));
-    (reading.candidates || []).forEach((c) => {
+    if (n && n.summary) texts.push(String(n.summary));
+    (n && n.candidates || []).forEach((c) => {
       if (c && c.label) texts.push(String(c.label));
       if (c && c.value) texts.push(String(c.value));
     });
-    (reading.evidence || []).forEach((e) => { if (e && e.text) texts.push(String(e.text)); });
+    (n && n.evidence || []).forEach((e) => { if (e && e.text) texts.push(String(e.text)); });
     const blob = texts.join(" ");
     const add = (key, label, apply) => {
       if (aiSuggestions.some((s) => s.key === key && s.status === "pending")) return;
-      aiSuggestions.push({ id: slotId + "-" + key, slotId, key, label, apply, status: "pending" });
+      aiSuggestions.push({ id: slotId + "-" + key, slotId, key, label, apply, status: "pending", targetField: key, proposedValue: label });
     };
-    if (/穴あけ|貫通/.test(blob) && site.hole !== "あり") add("hole", "穴あけあり", () => { site.hole = "あり"; if (!site.holeCount) site.holeCount = 1; });
+    if (/穴あけ|貫通/.test(blob) && site.hole !== "あり") add("hole", "穴あけあり", () => applySiteField("hole", "あり"));
     if (/専用回路.{0,6}なし|専用.*無い|空き回路.{0,4}なし/.test(blob) && site.dedicatedCircuit !== "なし") {
-      add("dedicated-none", "専用回路なし", () => { site.dedicatedCircuit = "なし"; });
+      add("dedicated-none", "専用回路なし", () => applySiteField("dedicatedCircuit", "なし"));
     }
-    if (/屋根/.test(blob) && site.outdoorPlace !== "屋根") add("roof", "屋根置き", () => { site.outdoorPlace = "屋根"; });
-    if (/壁面|壁掛け/.test(blob) && site.outdoorPlace !== "壁面") add("wall", "壁面設置", () => { site.outdoorPlace = "壁面"; });
-    if (/化粧カバー/.test(blob) && site.cover !== "あり") add("cover", "化粧カバーあり", () => { site.cover = "あり"; });
-    if (/\b100V\b|１００Ｖ/.test(blob) && site.acVoltage !== "100V") add("v100", "100V", () => { site.acVoltage = "100V"; });
-    if (/\b200V\b|２００Ｖ/.test(blob) && site.acVoltage !== "200V") add("v200", "200V", () => { site.acVoltage = "200V"; });
+    if (/屋根/.test(blob) && site.outdoorPlace !== "屋根") add("roof", "屋根置き", () => applySiteField("outdoorPlace", "屋根"));
+    if (/壁面|壁掛け/.test(blob) && site.outdoorPlace !== "壁面") add("wall", "壁面設置", () => applySiteField("outdoorPlace", "壁面"));
+    if (/化粧カバー/.test(blob) && site.cover !== "あり") add("cover", "化粧カバーあり", () => applySiteField("cover", "あり"));
+    if (/\b100V\b|１００Ｖ/.test(blob) && site.acVoltage !== "100V") add("v100", "100V", () => applySiteField("acVoltage", "100V"));
+    if (/\b200V\b|２００Ｖ/.test(blob) && site.acVoltage !== "200V") add("v200", "200V", () => applySiteField("acVoltage", "200V"));
   }
 
   function renderAiSuggestions() {
@@ -1345,6 +1471,49 @@
     if (!box) return;
     const pending = aiSuggestions.filter((s) => s.status === "pending");
     box.innerHTML = pending.map(aiSuggestionCardHtml).join("");
+  }
+
+  function renderAiCaseBrief() {
+    const box = el("ai-case-brief");
+    if (!box) return;
+    const F = window.BCFDAiField;
+    if (!F) { box.innerHTML = ""; return; }
+    const readingsBySlot = {};
+    const readingList = [];
+    Object.keys(aiReadings.slots || {}).forEach((id) => {
+      const row = aiReadings.slots[id];
+      if (!row || !row.reading) return;
+      const n = F.normalizeReading(row.reading);
+      n.slotId = id;
+      readingsBySlot[id] = n;
+      readingList.push(n);
+    });
+    if (!readingList.length) { box.innerHTML = ""; return; }
+    const present = {};
+    PHOTO_DEFS.forEach((d) => { present[d.id] = isPhotoPresent(photoState[d.id]); });
+    const checks = F.photoCheck(site.workType, present, readingsBySlot);
+    const conflicts = F.detectConflicts(readingList, site);
+    const mats = F.mergeMaterials(readingList);
+    const pending = aiSuggestions.filter((s) => s.status === "pending");
+    const confirmed = aiSuggestions.filter((s) => s.status === "applied");
+    const meas = [];
+    readingList.forEach((r) => (r.requiredMeasurements || []).forEach((m) => meas.push(m)));
+    const nexts = [];
+    readingList.forEach((r) => (r.nextPhotos || []).forEach((p) => nexts.push(p.instruction || p)));
+    const built = window.BCEstimate.buildFieldLines(site);
+    const estLines = built.lines.map((l) => l.name + " × " + l.qty + (l.unit || ""));
+    box.innerHTML = `<div class="ai-brief">
+      <b>【AI現場まとめ】</b>
+      <p class="hint">AI想定は材料準備用です。見積の追加配管・配線延長mは人間の実測だけを使います。</p>
+      ${aiReadingListHtml("写真チェック", checks.map((c) => c.mark + " " + c.title + "：" + c.note))}
+      ${aiReadingListHtml("確認済み現場条件", confirmed.map((s) => s.label))}
+      ${aiReadingListHtml("AI要確認", pending.map((s) => s.label + (s.conflict ? "（入力と不一致）" : "")))}
+      ${aiReadingListHtml("持参材料候補（準備用）", mats.map((m) => F.materialLine(m)))}
+      ${aiReadingListHtml("要実測", meas)}
+      ${aiReadingListHtml("不足写真", nexts)}
+      ${aiReadingListHtml("食い違い", conflicts)}
+      ${aiReadingListHtml("見積候補（人間確認済み情報のみ）", estLines)}
+    </div>`;
   }
 
   function renderPrep() {
@@ -1698,8 +1867,21 @@
     const sug = t.closest("[data-sug]");
     if (sug) {
       const item = aiSuggestions.find((s) => s.id === sug.getAttribute("data-sug"));
-      if (item && t.closest('[data-ai="apply"]')) { item.apply(); item.status = "applied"; renderSurvey(); notifyDirty(); }
-      if (item && t.closest('[data-ai="reject"]')) { item.status = "rejected"; renderPhotos(); renderAiSuggestions(); }
+      if (item && t.closest('[data-ai="apply"]')) {
+        item.apply();
+        item.status = "applied";
+        persistSlotAi(item.slotId);
+        renderSurvey();
+        notifyDirty();
+      }
+      if (item && t.closest('[data-ai="reject"]')) {
+        item.status = "rejected";
+        persistSlotAi(item.slotId);
+        renderPhotos();
+        renderAiSuggestions();
+        renderAiCaseBrief();
+        notifyDirty();
+      }
       return;
     }
     const cat = t.closest("[data-cat]");
@@ -1779,6 +1961,11 @@
       renderPhotos,
       renderAiSuggestions,
       getAiSuggestions: () => aiSuggestions,
+      getAiReadings: () => aiReadings,
+      persistableAiReadings,
+      restoreAiFromSnapshot,
+      applySiteField,
+      normalizeReading: (r) => window.BCFDAiField.normalizeReading(r),
     },
   };
 })();

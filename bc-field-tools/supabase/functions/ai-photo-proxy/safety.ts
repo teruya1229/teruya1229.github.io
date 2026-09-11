@@ -5,7 +5,7 @@ export const MAX_JPEG_BYTES = 4 * 1024 * 1024;
 export const MAX_REQUEST_BYTES = MAX_JPEG_BYTES + 256 * 1024;
 /** OpenAI wall-clock budget covering fetch + body read + JSON parse + extract. */
 export const OPENAI_OPERATION_TIMEOUT_MS = 45_000;
-export const MAX_OUTPUT_TOKENS = 400;
+export const MAX_OUTPUT_TOKENS = 1200;
 
 /** Per-client sliding window (in-memory, best-effort). */
 export const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
@@ -100,6 +100,112 @@ export const SURVEY_SLOT_KEYS = new Set([
   "route-plan",
 ]);
 
+export const SLOT_GUIDANCE: Record<string, { title: string; purpose: string; expected: string; forbid: string }> = {
+  "panel-overview": {
+    title: "分電盤",
+    purpose: "分電盤全体・主幹・分岐・空き・見える電圧/回路表示・焦げ破損の候補",
+    expected: "全体が写っているか、追加アップが要るか",
+    forbid: "施工可否・回路使用可否は確定しない",
+  },
+  "main-breaker": {
+    title: "主幹ブレーカー",
+    purpose: "メーカー・型式・定格・電圧/相の見える表示と判読可否",
+    expected: "文字が読めなければ再撮影指示",
+    forbid: "施工可否・遮断器定格の確定はしない",
+  },
+  "branch-labels": {
+    title: "分岐・回路表示",
+    purpose: "回路名称・エアコン回路らしき表示・空き回路/スペース候補",
+    expected: "読めなければ追加アップ",
+    forbid: "空き回路の使用可否は確定しない",
+  },
+  "ac-nameplate": {
+    title: "エアコン銘板",
+    purpose: "見えるメーカー・型番・電圧・能力・冷媒。型番は推測しない",
+    expected: "型番がぼけていれば正面近距離を要求",
+    forbid: "配管サイズを見た目だけで確定しない。型番根拠が無ければ仕様確認必要",
+  },
+  "indoor-place": {
+    title: "室内機",
+    purpose: "位置・既存穴・配管出口・カバー・露出・高所・障害物",
+    expected: "出口や穴が見えなければ別角度",
+    forbid: "隠蔽物は断定しない",
+  },
+  "outdoor-place": {
+    title: "室外機",
+    purpose: "床/屋根/壁面/天吊り/二段/別階・架台・アクセス・ドレン・カバー",
+    expected: "全景と取り出しが見えるか",
+    forbid: "再利用可否は人間確認",
+  },
+  "existing-outlet": {
+    title: "設置場所",
+    purpose: "コンセント形状・見える電圧表示・壁面・穴・カバー",
+    expected: "差込口全体と表示が読める距離",
+    forbid: "接続方法は決めない",
+  },
+  "route-plan": {
+    title: "配線・配管ルート",
+    purpose: "配管/配線/ドレンルート・露出隠蔽・階跨ぎ・距離推定の可否",
+    expected: "室内〜貫通〜室外の欠けを具体的に要求",
+    forbid: "根拠が弱い距離は推定不可。課金mは出さない",
+  },
+};
+
+const TARGET_FIELDS = new Set([
+  "acVoltage",
+  "dedicatedCircuit",
+  "outdoorPlace",
+  "hole",
+  "cover",
+  "wiringRoute",
+  "voltChange",
+  "spareCircuit",
+  "other",
+]);
+const WORK_KEYS = new Set([
+  "install",
+  "remove",
+  "dedicated",
+  "volt_change",
+  "hole",
+  "cover",
+  "pipe_ext",
+  "wire_ext",
+  "roof_wall",
+  "other",
+]);
+const MATERIAL_KEYS = new Set([
+  "refrigerant_pipe",
+  "insulated_drain",
+  "drain_hose",
+  "power_cable",
+  "interconnect",
+  "cover",
+  "sleeve",
+  "putty",
+  "stand",
+  "bend",
+  "terminal",
+  "joint",
+  "drain_fitting",
+  "other",
+]);
+const MATERIAL_ROLES = new Set(["indoor", "outdoor", "prep", "unknown"]);
+const ESTIMATE_CATALOG = new Set([
+  "install_std",
+  "remove_std",
+  "remove_floor",
+  "roof_wall",
+  "pipe_ext",
+  "cover",
+  "dedicated",
+  "volt_change",
+  "hole",
+  "wire_ext",
+  "angle",
+  "none",
+]);
+
 export const CATEGORIES = new Set([
   "panel_label",
   "breaker_label",
@@ -165,17 +271,9 @@ function isStringArray(v: unknown, maxLen: number): v is string[] {
   return v.every((item) => isShortString(item));
 }
 
-/**
- * Validate structured reading payload. Returns null if invalid.
- * Does not rewrite unsafe content — caller must reject via containsUnsafePhrase.
- */
-export function parseReadingPayload(raw: unknown): Record<string, unknown> | null {
-  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
-  const o = raw as Record<string, unknown>;
-
+function parseLegacyReading(o: Record<string, unknown>): Record<string, unknown> | null {
   if (typeof o.category !== "string" || !CATEGORIES.has(o.category)) return null;
   if (!isShortString(o.summary) || o.summary.length === 0) return null;
-
   if (!Array.isArray(o.candidates) || o.candidates.length > 6) return null;
   for (let i = 0; i < o.candidates.length; i++) {
     const c = o.candidates[i];
@@ -183,9 +281,104 @@ export function parseReadingPayload(raw: unknown): Record<string, unknown> | nul
     const cand = c as Record<string, unknown>;
     if (!isShortString(cand.label) || cand.label.length === 0) return null;
     if (!isShortString(cand.value) || cand.value.length === 0) return null;
-    if (typeof cand.confidence !== "string" || !CONFIDENCE.has(cand.confidence)) {
-      return null;
-    }
+    if (typeof cand.confidence !== "string" || !CONFIDENCE.has(cand.confidence)) return null;
+  }
+  if (!Array.isArray(o.evidence) || o.evidence.length > 6) return null;
+  for (let i = 0; i < o.evidence.length; i++) {
+    const e = o.evidence[i];
+    if (!e || typeof e !== "object") return null;
+    const ev = e as Record<string, unknown>;
+    if (typeof ev.kind !== "string" || !EVIDENCE_KINDS.has(ev.kind)) return null;
+    if (!isShortString(ev.text) || ev.text.length === 0) return null;
+  }
+  if (!isStringArray(o.uncertainty, 6)) return null;
+  if (!isStringArray(o.requiredFollowUp, 6)) return null;
+  if (!isStringArray(o.disclaimers, 6)) return null;
+  return {
+    category: o.category,
+    summary: o.summary,
+    visibleFacts: [],
+    fieldCandidates: [],
+    workCandidates: [],
+    estimateCandidates: [],
+    materialPlanCandidates: [],
+    warnings: [],
+    missingInformation: o.requiredFollowUp,
+    nextPhotos: [],
+    evidence: o.evidence,
+    uncertainty: o.uncertainty,
+    requiredMeasurements: [],
+    candidates: o.candidates,
+    requiredFollowUp: o.requiredFollowUp,
+    disclaimers: o.disclaimers,
+  };
+}
+
+function parseNewReading(o: Record<string, unknown>): Record<string, unknown> | null {
+  if (typeof o.category !== "string" || !CATEGORIES.has(o.category)) return null;
+  if (!isShortString(o.summary) || o.summary.length === 0) return null;
+  if (!isStringArray(o.visibleFacts, 8)) return null;
+  if (!isStringArray(o.warnings, 6)) return null;
+  if (!isStringArray(o.missingInformation, 6)) return null;
+  if (!isStringArray(o.uncertainty, 6)) return null;
+  if (!isStringArray(o.requiredMeasurements, 6)) return null;
+
+  if (!Array.isArray(o.fieldCandidates) || o.fieldCandidates.length > 6) return null;
+  for (let i = 0; i < o.fieldCandidates.length; i++) {
+    const c = o.fieldCandidates[i];
+    if (!c || typeof c !== "object") return null;
+    const cand = c as Record<string, unknown>;
+    if (typeof cand.targetField !== "string" || !TARGET_FIELDS.has(cand.targetField)) return null;
+    if (!isShortString(cand.proposedValue) || cand.proposedValue.length === 0) return null;
+    if (typeof cand.confidence !== "string" || !CONFIDENCE.has(cand.confidence)) return null;
+    if (!isShortString(cand.reason)) return null;
+    if (!isShortString(cand.evidence)) return null;
+    if (typeof cand.requiresHumanConfirmation !== "boolean") return null;
+  }
+
+  if (!Array.isArray(o.workCandidates) || o.workCandidates.length > 6) return null;
+  for (let i = 0; i < o.workCandidates.length; i++) {
+    const c = o.workCandidates[i];
+    if (!c || typeof c !== "object") return null;
+    const w = c as Record<string, unknown>;
+    if (typeof w.key !== "string" || !WORK_KEYS.has(w.key)) return null;
+    if (!isShortString(w.label) || w.label.length === 0) return null;
+    if (!isShortString(w.reason)) return null;
+    if (typeof w.confidence !== "string" || !CONFIDENCE.has(w.confidence)) return null;
+  }
+
+  if (!Array.isArray(o.estimateCandidates) || o.estimateCandidates.length > 6) return null;
+  for (let i = 0; i < o.estimateCandidates.length; i++) {
+    const c = o.estimateCandidates[i];
+    if (!c || typeof c !== "object") return null;
+    const e = c as Record<string, unknown>;
+    if (typeof e.catalogId !== "string" || !ESTIMATE_CATALOG.has(e.catalogId)) return null;
+    if (!isShortString(e.label) || e.label.length === 0) return null;
+    if (!isShortString(e.reason)) return null;
+  }
+
+  if (!Array.isArray(o.materialPlanCandidates) || o.materialPlanCandidates.length > 8) return null;
+  for (let i = 0; i < o.materialPlanCandidates.length; i++) {
+    const c = o.materialPlanCandidates[i];
+    if (!c || typeof c !== "object") return null;
+    const m = c as Record<string, unknown>;
+    if (typeof m.material !== "string" || !MATERIAL_KEYS.has(m.material)) return null;
+    if (typeof m.role !== "string" || !MATERIAL_ROLES.has(m.role)) return null;
+    if (!isShortString(m.label) || m.label.length === 0) return null;
+    if (typeof m.estimatedMin !== "number" || !Number.isFinite(m.estimatedMin)) return null;
+    if (typeof m.estimatedMax !== "number" || !Number.isFinite(m.estimatedMax)) return null;
+    if (!isShortString(m.unit) || m.unit.length === 0) return null;
+    if (typeof m.confidence !== "string" || !CONFIDENCE.has(m.confidence)) return null;
+    if (typeof m.requiresMeasurement !== "boolean") return null;
+    if (!isShortString(m.basis)) return null;
+  }
+
+  if (!Array.isArray(o.nextPhotos) || o.nextPhotos.length > 4) return null;
+  for (let i = 0; i < o.nextPhotos.length; i++) {
+    const n = o.nextPhotos[i];
+    if (!n || typeof n !== "object") return null;
+    const np = n as Record<string, unknown>;
+    if (!isShortString(np.instruction) || np.instruction.length === 0) return null;
   }
 
   if (!Array.isArray(o.evidence) || o.evidence.length > 6) return null;
@@ -197,19 +390,40 @@ export function parseReadingPayload(raw: unknown): Record<string, unknown> | nul
     if (!isShortString(ev.text) || ev.text.length === 0) return null;
   }
 
-  if (!isStringArray(o.uncertainty, 6)) return null;
-  if (!isStringArray(o.requiredFollowUp, 6)) return null;
-  if (!isStringArray(o.disclaimers, 6)) return null;
-
   return {
     category: o.category,
     summary: o.summary,
-    candidates: o.candidates,
+    visibleFacts: o.visibleFacts,
+    fieldCandidates: (o.fieldCandidates as Record<string, unknown>[]).map((c) => ({
+      ...c,
+      requiresHumanConfirmation: true,
+    })),
+    workCandidates: o.workCandidates,
+    estimateCandidates: o.estimateCandidates,
+    materialPlanCandidates: o.materialPlanCandidates,
+    warnings: o.warnings,
+    missingInformation: o.missingInformation,
+    nextPhotos: o.nextPhotos,
     evidence: o.evidence,
     uncertainty: o.uncertainty,
-    requiredFollowUp: o.requiredFollowUp,
-    disclaimers: o.disclaimers,
+    requiredMeasurements: o.requiredMeasurements,
+    candidates: [],
+    requiredFollowUp: o.missingInformation,
+    disclaimers: [],
   };
+}
+
+/**
+ * Validate structured reading payload. Returns null if invalid.
+ * Field-ops schema first, then legacy visible-label schema.
+ */
+export function parseReadingPayload(raw: unknown): Record<string, unknown> | null {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+  const o = raw as Record<string, unknown>;
+  if (Array.isArray(o.fieldCandidates) || Array.isArray(o.visibleFacts) || Array.isArray(o.materialPlanCandidates)) {
+    return parseNewReading(o);
+  }
+  return parseLegacyReading(o);
 }
 
 /** Flatten reading fields for unsafe-phrase scan. */
@@ -222,16 +436,25 @@ export function readingToScanText(reading: Record<string, unknown>): string {
       const item = arr[i];
       if (typeof item === "string") parts.push(item);
       else if (item && typeof item === "object" && keys) {
-        const o = item as Record<string, unknown>;
+        const rec = item as Record<string, unknown>;
         for (let k = 0; k < keys.length; k++) {
-          if (typeof o[keys[k]] === "string") parts.push(o[keys[k]] as string);
+          if (typeof rec[keys[k]] === "string") parts.push(rec[keys[k]] as string);
         }
       }
     }
   };
+  pushArr(reading.visibleFacts);
   pushArr(reading.candidates, ["label", "value"]);
+  pushArr(reading.fieldCandidates, ["proposedValue", "reason", "evidence"]);
+  pushArr(reading.workCandidates, ["label", "reason"]);
+  pushArr(reading.estimateCandidates, ["label", "reason"]);
+  pushArr(reading.materialPlanCandidates, ["label", "basis"]);
   pushArr(reading.evidence, ["text"]);
+  pushArr(reading.warnings);
+  pushArr(reading.missingInformation);
+  pushArr(reading.nextPhotos, ["instruction"]);
   pushArr(reading.uncertainty);
+  pushArr(reading.requiredMeasurements);
   pushArr(reading.requiredFollowUp);
   pushArr(reading.disclaimers);
   return parts.join("\n");

@@ -4,7 +4,7 @@
  * - verify_jwt = false（ユーザーJWT不要）
  * - CORS は許可 Origin のみ（POSTは Origin 必須）
  * - 連打対策: クライアント別 rate limit + 日次グローバル上限（in-memory）
- * - multipart は JPEG 1枚 + survey slotKey のみ
+ * - multipart は JPEG 1枚 + survey slotKey + 任意の現場コンテキストJSON
  * - OpenAI Responses API（store:false, detail:high, 1画像, 出力上限）
  * - 構造化JSON + 禁止表現フィルタ後、suggested 候補のみ返却
  * - OpenAI処理全体（fetch〜本文読取り〜JSON解析〜抽出）を45秒で打ち切り
@@ -16,6 +16,7 @@ import {
   MAX_OUTPUT_TOKENS,
   MAX_REQUEST_BYTES,
   OPENAI_OPERATION_TIMEOUT_MS,
+  SLOT_GUIDANCE,
   checkClientRateLimit,
   checkDailyGlobalBudget,
   classifyOpenAIFetchError,
@@ -38,11 +39,17 @@ const clientRateBuckets = new Map<string, number[]>();
 const dailyBudgetState = { day: "", count: 0 };
 
 const SYSTEM_INSTRUCTION = [
-  "写真上で直接見える文字・記号・外観の確認候補だけを日本語JSONで返す。",
-  "施工可否・安全・活線・配線サイズ・接続方法・カバー取り外し・作業指示は出さない。",
-  "不鮮明な文字や数値は推測しない。人物・住所・個人情報は抽出しない。",
-  "現地確認が必要なら requiredFollowUp へ。根拠がなければ判読不能と現地確認を優先する。",
+  "エアコン取付・専用回路工事の現場調査補助として、写真から見える事実候補を日本語JSONで返す。",
+  "目的は現場判断・材料準備・撮り忘れ防止・見積候補の補助。画像説明やOCR自体が目的ではない。",
+  "施工可否・安全・活線・電線サイズ・遮断器定格・接続方法・正確なドレン勾配・隠蔽物は断定しない。",
+  "型番は見える文字だけ。推測しない。価格は出さない。",
+  "距離は根拠が弱いなら推定不可。数字を捏造しない。AI想定長は材料準備用であり見積課金mではない。",
+  "人間確認済みの値と食い違う場合は warnings に書く。どちらかを勝手に採用しない。",
+  "追加写真が必要なら nextPhotos に具体的な撮り方を書く。",
 ].join("");
+
+const STRING300 = { type: "string", maxLength: 300 };
+const CONF = { type: "string", enum: ["low", "medium", "high"] };
 
 const READING_SCHEMA = {
   type: "object",
@@ -50,11 +57,17 @@ const READING_SCHEMA = {
   required: [
     "category",
     "summary",
-    "candidates",
+    "visibleFacts",
+    "fieldCandidates",
+    "workCandidates",
+    "estimateCandidates",
+    "materialPlanCandidates",
+    "warnings",
+    "missingInformation",
+    "nextPhotos",
     "evidence",
     "uncertainty",
-    "requiredFollowUp",
-    "disclaimers",
+    "requiredMeasurements",
   ],
   properties: {
     category: {
@@ -67,19 +80,155 @@ const READING_SCHEMA = {
         "other_visible_observation",
       ],
     },
-    summary: { type: "string", maxLength: 300 },
-    candidates: {
+    summary: STRING300,
+    visibleFacts: { type: "array", maxItems: 8, items: STRING300 },
+    fieldCandidates: {
       type: "array",
       maxItems: 6,
       items: {
         type: "object",
         additionalProperties: false,
-        required: ["label", "value", "confidence"],
+        required: ["targetField", "proposedValue", "confidence", "reason", "evidence", "requiresHumanConfirmation"],
         properties: {
-          label: { type: "string", maxLength: 300 },
-          value: { type: "string", maxLength: 300 },
-          confidence: { type: "string", enum: ["low", "medium", "high"] },
+          targetField: {
+            type: "string",
+            enum: [
+              "acVoltage",
+              "dedicatedCircuit",
+              "outdoorPlace",
+              "hole",
+              "cover",
+              "wiringRoute",
+              "voltChange",
+              "spareCircuit",
+              "other",
+            ],
+          },
+          proposedValue: STRING300,
+          confidence: CONF,
+          reason: STRING300,
+          evidence: STRING300,
+          requiresHumanConfirmation: { type: "boolean" },
         },
+      },
+    },
+    workCandidates: {
+      type: "array",
+      maxItems: 6,
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["key", "label", "reason", "confidence"],
+        properties: {
+          key: {
+            type: "string",
+            enum: [
+              "install",
+              "remove",
+              "dedicated",
+              "volt_change",
+              "hole",
+              "cover",
+              "pipe_ext",
+              "wire_ext",
+              "roof_wall",
+              "other",
+            ],
+          },
+          label: STRING300,
+          reason: STRING300,
+          confidence: CONF,
+        },
+      },
+    },
+    estimateCandidates: {
+      type: "array",
+      maxItems: 6,
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["catalogId", "label", "reason"],
+        properties: {
+          catalogId: {
+            type: "string",
+            enum: [
+              "install_std",
+              "remove_std",
+              "remove_floor",
+              "roof_wall",
+              "pipe_ext",
+              "cover",
+              "dedicated",
+              "volt_change",
+              "hole",
+              "wire_ext",
+              "angle",
+              "none",
+            ],
+          },
+          label: STRING300,
+          reason: STRING300,
+        },
+      },
+    },
+    materialPlanCandidates: {
+      type: "array",
+      maxItems: 8,
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: [
+          "material",
+          "role",
+          "label",
+          "estimatedMin",
+          "estimatedMax",
+          "unit",
+          "confidence",
+          "requiresMeasurement",
+          "basis",
+        ],
+        properties: {
+          material: {
+            type: "string",
+            enum: [
+              "refrigerant_pipe",
+              "insulated_drain",
+              "drain_hose",
+              "power_cable",
+              "interconnect",
+              "cover",
+              "sleeve",
+              "putty",
+              "stand",
+              "bend",
+              "terminal",
+              "joint",
+              "drain_fitting",
+              "other",
+            ],
+          },
+          role: { type: "string", enum: ["indoor", "outdoor", "prep", "unknown"] },
+          label: STRING300,
+          estimatedMin: { type: "number" },
+          estimatedMax: { type: "number" },
+          unit: STRING300,
+          confidence: CONF,
+          requiresMeasurement: { type: "boolean" },
+          basis: STRING300,
+        },
+      },
+    },
+    warnings: { type: "array", maxItems: 6, items: STRING300 },
+    missingInformation: { type: "array", maxItems: 6, items: STRING300 },
+    nextPhotos: {
+      type: "array",
+      maxItems: 4,
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["instruction"],
+        properties: { instruction: STRING300 },
       },
     },
     evidence: {
@@ -90,31 +239,35 @@ const READING_SCHEMA = {
         additionalProperties: false,
         required: ["kind", "text"],
         properties: {
-          kind: {
-            type: "string",
-            enum: ["visible_text", "visible_mark", "visible_condition"],
-          },
-          text: { type: "string", maxLength: 300 },
+          kind: { type: "string", enum: ["visible_text", "visible_mark", "visible_condition"] },
+          text: STRING300,
         },
       },
     },
-    uncertainty: {
-      type: "array",
-      maxItems: 6,
-      items: { type: "string", maxLength: 300 },
-    },
-    requiredFollowUp: {
-      type: "array",
-      maxItems: 6,
-      items: { type: "string", maxLength: 300 },
-    },
-    disclaimers: {
-      type: "array",
-      maxItems: 6,
-      items: { type: "string", maxLength: 300 },
-    },
+    uncertainty: { type: "array", maxItems: 6, items: STRING300 },
+    requiredMeasurements: { type: "array", maxItems: 6, items: STRING300 },
   },
 };
+
+function buildSlotPrompt(slotKey: string, contextJson: string): string {
+  const g = SLOT_GUIDANCE[slotKey];
+  const lines = [
+    SYSTEM_INSTRUCTION,
+    g ? `写真枠: ${g.title}（${slotKey}）` : `写真枠: ${slotKey}`,
+    g ? `この写真の目的: ${g.purpose}` : "",
+    g ? `確認観点: ${g.expected}` : "",
+    g ? `禁止: ${g.forbid}` : "",
+    "fieldCandidates の requiresHumanConfirmation は必ず true。",
+    "距離が弱いときは estimatedMin/estimatedMax を 0 にし basis に推定不可と書く。",
+    "室内を通るドレンは insulated_drain、屋外露出は drain_hose を候補にする。",
+    "見積価格は出さない。catalogId が無い工事は none。",
+  ];
+  if (contextJson) {
+    lines.push("現場コンテキストJSON:");
+    lines.push(contextJson.slice(0, 4000));
+  }
+  return lines.filter(Boolean).join("\n");
+}
 
 function buildCorsHeaders(origin: string | null): Headers {
   const headers = new Headers({
@@ -192,7 +345,7 @@ function makeTimeoutError(): Error {
  * Run OpenAI fetch + body read + JSON parse + output extract under one deadline.
  * Timers are cleared only after the raced operation settles (success or error path).
  */
-async function callOpenAI(jpegBytes: Uint8Array): Promise<OpenAICallResult> {
+async function callOpenAI(jpegBytes: Uint8Array, slotKey: string, contextJson: string): Promise<OpenAICallResult> {
   const apiKey = Deno.env.get("OPENAI_API_KEY");
   if (!apiKey) {
     return {
@@ -225,7 +378,7 @@ async function callOpenAI(jpegBytes: Uint8Array): Promise<OpenAICallResult> {
       {
         role: "user",
         content: [
-          { type: "input_text", text: SYSTEM_INSTRUCTION },
+          { type: "input_text", text: buildSlotPrompt(slotKey, contextJson) },
           { type: "input_image", image_url: imageUrl, detail: "high" },
         ],
       },
@@ -625,8 +778,11 @@ export default {
       );
     }
 
+    const contextRaw = form.get("context");
+    const contextJson = typeof contextRaw === "string" ? contextRaw.trim().slice(0, 4000) : "";
+
     const startedAt = Date.now();
-    const result = await callOpenAI(jpegBytes);
+    const result = await callOpenAI(jpegBytes, slotKey, contextJson);
     jpegBytes = null;
     const elapsedMs = Date.now() - startedAt;
     console.log(

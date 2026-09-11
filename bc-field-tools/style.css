@@ -335,6 +335,17 @@ h2.q {
 .ai-reading-h { margin: 8px 0 4px !important; font-weight: 800; }
 .ai-reading ul { margin: 0; padding-left: 1.2em; }
 .ai-reading li { margin: 0 0 4px; }
+.ai-brief {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px;
+  margin: 12px 0;
+  overflow-wrap: anywhere;
+}
+.ai-brief b { display: block; margin-bottom: 6px; }
+.ai-brief .ai-reading-h { margin: 8px 0 4px; font-weight: 800; }
+.ai-brief ul { margin: 0; padding-left: 1.2em; }
 
 .notice {
   background: var(--warn-bg);
