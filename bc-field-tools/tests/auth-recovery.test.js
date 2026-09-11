@@ -145,8 +145,8 @@ describe("auth-client / app wiring", () => {
   });
 
   it("cache buster bumped for auth assets", () => {
-    assert.match(indexSrc, /auth-client\.js\?v=20260911-006/);
-    assert.match(indexSrc, /app\.js\?v=20260911-006/);
+    assert.match(indexSrc, /auth-client\.js\?v=20260911-007/);
+    assert.match(indexSrc, /app\.js\?v=20260911-007/);
   });
 
   it("hides password login UI and shows magic reauth", () => {
@@ -154,6 +154,7 @@ describe("auth-client / app wiring", () => {
     assert.match(indexSrc, /AIを再認証/);
     assert.match(indexSrc, /id="ai-auth-password-block"/);
     assert.match(indexSrc, /id="ai-auth-magic-block"/);
+    assert.match(indexSrc, /同じ端末/);
   });
 });
 
@@ -169,5 +170,15 @@ describe("persistent auth wiring", () => {
     assert.match(authSrc, /MAGIC_LINK_TYPES/);
     assert.match(authSrc, /kind: "magic"/);
     assert.match(authSrc, /clearRecovery\(\)/);
+  });
+
+  it("snapshots auth callback before view URL rewrite can drop code/hash", () => {
+    assert.match(authSrc, /bootAuthCallback = snapshotAuthCallbackFromLocation\(\)/);
+    assert.match(authSrc, /auth_callback_recovered_from_snapshot/);
+    assert.match(authSrc, /auth_callback_snapshot/);
+    assert.match(appSrc, /keepHash/);
+    assert.match(appSrc, /token_hash/);
+    assert.match(authSrc, /MSG_MAGIC_SAME_DEVICE/);
+    assert.match(authSrc, /pkce_exchange_skipped/);
   });
 });

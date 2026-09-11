@@ -726,10 +726,25 @@
     renderCta();
     try {
       const next = new URL(window.location.href);
+      const keep = {};
+      ["code", "token_hash", "type", "error", "error_description", "error_code"].forEach((k) => {
+        if (next.searchParams.has(k)) keep[k] = next.searchParams.get(k);
+      });
+      const keepHash =
+        /(?:^|[&#])(access_token|refresh_token|error|error_code)=/.test(next.hash || "")
+          ? next.hash
+          : "";
       next.search = "";
       next.searchParams.set("view", currentView === "estimate" ? "estimate" : "field");
       if (nextUrlForceAuth()) next.searchParams.set("bcfd_auth", "1");
-      history.replaceState(null, "", next.pathname + "?" + next.searchParams.toString());
+      Object.keys(keep).forEach((k) => {
+        next.searchParams.set(k, keep[k]);
+      });
+      history.replaceState(
+        null,
+        "",
+        next.pathname + "?" + next.searchParams.toString() + keepHash
+      );
     } catch (_) {
       history.replaceState(null, "", currentView === "estimate" ? "?view=estimate" : "?view=field");
     }
@@ -1647,6 +1662,9 @@
               /* ignore */
             }
             if (authPanel) authPanel.hidden = true;
+          } else if (detected && detected.ok === false && detected.message) {
+            setMessage(errorEl, detected.message);
+            if (shouldShowAuthChrome() && authPanel) authPanel.hidden = false;
           } else if (
             (!detected || detected.ok === false) &&
             urlErrBefore &&

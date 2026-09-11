@@ -25,11 +25,23 @@
   const GENERIC_RESET_SENT =
     "入力されたメールアドレス宛に、再設定手順をお送りしました。届かない場合は入力内容をご確認ください。";
   const GENERIC_MAGIC_SENT =
-    "本人用のログイン用リンクをメールで送りました。届いたリンクを開いてください。";
+    "本人用のログイン用リンクを送りました。この端末のメールアプリで最新のリンクを開いてください（別の端末では認証できません）。";
   const ACCESS_SKEW_SEC = 60;
   const MSG_AUTH_EXPIRED = "AIの認証が切れています";
   const MSG_OWNER_ONLY = "このアカウントではAI認証を保存できません。";
+  const MSG_MAGIC_SAME_DEVICE =
+    "ログイン用リンクは、この端末の「AIを再認証」から送った最新メールを、同じ端末で開いてください。";
+  const MSG_MAGIC_NEED_APP_FLOW =
+    "認証リンクを確認できませんでした。メニューの「AIを再認証」から、この端末で送り直してください。";
   const MAGIC_LINK_TYPES = { magiclink: true, email: true, signup: true };
+  const AUTH_CALLBACK_QUERY_KEYS = [
+    "code",
+    "token_hash",
+    "type",
+    "error",
+    "error_description",
+    "error_code",
+  ];
 
   /** @type {null | { access_token: string, refresh_token: string, expires_at: number, email: string }} */
   let session = null;
@@ -38,6 +50,12 @@
    * @type {null | { access_token: string, refresh_token: string, email: string }}
    */
   let recoverySession = null;
+  /**
+   * Sync snapshot of Auth callback URL taken before app.js rewrites ?view=.
+   * Dashboard / Magic Link callbacks are otherwise lost to switchView().
+   * @type {null | { searchParams: Record<string, string>, hash: string }}
+   */
+  let bootAuthCallback = null;
   /** @type {Array<() => void>} */
   const listeners = [];
   /** @type {Promise<{ ok: boolean, message?: string }> | null} */
@@ -487,7 +505,7 @@
   function clearAuthParamsFromUrl() {
     try {
       const url = new URL(window.location.href);
-      ["code", "token_hash", "type", "error", "error_description", "error_code"].forEach((k) => {
+      AUTH_CALLBACK_QUERY_KEYS.forEach((k) => {
         url.searchParams.delete(k);
       });
       // Drop fragment so #access_token=... recovery links never remain in the address bar.
@@ -498,10 +516,37 @@
     } catch (_) {
       /* ignore */
     }
+    bootAuthCallback = null;
   }
 
-  function parseHashParams() {
-    const hash = String(window.location.hash || "").replace(/^#/, "");
+  function snapshotAuthCallbackFromLocation() {
+    try {
+      const url = new URL(window.location.href);
+      const hash = String(url.hash || "").replace(/^#/, "");
+      const searchParams = {};
+      let searchHas = false;
+      AUTH_CALLBACK_QUERY_KEYS.forEach((k) => {
+        if (url.searchParams.has(k)) {
+          searchParams[k] = String(url.searchParams.get(k) || "");
+          searchHas = true;
+        }
+      });
+      const hashHas = /(?:^|&)(access_token|refresh_token|error|error_code)=/.test(hash);
+      if (!searchHas && !hashHas) return null;
+      logAuthEvent("auth_callback_snapshot", {
+        hasCode: Boolean(searchParams.code),
+        hasTokenHash: Boolean(searchParams.token_hash),
+        hasHashAccess: /(?:^|&)access_token=/.test(hash),
+        type: String(searchParams.type || "").toLowerCase(),
+      });
+      return { searchParams, hash };
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function parseHashString(hashRaw) {
+    const hash = String(hashRaw || "").replace(/^#/, "");
     if (!hash) return {};
     const out = {};
     hash.split("&").forEach((pair) => {
@@ -514,18 +559,56 @@
     return out;
   }
 
+  function resolveAuthCallbackContext() {
+    try {
+      const liveUrl = new URL(window.location.href);
+      const liveHash = String(liveUrl.hash || "").replace(/^#/, "");
+      const liveParams = {};
+      let liveSearchHas = false;
+      AUTH_CALLBACK_QUERY_KEYS.forEach((k) => {
+        if (liveUrl.searchParams.has(k)) {
+          liveParams[k] = String(liveUrl.searchParams.get(k) || "");
+          liveSearchHas = true;
+        }
+      });
+      const liveHashHas = /(?:^|&)(access_token|refresh_token|error|error_code)=/.test(liveHash);
+      if (liveSearchHas || liveHashHas) {
+        return { searchParams: liveParams, hash: liveHash, source: "live" };
+      }
+    } catch (_) {
+      /* ignore */
+    }
+    if (bootAuthCallback) {
+      logAuthEvent("auth_callback_recovered_from_snapshot", {
+        hasCode: Boolean(bootAuthCallback.searchParams && bootAuthCallback.searchParams.code),
+        hasTokenHash: Boolean(bootAuthCallback.searchParams && bootAuthCallback.searchParams.token_hash),
+        hasHashAccess: /(?:^|&)access_token=/.test(bootAuthCallback.hash || ""),
+      });
+      return {
+        searchParams: bootAuthCallback.searchParams || {},
+        hash: bootAuthCallback.hash || "",
+        source: "snapshot",
+      };
+    }
+    return { searchParams: {}, hash: "", source: "none" };
+  }
+
+  function parseHashParams() {
+    return parseHashString(window.location.hash || "");
+  }
+
   function readUrlAuthError() {
     try {
-      const url = new URL(window.location.href);
-      const hash = parseHashParams();
+      const ctx = resolveAuthCallbackContext();
+      const hash = parseHashString(ctx.hash);
       const error =
-        url.searchParams.get("error") ||
+        ctx.searchParams.error ||
         hash.error ||
-        url.searchParams.get("error_code") ||
+        ctx.searchParams.error_code ||
         hash.error_code ||
         "";
       const desc =
-        url.searchParams.get("error_description") || hash.error_description || "";
+        ctx.searchParams.error_description || hash.error_description || "";
       if (!error && !desc) return null;
       return { error: String(error || ""), description: String(desc || "") };
     } catch (_) {
@@ -619,8 +702,14 @@
       logAuthEvent("pkce_exchange_skipped", {
         hasCode: Boolean(code),
         hasVerifier: Boolean(verifier),
+        pendingMagic: hasPendingMagicPkce(),
+        pendingRecovery: hasPendingRecoveryPkce(),
       });
-      return { ok: false, reason: "missing_verifier" };
+      return {
+        ok: false,
+        reason: "missing_verifier",
+        message: MSG_MAGIC_SAME_DEVICE,
+      };
     }
     const res = await fetch(SUPABASE_URL + "/auth/v1/token?grant_type=pkce", {
       method: "POST",
@@ -641,7 +730,7 @@
         status: res.status,
         error: data && (data.error_code || data.error || data.error_description || data.msg),
       });
-      return { ok: false, reason: "exchange_failed" };
+      return { ok: false, reason: "exchange_failed", message: MSG_MAGIC_NEED_APP_FLOW };
     }
     const email = (data.user && data.user.email) || "";
     const expiresAt = nowSec() + (Number(data.expires_in) || 3600);
@@ -677,12 +766,18 @@
           hasDescription: Boolean(errInfo.description),
         });
         clearAuthParamsFromUrl();
-        return { ok: false, kind: "error" };
+        return { ok: false, kind: "error", message: MSG_MAGIC_NEED_APP_FLOW };
       }
 
-      const hash = parseHashParams();
+      const ctx = resolveAuthCallbackContext();
+      const hash = parseHashString(ctx.hash);
       if (hash.access_token) {
         const type = String(hash.type || "").toLowerCase();
+        logAuthEvent("auth_callback_hash", {
+          type: type || "(empty)",
+          source: ctx.source,
+          hasRefresh: Boolean(hash.refresh_token),
+        });
         if (type === "recovery") {
           setRecoveryFromTokens(hash.access_token, hash.refresh_token || "", "");
           return { ok: true, kind: "recovery" };
@@ -701,10 +796,9 @@
       }
 
       try {
-        const url = new URL(window.location.href);
-        const type = String(url.searchParams.get("type") || "").toLowerCase();
-        const tokenHash = url.searchParams.get("token_hash") || "";
-        const code = url.searchParams.get("code") || "";
+        const type = String(ctx.searchParams.type || "").toLowerCase();
+        const tokenHash = ctx.searchParams.token_hash || "";
+        const code = ctx.searchParams.code || "";
 
         if (tokenHash && type === "recovery") {
           const result = await exchangeTokenHash(tokenHash, "recovery");
@@ -713,10 +807,11 @@
         }
 
         if (tokenHash && MAGIC_LINK_TYPES[type]) {
+          logAuthEvent("auth_callback_token_hash", { type, source: ctx.source });
           const verified = await verifyTokenHash(tokenHash, type);
           if (!verified.ok) {
             clearAuthParamsFromUrl();
-            return { ok: false, kind: "magic" };
+            return { ok: false, kind: "magic", message: MSG_MAGIC_NEED_APP_FLOW };
           }
           const established = await establishOwnerSession(
             verified.access_token,
@@ -731,6 +826,10 @@
 
         // PKCE callback: ?code=... (exchange BEFORE clearing URL params)
         if (code) {
+          logAuthEvent("auth_callback_code", {
+            source: ctx.source,
+            hasVerifier: Boolean(readPkceVerifier()),
+          });
           const result = await exchangePkceCode(code);
           if (!result.ok) {
             clearAuthParamsFromUrl();
@@ -1158,7 +1257,9 @@
 
   loadSession();
   captureAuthUiForceFlag();
-  // Boot: restore persistent session (owner IndexedDB) then detect recovery URL.
+  // Must run synchronously before app.js switchView() rewrites ?view= and drops Auth callback params.
+  bootAuthCallback = snapshotAuthCallbackFromLocation();
+  // Boot: restore persistent session (owner IndexedDB) then detect recovery/magic URL.
   whenReady().catch(() => {});
 
   function getAccessToken() {
@@ -1199,5 +1300,7 @@
     recoveryErrorMessage,
     readUrlAuthError,
     MSG_AUTH_EXPIRED,
+    MSG_MAGIC_SAME_DEVICE,
+    MSG_MAGIC_NEED_APP_FLOW,
   };
 })();
