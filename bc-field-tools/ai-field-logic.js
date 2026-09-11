@@ -229,7 +229,10 @@
       .filter((c) => c && typeof c === "object")
       .map((c) => ({
         targetField: TARGET_FIELDS.has(c.targetField) ? c.targetField : "other",
-        proposedValue: String(c.proposedValue || "").trim(),
+        proposedValue: coerceFieldValue(
+          TARGET_FIELDS.has(c.targetField) ? c.targetField : "other",
+          c.proposedValue
+        ),
         confidence: c.confidence === "high" || c.confidence === "low" ? c.confidence : "medium",
         reason: String(c.reason || "").trim(),
         evidence: String(c.evidence || "").trim(),
@@ -284,6 +287,16 @@
     if (!out.fieldCandidates.length && out.candidates.length) {
       out.fieldCandidates = liftLegacyReading(raw).fieldCandidates;
     }
+    const promoted = liftLegacyReading({
+      summary: out.summary,
+      candidates: out.visibleFacts.map((t) => ({ label: t, value: t })),
+      evidence: out.evidence,
+    });
+    promoted.fieldCandidates.forEach((c) => {
+      const dup = out.fieldCandidates.some((x) => x.targetField === c.targetField && x.proposedValue === c.proposedValue);
+      if (!dup) out.fieldCandidates.push(c);
+    });
+    out.fieldCandidates = out.fieldCandidates.slice(0, 6);
     return out;
   }
 
@@ -315,6 +328,31 @@
     if (knownIds && !knownIds.has(id)) return { mapped: false, reason: "料金マスターに対応項目なし" };
     if (!ESTIMATE_IDS.has(id)) return { mapped: false, reason: "料金マスターに対応項目なし" };
     return { mapped: true, catalogId: id };
+  }
+
+  function coerceFieldValue(field, value) {
+    const v = String(value || "").trim();
+    if (field === "acVoltage") {
+      if (/200/.test(v)) return "200V";
+      if (/100/.test(v)) return "100V";
+    }
+    if (field === "hole" || field === "cover" || field === "dedicatedCircuit" || field === "spareCircuit") {
+      if (/なし|無い|no/i.test(v) && !/あり/.test(v)) return "なし";
+      if (/あり|yes|hole|cover|貫通/i.test(v)) return "あり";
+    }
+    if (field === "outdoorPlace") {
+      if (/屋根/.test(v)) return "屋根";
+      if (/壁面|壁掛/.test(v)) return "壁面";
+      if (/天吊/.test(v)) return "天吊り";
+      if (/二段/.test(v)) return "二段置き";
+      if (/別階/.test(v)) return "別階";
+      if (/通常|床置/.test(v)) return "通常";
+    }
+    if (field === "voltChange") {
+      if (/不要|なし/.test(v)) return "不要";
+      if (/必要/.test(v)) return "必要";
+    }
+    return v;
   }
 
   function canApplyField(site, targetField, proposedValue) {

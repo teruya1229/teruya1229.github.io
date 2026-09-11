@@ -54,6 +54,61 @@ describe("schema normalize", () => {
     assert.equal(n.fieldCandidates[0].requiresHumanConfirmation, true);
   });
 
+  it("promotes visible 200V even when AI put only other", () => {
+    const n = F.normalizeReading({
+      category: "panel_label",
+      summary: "エアコン銘板からの情報",
+      visibleFacts: ["メーカー: Panasonic", "型番: CS-XXXX", "電圧: SINGLE PHASE 200V"],
+      fieldCandidates: [{
+        targetField: "other",
+        proposedValue: "型番確認が必要",
+        confidence: "high",
+        reason: "型番が一部不明",
+        evidence: "CS-XXXX",
+        requiresHumanConfirmation: true,
+      }],
+      workCandidates: [],
+      estimateCandidates: [],
+      materialPlanCandidates: [],
+      warnings: [],
+      missingInformation: [],
+      nextPhotos: [],
+      evidence: [{ kind: "visible_text", text: "200V" }],
+      uncertainty: [],
+      requiredMeasurements: [],
+    });
+    assert.ok(n.fieldCandidates.some((c) => c.targetField === "acVoltage" && c.proposedValue === "200V"));
+    const sug = F.suggestionFromField("ac-nameplate", n.fieldCandidates.find((c) => c.targetField === "acVoltage"), { acVoltage: "" });
+    assert.equal(sug.proposedValue, "200V");
+    assert.equal(sug.status, "pending");
+  });
+
+  it("coerces hole=hole into あり", () => {
+    const n = F.normalizeReading({
+      category: "route_observation",
+      summary: "貫通穴が見えます",
+      visibleFacts: ["配管用の穴"],
+      fieldCandidates: [{
+        targetField: "hole",
+        proposedValue: "hole",
+        confidence: "high",
+        reason: "穴が見える",
+        evidence: "貫通",
+        requiresHumanConfirmation: true,
+      }],
+      workCandidates: [],
+      estimateCandidates: [],
+      materialPlanCandidates: [],
+      warnings: [],
+      missingInformation: [],
+      nextPhotos: [],
+      evidence: [],
+      uncertainty: [],
+      requiredMeasurements: [],
+    });
+    assert.ok(n.fieldCandidates.some((c) => c.targetField === "hole" && c.proposedValue === "あり"));
+  });
+
   it("keeps new schema fields", () => {
     const n = F.normalizeReading({
       category: "route_observation",
