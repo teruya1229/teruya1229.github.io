@@ -3844,21 +3844,21 @@ body.is-fixed-cta {
 .fv__illust-photo {
   display: block;
   width: 100%;
-  max-width: 288px;
-  aspect-ratio: 18 / 13;
+  max-width: 420px;
+  aspect-ratio: 4 / 3;
   height: auto;
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;
+  object-position: center 48%;
   border-radius: 8px;
-  background: #ffffff;
+  background: #dce8ea;
   padding: 0;
 }
 
 .fv__illust-cap {
   font-size: 9.5px;
-  line-height: 1.45;
+  line-height: 1.5;
   letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0.62);
+  color: rgba(255, 255, 255, 0.72);
   text-align: center;
 }
 
@@ -4472,7 +4472,7 @@ body.is-fixed-cta {
 
 @media (min-width: 768px) {
   .fv__offer {
-    grid-template-columns: minmax(0, 1fr) 250px;
+    grid-template-columns: minmax(0, 1fr) 300px;
     grid-template-areas:
       "copy illust"
       "price illust"

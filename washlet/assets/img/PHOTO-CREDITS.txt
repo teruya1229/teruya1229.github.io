@@ -1,11 +1,17 @@
 BCサービス /washlet/ 商品画像 — 記録
-更新日: 2026-09-06
+更新日: 2026-09-14
 
 詳細は toilet/assets/img/PHOTO-CREDITS.txt を正本とする。
 
-使用ファイル: washlet/assets/img/install-washlet-seat.jpg
-内容: TOTO ウォシュレット K（TCF8FK58）の商品画像
-出典: BFC/TOTO資料「TOTO トイレおすすめ機種 松竹梅 価格一覧表 2026.08.10」掲載画像（画像番号1）から抽出
+使用ファイル:
+  - washlet/assets/img/washlet-installation.webp … FV設置イメージ
+  - washlet/assets/img/tcf8fk58-product-large.png … 主力商品カード（TCF8FK58実商品）
 
+washlet-installation.webp:
+内容: 便器へウォシュレットを取り付けた設置イメージ
+注記: 設置イメージ。実際の商品・設置状況とは異なる場合がある。施工事例ではない。
+
+tcf8fk58-product-large.png:
+内容: TOTO ウォシュレット K（TCF8FK58）の商品画像
+出典: BFC/TOTO資料「TOTO トイレおすすめ機種 松竹梅 価格一覧表 2026.08.10」掲載画像から抽出
 注記: メーカー画像のWeb掲載権限については、本ファイルでは断定しない。
-旧Pexels設置イメージは不採用のため差し替え済み。

@@ -1020,12 +1020,16 @@ ol {
   background: #e7eef1;
 }
 
-/* 商品構成イメージは切り抜き合成のため、比率を保ったまま枠いっぱいに見せる。 */
-.plan-card__photo--combo {
-  object-fit: contain;
-  object-position: center;
-  background: #ffffff;
-  padding: 0;
+/* 梅：便器全体（タンク〜下端）が入る4:3切り出し画像を枠いっぱいに見せる。 */
+.plan-card__photo--ume {
+  object-fit: cover;
+  object-position: center center;
+}
+
+/* 竹：設置イメージ。商品切り抜き合成は使わない。 */
+.plan-card__photo--take {
+  object-fit: cover;
+  object-position: center 58%;
 }
 
 .plan-card__photo--premium {
@@ -3627,6 +3631,11 @@ body.is-fixed-cta {
 
   .plan-card__photo {
     aspect-ratio: 16 / 11;
+  }
+
+  .plan-card__photo--ume,
+  .plan-card__photo--take {
+    aspect-ratio: 4 / 3;
   }
 
   .plan-card__spec li {

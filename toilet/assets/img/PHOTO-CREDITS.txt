@@ -1,21 +1,27 @@
 BCサービス LP 商品・設置イメージ写真 — 記録
-更新日: 2026-09-06
+更新日: 2026-09-14
 
 ────────────────────────────────────────
-1. install-tank-toilet.jpg
+1. install-tank-toilet.jpg / install-tank-toilet.webp
 用途: /toilet/ 梅プラン（設置イメージ）
 素材サイト: Pexels
 元ページ: https://www.pexels.com/photo/toilet-in-a-bathroom-19866476/
 作者名: 取得時に氏名未確認（Pexels Photo ID: 19866476）
 ライセンス: Pexels License
-保存先: toilet/assets/img/install-tank-toilet.jpg
-注記: 設置イメージ。実際の販売商品そのものではない。
+保存先:
+  - toilet/assets/img/install-tank-toilet.jpg（原板）
+  - toilet/assets/img/install-tank-toilet.webp（便器全体が見える4:3切り出し・Web用）
+注記: 設置イメージ。実際の販売商品そのものではない。施工事例ではない。
 
 ────────────────────────────────────────
-2. install-washlet-seat.jpg
-用途:
-  - /toilet/ 竹プラン
-  - /washlet/ FV・主力商品カード
+2. toilet-installation.webp
+用途: /toilet/ 竹プラン（設置イメージ）
+内容: 交換後の雰囲気が分かる設置イメージ
+保存先: toilet/assets/img/toilet-installation.webp
+注記: 設置イメージ。実際の商品・設置状況とは異なる場合がある。施工事例ではない。
+
+2b. install-washlet-seat.jpg
+用途: 過去の竹プラン／ウォシュレット商品画像（現行ページでは未使用）
 内容: TOTO ウォシュレット K（TCF8FK58）の商品画像
 出典: BFC/TOTO資料「TOTO トイレおすすめ機種 松竹梅 価格一覧表 2026.08.10」掲載画像（画像番号1）から抽出
 保存先:
