@@ -6,6 +6,23 @@
 
 ## 本日やったこと
 
+### 2026-09-20（plus-one-lab sitemap + 既存GA4計測）
+
+公開済み「現場業プラスワン研究会」LPの未完了を最小差分で完了。住宅設備3LPは未変更。料金・本文・LINE URLは未変更。
+
+**【plus-one-lab 計測・sitemap 公開確認完了】**
+
+- 日時：2026年9月20日
+- 対象リポジトリ：`C:\dev\bc-service\teruya1229-github-io`
+- 実装commit：`b3ac328120e0d73f35423a5cb706b0fad1c40e89`（`feat: add plus-one-lab sitemap and existing GA4 measurement`）
+- 変更ファイル：`plus-one-lab/index.html` / `sitemap.xml`
+- 公開URL（cache buster付きで確認済み）：`https://teruya1229.github.io/plus-one-lab/?v=b3ac328`
+- sitemap：`https://teruya1229.github.io/sitemap.xml` に `/plus-one-lab/` を追加
+- LINE：`https://lin.ee/tsilra6` 維持
+- GA4：既存 `G-X8LKLFDL3G` を追加（ID変更なし）。`page_type: plus_one_lab` / `page_slug: /plus-one-lab/`。debug=1 で `cta_click` + `line_click`、トースト「計測OK」
+- 1440 / 390px：横スクロールなし、JS errorなし、画像HTTP 404なし（img 0件）
+- 物理スマートフォン実機確認は未実施（390pxは実機扱いではない）
+
 ### 2026-09-20（住宅設備3LP CRO最終修正・公開確認）
 
 Google広告からクリックは取れているが実問い合わせ0件だった3LPについて、価格・何込み・施工窓口・商品長期保証・LINEで分かることの順序を最小差分で明確化。全面リニューアルではない。実装・ローカル確認・push・GitHub Pages公開確認まで完了。
