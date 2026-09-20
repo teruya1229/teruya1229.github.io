@@ -48,7 +48,7 @@ Primary conversion goal is to drive LINE inquiries and bookings.
 ## Known fixed URLs (do not guess / do not change)
 - LINE accounts are split by service line. Do not merge them, and never bulk-replace across the repo.
   - BC Service main / hub / residential equipment / reform: https://lin.ee/Q1s3uqV
-    - Pages: hub `/`, `/reform/`, `/toilet/`, `/washlet/`, and any future residential equipment LP
+    - Pages: hub `/`, `/reform/`, `/toilet/`, `/washlet/`, `/mi-bcs/aircon-replacement/`, and any future residential equipment LP
   - Aircon cleaning focused LPs: https://lin.ee/tsilra6
     - Pages: the aircon cleaning LPs under `cursor-test/`. Leave these as they are.
 - Never revert the hub `/` back to tsilra6.

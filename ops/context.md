@@ -13,10 +13,7 @@
 - CTAクリック率（LINE導線）の向上
 
 ## 3. Current Focus
-最終調整の重点:
-- 写真差し替え
-- ファーストビュー強化
-- セクション文言や配置の微調整
+住宅設備3LP（`/mi-bcs/aircon-replacement/` / `/toilet/` / `/washlet/`）は 2026-09-20 commit `f56f098` をCRO再テスト基準点とする。当面これらのLPは追加修正せず、実問い合わせを観測する。最新の次の1手は status.md を正とする。
 
 実装原則:
 - 最小変更
@@ -26,7 +23,7 @@
 ## 4. Fixed Assets
 固定URL:
 - 公式LINE（BCサービス本体・総合ハブ・住宅設備・リフォーム）: https://lin.ee/Q1s3uqV
-  - 対象: 総合ハブ `/`、`/reform/`、`/toilet/`、`/washlet/`、今後の住宅設備・リフォームLP
+  - 対象: 総合ハブ `/`、`/reform/`、`/toilet/`、`/washlet/`、`/mi-bcs/aircon-replacement/`、今後の住宅設備・リフォームLP
 - 公式LINE（エアコンクリーニング特化）: https://lin.ee/tsilra6
   - 対象: エアコンクリーニング特化LP（`cursor-test/` 配下の地域LP等）。ここは変更しない
 - 総合ハブ `/` を tsilra6 に戻さない。リポジトリ全体の一括置換もしない

@@ -36,7 +36,7 @@
 - LINEはサービス系統で2種類ある。混同しない。
   - BCサービス本体・総合ハブ・住宅設備・リフォーム（正）: https://lin.ee/Q1s3uqV
   - エアコンクリーニング特化（正）: https://lin.ee/tsilra6
-- Q1s3uqV を使うページ: 総合ハブ `/`、`/reform/`、`/toilet/`、`/washlet/`、および今後追加する住宅設備・リフォームLP
+- Q1s3uqV を使うページ: 総合ハブ `/`、`/reform/`、`/toilet/`、`/washlet/`、`/mi-bcs/aircon-replacement/`、および今後追加する住宅設備・リフォームLP
 - tsilra6 を使うページ: エアコンクリーニング特化LP（`cursor-test/` 配下の地域LP等）。ここを Q1s3uqV に変えない
 - 総合ハブ `/` を tsilra6 に戻さない
 - リポジトリ全体の一括置換は禁止。対象ページを特定してから変更する
