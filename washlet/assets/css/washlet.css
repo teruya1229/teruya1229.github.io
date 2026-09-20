@@ -3292,7 +3292,6 @@ body.is-fixed-cta {
     grid-template-columns: minmax(0, 1fr) minmax(290px, 340px);
     grid-template-areas:
       "text who"
-      "act  who"
       "tel  who";
     column-gap: 42px;
     row-gap: 22px;
@@ -3301,7 +3300,6 @@ body.is-fixed-cta {
 
   .fv__text { grid-area: text; }
   .fv__who  { grid-area: who; align-self: center; }
-  .fv__act  { grid-area: act; }
   .fv__tel  { grid-area: tel; }
 
   .fv__title {
@@ -3787,10 +3785,11 @@ body.is-fixed-cta {
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
     "copy"
-    "illust"
     "price"
     "bundle"
-    "cond";
+    "cond"
+    "act"
+    "illust";
   gap: 10px 12px;
   align-items: center;
   background: rgba(255, 255, 255, 0.09);
@@ -3926,6 +3925,15 @@ body.is-fixed-cta {
   font-weight: 700;
   line-height: 1.6;
   color: var(--c-yellow);
+}
+
+.fv__offer .fv__act {
+  grid-area: act;
+  order: unset;
+}
+
+.fv__offer .fv__micro {
+  margin-top: 8px;
 }
 
 .fv__sub {
@@ -4477,7 +4485,8 @@ body.is-fixed-cta {
       "copy illust"
       "price illust"
       "bundle illust"
-      "cond illust";
+      "cond illust"
+      "act illust";
     align-items: center;
     column-gap: 18px;
     padding: 22px 24px;

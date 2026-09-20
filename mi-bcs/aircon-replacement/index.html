@@ -493,7 +493,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin: 0 0 28px;
+      margin: 0 0 14px;
       padding: 0;
       list-style: none;
     }
@@ -505,6 +505,46 @@
       padding: 7px 15px;
       font-size: 0.98rem;
       font-weight: 600;
+    }
+
+    .hero-prices {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin: 0 0 10px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .hero-prices li {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.38);
+      border-radius: 10px;
+      padding: 8px 6px;
+      text-align: center;
+    }
+
+    .hero-prices span {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      opacity: 0.86;
+    }
+
+    .hero-prices strong {
+      display: block;
+      margin-top: 2px;
+      font-size: clamp(0.88rem, 1.6vw, 1.05rem);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .hero-include {
+      margin: 0 0 14px;
+      font-size: 0.92rem;
+      font-weight: 800;
+      line-height: 1.55;
+      color: #fff8dc;
     }
 
     .hero-aside {
@@ -1162,6 +1202,10 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .hero-prices {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .formula {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
@@ -1268,6 +1312,14 @@
         line-height: 1.5;
       }
 
+      #hero .hero-lead {
+        margin-bottom: 12px;
+      }
+
+      #hero .hero-title {
+        margin-bottom: 12px;
+      }
+
       #hero .hero-pills {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1276,6 +1328,11 @@
 
       #hero .hero-pills li:last-child {
         grid-column: 1 / -1;
+      }
+
+      #hero .hero-include {
+        font-size: 0.8rem;
+        margin-bottom: 10px;
       }
 
       .include-grid,
@@ -1303,6 +1360,89 @@
       .price-value {
         font-size: 1.7rem;
         white-space: normal;
+      }
+    }
+
+    .cta-return {
+      margin: 0 0 14px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.7;
+      color: var(--text-primary);
+    }
+
+    .price-include-bar {
+      margin: 0 0 8px;
+      padding: 12px 14px;
+      background: #e9f0ee;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-weight: 800;
+      line-height: 1.7;
+      color: var(--brand);
+    }
+
+    .tatami-prices {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 0 0 18px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .tatami-prices li {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 10px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+    }
+
+    .tatami-prices .tatami-label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .tatami-prices .tatami-value {
+      display: block;
+      margin-top: 4px;
+      font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+      font-weight: 800;
+      color: var(--brand);
+      white-space: nowrap;
+    }
+
+    .price-install {
+      margin: 0 0 22px;
+    }
+
+    .price-install img {
+      display: block;
+      width: 100%;
+      max-width: 640px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .price-install figcaption {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 720px) {
+      .tatami-prices,
+      .hero-prices {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
   </style>
@@ -1356,6 +1496,14 @@
               <li>第二種電気工事士</li>
               <li>BCサービス工事5年保証</li>
             </ul>
+            <ul class="hero-prices">
+              <li><span>6畳</span><strong>99,800円〜</strong></li>
+              <li><span>8畳</span><strong>119,800円〜</strong></li>
+              <li><span>10畳</span><strong>129,800円〜</strong></li>
+              <li><span>14畳</span><strong>149,800円〜</strong></li>
+            </ul>
+            <p class="hero-include">本体＋標準取付＋既存エアコン撤去<br>＋リサイクル＋工事5年保証</p>
+            <p class="cta-return">室内機・室外機・型番・配管まわりの写真を送ってください。設置状況を確認し、本命1台＋比較1台と、標準工事を含めた総額の目安をご案内します。</p>
             <div class="cta-row">
               <a href="https://lin.ee/Q1s3uqV" class="btn btn-line" target="_blank" rel="noopener noreferrer" data-cta-purpose="diagnosis">LINEで写真を送って買替え診断</a>
               <a href="tel:05017241338" class="btn btn-phone">電話する 050-1724-1338</a>
@@ -1368,6 +1516,99 @@
             <img src="../../cursor-test/images/kodawari-disassembly.jpg" alt="エアコン分解作業の様子" class="hero-photo" width="800" height="500">
             <p class="hero-photo-note">分解・施工の現場から機種を選びます</p>
           </aside>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="pricing">
+      <div class="container">
+        <h2 class="section-title">畳数別の買替え標準価格（税込）</h2>
+        <p class="price-include-bar">本体＋標準取付＋既存エアコン撤去＋リサイクル＋工事5年保証</p>
+        <p class="price-note" style="margin-bottom:16px;">税込・標準条件の場合</p>
+        <ul class="tatami-prices">
+          <li>
+            <span class="tatami-label">6畳</span>
+            <span class="tatami-value">99,800円〜</span>
+          </li>
+          <li>
+            <span class="tatami-label">8畳</span>
+            <span class="tatami-value">119,800円〜</span>
+          </li>
+          <li>
+            <span class="tatami-label">10畳</span>
+            <span class="tatami-value">129,800円〜</span>
+          </li>
+          <li>
+            <span class="tatami-label">14畳</span>
+            <span class="tatami-value">149,800円〜</span>
+          </li>
+        </ul>
+        <figure class="price-install">
+          <img src="../../cursor-test/images/aircon-installation.jpg" alt="壁掛けエアコンの取付完了後の室内機" width="1400" height="900" loading="lazy">
+          <figcaption>買替え後の設置イメージ（実写）</figcaption>
+        </figure>
+        <ul class="include-grid">
+          <li>新品本体</li>
+          <li>既設撤去</li>
+          <li>標準取付</li>
+          <li>配管4m</li>
+          <li>真空引き</li>
+          <li>試運転</li>
+          <li>リサイクル対応</li>
+          <li>工事5年保証</li>
+          <li>清掃30％OFF</li>
+          <li>購入後の相談窓口</li>
+        </ul>
+        <p class="section-text">冷媒配管4mまで、連絡電線、ドレンホース、室外機の平地・ベランダ置き、標準的な取付材料も含みます。標準条件を超える作業は別料金です。</p>
+        <article class="card" style="margin-top:20px;">
+          <h3>表示価格に含む範囲</h3>
+          <p>買替え価格には、新品本体・古いエアコンの標準撤去・標準取付工事・家電リサイクル対応・運搬対応・工事5年保証を含みます（標準条件の場合）。</p>
+          <p class="card-note" style="margin-top:12px;font-size:0.9rem;">※表示価格に含まれる運搬対応は通常搬入・搬出の場合です。エレベーターのない3階以上への階段搬入・搬出は別途作業費がかかります。<br>※選定機種や既存設備により、200Vへの電圧切替・専用回路の確認が必要な場合があります。</p>
+        </article>
+      </div>
+    </section>
+    <section class="section section-light" id="extra-fees">
+      <div class="container">
+        <h2 class="section-title">追加料金が発生する主なケース</h2>
+        <p class="section-lead">標準条件に当てはまる場合は、表示価格の範囲で交換できます。下記は、設置状況により別料金となる主な作業です。必要な場合は工事前に内容と金額をご説明し、ご了承いただいてから進めます。</p>
+        
+        <div class="card-grid-2" style="margin-bottom:18px;">
+          <article class="card">
+            <h3>エレベーターなし階段搬入・搬出作業費（税込）</h3>
+            <ul class="quote-list" style="grid-template-columns: 1fr; gap: 8px;">
+              <li><strong>1F・2F（またはEVあり）</strong>：標準（追加なし）</li>
+              <li><strong>3F階段作業</strong>：+2,200円 / 台</li>
+              <li><strong>4F階段作業</strong>：+3,300円 / 台</li>
+              <li><strong>5F階段作業</strong>：+4,400円 / 台</li>
+              <li><strong>6F以上</strong>：要見積</li>
+            </ul>
+            <p class="card-note" style="margin-top:10px;font-size:0.85rem;">※狭い内階段、螺旋階段、大型機・重量機、通常の搬入経路を確保できない場合は状況確認・要見積となります。</p>
+          </article>
+          <article class="card">
+            <h3>別料金になる主な作業（別途見積り）</h3>
+            <ul class="quote-list">
+              <li>配管延長</li>
+              <li>室内化粧カバー</li>
+              <li>室外化粧カバー</li>
+              <li>高所作業</li>
+              <li>壁面置き</li>
+              <li>天吊り</li>
+              <li>屋根置き</li>
+              <li>二段置き</li>
+              <li>別階作業</li>
+              <li>既設穴を再利用できない場合</li>
+              <li>特殊穴あけ</li>
+              <li>専用回路</li>
+              <li>コンセント交換</li>
+              <li>電圧切替</li>
+              <li>ブレーカー交換</li>
+              <li>特殊な搬入・搬出（狭い階段・大型機など）</li>
+              <li>標準範囲を超える取外し</li>
+              <li>遠方料金</li>
+            </ul>
+          </article>
+        </div>
+        <div class="policy-box">
+          <p>追加作業が必要な場合は、作業前に内容と金額をご説明し、ご了承いただいてから進めます。</p>
         </div>
       </div>
     </section>
@@ -1415,104 +1656,9 @@
       </div>
     </section>
 
-    <section class="section" id="auto-clean">
-      <div class="container">
-        <h2 class="section-title">「お掃除機能付きなら、中まで掃除不要」ではありません。</h2>
-        <div class="photo-pair">
-          <figure>
-            <img src="../../cursor-test/images/aircon-before.jpg" alt="エアコン室内機内部の汚れ" width="600" height="400" loading="lazy">
-            <figcaption>自動では落としにくい内部汚れの例</figcaption>
-          </figure>
-          <figure>
-            <img src="../../cursor-test/images/kodawari-fan-clean.jpg" alt="エアコンファン洗浄後の仕上がり" width="800" height="500" loading="lazy">
-            <figcaption>分解して洗う部分まで見ると、機種選びが変わります</figcaption>
-          </figure>
-        </div>
-        <div class="card-grid-2">
-          <article class="card">
-            <h3>主に掃除する部分</h3>
-            <p>お掃除機能は、フィルターまわりなど一部の汚れを自動で取ることを想定した機能です。内部のすべてを洗浄するわけではありません。</p>
-          </article>
-          <article class="card">
-            <h3>自動では落とせない内部汚れ</h3>
-            <p>熱交換器やファン周辺など、分解しないと届きにくい場所に汚れが残ることがあります。</p>
-          </article>
-          <article class="card">
-            <h3>通常機との構造差</h3>
-            <p>お掃除ユニットがある機種は部品が多く、分解・組立の手順が増える場合があります。</p>
-          </article>
-          <article class="card">
-            <h3>清掃料金が変わる理由</h3>
-            <p>分解作業が増えると、通常の分解クリーニングより時間がかかり、料金が変わることがあります。</p>
-          </article>
-        </div>
-        <div class="card-grid-2" style="margin-top:16px;">
-          <article class="card">
-            <h3>お掃除機能が向く人</h3>
-            <ul>
-              <li>フィルター掃除の手間を減らしたい</li>
-              <li>使用時間が長く、自動お手入れを活かせる</li>
-              <li>将来の清掃費も含めて納得できる</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3>シンプル機で十分な人</h3>
-            <ul>
-              <li>寝室など使用時間が短い</li>
-              <li>自分でフィルター掃除ができる</li>
-              <li>将来の清掃費を抑えたい</li>
-            </ul>
-          </article>
-        </div>
-        <p class="center-copy" style="margin-top:20px;">必要な方には提案します。シンプル機で十分な方には、必要ないとお伝えします。</p>
-      </div>
-    </section>
 
-    <section class="section section-light" id="strength">
-      <div class="container">
-        <h2 class="section-title">完全分解までしてきたから、買った後のことまで分かります。</h2>
-        <div class="compare-grid">
-          <article class="card compare-card theirs">
-            <h3>一般的な販売時</h3>
-            <ul>
-              <li>新機能</li>
-              <li>メーカー</li>
-              <li>グレード</li>
-              <li>省エネ</li>
-              <li>販売価格</li>
-            </ul>
-          </article>
-          <article class="card compare-card ours">
-            <h3>BCサービス</h3>
-            <ul>
-              <li>本当に必要な機能</li>
-              <li>掃除のしやすさ</li>
-              <li>将来の清掃料金</li>
-              <li>設置環境</li>
-              <li>使用時間</li>
-              <li>家族構成</li>
-              <li>予算</li>
-              <li>購入後の相談</li>
-            </ul>
-          </article>
-        </div>
-        <p class="center-copy">売る前だけでなく、数年後に分解して洗うところまで知っている。それがBCサービスの機種選びです。</p>
-        <div class="card-grid-3" style="margin-top:20px;">
-          <article class="card">
-            <h3>約束1</h3>
-            <p>必要のない高機能機は勧めない</p>
-          </article>
-          <article class="card">
-            <h3>約束2</h3>
-            <p>大量の商品を並べず、本命1台と比較用1台程度に絞る</p>
-          </article>
-          <article class="card">
-            <h3>約束3</h3>
-            <p>工事前に、本体・撤去・取付・追加工事を含めた総額を伝える</p>
-          </article>
-        </div>
-      </div>
-    </section>
+
+
 
     <section class="section" id="diagnosis">
       <div class="container">
@@ -1567,89 +1713,9 @@
       </div>
     </section>
 
-    <section class="section" id="pricing">
-      <div class="container">
-        <h2 class="section-title">本体だけでなく、買替えに必要な総額を分かりやすく。</h2>
-        <div class="price-hero">
-          <p class="price-kicker">6畳用・標準入替え</p>
-          <p class="price-value">99,800円〜</p>
-          <p class="price-include">新品本体・既設撤去・標準取付・リサイクル対応・工事5年保証込み</p>
-          <p class="price-note">税込・標準条件の場合</p>
-        </div>
-        <ul class="include-grid">
-          <li>新品本体</li>
-          <li>既設撤去</li>
-          <li>標準取付</li>
-          <li>配管4m</li>
-          <li>真空引き</li>
-          <li>試運転</li>
-          <li>リサイクル対応</li>
-          <li>工事5年保証</li>
-          <li>清掃30％OFF</li>
-          <li>購入後の相談窓口</li>
-        </ul>
-        <p class="section-text">冷媒配管4mまで、連絡電線、ドレンホース、室外機の平地・ベランダ置き、標準的な取付材料も含みます。標準条件を超える作業は別料金です。</p>
 
-        <article class="card" style="margin-top:20px;">
-          <h3>畳数別・買替え標準価格（税込）</h3>
-          <p style="margin-bottom:14px;">買替え価格には、新品本体・古いエアコンの標準撤去・標準取付工事・家電リサイクル対応・運搬対応・工事5年保証を含みます（標準条件の場合）。</p>
-          <ul class="quote-list">
-            <li><strong>6畳用</strong>：99,800円〜</li>
-            <li><strong>8畳用</strong>：119,800円〜</li>
-            <li><strong>10畳用</strong>：129,800円〜</li>
-            <li><strong>14畳用</strong>：149,800円〜</li>
-          </ul>
-          <p class="card-note" style="margin-top:12px;font-size:0.9rem;">※表示価格に含まれる運搬対応は通常搬入・搬出の場合です。エレベーターのない3階以上への階段搬入・搬出は別途作業費がかかります。<br>※選定機種や既存設備により、200Vへの電圧切替・専用回路の確認が必要な場合があります。</p>
-        </article>
-      </div>
-    </section>
 
-    <section class="section section-light" id="extra-fees">
-      <div class="container">
-        <h2 class="section-title">追加料金が発生する主なケース</h2>
-        <p class="section-lead">標準条件に当てはまる場合は、表示価格の範囲で交換できます。下記は、設置状況により別料金となる主な作業です。必要な場合は工事前に内容と金額をご説明し、ご了承いただいてから進めます。</p>
-        
-        <div class="card-grid-2" style="margin-bottom:18px;">
-          <article class="card">
-            <h3>エレベーターなし階段搬入・搬出作業費（税込）</h3>
-            <ul class="quote-list" style="grid-template-columns: 1fr; gap: 8px;">
-              <li><strong>1F・2F（またはEVあり）</strong>：標準（追加なし）</li>
-              <li><strong>3F階段作業</strong>：+2,200円 / 台</li>
-              <li><strong>4F階段作業</strong>：+3,300円 / 台</li>
-              <li><strong>5F階段作業</strong>：+4,400円 / 台</li>
-              <li><strong>6F以上</strong>：要見積</li>
-            </ul>
-            <p class="card-note" style="margin-top:10px;font-size:0.85rem;">※狭い内階段、螺旋階段、大型機・重量機、通常の搬入経路を確保できない場合は状況確認・要見積となります。</p>
-          </article>
-          <article class="card">
-            <h3>別料金になる主な作業（別途見積り）</h3>
-            <ul class="quote-list">
-              <li>配管延長</li>
-              <li>室内化粧カバー</li>
-              <li>室外化粧カバー</li>
-              <li>高所作業</li>
-              <li>壁面置き</li>
-              <li>天吊り</li>
-              <li>屋根置き</li>
-              <li>二段置き</li>
-              <li>別階作業</li>
-              <li>既設穴を再利用できない場合</li>
-              <li>特殊穴あけ</li>
-              <li>専用回路</li>
-              <li>コンセント交換</li>
-              <li>電圧切替</li>
-              <li>ブレーカー交換</li>
-              <li>特殊な搬入・搬出（狭い階段・大型機など）</li>
-              <li>標準範囲を超える取外し</li>
-              <li>遠方料金</li>
-            </ul>
-          </article>
-        </div>
-        <div class="policy-box">
-          <p>追加作業が必要な場合は、作業前に内容と金額をご説明し、ご了承いただいてから進めます。</p>
-        </div>
-      </div>
-    </section>
+
 
     <section class="section" id="why-not-cheapest">
       <div class="container">
@@ -1767,6 +1833,103 @@
         </article>
       </div>
     </section>
+    <section class="section" id="auto-clean">
+      <div class="container">
+        <h2 class="section-title">「お掃除機能付きなら、中まで掃除不要」ではありません。</h2>
+        <div class="photo-pair">
+          <figure>
+            <img src="../../cursor-test/images/aircon-before.jpg" alt="エアコン室内機内部の汚れ" width="600" height="400" loading="lazy">
+            <figcaption>自動では落としにくい内部汚れの例</figcaption>
+          </figure>
+          <figure>
+            <img src="../../cursor-test/images/kodawari-fan-clean.jpg" alt="エアコンファン洗浄後の仕上がり" width="800" height="500" loading="lazy">
+            <figcaption>分解して洗う部分まで見ると、機種選びが変わります</figcaption>
+          </figure>
+        </div>
+        <div class="card-grid-2">
+          <article class="card">
+            <h3>主に掃除する部分</h3>
+            <p>お掃除機能は、フィルターまわりなど一部の汚れを自動で取ることを想定した機能です。内部のすべてを洗浄するわけではありません。</p>
+          </article>
+          <article class="card">
+            <h3>自動では落とせない内部汚れ</h3>
+            <p>熱交換器やファン周辺など、分解しないと届きにくい場所に汚れが残ることがあります。</p>
+          </article>
+          <article class="card">
+            <h3>通常機との構造差</h3>
+            <p>お掃除ユニットがある機種は部品が多く、分解・組立の手順が増える場合があります。</p>
+          </article>
+          <article class="card">
+            <h3>清掃料金が変わる理由</h3>
+            <p>分解作業が増えると、通常の分解クリーニングより時間がかかり、料金が変わることがあります。</p>
+          </article>
+        </div>
+        <div class="card-grid-2" style="margin-top:16px;">
+          <article class="card">
+            <h3>お掃除機能が向く人</h3>
+            <ul>
+              <li>フィルター掃除の手間を減らしたい</li>
+              <li>使用時間が長く、自動お手入れを活かせる</li>
+              <li>将来の清掃費も含めて納得できる</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>シンプル機で十分な人</h3>
+            <ul>
+              <li>寝室など使用時間が短い</li>
+              <li>自分でフィルター掃除ができる</li>
+              <li>将来の清掃費を抑えたい</li>
+            </ul>
+          </article>
+        </div>
+        <p class="center-copy" style="margin-top:20px;">必要な方には提案します。シンプル機で十分な方には、必要ないとお伝えします。</p>
+      </div>
+    </section>
+    <section class="section section-light" id="strength">
+      <div class="container">
+        <h2 class="section-title">完全分解までしてきたから、買った後のことまで分かります。</h2>
+        <div class="compare-grid">
+          <article class="card compare-card theirs">
+            <h3>一般的な販売時</h3>
+            <ul>
+              <li>新機能</li>
+              <li>メーカー</li>
+              <li>グレード</li>
+              <li>省エネ</li>
+              <li>販売価格</li>
+            </ul>
+          </article>
+          <article class="card compare-card ours">
+            <h3>BCサービス</h3>
+            <ul>
+              <li>本当に必要な機能</li>
+              <li>掃除のしやすさ</li>
+              <li>将来の清掃料金</li>
+              <li>設置環境</li>
+              <li>使用時間</li>
+              <li>家族構成</li>
+              <li>予算</li>
+              <li>購入後の相談</li>
+            </ul>
+          </article>
+        </div>
+        <p class="center-copy">売る前だけでなく、数年後に分解して洗うところまで知っている。それがBCサービスの機種選びです。</p>
+        <div class="card-grid-3" style="margin-top:20px;">
+          <article class="card">
+            <h3>約束1</h3>
+            <p>必要のない高機能機は勧めない</p>
+          </article>
+          <article class="card">
+            <h3>約束2</h3>
+            <p>大量の商品を並べず、本命1台と比較用1台程度に絞る</p>
+          </article>
+          <article class="card">
+            <h3>約束3</h3>
+            <p>工事前に、本体・撤去・取付・追加工事を含めた総額を伝える</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
     <section class="section" id="profile">
       <div class="container">
@@ -1855,7 +2018,8 @@
             </ul>
           </article>
         </div>
-        <div class="cta-row" style="margin-top:22px;">
+        <p class="cta-return" style="margin-top:18px;">室内機・室外機・型番・配管まわりの写真を送ってください。設置状況を確認し、本命1台＋比較1台と、標準工事を含めた総額の目安をご案内します。</p>
+        <div class="cta-row" style="margin-top:16px;">
           <a href="https://lin.ee/Q1s3uqV" class="btn btn-line" target="_blank" rel="noopener noreferrer" data-cta-purpose="diagnosis">LINEで写真を送って買替え診断</a>
         </div>
       </div>

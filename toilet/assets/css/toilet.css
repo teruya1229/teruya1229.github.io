@@ -634,9 +634,22 @@ ol {
 }
 
 .fv__price--rec {
+  grid-template-areas:
+    "rank name num"
+    "rank name tax"
+    "rank delta delta";
   background: linear-gradient(140deg, rgba(243, 201, 105, 0.2) 0%, rgba(22, 138, 145, 0.26) 100%);
   border-color: rgba(243, 201, 105, 0.72);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.16);
+}
+
+.fv__price-delta {
+  grid-area: delta;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--c-yellow);
 }
 
 .fv__price--rec .fv__price-rank {
@@ -1081,15 +1094,42 @@ ol {
 
 .plan-card__delta {
   margin-top: 12px;
-  padding: 8px 12px;
+  padding: 10px 12px;
   border-radius: var(--r-sm);
   background: var(--c-teal-pale);
   border: 1px solid var(--c-teal);
   color: var(--c-teal-deep);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  line-height: 1.5;
+  line-height: 1.55;
   text-align: center;
+}
+
+.crew-note {
+  margin: 28px 0 8px;
+  padding: 18px 18px 16px;
+  border-radius: var(--r-md);
+  border: 1px solid rgba(15, 107, 113, 0.22);
+  background: #f3faf9;
+}
+
+.crew-note__title {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-navy);
+  letter-spacing: 0.02em;
+}
+
+.crew-note p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--c-ink-sub);
+}
+
+.crew-note p + p {
+  margin-top: 8px;
 }
 
 .plan-card__spec {
@@ -2727,9 +2767,19 @@ body.is-fixed-cta {
     padding: 13px 8px 12px;
   }
 
+  .fv__price--rec {
+    grid-template-areas:
+      "rank"
+      "name"
+      "num"
+      "tax"
+      "delta";
+  }
+
   .fv__price-num,
   .fv__price-tax,
-  .fv__price-flag {
+  .fv__price-flag,
+  .fv__price-delta {
     justify-self: center;
   }
 
