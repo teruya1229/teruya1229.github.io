@@ -13,6 +13,25 @@
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ja_JP">
   <meta name="twitter:card" content="summary">
+  <!-- Google tag (gtag.js) 既存測定ID。ID自体は変更しない -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8LKLFDL3G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    var params = new URLSearchParams(location.search);
+    var isDebug = params.get('debug') === '1' || params.get('debug_mode') === 'true';
+    var gaConfig = { send_page_view: false };
+    if (isDebug) gaConfig.debug_mode = true;
+    gtag('config', 'G-X8LKLFDL3G', gaConfig);
+    gtag('event', 'page_view', {
+      page_title: document.title,
+      page_location: window.location.href,
+      page_path: '/plus-one-lab/',
+      page_type: 'plus_one_lab',
+      page_slug: '/plus-one-lab/'
+    });
+  </script>
   <style>
     :root{
       --brand:#1F2A44;
@@ -585,5 +604,100 @@
   <div class="fixed-cta">
     <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta="line" data-cta-location="fixed">現場業プラスワン研究会に<strong>LINEで相談する</strong></a>
   </div>
+  <script>
+  (function() {
+    var PAGE_TYPE = 'plus_one_lab';
+    var PAGE_SLUG = '/plus-one-lab/';
+    var params = new URLSearchParams(location.search);
+    var isDebug = params.get('debug') === '1' || params.get('debug_mode') === 'true';
+    var debugToastTimer = null;
+
+    function showDebugToast() {
+      if (debugToastTimer) clearTimeout(debugToastTimer);
+      var prev = document.querySelector('.ga-debug-toast');
+      if (prev && prev.parentNode) prev.parentNode.removeChild(prev);
+      var el = document.createElement('div');
+      el.className = 'ga-debug-toast';
+      el.textContent = '計測OK';
+      el.setAttribute('role', 'status');
+      el.setAttribute('aria-live', 'polite');
+      el.style.cssText = 'position:fixed;bottom:88px;right:16px;padding:10px 14px;font-size:14px;font-weight:700;border-radius:999px;background:#16a34a;color:#fff;z-index:99999;box-shadow:0 8px 20px rgba(0,0,0,.18);pointer-events:none;';
+      document.body.appendChild(el);
+      debugToastTimer = setTimeout(function() {
+        if (el.parentNode) el.parentNode.removeChild(el);
+        debugToastTimer = null;
+      }, 1800);
+    }
+
+    function detectLocation(anchor) {
+      var attr = anchor.getAttribute('data-cta-location');
+      if (attr) return attr;
+      var node = anchor;
+      while (node && node !== document.body) {
+        var id = (node.id || '').toLowerCase();
+        var cls = (typeof node.className === 'string' ? node.className : '').toLowerCase();
+        var tag = (node.tagName || '').toLowerCase();
+        if (/\bhero\b/.test(cls) || id === 'hero') return 'hero';
+        if (id === 'final-cta' || id === 'contact' || tag === 'footer' || /\bfooter\b/.test(cls) || /\bfixed-cta\b/.test(cls)) return 'bottom';
+        node = node.parentElement;
+      }
+      return 'unknown';
+    }
+
+    function detectCtaType(href) {
+      if (!href) return null;
+      if (href.indexOf('https://lin.ee/') === 0) return 'line';
+      if (href.indexOf('tel:') === 0) return 'tel';
+      return null;
+    }
+
+    function getLabel(anchor) {
+      var text = (anchor.textContent || '').replace(/\s+/g, ' ').trim();
+      if (text) return text.substring(0, 100);
+      return anchor.getAttribute('aria-label') || anchor.getAttribute('title') || '';
+    }
+
+    document.addEventListener('click', function(e) {
+      var anchor = e.target.closest('a');
+      if (!anchor) return;
+      var href = anchor.getAttribute('href') || '';
+      var ctaType = detectCtaType(href);
+      if (!ctaType) return;
+      if (isDebug) e.preventDefault();
+      var eventData = {
+        cta_type: ctaType,
+        cta_target: ctaType,
+        cta_label: getLabel(anchor),
+        cta_href: href,
+        cta_location: detectLocation(anchor),
+        page_type: PAGE_TYPE,
+        page_slug: PAGE_SLUG,
+        debug_flag: isDebug
+      };
+      if (typeof window.gtag === 'function') {
+        var ctaPayload = {
+          cta_type: eventData.cta_type,
+          cta_target: eventData.cta_target,
+          cta_label: eventData.cta_label,
+          cta_href: eventData.cta_href,
+          cta_location: eventData.cta_location,
+          page_type: eventData.page_type,
+          page_slug: eventData.page_slug,
+          debug_flag: eventData.debug_flag
+        };
+        if (!isDebug) ctaPayload.transport_type = 'beacon';
+        gtag('event', 'cta_click', ctaPayload);
+        if (ctaType === 'line') {
+          gtag('event', 'line_click', { link_url: href });
+        } else if (ctaType === 'tel') {
+          gtag('event', 'phone_click', { link_url: href });
+        }
+      } else {
+        console.log('[GA4 CTA]', eventData);
+      }
+      if (isDebug) showDebugToast();
+    }, true);
+  })();
+  </script>
 </body>
 </html>
