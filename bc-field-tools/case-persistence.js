@@ -3,6 +3,8 @@
 
   const DEBOUNCE_MS = 750;
   const MAX_WAIT_MS = 3000;
+  /** Estimate edits flush sooner than generic autosave so reopen/navigation cannot miss them. */
+  const ESTIMATE_FLUSH_MS = 180;
 
   /** @type {null | {
    *   caseId: string,
@@ -29,6 +31,8 @@
 
   /** @type {ReturnType<typeof setTimeout> | null} */
   let debounceTimer = null;
+  /** @type {ReturnType<typeof setTimeout> | null} */
+  let estimateFlushTimer = null;
   /** @type {number | null} */
   let firstDirtyAt = null;
   /** @type {Promise<boolean> | null} */
@@ -370,10 +374,45 @@
     }
   }
 
+  function clearEstimateFlushTimer() {
+    if (estimateFlushTimer) {
+      clearTimeout(estimateFlushTimer);
+      estimateFlushTimer = null;
+    }
+  }
+
+  function clearAllPersistTimers() {
+    clearDebounceTimer();
+    clearEstimateFlushTimer();
+  }
+
+  /**
+   * Short debounce for estimate-only changes (selected / qty / custom / memo / note).
+   * Keeps IDB flush tight without creating a save loop on every keystroke burst.
+   */
+  function scheduleEstimateFlush() {
+    if (!runtime || !runtime.caseId || !runtime.storageOk) return;
+    if (runtime.suppressAutosave || runtime.conflictState || runtime.deleteRequested) return;
+    clearEstimateFlushTimer();
+    estimateFlushTimer = setTimeout(() => {
+      estimateFlushTimer = null;
+      void flushAutosave();
+    }, ESTIMATE_FLUSH_MS);
+  }
+
+  /**
+   * Await pending estimate/autosave before leaving the page (link / back / AI return).
+   */
+  async function flushBeforeLeave(reason) {
+    if (!runtime || !runtime.caseId) return true;
+    clearAllPersistTimers();
+    return flushAutosave();
+  }
+
   function resetSessionState({ advanceLifecycle } = {}) {
     if (!runtime) return;
     if (advanceLifecycle) runtime.lifecycleToken += 1;
-    clearDebounceTimer();
+    clearAllPersistTimers();
     saveLoopPromise = null;
     firstDirtyAt = null;
     runtime.editGeneration = 0;
@@ -591,7 +630,7 @@
   }
 
   async function flushAutosave() {
-    clearDebounceTimer();
+    clearAllPersistTimers();
     if (!runtime) return true;
     if (!runtime.storageOk) return true;
     if (runtime.deleteRequested) return false;
@@ -1095,7 +1134,9 @@
       void createAndOpenNewCase();
     });
     document.getElementById("save-now-btn")?.addEventListener("click", () => {
-      void flushAutosave();
+      void flushAutosave().then((ok) => {
+        if (!ok) setStatus("error", "保存に失敗しました。再試行してください。");
+      });
     });
     document.getElementById("save-retry-btn")?.addEventListener("click", () => {
       if (runtime && runtime.conflictState) return;
@@ -1120,6 +1161,36 @@
         "（未命名案件）";
       void deleteCurrentOrSelected(runtime.caseId, name);
     });
+
+    // Intercept same-origin leaves (AI番頭へ戻る / 案件切替リンク) so pending estimate flush lands in IDB.
+    document.addEventListener(
+      "click",
+      (event) => {
+        const raw = event.target;
+        const el = raw && raw.nodeType === 1 ? raw : raw && raw.parentElement;
+        const a = el && typeof el.closest === "function" ? el.closest("a[href]") : null;
+        if (!a) return;
+        if (event.defaultPrevented || event.button !== 0) return;
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (a.target && a.target !== "_self") return;
+        const href = a.getAttribute("href");
+        if (!href || href.startsWith("#") || href.startsWith("javascript:")) return;
+        let url;
+        try {
+          url = new URL(href, window.location.href);
+        } catch (_) {
+          return;
+        }
+        if (url.origin !== window.location.origin) return;
+        if (!runtime || !runtime.caseId || !isDirty()) return;
+        event.preventDefault();
+        const dest = url.href;
+        void flushBeforeLeave("nav-link").finally(() => {
+          window.location.href = dest;
+        });
+      },
+      true
+    );
 
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "hidden") {
@@ -1329,7 +1400,9 @@
   window.BCFDCasePersistence = {
     boot,
     scheduleAutosave,
+    scheduleEstimateFlush,
     flushAutosave,
+    flushBeforeLeave,
     markDirtyFromApp,
     notePersistableChange,
     getEditGeneration,

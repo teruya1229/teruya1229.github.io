@@ -87,7 +87,12 @@ assert(
 
 const snap = {
   caseInfo: { caseName: "", siteMemo: "現場メモ保持", workType: "" },
-  estimate: { lines: [{ qty: 1 }] },
+  estimate: {
+    selected: { install_std: { checked: true, qty: 2 } },
+    custom: [{ name: "追加作業テスト", price: 7700, qty: 1, unit: "式" }],
+    memo: "local-memo",
+    note: "local-note",
+  },
 };
 applyReceptionMetadataToSnapshot(snap, {
   case_id: "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
@@ -100,7 +105,16 @@ applyReceptionMetadataToSnapshot(snap, {
 assert(snap.caseInfo.siteMemo === "現場メモ保持", "siteMemo preserved");
 assert(snap.caseInfo.caseName === "佐藤", "name hydrated");
 assert(snap.caseInfo.receptionReadOnly === true, "read-only flag");
-assert(snap.estimate.lines[0].qty === 1, "estimate untouched");
+assert(snap.estimate.selected.install_std.qty === 2, "selected qty untouched");
+assert(snap.estimate.custom[0].name === "追加作業テスト", "custom untouched");
+assert(snap.estimate.memo === "local-memo", "memo untouched");
+assert(snap.estimate.note === "local-note", "note untouched");
+
+assert(/scheduleEstimateFlush/.test(persistence), "estimate flush scheduled");
+assert(/flushBeforeLeave/.test(persistence), "leave flush");
+assert(/ESTIMATE_FLUSH_MS/.test(persistence), "short estimate flush delay");
+assert(/id="est-note"/.test(index), "est-note field");
+assert(/pers\.scheduleEstimateFlush/.test(app), "persistQuote triggers estimate flush");
 
 if (failed) {
   console.error(`\n${failed} failure(s)`);

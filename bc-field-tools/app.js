@@ -2,7 +2,7 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.09.21-008";
+  const APP_VERSION = "2026.09.21-009";
   /** 公開可能な anon key のみ（Edge gateway用。特権キーや外部API秘密は載せない） */
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
@@ -216,7 +216,13 @@
     quoteState = state;
     if (pricesOnly || isCaseBound()) {
       E.saveSharedPrices(state.prices || {});
-      if (!pricesOnly && isCaseBound()) notifyDirty();
+      if (!pricesOnly && isCaseBound()) {
+        notifyDirty();
+        const pers = window.BCFDCasePersistence;
+        if (pers && typeof pers.scheduleEstimateFlush === "function") {
+          pers.scheduleEstimateFlush();
+        }
+      }
       return;
     }
     E.saveState(state);
@@ -734,11 +740,17 @@
     if (!hint) return;
     const photos = (bundle && bundle.photos) || [];
     const snap = bundle && bundle.caseRecord && bundle.caseRecord.snapshot;
-    const hasEstimate =
-      snap &&
-      snap.estimate &&
-      Array.isArray(snap.estimate.lines) &&
-      snap.estimate.lines.some((row) => row && Number(row.qty) > 0);
+    const est = snap && snap.estimate;
+    const hasEstimate = !!(
+      est &&
+      ((est.selected &&
+        Object.keys(est.selected).some(
+          (id) => est.selected[id] && est.selected[id].checked
+        )) ||
+        (Array.isArray(est.custom) && est.custom.length > 0) ||
+        String(est.memo || "").trim() ||
+        String(est.note || "").trim())
+    );
     const siteMemo =
       snap && snap.caseInfo && String(snap.caseInfo.siteMemo || "").trim();
     const emptyLocal = photos.length === 0 && !hasEstimate && !siteMemo;
@@ -1710,6 +1722,7 @@
     }
     if (el("est-customer")) el("est-customer").value = quoteState.customer || "";
     if (el("est-memo")) el("est-memo").value = quoteState.memo || "";
+    if (el("est-note")) el("est-note").value = quoteState.note || "";
     const cats = el("est-cats");
     cats.innerHTML = E.initialCatalog.map((c) =>
       `<button type="button" class="cat-tab" data-cat="${escapeAttr(c.category)}" aria-selected="${estCategory === c.category}">${escapeHtml(c.category)}</button>`
@@ -1740,7 +1753,13 @@
     const rows = E.selectedRows(quoteState);
     const t = E.totals(quoteState);
     sel.innerHTML = rows.length
-      ? rows.map((r) => `<div class="check-row"><div><b>${escapeHtml(r.name)}</b><div class="hint">${E.yen(r.price)}（税込） × ${r.qty}${escapeHtml(r.unit)}</div></div><div class="amt">${E.yen(r.price * r.qty)}</div></div>`).join("") +
+      ? rows.map((r) => {
+          const removeBtn =
+            typeof r.customIndex === "number"
+              ? `<button type="button" class="btn btn-ghost" data-custom-remove="${r.customIndex}" style="margin-top:6px">削除</button>`
+              : "";
+          return `<div class="check-row"><div><b>${escapeHtml(r.name)}</b><div class="hint">${E.yen(r.price)}（税込） × ${r.qty}${escapeHtml(r.unit)}</div>${removeBtn}</div><div class="amt">${E.yen(r.price * r.qty)}</div></div>`;
+        }).join("") +
         `<div class="check-row"><div><b>税込合計</b><div class="hint">うち消費税 ${E.yen(t.tax)}　税抜参考 ${E.yen(t.sub)}</div></div><div class="amt">${E.yen(t.total)}</div></div>`
       : `<p class="hint">まだ選んでいません。</p>`;
     const nbox = el("est-notices");
@@ -2028,6 +2047,16 @@
       renderEstimate();
       return;
     }
+    const customRemove = t.closest("[data-custom-remove]");
+    if (customRemove) {
+      const idx = Number(customRemove.getAttribute("data-custom-remove"));
+      if (Number.isFinite(idx) && idx >= 0 && idx < quoteState.custom.length) {
+        quoteState.custom.splice(idx, 1);
+        persistQuote(quoteState);
+        renderEstimate();
+      }
+      return;
+    }
     if (t.id === "copy-prices-btn") {
       const payload = { type: window.BCEstimate.PRICE_MASTER_TYPE, version: 1, prices: window.BCEstimate.effectivePrices(quoteState) };
       const text = JSON.stringify(payload, null, 2);
@@ -2094,9 +2123,15 @@
   document.addEventListener("input", (event) => {
     const t = event.target;
     if (!(t instanceof Element)) return;
-    if (t.id === "case-name" || t.id === "site-memo") { notifyDirty(); return; }
+    if (t.id === "case-name" || t.id === "site-memo") {
+      notifyDirty();
+      const pers = window.BCFDCasePersistence;
+      if (pers && typeof pers.scheduleEstimateFlush === "function") pers.scheduleEstimateFlush();
+      return;
+    }
     if (t.id === "est-customer") { quoteState.customer = t.value; persistQuote(quoteState); renderCta(); return; }
     if (t.id === "est-memo") { quoteState.memo = t.value; persistQuote(quoteState); return; }
+    if (t.id === "est-note") { quoteState.note = t.value; persistQuote(quoteState); return; }
     if (t.id === "exec-memo") { execMemo = t.value; notifyDirty(); return; }
     if (t.id === "comp-memo") { compMemo = t.value; notifyDirty(); return; }
     if (t.id === "change-after") { planChange.after = t.value; notifyDirty(); return; }
