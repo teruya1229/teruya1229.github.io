@@ -137,11 +137,108 @@
       }
       state.selected[id].checked = Boolean(state.selected[id].checked);
     });
+    if (typeof state.customer !== "string") state.customer = state.customer == null ? "" : String(state.customer);
+    if (typeof state.project !== "string") state.project = state.project == null ? "" : String(state.project);
+    if (typeof state.memo !== "string") state.memo = state.memo == null ? "" : String(state.memo);
+    if (typeof state.note !== "string") state.note = state.note == null ? "" : String(state.note);
     return state;
   }
 
+  /** 一時見積（案件未紐付け）用。bc_quote_state 全体を書き込む。 */
   function saveState(state) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function emptySelectedMap() {
+    const selected = {};
+    knownIds.forEach((id) => {
+      selected[id] = { checked: false, qty: 1 };
+    });
+    return selected;
+  }
+
+  /** 案件固有見積（prices は含めない） */
+  function emptyCaseEstimate() {
+    return {
+      customer: "",
+      project: "",
+      memo: "",
+      note: "",
+      selected: emptySelectedMap(),
+      custom: [],
+    };
+  }
+
+  function normalizeCaseEstimate(raw) {
+    const base = emptyCaseEstimate();
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) return base;
+    base.customer = raw.customer == null ? "" : String(raw.customer);
+    base.project = raw.project == null ? "" : String(raw.project);
+    base.memo = raw.memo == null ? "" : String(raw.memo);
+    base.note = raw.note == null ? "" : String(raw.note);
+    if (raw.selected && typeof raw.selected === "object" && !Array.isArray(raw.selected)) {
+      knownIds.forEach((id) => {
+        const row = raw.selected[id];
+        if (!row || typeof row !== "object") return;
+        const qty = Number(row.qty);
+        base.selected[id] = {
+          checked: Boolean(row.checked),
+          qty: Number.isFinite(qty) ? qty : 1,
+        };
+      });
+    }
+    if (Array.isArray(raw.custom)) {
+      base.custom = raw.custom
+        .map((x) => ({
+          name: x && x.name != null ? String(x.name) : "",
+          price: Number(x && x.price) || 0,
+          qty: Number(x && x.qty) || 1,
+          unit: x && x.unit != null ? String(x.unit) : "式",
+        }))
+        .filter((x) => x.name);
+    }
+    return base;
+  }
+
+  function extractCaseEstimate(state) {
+    return normalizeCaseEstimate(state || {});
+  }
+
+  function loadSharedPrices() {
+    try {
+      const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") || {};
+      if (state && typeof state === "object" && state.prices && typeof state.prices === "object" && !Array.isArray(state.prices)) {
+        return { ...state.prices };
+      }
+    } catch (_) {
+      /* ignore */
+    }
+    return {};
+  }
+
+  /**
+   * prices のみ更新。selected/custom 等の既存 bc_quote_state は破壊しない。
+   */
+  function saveSharedPrices(prices) {
+    let state = {};
+    try {
+      state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") || {};
+    } catch (_) {
+      state = {};
+    }
+    if (!state || typeof state !== "object" || Array.isArray(state)) state = {};
+    state.prices =
+      prices && typeof prices === "object" && !Array.isArray(prices) ? { ...prices } : {};
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function hydrateFromCaseEstimate(caseEstimate, prices) {
+    const fields = normalizeCaseEstimate(caseEstimate);
+    return {
+      ...fields,
+      prices:
+        prices && typeof prices === "object" && !Array.isArray(prices) ? { ...prices } : {},
+    };
   }
 
   const NIGHT_EARLY_ID = "night_early";
@@ -512,6 +609,12 @@
     yen,
     loadState,
     saveState,
+    emptyCaseEstimate,
+    normalizeCaseEstimate,
+    extractCaseEstimate,
+    loadSharedPrices,
+    saveSharedPrices,
+    hydrateFromCaseEstimate,
     getPrice,
     selectedRows,
     totals,

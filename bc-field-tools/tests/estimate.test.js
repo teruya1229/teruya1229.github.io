@@ -446,3 +446,108 @@ describe("Phase 2 floor / electric / surcharge catalog", () => {
     assert.ok(E.itemById.floor_strip_wax.unit === "㎡");
   });
 });
+
+describe("Phase 4 per-case estimate vs shared prices", () => {
+  let ls;
+  let E;
+
+  beforeEach(() => {
+    ls = createLocalStorage();
+    E = loadEstimate(ls);
+  });
+
+  it("keeps case A/B selected isolated and restores A", () => {
+    const prices = { install_std: 22000 };
+    E.saveSharedPrices(prices);
+    ls.setItem(
+      E.STORAGE_KEY,
+      JSON.stringify({
+        prices,
+        selected: { ac_std: { checked: true, qty: 9 } },
+        custom: [{ name: "旧一時", price: 1, qty: 1, unit: "式" }],
+        customer: "一時",
+      })
+    );
+
+    const caseA = E.hydrateFromCaseEstimate(
+      {
+        customer: "A",
+        selected: { install_std: { checked: true, qty: 1 } },
+        custom: [],
+      },
+      E.loadSharedPrices()
+    );
+    const caseB = E.hydrateFromCaseEstimate(
+      {
+        customer: "B",
+        selected: { floor_strip_wax: { checked: true, qty: 30 } },
+        custom: [{ name: "床調整", price: 500, qty: 1, unit: "式" }],
+      },
+      E.loadSharedPrices()
+    );
+
+    assert.equal(caseA.selected.install_std.checked, true);
+    assert.equal(caseA.selected.floor_strip_wax.checked, false);
+    assert.equal(caseB.selected.floor_strip_wax.qty, 30);
+    assert.equal(caseB.selected.install_std.checked, false);
+    assert.equal(caseB.custom[0].name, "床調整");
+
+    const backA = E.hydrateFromCaseEstimate(E.extractCaseEstimate(caseA), E.loadSharedPrices());
+    assert.equal(backA.selected.install_std.checked, true);
+    assert.equal(backA.selected.floor_strip_wax.checked, false);
+    assert.equal(E.totals(backA).total, 22000);
+
+    // temporary LS selected not auto-copied into empty case
+    const fresh = E.hydrateFromCaseEstimate(undefined, E.loadSharedPrices());
+    assert.equal(fresh.selected.ac_std.checked, false);
+    assert.equal(fresh.custom.length, 0);
+    assert.equal(fresh.customer, "");
+  });
+
+  it("shares prices across cases without mixing selected", () => {
+    const a = E.hydrateFromCaseEstimate(
+      { selected: { install_std: { checked: true, qty: 1 } } },
+      { install_std: 22000, floor_strip_wax: 1200 }
+    );
+    a.prices.install_std = 23000;
+    E.saveSharedPrices(a.prices);
+    const b = E.hydrateFromCaseEstimate(
+      { selected: { floor_strip_wax: { checked: true, qty: 30 } } },
+      E.loadSharedPrices()
+    );
+    assert.equal(b.prices.install_std, 23000);
+    assert.equal(E.totals(b).total, 1200 * 30);
+    assert.equal(E.getPrice(b, E.itemById.install_std), 23000);
+  });
+
+  it("saveSharedPrices does not destroy temporary selected", () => {
+    ls.setItem(
+      E.STORAGE_KEY,
+      JSON.stringify({
+        prices: { ac_std: 9000 },
+        selected: { ac_std: { checked: true, qty: 2 } },
+        custom: [],
+        customer: "一時残す",
+      })
+    );
+    E.saveSharedPrices({ ac_std: 9100, install_std: 22000 });
+    const raw = JSON.parse(ls.getItem(E.STORAGE_KEY));
+    assert.equal(raw.prices.ac_std, 9100);
+    assert.equal(raw.selected.ac_std.qty, 2);
+    assert.equal(raw.customer, "一時残す");
+  });
+
+  it("empty case estimate has no checked lines", () => {
+    const empty = E.emptyCaseEstimate();
+    assert.equal(Object.values(empty.selected).some((s) => s.checked), false);
+    assert.equal(empty.custom.length, 0);
+    const snap = E.extractCaseEstimate(E.hydrateFromCaseEstimate(empty, {}));
+    assert.equal(snap.selected.install_std.checked, false);
+  });
+
+  it("old snapshot without estimate hydrates empty case fields", () => {
+    const state = E.hydrateFromCaseEstimate(null, { ac_dispose: 3850 });
+    assert.equal(state.selected.ac_dispose.checked, false);
+    assert.equal(state.prices.ac_dispose, 3850);
+  });
+});

@@ -484,4 +484,55 @@ describe("bcfd container format", () => {
       /source\.caseId/
     );
   });
+
+  it("26. preserves estimate slice; legacy snapshot without estimate still restores", async () => {
+    const hashed = await backup.hashPhotosForExport([]);
+    const snapshot = {
+      schemaVersion: "1B-2A",
+      snapshotAt: "2026-01-01T00:00:00.000Z",
+      caseInfo: { caseName: "EstCase", siteMemo: "", workType: "" },
+      workflow: { currentPhase: "survey", phaseStatus: {} },
+      survey: { diagnosed: false, manual: {}, diagnosis: null, unresolved: [] },
+      preparation: { checks: [], stopRecord: {} },
+      execution: { materials: [], planChange: {}, extraWorks: [] },
+      completion: { measures: [], operationChecks: [] },
+      alerts: [],
+      photoMetadata: [],
+      estimate: {
+        customer: "案件A",
+        project: "",
+        memo: "メモ",
+        note: "",
+        selected: { install_std: { checked: true, qty: 2 } },
+        custom: [{ name: "自由", price: 1000, qty: 1, unit: "式" }],
+      },
+    };
+    const manifest = backup.buildManifest({
+      appSchemaVersion: "1B-2A",
+      exportedAt: "2026-01-01T00:00:00.000Z",
+      sourceCaseId: "case-with-estimate",
+      sourceRevision: 1,
+      caseMeta: {
+        displayName: "EstCase",
+        caseNumber: "BC-EST",
+        createdAt: "2026-01-01T00:00:00.000Z",
+        updatedAt: "2026-01-01T00:00:00.000Z",
+      },
+      snapshot,
+      photoEntries: hashed.photoEntries,
+      totalPayloadBytes: hashed.totalPayloadBytes,
+    });
+    const file = await backup.buildBackupBlob({
+      manifest,
+      photoBlobsInOrder: hashed.photoBlobsInOrder,
+    });
+    const inspection = await backup.inspectBackupFile(file);
+    assert.equal(inspection.manifest.case.snapshot.estimate.customer, "案件A");
+    assert.equal(inspection.manifest.case.snapshot.estimate.selected.install_std.qty, 2);
+    assert.equal(inspection.manifest.case.snapshot.estimate.custom[0].name, "自由");
+
+    const { file: legacyFile } = await buildValidContainer([]);
+    const legacy = await backup.inspectBackupFile(legacyFile);
+    assert.equal(legacy.manifest.case.snapshot.estimate, undefined);
+  });
 });

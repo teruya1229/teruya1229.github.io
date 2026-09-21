@@ -2,7 +2,7 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.09.21-004";
+  const APP_VERSION = "2026.09.21-005";
   /** 公開可能な anon key のみ（Edge gateway用。特権キーや外部API秘密は載せない） */
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
@@ -199,6 +199,42 @@
     if (suppressDirty) return;
     if (typeof dirtyHandler === "function") dirtyHandler();
     renderCta();
+  }
+
+  function isCaseBound() {
+    const pers = window.BCFDCasePersistence;
+    const rt = pers && typeof pers.getRuntime === "function" ? pers.getRuntime() : null;
+    return Boolean(rt && rt.caseId);
+  }
+
+  /**
+   * 案件紐付け時: prices のみ LS、見積本体は snapshot.estimate へ（notifyDirty）。
+   * 未紐付け時: 従来どおり bc_quote_state 全体へ保存（一時見積）。
+   */
+  function persistQuote(state, { pricesOnly } = {}) {
+    const E = window.BCEstimate;
+    quoteState = state;
+    if (pricesOnly || isCaseBound()) {
+      E.saveSharedPrices(state.prices || {});
+      if (!pricesOnly && isCaseBound()) notifyDirty();
+      return;
+    }
+    E.saveState(state);
+  }
+
+  function syncQuotePricesFromShared() {
+    const E = window.BCEstimate;
+    quoteState.prices = E.loadSharedPrices();
+  }
+
+  function loadWorkingQuoteState() {
+    const E = window.BCEstimate;
+    if (isCaseBound()) {
+      syncQuotePricesFromShared();
+      return quoteState;
+    }
+    quoteState = E.loadState();
+    return quoteState;
   }
   function notePersistableChangeForPhoto() {
     notifyDirty();
@@ -510,12 +546,14 @@
       photoMetadata: ALL_PHOTO_DEFS.map((def) => ({
         slotKey: def.id, phase: def.phase || "survey", fileName: "", mimeType: "", size: null, lastModified: null, registered: false,
       })),
+      estimate: window.BCEstimate.emptyCaseEstimate(),
     };
   }
 
   function createCaseSnapshot() {
     const caseName = (el("case-name") && el("case-name").value) || "";
     const siteMemo = (el("site-memo") && el("site-memo").value) || "";
+    const E = window.BCEstimate;
     return {
       schemaVersion: "1B-2A",
       snapshotAt: nowIso(),
@@ -585,6 +623,7 @@
           registered: Boolean(state.registered || state.objectUrl || state.blob || state.missingBlob),
         };
       }),
+      estimate: E.extractCaseEstimate(quoteState),
     };
   }
 
@@ -710,6 +749,8 @@
       switchPhase(wf.currentPhase || "survey", { silent: true });
       pendingPhotoOps.clear();
       restoreAiFromSnapshot(snap.survey && snap.survey.aiReadings);
+      const E = window.BCEstimate;
+      quoteState = E.hydrateFromCaseEstimate(snap.estimate, E.loadSharedPrices());
       renderAll();
     } finally {
       suppressDirty = false;
@@ -805,7 +846,7 @@
     el("view-estimate").hidden = currentView !== "field" ? false : true;
     el("view-estimate").hidden = currentView !== "estimate";
     if (currentView === "estimate") {
-      quoteState = window.BCEstimate.loadState();
+      loadWorkingQuoteState();
       renderEstimate();
     }
     renderCta();
@@ -1562,7 +1603,21 @@
 
   function renderEstimate() {
     const E = window.BCEstimate;
-    quoteState = E.loadState();
+    loadWorkingQuoteState();
+    const bind = el("est-case-binding");
+    if (bind) {
+      if (isCaseBound()) {
+        const caseName =
+          ((el("case-name") && el("case-name").value) || "").trim() ||
+          (window.BCFDCasePersistence &&
+            window.BCFDCasePersistence.getRuntime &&
+            window.BCFDCasePersistence.getRuntime().displayNameHint) ||
+          "（未命名案件）";
+        bind.textContent = "案件：" + caseName;
+      } else {
+        bind.textContent = "一時見積（案件未選択）";
+      }
+    }
     if (el("est-customer")) el("est-customer").value = quoteState.customer || "";
     if (el("est-memo")) el("est-memo").value = quoteState.memo || "";
     const cats = el("est-cats");
@@ -1669,7 +1724,7 @@
     const built = E.buildFieldLines(site);
     fieldNotices = built.notices;
     fieldMaterials = built.materials;
-    quoteState = E.loadState();
+    loadWorkingQuoteState();
     const caseName = (el("case-name") && el("case-name").value.trim()) || "";
     const noteBits = [];
     if (site.workType) noteBits.push("作業：" + displayWorkType(site.workType));
@@ -1683,7 +1738,7 @@
     } else if (built.lines.some((l) => ["dedicated", "volt_change", "hole", "wire_ext"].includes(l.id))) {
       estCategory = "軽い電気工事";
     }
-    E.saveState(quoteState);
+    persistQuote(quoteState);
     switchView("estimate");
   }
 
@@ -1698,7 +1753,7 @@
     quoteState.selected[id].checked = !quoteState.selected[id].checked;
     if (!quoteState.selected[id].qty) quoteState.selected[id].qty = 1;
     if (id === E.NIGHT_EARLY_ID) quoteState.selected[id].qty = 1;
-    E.saveState(quoteState);
+    persistQuote(quoteState);
     renderEstimate();
   }
   function changeQty(id, delta, min, step) {
@@ -1714,7 +1769,7 @@
     } else {
       quoteState.selected[id].checked = true;
     }
-    E.saveState(quoteState);
+    persistQuote(quoteState);
     renderEstimate();
   }
 
@@ -1879,7 +1934,7 @@
       if (!name) { window.alert("作業名を入力してください"); return; }
       quoteState.custom.push({ name, price, qty, unit: "式" });
       el("customName").value = ""; el("customPrice").value = ""; el("customQty").value = "1";
-      window.BCEstimate.saveState(quoteState);
+      persistQuote(quoteState);
       renderEstimate();
       return;
     }
@@ -1893,7 +1948,7 @@
     if (t.id === "load-prices-btn") {
       try {
         quoteState.prices = window.BCEstimate.parsePriceMaster(el("masterJson").value.trim());
-        window.BCEstimate.saveState(quoteState);
+        persistQuote(quoteState, { pricesOnly: true });
         renderEstimate(); renderPriceList();
         el("masterMsg").textContent = "読み込みました。";
       } catch (err) {
@@ -1904,7 +1959,7 @@
     if (t.id === "reset-prices-btn") {
       if (!window.confirm("料金設定を初期値に戻しますか？ 見積の選択内容は残します。")) return;
       quoteState.prices = {};
-      window.BCEstimate.saveState(quoteState);
+      persistQuote(quoteState, { pricesOnly: true });
       renderEstimate(); renderPriceList();
       el("masterMsg").textContent = "初期値に戻しました。";
       return;
@@ -1950,15 +2005,15 @@
     const t = event.target;
     if (!(t instanceof Element)) return;
     if (t.id === "case-name" || t.id === "site-memo") { notifyDirty(); return; }
-    if (t.id === "est-customer") { quoteState.customer = t.value; window.BCEstimate.saveState(quoteState); renderCta(); return; }
-    if (t.id === "est-memo") { quoteState.memo = t.value; window.BCEstimate.saveState(quoteState); return; }
+    if (t.id === "est-customer") { quoteState.customer = t.value; persistQuote(quoteState); renderCta(); return; }
+    if (t.id === "est-memo") { quoteState.memo = t.value; persistQuote(quoteState); return; }
     if (t.id === "exec-memo") { execMemo = t.value; notifyDirty(); return; }
     if (t.id === "comp-memo") { compMemo = t.value; notifyDirty(); return; }
     if (t.id === "change-after") { planChange.after = t.value; notifyDirty(); return; }
     if (t.matches("[data-prep]")) { prepText[t.getAttribute("data-prep")] = t.value; notifyDirty(); return; }
     if (t.matches(".price-edit")) {
       quoteState.prices[t.getAttribute("data-price-id")] = Number(t.value || 0);
-      window.BCEstimate.saveState(quoteState);
+      persistQuote(quoteState, { pricesOnly: true });
       renderEstimate();
     }
   });
