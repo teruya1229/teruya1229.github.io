@@ -56,6 +56,7 @@ const persistence = read("case-persistence.js");
 assert(/createCaseWithId/.test(persistence), "createCaseWithId");
 assert(/bootSharedCaseFromUrl/.test(persistence), "URL boot");
 assert(/readCaseIdFromUrl/.test(persistence), "reads ?case_id=");
+assert(/\["v", "case_id"\]/.test(app) || /"case_id"/.test(app), "URL keep case_id on view switch");
 assert(/CASE_NOT_ACCESSIBLE/.test(persistence), "CASE_NOT_ACCESSIBLE gate");
 assert(/applyReceptionMetadataToSnapshot/.test(persistence), "metadata hydrate");
 assert(/URL UUID alone must NOT create/.test(persistence), "no local create on URL alone");
