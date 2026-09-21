@@ -2,7 +2,7 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.09.21-001";
+  const APP_VERSION = "2026.09.21-002";
   /** 公開可能な anon key のみ（Edge gateway用。特権キーや外部API秘密は載せない） */
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
@@ -1578,11 +1578,11 @@
       const statusHint = (item.status === E.RANGE_STATUS || item.status === E.LEGACY_STATUS)
         ? `<div class="hint">${escapeHtml(item.status)}</div>`
         : "";
-      return `<button type="button" class="est-item" data-item="${item.id}" aria-pressed="${st.checked}">
+      return `<div role="button" tabindex="0" class="est-item" data-item="${item.id}" aria-pressed="${st.checked}">
         <div><div class="name">${escapeHtml(item.name)}</div><div class="meta">${E.yen(price)}（税込） / ${escapeHtml(item.unit)}</div>${statusHint}</div>
         <div class="amt">${st.checked ? E.yen(amt) : ""}</div>
         ${st.checked ? stepper("qty:" + item.id, st.qty, item.unit, item.unit === "m" ? 0.5 : 1, 0) : ""}
-      </button>`;
+      </div>`;
     }).join("");
     const sel = el("est-selected");
     const rows = E.selectedRows(quoteState);
