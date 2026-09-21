@@ -3,13 +3,18 @@
 
   const PRICE_MASTER_TYPE = "bc_estimate_price_master";
   const STORAGE_KEY = "bc_quote_state";
+  /** 税込計算移行後、保存済み単価の確認を一度促したか */
+  const TAX_INCLUSIVE_ACK_KEY = "bc_quote_tax_inclusive_v1_ack";
+  const RANGE_STATUS = "正本下限・現場条件で調整";
+  /** 収集運搬・リサイクルは互換用。新規は ac_dispose に統合 */
+  const LEGACY_STATUS = "旧項目（互換用）";
 
   const initialCatalog = [
     {
       category: "エアコンクリーニング",
       items: [
-        { id: "ac_std", name: "家庭用エアコン 通常分解", price: 8000, unit: "台", status: "参考初期値" },
-        { id: "ac_func", name: "お掃除機能付き", price: 15000, unit: "台", status: "参考初期値" },
+        { id: "ac_std", name: "家庭用エアコン 通常分解", price: 9000, unit: "台", status: "参考初期値" },
+        { id: "ac_func", name: "お掃除機能付き", price: 16000, unit: "台", status: "参考初期値" },
         { id: "ac_full_add", name: "完全分解 追加", price: 6000, unit: "台", status: "参考初期値" },
         { id: "ac_outdoor", name: "室外機洗浄", price: 3000, unit: "台", status: "参考初期値" },
         { id: "ac_multi_disc", name: "2台目以降 値引き", price: -1000, unit: "台", status: "参考初期値" },
@@ -38,13 +43,14 @@
       category: "エアコン工事",
       items: [
         { id: "install_std", name: "標準取付", price: 22000, unit: "台", status: "参考初期値" },
-        { id: "remove_std", name: "既設取外し", price: 5500, unit: "台", status: "参考初期値" },
+        { id: "remove_std", name: "既設取外し", price: 5500, unit: "台", status: RANGE_STATUS },
         { id: "remove_floor", name: "別階取外し", price: 11000, unit: "台", status: "参考初期値" },
-        { id: "roof_wall", name: "屋根置き・壁面など", price: 12100, unit: "台", status: "参考初期値" },
+        { id: "roof_wall", name: "屋根置き・壁面など", price: 12100, unit: "台", status: RANGE_STATUS },
         { id: "pipe_ext", name: "配管延長", price: 3500, unit: "m", status: "要確認" },
         { id: "pipe_reuse", name: "既存配管再利用 値引き", price: -4400, unit: "式", status: "参考初期値" },
-        { id: "collect", name: "収集運搬", price: 3300, unit: "台", status: "参考初期値" },
-        { id: "recycle", name: "リサイクル料金", price: 2200, unit: "台", status: "推奨初期値" },
+        { id: "ac_dispose", name: "エアコン処分（リサイクル・収集運搬込）", price: 3850, unit: "台", status: "参考初期値" },
+        { id: "collect", name: "収集運搬", price: 3300, unit: "台", status: LEGACY_STATUS },
+        { id: "recycle", name: "リサイクル料金", price: 550, unit: "台", status: LEGACY_STATUS },
         { id: "cover", name: "化粧カバー追加", price: 13200, unit: "式", status: "推奨初期値" },
         { id: "angle", name: "アングル設置", price: 16500, unit: "式", status: "推奨初期値" },
       ],
@@ -52,9 +58,9 @@
     {
       category: "軽い電気工事",
       items: [
-        { id: "outlet", name: "コンセント交換", price: 5000, unit: "箇所", status: "要確認" },
-        { id: "dedicated", name: "専用回路", price: 18000, unit: "回路", status: "要確認" },
-        { id: "breaker", name: "ブレーカー交換", price: 15000, unit: "個", status: "要確認" },
+        { id: "outlet", name: "コンセント交換", price: 5000, unit: "箇所", status: RANGE_STATUS },
+        { id: "dedicated", name: "専用回路", price: 18000, unit: "回路", status: RANGE_STATUS },
+        { id: "breaker", name: "ブレーカー交換", price: 15000, unit: "個", status: RANGE_STATUS },
         { id: "volt_change", name: "100V / 200V 電圧切替", price: 5500, unit: "回路", status: "推奨初期値" },
         { id: "hole", name: "穴あけ追加", price: 8800, unit: "箇所", status: "推奨初期値" },
         { id: "wire_ext", name: "配線延長", price: 2200, unit: "m", status: "推奨初期値" },
@@ -128,11 +134,59 @@
     return rows;
   }
 
+  /**
+   * 単価は税込。行合計＝税込合計。うち消費税は 10/110 逆算。
+   * 返却キーは互換のため維持: total=税込合計, tax=うち消費税, sub=税抜参考額
+   */
   function totals(state) {
     const rows = selectedRows(state);
-    const sub = rows.reduce((a, r) => a + Number(r.price || 0) * Number(r.qty || 0), 0);
-    const tax = Math.round(sub * 0.1);
-    return { sub, tax, total: sub + tax, count: rows.length, rows };
+    const total = rows.reduce((a, r) => a + Number(r.price || 0) * Number(r.qty || 0), 0);
+    const tax = Math.round(total * 10 / 110);
+    const sub = total - tax;
+    return { sub, tax, total, count: rows.length, rows };
+  }
+
+  function hasSavedPriceOverrides(state) {
+    const prices = state && state.prices;
+    if (!prices || typeof prices !== "object" || Array.isArray(prices)) return false;
+    return Object.keys(prices).length > 0;
+  }
+
+  function isTaxInclusiveAcked() {
+    try {
+      return localStorage.getItem(TAX_INCLUSIVE_ACK_KEY) === "1";
+    } catch (_) {
+      return true;
+    }
+  }
+
+  function needsTaxInclusiveNotice(state) {
+    return hasSavedPriceOverrides(state) && !isTaxInclusiveAcked();
+  }
+
+  function ackTaxInclusiveNotice() {
+    try {
+      localStorage.setItem(TAX_INCLUSIVE_ACK_KEY, "1");
+    } catch (_) {
+      /* ignore quota / private mode */
+    }
+  }
+
+  function isLegacyItem(item) {
+    return Boolean(item && item.status === LEGACY_STATUS);
+  }
+
+  /**
+   * カタログ表示用。未選択の旧項目は隠し、新規見積で処分が二重に見えないようにする。
+   * 既に選択済みの旧項目は数量調整できるよう残す（自動変換・自動解除はしない）。
+   */
+  function catalogItemsForDisplay(categoryItems, state) {
+    const items = categoryItems || [];
+    const selected = (state && state.selected) || {};
+    return items.filter((item) => {
+      if (!isLegacyItem(item)) return true;
+      return Boolean(selected[item.id] && selected[item.id].checked);
+    });
   }
 
   function effectivePrices(state) {
@@ -296,13 +350,16 @@
     const { sub, tax, total, rows } = totals(state);
     return [
       "【BCサービス 内部見積】",
+      "※単価は税込です",
       state.customer ? `案件：${state.customer}` : "",
       state.memo ? `メモ：${state.memo}` : "",
       "",
-      ...rows.map((r) => `・${r.name}　${yen(r.price)} × ${r.qty}${r.unit} ＝ ${yen(r.price * r.qty)}`),
+      ...rows.map(
+        (r) => `・${r.name}　${yen(r.price)}（税込） × ${r.qty}${r.unit} ＝ ${yen(r.price * r.qty)}`
+      ),
       "",
-      `税抜：${yen(sub)}`,
-      `消費税：${yen(tax)}`,
+      `税抜参考額：${yen(sub)}`,
+      `うち消費税：${yen(tax)}`,
       `税込合計：${yen(total)}`,
       state.note ? `条件：${state.note}` : "",
       "",
@@ -316,6 +373,9 @@
   window.BCEstimate = {
     PRICE_MASTER_TYPE,
     STORAGE_KEY,
+    TAX_INCLUSIVE_ACK_KEY,
+    RANGE_STATUS,
+    LEGACY_STATUS,
     initialCatalog,
     knownIds,
     itemById,
@@ -327,6 +387,11 @@
     totals,
     effectivePrices,
     parsePriceMaster,
+    hasSavedPriceOverrides,
+    needsTaxInclusiveNotice,
+    ackTaxInclusiveNotice,
+    isLegacyItem,
+    catalogItemsForDisplay,
     buildFieldLines,
     mergeLinesIntoState,
     quoteText,

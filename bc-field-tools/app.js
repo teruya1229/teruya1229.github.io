@@ -2,7 +2,7 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.09.11-013";
+  const APP_VERSION = "2026.09.21-001";
   /** 公開可能な anon key のみ（Edge gateway用。特権キーや外部API秘密は載せない） */
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
@@ -1571,23 +1571,38 @@
     ).join("");
     const cat = E.initialCatalog.find((c) => c.category === estCategory) || E.initialCatalog[0];
     const box = el("est-catalog");
-    box.innerHTML = cat.items.map((item) => {
+    box.innerHTML = E.catalogItemsForDisplay(cat.items, quoteState).map((item) => {
       const st = quoteState.selected[item.id] || { checked: false, qty: 1 };
       const price = E.getPrice(quoteState, item);
       const amt = st.checked ? price * Number(st.qty || 0) : 0;
+      const statusHint = (item.status === E.RANGE_STATUS || item.status === E.LEGACY_STATUS)
+        ? `<div class="hint">${escapeHtml(item.status)}</div>`
+        : "";
       return `<button type="button" class="est-item" data-item="${item.id}" aria-pressed="${st.checked}">
-        <div><div class="name">${escapeHtml(item.name)}</div><div class="meta">${E.yen(price)} / ${escapeHtml(item.unit)}</div></div>
+        <div><div class="name">${escapeHtml(item.name)}</div><div class="meta">${E.yen(price)}（税込） / ${escapeHtml(item.unit)}</div>${statusHint}</div>
         <div class="amt">${st.checked ? E.yen(amt) : ""}</div>
         ${st.checked ? stepper("qty:" + item.id, st.qty, item.unit, item.unit === "m" ? 0.5 : 1, 0) : ""}
       </button>`;
     }).join("");
     const sel = el("est-selected");
     const rows = E.selectedRows(quoteState);
+    const t = E.totals(quoteState);
     sel.innerHTML = rows.length
-      ? rows.map((r) => `<div class="check-row"><div><b>${escapeHtml(r.name)}</b><div class="hint">${E.yen(r.price)} × ${r.qty}${escapeHtml(r.unit)}</div></div><div class="amt">${E.yen(r.price * r.qty)}</div></div>`).join("")
+      ? rows.map((r) => `<div class="check-row"><div><b>${escapeHtml(r.name)}</b><div class="hint">${E.yen(r.price)}（税込） × ${r.qty}${escapeHtml(r.unit)}</div></div><div class="amt">${E.yen(r.price * r.qty)}</div></div>`).join("") +
+        `<div class="check-row"><div><b>税込合計</b><div class="hint">うち消費税 ${E.yen(t.tax)}　税抜参考 ${E.yen(t.sub)}</div></div><div class="amt">${E.yen(t.total)}</div></div>`
       : `<p class="hint">まだ選んでいません。</p>`;
     const nbox = el("est-notices");
-    nbox.innerHTML = fieldNotices.map((n) => `<div class="notice"><b>${escapeHtml(n.title)}</b>${escapeHtml(n.detail)}</div>`).join("");
+    const taxNotice = E.needsTaxInclusiveNotice(quoteState)
+      ? `<div class="notice" id="tax-inclusive-notice" role="status">
+          <b>保存済みの料金設定があります</b>
+          今回から単価を税込として計算します。料金設定を確認してください。
+          <div class="cta-actions" style="margin-top:8px">
+            <button type="button" class="btn btn-primary" id="tax-ack-open-prices">料金設定を確認</button>
+            <button type="button" class="btn btn-secondary" id="tax-ack-keep">そのまま使う</button>
+          </div>
+        </div>`
+      : "";
+    nbox.innerHTML = taxNotice + fieldNotices.map((n) => `<div class="notice"><b>${escapeHtml(n.title)}</b>${escapeHtml(n.detail)}</div>`).join("");
     const mbox = el("est-materials");
     mbox.innerHTML = fieldMaterials.length
       ? `<div class="materials"><b>準備する材料</b><ul>${fieldMaterials.map((m) =>
@@ -1602,11 +1617,25 @@
     const box = el("price-list");
     box.innerHTML = E.initialCatalog.map((cat) =>
       `<p class="section-label">${escapeHtml(cat.category)}</p>` +
-      cat.items.map((item) =>
-        `<label class="section-label" for="price-${item.id}">${escapeHtml(item.name)}</label>
-         <input class="field-input price-edit" id="price-${item.id}" data-price-id="${item.id}" type="number" inputmode="decimal" value="${E.getPrice(quoteState, item)}">`
-      ).join("")
+      cat.items.map((item) => {
+        const hints = [];
+        if (item.status === E.RANGE_STATUS || item.status === E.LEGACY_STATUS) hints.push(item.status);
+        hints.push("税込単価");
+        return `<label class="section-label" for="price-${item.id}">${escapeHtml(item.name)}</label>
+         <p class="hint">${escapeHtml(hints.join("　"))}</p>
+         <input class="field-input price-edit" id="price-${item.id}" data-price-id="${item.id}" type="number" inputmode="decimal" value="${E.getPrice(quoteState, item)}">`;
+      }).join("")
     ).join("");
+  }
+
+  function ackTaxInclusiveAndMaybeOpenPrices(openPrices) {
+    const E = window.BCEstimate;
+    E.ackTaxInclusiveNotice();
+    if (openPrices) {
+      renderPriceList();
+      el("prices-overlay").hidden = false;
+    }
+    renderEstimate();
   }
 
   function renderCta() {
@@ -1822,6 +1851,8 @@
       el("est-selected").scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
+    if (t.id === "tax-ack-open-prices") { ackTaxInclusiveAndMaybeOpenPrices(true); return; }
+    if (t.id === "tax-ack-keep") { ackTaxInclusiveAndMaybeOpenPrices(false); return; }
     if (t.id === "open-prices-btn") { renderPriceList(); el("prices-overlay").hidden = false; return; }
     if (t.id === "close-prices-btn" || t.id === "prices-overlay") {
       if (t.id === "prices-overlay" && event.target !== t) return;

@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#1c3d5a" />
   <title>BCサービス 現場アプリ</title>
-  <link rel="stylesheet" href="./style.css?v=20260911-013" />
+  <link rel="stylesheet" href="./style.css?v=20260921-001" />
 </head>
 <body>
   <div class="app">
@@ -112,9 +112,10 @@
       <div class="sheet">
         <input id="customName" class="field-input" type="text" placeholder="作業名" autocomplete="off" />
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
-          <input id="customPrice" class="field-input" type="number" inputmode="decimal" placeholder="単価" />
+          <input id="customPrice" class="field-input" type="number" inputmode="decimal" placeholder="税込単価" aria-label="税込単価" />
           <input id="customQty" class="field-input" type="number" inputmode="decimal" min="1" step="1" value="1" placeholder="数量" />
         </div>
+        <p class="hint">自由追加の単価も税込です</p>
         <button id="add-custom-btn" class="btn btn-secondary" type="button" style="margin-top:8px;width:100%">追加</button>
       </div>
 
@@ -183,6 +184,7 @@
       <div class="sheet-handle"></div>
       <h2 class="q">料金設定</h2>
       <p class="hint">日常の見積では使いません。単価を変えるときだけ開きます。既存の金額は勝手に変わりません。</p>
+      <p class="hint"><b>単価は税込です</b>。合計へ消費税を重ねません。</p>
       <div id="price-list"></div>
       <p class="section-label">料金のコピー / 読込</p>
       <textarea id="masterJson" class="text-input" placeholder="ここに貼り付け"></textarea>
@@ -207,12 +209,12 @@
 
   <input id="backup-import-input" type="file" accept=".bcfd,application/vnd.bc-field-diagnosis,application/octet-stream" hidden />
 
-  <script src="./storage.js?v=20260911-013"></script>
-  <script src="./estimate.js?v=20260911-013"></script>
-  <script src="./image-prep.js?v=20260911-013"></script>
-  <script src="./ai-field-logic.js?v=20260911-013"></script>
-  <script src="./app.js?v=20260911-013"></script>
-  <script src="./backup.js?v=20260911-013"></script>
-  <script src="./case-persistence.js?v=20260911-013"></script>
+  <script src="./storage.js?v=20260921-001"></script>
+  <script src="./estimate.js?v=20260921-001"></script>
+  <script src="./image-prep.js?v=20260921-001"></script>
+  <script src="./ai-field-logic.js?v=20260921-001"></script>
+  <script src="./app.js?v=20260921-001"></script>
+  <script src="./backup.js?v=20260921-001"></script>
+  <script src="./case-persistence.js?v=20260921-001"></script>
 </body>
 </html>
