@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#1c3d5a" />
   <title>BCサービス 現場アプリ</title>
-  <link rel="stylesheet" href="./style.css?v=20260921-006" />
+  <link rel="stylesheet" href="./style.css?v=20260921-007" />
 </head>
 <body>
   <div class="app">
@@ -45,6 +45,13 @@
       </nav>
 
       <section id="phase-survey">
+        <div id="shared-case-gate" class="warn-card" hidden role="alert"></div>
+        <div id="reception-meta-panel" class="reception-meta-panel" hidden>
+          <p class="section-label">受付情報（参照のみ）</p>
+          <p id="reception-meta-body" class="reception-meta-body"></p>
+          <p id="shared-local-data-hint" class="hint" hidden>この端末には現場データがありません</p>
+          <a id="return-to-reception-link" class="return-to-reception-link" href="#">受付へ戻る</a>
+        </div>
         <label class="section-label" for="case-name">お客様名 / 案件名（任意）</label>
         <input id="case-name" class="field-input" type="text" autocomplete="off" placeholder="空欄でも進めます" />
         <label class="section-label" for="site-memo">現場メモ（任意）</label>
@@ -210,12 +217,14 @@
 
   <input id="backup-import-input" type="file" accept=".bcfd,application/vnd.bc-field-diagnosis,application/octet-stream" hidden />
 
-  <script src="./storage.js?v=20260921-006"></script>
-  <script src="./estimate.js?v=20260921-006"></script>
-  <script src="./image-prep.js?v=20260921-006"></script>
-  <script src="./ai-field-logic.js?v=20260921-006"></script>
-  <script src="./app.js?v=20260921-006"></script>
-  <script src="./backup.js?v=20260921-006"></script>
-  <script src="./case-persistence.js?v=20260921-006"></script>
+  <script src="./bc-cases-config.js?v=20260921-007"></script>
+  <script src="./bc-cases-client.js?v=20260921-007"></script>
+  <script src="./storage.js?v=20260921-007"></script>
+  <script src="./estimate.js?v=20260921-007"></script>
+  <script src="./image-prep.js?v=20260921-007"></script>
+  <script src="./ai-field-logic.js?v=20260921-007"></script>
+  <script src="./app.js?v=20260921-007"></script>
+  <script src="./backup.js?v=20260921-007"></script>
+  <script src="./case-persistence.js?v=20260921-007"></script>
 </body>
 </html>

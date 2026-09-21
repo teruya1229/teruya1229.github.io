@@ -67,6 +67,56 @@
     return `case-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
   }
 
+  const CASE_UUID_RE =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+  function normalizeSharedCaseId(value) {
+    const key = String(value || "").trim().toLowerCase();
+    return CASE_UUID_RE.test(key) ? key : "";
+  }
+
+  function readCaseIdFromUrl() {
+    try {
+      return new URLSearchParams(window.location.search).get("case_id") || "";
+    } catch (_e) {
+      return "";
+    }
+  }
+
+  /**
+   * Inject reception snapshot as source metadata.
+   * Never overwrites siteMemo / estimate / photos / AI / workflow.
+   */
+  function applyReceptionMetadataToSnapshot(snapshot, remoteCase) {
+    if (!snapshot || !remoteCase) return snapshot;
+    const info =
+      snapshot.caseInfo && typeof snapshot.caseInfo === "object"
+        ? { ...snapshot.caseInfo }
+        : { caseName: "", siteMemo: "", workType: "" };
+    const siteMemo = info.siteMemo || "";
+    if (remoteCase.customer_name) {
+      info.caseName = String(remoteCase.customer_name);
+    }
+    if (remoteCase.customer_address) {
+      info.address = String(remoteCase.customer_address);
+    }
+    if (remoteCase.customer_phone) {
+      info.phone = String(remoteCase.customer_phone);
+    }
+    if (remoteCase.work) {
+      info.requestedWork = String(remoteCase.work);
+      if (!info.workType) info.workType = String(remoteCase.work);
+    }
+    if (remoteCase.scheduled_at) {
+      info.scheduledAt = String(remoteCase.scheduled_at);
+    }
+    info.receptionReadOnly = true;
+    info.sharedCaseId = String(remoteCase.case_id || remoteCase.id || "");
+    info.siteMemo = siteMemo;
+    snapshot.caseInfo = info;
+    return snapshot;
+  }
+
   function createCaseNumber() {
     const d = new Date();
     const pad = (n) => String(n).padStart(2, "0");
@@ -626,6 +676,114 @@
     return saved;
   }
 
+  /** Create local case using shared cloud case_id (no separate mapping table). */
+  async function createCaseWithId(caseId, remoteCase) {
+    const id = normalizeSharedCaseId(caseId);
+    if (!id) {
+      throw new Error("invalid_case_id");
+    }
+    const createdAt = nowIso();
+    const caseNumber = createCaseNumber();
+    const snapshot = emptySnapshot();
+    applyReceptionMetadataToSnapshot(snapshot, remoteCase || { case_id: id });
+    const displayName =
+      (snapshot.caseInfo && snapshot.caseInfo.caseName) || "（未命名案件）";
+    const record = {
+      id,
+      recordVersion: 1,
+      createdAt,
+      updatedAt: createdAt,
+      revision: 0,
+      displayName,
+      caseNumber,
+      archiveState: "active",
+      snapshot,
+    };
+    const saved = await storage().createCase({
+      caseRecord: record,
+      photoPuts: [],
+    });
+    return saved;
+  }
+
+  function showSharedCaseGate(message) {
+    const a = app();
+    if (a && typeof a.showSharedCaseGateMessage === "function") {
+      a.showSharedCaseGateMessage(message);
+      return;
+    }
+    window.alert(message);
+  }
+
+  async function openOrCreateSharedCase(remoteCase) {
+    const caseId = normalizeSharedCaseId(remoteCase && remoteCase.case_id);
+    if (!caseId) {
+      showSharedCaseGate("CASE_NOT_ACCESSIBLE");
+      return false;
+    }
+    const existing = await storage().getCaseBundle(caseId);
+    if (existing && existing.caseRecord) {
+      const prevRevision = Number(existing.caseRecord.revision) || 0;
+      const snap =
+        existing.caseRecord.snapshot &&
+        typeof existing.caseRecord.snapshot === "object"
+          ? { ...existing.caseRecord.snapshot }
+          : emptySnapshot();
+      applyReceptionMetadataToSnapshot(snap, remoteCase);
+      const nextRecord = {
+        ...existing.caseRecord,
+        snapshot: snap,
+        displayName:
+          (snap.caseInfo && snap.caseInfo.caseName) ||
+          existing.caseRecord.displayName,
+        updatedAt: nowIso(),
+      };
+      try {
+        await storage().updateExistingCase({
+          caseRecord: nextRecord,
+          expectedRevision: prevRevision,
+          photoPuts: [],
+          photoDeletes: [],
+        });
+      } catch (_e) {
+        // Metadata refresh best-effort; still open local-owned data.
+      }
+      const refreshed = await storage().getCaseBundle(caseId);
+      await applyBundle(refreshed || { caseRecord: nextRecord, photos: existing.photos || [] });
+      if (app() && typeof app().noteSharedCaseLocalDataHint === "function") {
+        app().noteSharedCaseLocalDataHint(refreshed || existing);
+      }
+      return true;
+    }
+
+    // URL UUID alone must NOT create a case — only after authorized remote fetch.
+    const saved = await createCaseWithId(caseId, remoteCase);
+    await applyBundle({ caseRecord: saved, photos: [] });
+    if (app() && typeof app().noteSharedCaseLocalDataHint === "function") {
+      app().noteSharedCaseLocalDataHint({ caseRecord: saved, photos: [] });
+    }
+    return true;
+  }
+
+  async function bootSharedCaseFromUrl(rawCaseId) {
+    const normalized = normalizeSharedCaseId(rawCaseId);
+    if (!normalized) {
+      showSharedCaseGate("CASE_NOT_ACCESSIBLE");
+      return false;
+    }
+    const client = window.BCFieldCases;
+    if (!client || typeof client.getCaseById !== "function") {
+      showSharedCaseGate("CASE_NOT_ACCESSIBLE");
+      return false;
+    }
+    const result = await client.getCaseById(normalized);
+    if (!result.ok || !result.case) {
+      showSharedCaseGate("CASE_NOT_ACCESSIBLE");
+      return false;
+    }
+    return openOrCreateSharedCase(result.case);
+  }
+
   async function openCase(caseId) {
     const ok = await flushAutosave();
     if (!ok) {
@@ -1137,6 +1295,17 @@
       return;
     }
 
+    const urlCaseId = readCaseIdFromUrl();
+    if (urlCaseId) {
+      const opened = await bootSharedCaseFromUrl(urlCaseId);
+      await refreshStorageEstimate();
+      if (!opened) {
+        a.initEmptyUi();
+        renderSaveStatus();
+      }
+      return;
+    }
+
     const cases = await storage().listCases();
     if (!cases.length) {
       await createAndOpenNewCase();
@@ -1167,6 +1336,10 @@
     persistNow,
     openCase,
     createAndOpenNewCase,
+    createCaseWithId,
+    openOrCreateSharedCase,
+    bootSharedCaseFromUrl,
+    normalizeSharedCaseId,
     renderCaseList,
     getRuntime: () => runtime,
   };

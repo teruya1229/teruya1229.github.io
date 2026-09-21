@@ -2,7 +2,7 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.09.21-006";
+  const APP_VERSION = "2026.09.21-007";
   /** 公開可能な anon key のみ（Edge gateway用。特権キーや外部API秘密は載せない） */
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
@@ -554,10 +554,26 @@
     const caseName = (el("case-name") && el("case-name").value) || "";
     const siteMemo = (el("site-memo") && el("site-memo").value) || "";
     const E = window.BCEstimate;
+    const prevInfo =
+      (window.__bcfdLastCaseInfo && typeof window.__bcfdLastCaseInfo === "object")
+        ? window.__bcfdLastCaseInfo
+        : {};
+    const caseInfo = {
+      caseName,
+      siteMemo,
+      workType: site.workType || "",
+    };
+    // Preserve reception-owned metadata (read-only) across local saves.
+    if (prevInfo.address) caseInfo.address = prevInfo.address;
+    if (prevInfo.phone) caseInfo.phone = prevInfo.phone;
+    if (prevInfo.requestedWork) caseInfo.requestedWork = prevInfo.requestedWork;
+    if (prevInfo.scheduledAt) caseInfo.scheduledAt = prevInfo.scheduledAt;
+    if (prevInfo.receptionReadOnly) caseInfo.receptionReadOnly = true;
+    if (prevInfo.sharedCaseId) caseInfo.sharedCaseId = prevInfo.sharedCaseId;
     return {
       schemaVersion: "1B-2A",
       snapshotAt: nowIso(),
-      caseInfo: { caseName, siteMemo, workType: site.workType || "" },
+      caseInfo,
       workflow: { currentPhase, phaseStatus: { ...phaseStatus } },
       survey: {
         diagnosed: surveyDiagnosed,
@@ -656,6 +672,79 @@
     renderAll();
   }
 
+  function applyReceptionMetaUi(info) {
+    window.__bcfdLastCaseInfo = info && typeof info === "object" ? { ...info } : {};
+    const panel = el("reception-meta-panel");
+    const body = el("reception-meta-body");
+    const nameInput = el("case-name");
+    const returnLink = el("return-to-reception-link");
+    const gate = el("shared-case-gate");
+    if (gate) gate.hidden = true;
+
+    const readOnly = !!(info && info.receptionReadOnly);
+    if (nameInput) {
+      nameInput.readOnly = readOnly;
+      if (readOnly) nameInput.setAttribute("aria-readonly", "true");
+      else nameInput.removeAttribute("aria-readonly");
+    }
+
+    if (!panel || !body) return;
+    if (!readOnly && !(info && info.sharedCaseId)) {
+      panel.hidden = true;
+      return;
+    }
+    panel.hidden = false;
+    const lines = [];
+    if (info.caseName) lines.push(`お客様：${info.caseName}`);
+    if (info.address) lines.push(`住所：${info.address}`);
+    if (info.phone) lines.push(`電話：${info.phone}`);
+    if (info.requestedWork || info.workType) {
+      lines.push(`作業：${info.requestedWork || info.workType}`);
+    }
+    if (info.scheduledAt) lines.push(`予定：${info.scheduledAt}`);
+    body.textContent = lines.join("\n") || "受付情報あり";
+
+    if (returnLink) {
+      const caseId = info.sharedCaseId || "";
+      const client = window.BCFieldCases;
+      if (caseId && client && client.buildAiBantouReturnUrl) {
+        const url = client.buildAiBantouReturnUrl(caseId);
+        returnLink.href = url || "#";
+        returnLink.hidden = !url;
+      } else {
+        returnLink.hidden = true;
+      }
+    }
+  }
+
+  function showSharedCaseGateMessage(message) {
+    const gate = el("shared-case-gate");
+    const panel = el("reception-meta-panel");
+    if (panel) panel.hidden = true;
+    if (gate) {
+      gate.hidden = false;
+      gate.textContent = message || "CASE_NOT_ACCESSIBLE";
+      return;
+    }
+    window.alert(message || "CASE_NOT_ACCESSIBLE");
+  }
+
+  function noteSharedCaseLocalDataHint(bundle) {
+    const hint = el("shared-local-data-hint");
+    if (!hint) return;
+    const photos = (bundle && bundle.photos) || [];
+    const snap = bundle && bundle.caseRecord && bundle.caseRecord.snapshot;
+    const hasEstimate =
+      snap &&
+      snap.estimate &&
+      Array.isArray(snap.estimate.lines) &&
+      snap.estimate.lines.some((row) => row && Number(row.qty) > 0);
+    const siteMemo =
+      snap && snap.caseInfo && String(snap.caseInfo.siteMemo || "").trim();
+    const emptyLocal = photos.length === 0 && !hasEstimate && !siteMemo;
+    hint.hidden = !emptyLocal;
+  }
+
   async function applyCaseSnapshot(snapshot, photoBundle) {
     const snap = snapshot && typeof snapshot === "object" ? snapshot : createEmptySnapshot();
     const photos = photoBundle && typeof photoBundle === "object" ? photoBundle : {};
@@ -666,6 +755,7 @@
       const info = snap.caseInfo || {};
       if (el("case-name")) el("case-name").value = info.caseName || "";
       if (el("site-memo")) el("site-memo").value = info.siteMemo || "";
+      applyReceptionMetaUi(info);
       const manual = (snap.survey && snap.survey.manual) || {};
       const extra = (snap.survey && snap.survey.siteConfirm) || {};
       site = siteFromManual(manual, info, extra);
@@ -2046,6 +2136,8 @@
     clearPendingPhotoOps,
     hasPendingPhotoOps,
     initEmptyUi,
+    showSharedCaseGateMessage,
+    noteSharedCaseLocalDataHint,
     setDirtyHandler(fn) { dirtyHandler = fn; },
     setClearHandler(fn) { clearHandler = fn; },
     _test: {

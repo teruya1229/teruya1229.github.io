@@ -567,6 +567,27 @@ textarea.text-input { min-height: 88px; resize: vertical; }
   margin: 0 0 10px;
 }
 
+.reception-meta-panel {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line, #d5dee8);
+  border-radius: 12px;
+  background: #f7fafc;
+}
+
+.reception-meta-body {
+  margin: 0 0 8px;
+  white-space: pre-wrap;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.return-to-reception-link {
+  display: inline-block;
+  margin-top: 4px;
+  font-weight: 700;
+}
+
 .info-link {
   border: 0;
   background: none;
