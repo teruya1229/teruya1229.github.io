@@ -574,7 +574,7 @@
       (bundle.photos || []).forEach((p) => {
         if (p && p.slotKey) photosBySlot[p.slotKey] = p;
       });
-      await a.applyCaseSnapshot(bundle.caseRecord.snapshot || emptySnapshot(), photosBySlot);
+      // caseId を先にセットし、applyCaseSnapshot 内の見積紐付け判定・表示を正しくする
       runtime.lifecycleToken += 1;
       runtime.caseId = bundle.caseRecord.id;
       runtime.revision = Number(bundle.caseRecord.revision) || 0;
@@ -591,6 +591,7 @@
       runtime.lastError = "";
       firstDirtyAt = null;
       clearDebounceTimer();
+      await a.applyCaseSnapshot(bundle.caseRecord.snapshot || emptySnapshot(), photosBySlot);
       if (typeof a.clearPendingPhotoOps === "function") a.clearPendingPhotoOps();
       setStatus("saved", "");
     } finally {
