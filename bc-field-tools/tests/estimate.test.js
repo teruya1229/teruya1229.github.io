@@ -361,6 +361,65 @@ describe("Phase 2 floor / electric / surcharge catalog", () => {
     assert.equal(t.total, 31600);
   });
 
+  it("night_early scopes to work ids only (Phase 3)", () => {
+    // 1. install only
+    let state = blankState(E);
+    select(state, "install_std", 1);
+    select(state, "night_early", 1);
+    assert.equal(E.nightEarlyAmount(state), 6600);
+    assert.equal(E.totals(state).total, 28600);
+
+    // 2. product only => night 0
+    state = blankState(E);
+    select(state, "ac_body", 1);
+    select(state, "night_early", 1);
+    assert.equal(E.nightEarlyAmount(state), 0);
+    assert.equal(E.totals(state).total, 60000);
+
+    // 3. product + install => night on install only
+    state = blankState(E);
+    select(state, "ac_body", 1);
+    select(state, "install_std", 1);
+    select(state, "night_early", 1);
+    assert.equal(E.nightEarlyAmount(state), 6600);
+    assert.equal(E.totals(state).total, 60000 + 22000 + 6600);
+    assert.equal(E.totals(state).total, 88600);
+
+    // 4. dispose excluded
+    state = blankState(E);
+    select(state, "ac_dispose", 1);
+    select(state, "night_early", 1);
+    assert.equal(E.nightEarlyAmount(state), 0);
+    assert.equal(E.totals(state).total, 3850);
+
+    // 5. high_work not in night base
+    state = blankState(E);
+    select(state, "install_std", 1);
+    select(state, "high_work", 1);
+    select(state, "night_early", 1);
+    assert.equal(E.nightEarlyAmount(state), 6600);
+    assert.equal(E.totals(state).total, 31600);
+
+    // 6. custom excluded
+    state = blankState(E);
+    state.custom = [{ name: "自由追加", price: 10000, qty: 1, unit: "式" }];
+    select(state, "night_early", 1);
+    assert.equal(E.nightEarlyAmount(state), 0);
+    assert.equal(E.totals(state).total, 10000);
+
+    // 7. floor strip 30㎡
+    state = blankState(E);
+    select(state, "floor_strip_wax", 30);
+    select(state, "night_early", 1);
+    assert.equal(E.nightEarlyAmount(state), 10800);
+    assert.equal(E.totals(state).total, 46800);
+
+    assert.equal(E.isNightEarlyWorkId("install_std"), true);
+    assert.equal(E.isNightEarlyWorkId("ac_body"), false);
+    assert.equal(E.isNightEarlyWorkId("ac_dispose"), false);
+    assert.equal(E.isNightEarlyWorkId("high_work"), false);
+  });
+
   it("price master copy/load keeps Phase 2 ids", () => {
     const state = blankState(E);
     state.prices.floor_strip_wax = 1100;

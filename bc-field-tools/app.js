@@ -2,7 +2,7 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.09.21-003";
+  const APP_VERSION = "2026.09.21-004";
   /** 公開可能な anon key のみ（Edge gateway用。特権キーや外部API秘密は載せない） */
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
@@ -1581,8 +1581,8 @@
         : "";
       const meta = item.id === E.NIGHT_EARLY_ID
         ? (st.checked
-          ? `${E.yen(price)}（税込・対象×30%）`
-          : "対象作業の税込合計×30%")
+          ? `${E.yen(price)}（税込・作業×30%）`
+          : "作業料金の税込合計×30%")
         : `${E.yen(price)}（税込） / ${escapeHtml(item.unit)}`;
       const showStepper = st.checked && item.id !== E.NIGHT_EARLY_ID;
       return `<div role="button" tabindex="0" class="est-item" data-item="${item.id}" aria-pressed="${st.checked}">

@@ -37,12 +37,12 @@ describe("login removed", () => {
     assert.doesNotMatch(appSrc, /"role":"service_role"/);
   });
 
-  it("bumps version to 2026.09.21-003", () => {
-    assert.match(appSrc, /const APP_VERSION = "2026\.09\.21-003"/);
-    assert.match(indexSrc, /app\.js\?v=20260921-003/);
+  it("bumps version to 2026.09.21-004", () => {
+    assert.match(appSrc, /const APP_VERSION = "2026\.09\.21-004"/);
+    assert.match(indexSrc, /app\.js\?v=20260921-004/);
     assert.match(indexSrc, /id="menu-app-version"/);
     assert.match(indexSrc, /id="app-version-footer"/);
-    assert.match(indexSrc, /ai-field-logic\.js\?v=20260921-003/);
+    assert.match(indexSrc, /ai-field-logic\.js\?v=20260921-004/);
   });
 });
 

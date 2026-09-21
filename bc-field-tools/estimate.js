@@ -97,7 +97,7 @@
           name: "夜間・早朝追加（+30%）",
           price: 0,
           unit: "式",
-          status: "対象作業の税込合計×30%（追加料金カテゴリは除外）",
+          status: "作業料金の税込合計×30%（商品・処分・追加料金・自由追加は対象外）",
         },
       ],
     },
@@ -148,6 +148,57 @@
   const SURCHARGE_CATEGORY = "追加料金";
   const QUIET_STATUS = new Set(["参考初期値", "推奨初期値", "推奨初期値・機種で変更"]);
 
+  /**
+   * 夜間・早朝 +30% の対象＝作業料金のみ（1か所で管理）。
+   * 商品代・処分・追加料金・自由追加は含めない。
+   * 作業に紐づく値引き（pipe_reuse / ac_multi_disc）は対象小計に反映する。
+   */
+  const NIGHT_EARLY_WORK_IDS = new Set([
+    // エアコン清掃・点検
+    "ac_std",
+    "ac_func",
+    "ac_full_add",
+    "ac_outdoor",
+    "ac_multi_disc",
+    "ac_ceiling",
+    "gas_refill",
+    "inspection",
+    // 清掃
+    "washer_vert",
+    "washer_drum",
+    "bath",
+    "hood",
+    "vacant_1k",
+    // 床・洗浄
+    "floor_wash",
+    "floor_wax",
+    "floor_strip_wax",
+    "floor_varnish",
+    "floor_strip_varnish",
+    "floor_sand_varnish",
+    "polisher_min",
+    // エアコン工事
+    "install_std",
+    "remove_std",
+    "remove_floor",
+    "roof_wall",
+    "pipe_ext",
+    "pipe_reuse",
+    "cover",
+    "angle",
+    // 電気
+    "outlet",
+    "dedicated",
+    "breaker",
+    "volt_change",
+    "hole",
+    "wire_ext",
+    "switch",
+    "light",
+    "vent_fan",
+    "leak_check",
+  ]);
+
   function catalogUnitStep(unit) {
     if (unit === "m") return 0.5;
     return 1;
@@ -161,24 +212,23 @@
     return state.prices[item.id] ?? item.price;
   }
 
+  function isNightEarlyWorkId(id) {
+    return NIGHT_EARLY_WORK_IDS.has(id);
+  }
+
   /**
-   * 夜間・早朝は対象作業（追加料金カテゴリ以外＋自由追加）の税込合計×30%。
-   * 追加料金同士の二重計上を避ける。固定単価マスターには載せない。
+   * 夜間・早朝＝作業料金（NIGHT_EARLY_WORK_IDS）の税込合計×30%。
+   * 商品・処分・追加料金・自由追加は対象外。マスター単価は持たない。
    */
   function nightEarlyAmount(state) {
     let base = 0;
     initialCatalog.forEach((cat) => {
-      if (cat.category === SURCHARGE_CATEGORY) return;
       cat.items.forEach((item) => {
+        if (!isNightEarlyWorkId(item.id)) return;
         const st = state.selected && state.selected[item.id];
         if (!st || !st.checked) return;
         base += Number(storedOrCatalogPrice(state, item) || 0) * Number(st.qty || 0);
       });
-    });
-    (state.custom || []).forEach((x) => {
-      const name = String(x.name || "");
-      if (name.includes("夜間・早朝")) return;
-      base += Number(x.price || 0) * Number(x.qty || 0);
     });
     return Math.round(base * 0.3);
   }
@@ -454,6 +504,7 @@
     RANGE_STATUS,
     LEGACY_STATUS,
     NIGHT_EARLY_ID,
+    NIGHT_EARLY_WORK_IDS,
     SURCHARGE_CATEGORY,
     initialCatalog,
     knownIds,
@@ -473,6 +524,7 @@
     catalogItemsForDisplay,
     catalogUnitStep,
     shouldShowStatus,
+    isNightEarlyWorkId,
     nightEarlyAmount,
     buildFieldLines,
     mergeLinesIntoState,
