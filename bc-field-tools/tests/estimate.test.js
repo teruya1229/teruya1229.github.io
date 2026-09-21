@@ -145,12 +145,23 @@ describe("estimate tax-inclusive Phase 1", () => {
 
   it("reset prices restores tax-inclusive catalog defaults", () => {
     const state = blankState(E);
-    state.prices = { ac_std: 8000, ac_func: 15000, recycle: 2200, ac_dispose: 9999 };
+    state.prices = {
+      ac_std: 8000,
+      ac_func: 15000,
+      recycle: 2200,
+      ac_dispose: 9999,
+      floor_strip_wax: 999,
+      high_work: 1,
+    };
     state.prices = {};
     assert.equal(E.getPrice(state, E.itemById.ac_std), 9000);
     assert.equal(E.getPrice(state, E.itemById.ac_func), 16000);
     assert.equal(E.getPrice(state, E.itemById.recycle), 550);
     assert.equal(E.getPrice(state, E.itemById.ac_dispose), 3850);
+    assert.equal(E.getPrice(state, E.itemById.floor_strip_wax), 1200);
+    assert.equal(E.getPrice(state, E.itemById.floor_wax), 400);
+    assert.equal(E.getPrice(state, E.itemById.high_work), 3000);
+    assert.equal(E.getPrice(state, E.itemById.emergency), 5000);
   });
 
   it("quoteText uses tax-inclusive wording", () => {
@@ -283,5 +294,96 @@ describe("buildFieldLines / mergeLinesIntoState regression", () => {
     assert.equal(next.selected.install_std.checked, true);
     assert.equal(next.prices.ac_std, 1234);
     assert.equal(next.customer, "テスト");
+  });
+});
+
+describe("Phase 2 floor / electric / surcharge catalog", () => {
+  let ls;
+  let E;
+
+  beforeEach(() => {
+    ls = createLocalStorage();
+    E = loadEstimate(ls);
+  });
+
+  function area(id, qty) {
+    const state = blankState(E);
+    select(state, id, qty);
+    return E.totals(state);
+  }
+
+  it("floor_wash 300 x 30 = 9000", () => {
+    assert.equal(area("floor_wash", 30).total, 9000);
+  });
+
+  it("floor_wax 400 x 30 = 12000", () => {
+    assert.equal(area("floor_wax", 30).total, 12000);
+  });
+
+  it("floor_strip_wax 1200 x 30 = 36000", () => {
+    assert.equal(area("floor_strip_wax", 30).total, 36000);
+  });
+
+  it("floor_varnish 1200 x 30 = 36000", () => {
+    assert.equal(area("floor_varnish", 30).total, 36000);
+  });
+
+  it("floor_strip_varnish 1800 x 30 = 54000", () => {
+    assert.equal(area("floor_strip_varnish", 30).total, 54000);
+  });
+
+  it("floor_sand_varnish 4000 x 30 = 120000", () => {
+    assert.equal(area("floor_sand_varnish", 30).total, 120000);
+  });
+
+  it("polisher_min 15000 x1 = 15000", () => {
+    assert.equal(area("polisher_min", 1).total, 15000);
+  });
+
+  it("surcharges stay tax-inclusive without extra 10%", () => {
+    const state = blankState(E);
+    select(state, "high_work", 1);
+    select(state, "emergency", 1);
+    const t = E.totals(state);
+    assert.equal(t.total, 8000);
+    assert.notEqual(t.total, 8800);
+  });
+
+  it("night_early adds 30% of work total excluding surcharge category", () => {
+    const state = blankState(E);
+    select(state, "install_std", 1); // 22000
+    select(state, "high_work", 1); // surcharge excluded from base
+    select(state, "night_early", 1);
+    const t = E.totals(state);
+    // base for night = 22000 only => 6600; + high_work 3000 + night 6600 = 31600
+    assert.equal(E.nightEarlyAmount(state), 6600);
+    assert.equal(t.total, 22000 + 3000 + 6600);
+    assert.equal(t.total, 31600);
+  });
+
+  it("price master copy/load keeps Phase 2 ids", () => {
+    const state = blankState(E);
+    state.prices.floor_strip_wax = 1100;
+    state.prices.switch = 5500;
+    const payload = {
+      type: E.PRICE_MASTER_TYPE,
+      version: 1,
+      prices: E.effectivePrices(state),
+    };
+    assert.equal(payload.prices.floor_strip_wax, 1100);
+    assert.equal(payload.prices.ac_dispose, 3850);
+    assert.equal(payload.prices.night_early, 0);
+    assert.ok(payload.prices.distance_40 === 12000);
+    const loaded = E.parsePriceMaster(JSON.stringify(payload));
+    assert.equal(loaded.floor_strip_wax, 1100);
+    assert.equal(loaded.switch, 5500);
+    assert.equal(loaded.polisher_min, 15000);
+  });
+
+  it("categories include 床・洗浄 and 追加料金", () => {
+    const names = E.initialCatalog.map((c) => c.category);
+    assert.ok(names.includes("床・洗浄"));
+    assert.ok(names.includes("追加料金"));
+    assert.ok(E.itemById.floor_strip_wax.unit === "㎡");
   });
 });

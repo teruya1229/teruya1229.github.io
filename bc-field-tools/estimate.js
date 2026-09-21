@@ -19,6 +19,8 @@
         { id: "ac_outdoor", name: "室外機洗浄", price: 3000, unit: "台", status: "参考初期値" },
         { id: "ac_multi_disc", name: "2台目以降 値引き", price: -1000, unit: "台", status: "参考初期値" },
         { id: "ac_ceiling", name: "業務用 天井カセット", price: 22000, unit: "台", status: "参考初期値" },
+        { id: "gas_refill", name: "冷媒ガス補充", price: 15000, unit: "式", status: "15,000円〜・要確認" },
+        { id: "inspection", name: "点検のみ", price: 5000, unit: "式", status: "5,000円〜・要確認" },
       ],
     },
     {
@@ -29,6 +31,18 @@
         { id: "bath", name: "浴室クリーニング", price: 18000, unit: "式", status: "要確認" },
         { id: "hood", name: "レンジフード", price: 15000, unit: "式", status: "要確認" },
         { id: "vacant_1k", name: "空室清掃 1R〜1K", price: 20000, unit: "式", status: "要確認" },
+      ],
+    },
+    {
+      category: "床・洗浄",
+      items: [
+        { id: "floor_wash", name: "床洗浄のみ", price: 300, unit: "㎡", status: "参考初期値" },
+        { id: "floor_wax", name: "洗浄ワックス", price: 400, unit: "㎡", status: "正本300〜500円/㎡・現場条件で調整" },
+        { id: "floor_strip_wax", name: "剥離洗浄ワックス", price: 1200, unit: "㎡", status: "正本800〜1,200円/㎡・現場条件で調整" },
+        { id: "floor_varnish", name: "洗浄＋水性ニス", price: 1200, unit: "㎡", status: "参考初期値" },
+        { id: "floor_strip_varnish", name: "剥離＋水性ニス", price: 1800, unit: "㎡", status: "参考初期値" },
+        { id: "floor_sand_varnish", name: "研磨＋水性ニス", price: 4000, unit: "㎡", status: "正本3,600〜4,000円/㎡・現場条件で調整" },
+        { id: "polisher_min", name: "ポリッシャー洗浄", price: 15000, unit: "式", status: "15,000円〜・現場条件で調整" },
       ],
     },
     {
@@ -59,11 +73,32 @@
       category: "軽い電気工事",
       items: [
         { id: "outlet", name: "コンセント交換", price: 5000, unit: "箇所", status: RANGE_STATUS },
+        { id: "switch", name: "スイッチ交換", price: 5000, unit: "箇所", status: "5,000円〜・現場条件で調整" },
+        { id: "light", name: "照明交換", price: 5000, unit: "箇所", status: "5,000円〜・現場条件で調整" },
+        { id: "vent_fan", name: "換気扇交換", price: 10000, unit: "箇所", status: "10,000円〜・現場条件で調整" },
+        { id: "leak_check", name: "漏電点検", price: 8000, unit: "式", status: "8,000円〜・現場条件で調整" },
         { id: "dedicated", name: "専用回路", price: 18000, unit: "回路", status: RANGE_STATUS },
         { id: "breaker", name: "ブレーカー交換", price: 15000, unit: "個", status: RANGE_STATUS },
         { id: "volt_change", name: "100V / 200V 電圧切替", price: 5500, unit: "回路", status: "推奨初期値" },
         { id: "hole", name: "穴あけ追加", price: 8800, unit: "箇所", status: "推奨初期値" },
         { id: "wire_ext", name: "配線延長", price: 2200, unit: "m", status: "推奨初期値" },
+      ],
+    },
+    {
+      category: "追加料金",
+      items: [
+        { id: "high_work", name: "高所作業追加", price: 3000, unit: "式", status: "3,000円〜・現場条件で調整" },
+        { id: "no_parking", name: "駐車場なし追加", price: 1000, unit: "式", status: "1,000円〜" },
+        { id: "distance_20", name: "遠方料金 20km〜", price: 2000, unit: "式", status: "2,000円〜・距離で調整" },
+        { id: "distance_40", name: "遠方料金 40km〜", price: 12000, unit: "式", status: "最低12,000円〜・距離で調整" },
+        { id: "emergency", name: "緊急対応", price: 5000, unit: "式", status: "5,000円〜" },
+        {
+          id: "night_early",
+          name: "夜間・早朝追加（+30%）",
+          price: 0,
+          unit: "式",
+          status: "対象作業の税込合計×30%（追加料金カテゴリは除外）",
+        },
       ],
     },
   ];
@@ -109,8 +144,48 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }
 
-  function getPrice(state, item) {
+  const NIGHT_EARLY_ID = "night_early";
+  const SURCHARGE_CATEGORY = "追加料金";
+  const QUIET_STATUS = new Set(["参考初期値", "推奨初期値", "推奨初期値・機種で変更"]);
+
+  function catalogUnitStep(unit) {
+    if (unit === "m") return 0.5;
+    return 1;
+  }
+
+  function shouldShowStatus(item) {
+    return Boolean(item && item.status && !QUIET_STATUS.has(item.status));
+  }
+
+  function storedOrCatalogPrice(state, item) {
     return state.prices[item.id] ?? item.price;
+  }
+
+  /**
+   * 夜間・早朝は対象作業（追加料金カテゴリ以外＋自由追加）の税込合計×30%。
+   * 追加料金同士の二重計上を避ける。固定単価マスターには載せない。
+   */
+  function nightEarlyAmount(state) {
+    let base = 0;
+    initialCatalog.forEach((cat) => {
+      if (cat.category === SURCHARGE_CATEGORY) return;
+      cat.items.forEach((item) => {
+        const st = state.selected && state.selected[item.id];
+        if (!st || !st.checked) return;
+        base += Number(storedOrCatalogPrice(state, item) || 0) * Number(st.qty || 0);
+      });
+    });
+    (state.custom || []).forEach((x) => {
+      const name = String(x.name || "");
+      if (name.includes("夜間・早朝")) return;
+      base += Number(x.price || 0) * Number(x.qty || 0);
+    });
+    return Math.round(base * 0.3);
+  }
+
+  function getPrice(state, item) {
+    if (item && item.id === NIGHT_EARLY_ID) return nightEarlyAmount(state);
+    return storedOrCatalogPrice(state, item);
   }
 
   function selectedRows(state) {
@@ -119,11 +194,12 @@
       cat.items.forEach((item) => {
         const st = state.selected[item.id];
         if (st && st.checked) {
+          const qty = item.id === NIGHT_EARLY_ID ? 1 : Number(st.qty || 0);
           rows.push({
             id: item.id,
             name: item.name,
             price: getPrice(state, item),
-            qty: Number(st.qty || 0),
+            qty,
             unit: item.unit,
             category: cat.category,
           });
@@ -193,7 +269,8 @@
     const prices = {};
     initialCatalog.forEach((cat) =>
       cat.items.forEach((item) => {
-        prices[item.id] = getPrice(state, item);
+        // 夜間・早朝は自動計算のためマスターJSONには 0 を載せる
+        prices[item.id] = item.id === NIGHT_EARLY_ID ? 0 : storedOrCatalogPrice(state, item);
       })
     );
     return prices;
@@ -376,6 +453,8 @@
     TAX_INCLUSIVE_ACK_KEY,
     RANGE_STATUS,
     LEGACY_STATUS,
+    NIGHT_EARLY_ID,
+    SURCHARGE_CATEGORY,
     initialCatalog,
     knownIds,
     itemById,
@@ -392,6 +471,9 @@
     ackTaxInclusiveNotice,
     isLegacyItem,
     catalogItemsForDisplay,
+    catalogUnitStep,
+    shouldShowStatus,
+    nightEarlyAmount,
     buildFieldLines,
     mergeLinesIntoState,
     quoteText,

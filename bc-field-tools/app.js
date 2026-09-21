@@ -2,7 +2,7 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.09.21-002";
+  const APP_VERSION = "2026.09.21-003";
   /** 公開可能な anon key のみ（Edge gateway用。特権キーや外部API秘密は載せない） */
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
@@ -1574,14 +1574,21 @@
     box.innerHTML = E.catalogItemsForDisplay(cat.items, quoteState).map((item) => {
       const st = quoteState.selected[item.id] || { checked: false, qty: 1 };
       const price = E.getPrice(quoteState, item);
-      const amt = st.checked ? price * Number(st.qty || 0) : 0;
-      const statusHint = (item.status === E.RANGE_STATUS || item.status === E.LEGACY_STATUS)
+      const qty = item.id === E.NIGHT_EARLY_ID ? 1 : Number(st.qty || 0);
+      const amt = st.checked ? price * qty : 0;
+      const statusHint = E.shouldShowStatus(item)
         ? `<div class="hint">${escapeHtml(item.status)}</div>`
         : "";
+      const meta = item.id === E.NIGHT_EARLY_ID
+        ? (st.checked
+          ? `${E.yen(price)}（税込・対象×30%）`
+          : "対象作業の税込合計×30%")
+        : `${E.yen(price)}（税込） / ${escapeHtml(item.unit)}`;
+      const showStepper = st.checked && item.id !== E.NIGHT_EARLY_ID;
       return `<div role="button" tabindex="0" class="est-item" data-item="${item.id}" aria-pressed="${st.checked}">
-        <div><div class="name">${escapeHtml(item.name)}</div><div class="meta">${E.yen(price)}（税込） / ${escapeHtml(item.unit)}</div>${statusHint}</div>
+        <div><div class="name">${escapeHtml(item.name)}</div><div class="meta">${meta}</div>${statusHint}</div>
         <div class="amt">${st.checked ? E.yen(amt) : ""}</div>
-        ${st.checked ? stepper("qty:" + item.id, st.qty, item.unit, item.unit === "m" ? 0.5 : 1, 0) : ""}
+        ${showStepper ? stepper("qty:" + item.id, st.qty, item.unit, E.catalogUnitStep(item.unit), 0) : ""}
       </div>`;
     }).join("");
     const sel = el("est-selected");
@@ -1618,8 +1625,12 @@
     box.innerHTML = E.initialCatalog.map((cat) =>
       `<p class="section-label">${escapeHtml(cat.category)}</p>` +
       cat.items.map((item) => {
+        if (item.id === E.NIGHT_EARLY_ID) {
+          return `<p class="section-label">${escapeHtml(item.name)}</p>
+            <p class="hint">${escapeHtml(item.status)}　料金マスターでは編集しません</p>`;
+        }
         const hints = [];
-        if (item.status === E.RANGE_STATUS || item.status === E.LEGACY_STATUS) hints.push(item.status);
+        if (E.shouldShowStatus(item)) hints.push(item.status);
         hints.push("税込単価");
         return `<label class="section-label" for="price-${item.id}">${escapeHtml(item.name)}</label>
          <p class="hint">${escapeHtml(hints.join("　"))}</p>
@@ -1686,11 +1697,13 @@
     if (!quoteState.selected[id]) quoteState.selected[id] = { checked: false, qty: 1 };
     quoteState.selected[id].checked = !quoteState.selected[id].checked;
     if (!quoteState.selected[id].qty) quoteState.selected[id].qty = 1;
+    if (id === E.NIGHT_EARLY_ID) quoteState.selected[id].qty = 1;
     E.saveState(quoteState);
     renderEstimate();
   }
   function changeQty(id, delta, min, step) {
     const E = window.BCEstimate;
+    if (id === E.NIGHT_EARLY_ID) return;
     if (!quoteState.selected[id]) quoteState.selected[id] = { checked: true, qty: 1 };
     let next = Number(quoteState.selected[id].qty || 0) + delta;
     next = Math.max(min, Math.round(next / step) * step);
@@ -1751,7 +1764,8 @@
       if (id && id.startsWith("qty:")) {
         const itemId = id.slice(4);
         const item = window.BCEstimate.itemById[itemId];
-        changeQty(itemId, delta, 0, item && item.unit === "m" ? 0.5 : 1);
+        const step = window.BCEstimate.catalogUnitStep(item && item.unit);
+        changeQty(itemId, delta, 0, step);
         return;
       }
       if (id === "installCount") site.installCount = Math.max(0, (Number(site.installCount) || 0) + delta);
