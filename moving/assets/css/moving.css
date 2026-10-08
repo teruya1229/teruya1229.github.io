@@ -855,6 +855,52 @@ section[id] { scroll-margin-top: 12px; }
   color: var(--c-ink-sub);
   font-size: 15px;
 }
+.campaign {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid #ead9b0;
+  border-radius: var(--r-lg);
+  background: #fffaf1;
+}
+.campaign__kicker {
+  color: var(--c-teal-deep);
+  font-size: 13px;
+  font-weight: 700;
+}
+.campaign__offer {
+  margin-top: 2px;
+  color: var(--c-navy);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.35;
+  word-break: keep-all;
+  line-break: strict;
+}
+.campaign__offer span {
+  font-size: 28px;
+  letter-spacing: 0.01em;
+}
+.campaign__detail p {
+  color: var(--c-ink);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.campaign__pay,
+.campaign__note { margin-top: 4px; }
+.campaign__pay {
+  color: var(--c-navy);
+  font-weight: 700;
+}
+.campaign__note { color: var(--c-ink-sub); }
+@media (min-width: 768px) {
+  .campaign {
+    grid-template-columns: minmax(220px, 0.85fr) minmax(0, 1.15fr);
+    gap: 8px 28px;
+    align-items: center;
+  }
+}
 
 /* after */
 .after-card {
