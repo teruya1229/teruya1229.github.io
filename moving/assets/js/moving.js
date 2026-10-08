@@ -1,6 +1,7 @@
 /* /moving/ 専用
    1. スマホ固定CTA（FV・最終CTA・フッター表示中は隠す）
    2. GA4：line_click / phone_click（gtag が無いときは何もしない）
+   3. LINEクリックだけ moving_line_click を追加（line_click は残す）
 */
 (function () {
   var bar = document.querySelector(".fixed-cta");
@@ -62,19 +63,22 @@
       return;
     }
     var href = a.getAttribute("href") || "";
-    var name = "";
-    if (href.indexOf("lin.ee") !== -1) {
-      name = "line_click";
-    } else if (href.indexOf("tel:") === 0) {
-      name = "phone_click";
-    }
-    if (!name) {
-      return;
-    }
-    window.gtag("event", name, {
+    var params = {
       cta_location: a.getAttribute("data-ga-location") || "",
       link_url: href,
       service_type: "moving_consult"
-    });
+    };
+    if (href.indexOf("lin.ee") !== -1) {
+      window.gtag("event", "line_click", params);
+      window.gtag("event", "moving_line_click", {
+        cta_location: params.cta_location,
+        link_url: params.link_url,
+        service_type: params.service_type
+      });
+      return;
+    }
+    if (href.indexOf("tel:") === 0) {
+      window.gtag("event", "phone_click", params);
+    }
   });
 })();
