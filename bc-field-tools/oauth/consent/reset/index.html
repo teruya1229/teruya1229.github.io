@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>パスワード再設定 | BCサービス</title>
+  <link rel="stylesheet" href="/bc-field-tools/oauth/consent/consent.css?v=20261009c">
+</head>
+<body>
+  <main class="card">
+    <p class="brand">BCサービス / YouTube Research Companion</p>
+    <h1>パスワードの再設定</h1>
+    <p id="recovery-status" role="status" aria-live="polite">認証画面を準備しています。</p>
+    <p id="recovery-error" role="alert" hidden></p>
+    <form id="request-form" hidden>
+      <label>ログイン用メールアドレス
+        <input id="reset-email" type="email" autocomplete="email" required>
+      </label>
+      <button type="submit">再設定メールを送る</button>
+      <p>メールのリンクを同じブラウザで開き、新しいパスワードを設定してください。</p>
+    </form>
+    <form id="update-form" hidden>
+      <label>新しいパスワード（8文字以上）
+        <input id="reset-new" type="password" autocomplete="new-password" minlength="8" required>
+      </label>
+      <label>新しいパスワード（確認）
+        <input id="reset-confirm" type="password" autocomplete="new-password" minlength="8" required>
+      </label>
+      <button type="submit">パスワードを設定する</button>
+    </form>
+    <p id="recovery-done" hidden>パスワードの更新が完了しました。YouTubeの字幕メモから「アカウントログイン」をやり直してください。</p>
+  </main>
+  <script src="/bc-field-tools/oauth/consent/consent-config.js?v=20261009c"></script>
+  <script src="./reset.js?v=20261009c"></script>
+</body>
+</html>
