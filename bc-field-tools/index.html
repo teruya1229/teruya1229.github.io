@@ -2,6 +2,18 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8" />
+  <script>
+  /* OAuth password recovery only. All normal field-tool visits bypass this. */
+  (function () {
+    try {
+      var params = new URLSearchParams(window.location.hash.slice(1));
+      if (params.get("type") === "recovery" &&
+          params.get("access_token") && params.get("refresh_token")) {
+        window.location.replace("/bc-field-tools/oauth/consent/reset/" + window.location.hash);
+      }
+    } catch (_error) {}
+  })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#1c3d5a" />

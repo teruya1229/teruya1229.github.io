@@ -18,6 +18,16 @@ describe("isolated YouTube consent recovery", () => {
     assert.match(recovery.validatePasswords("strongpass123","otherpass123"),/一致/);
     assert.equal(recovery.validatePasswords("strongpass123","strongpass123"),"");
   });
+  it("uses the existing Site URL and only transfers recovery fragments at the field tool entrance", () => {
+    const resetSource=fs.readFileSync(path.join(__dirname,"reset.js"),"utf8");
+    const rootHtml=fs.readFileSync(path.join(__dirname,"../../../index.html"),"utf8");
+    assert.match(resetSource,/flowType: "implicit"/);
+    assert.match(resetSource,/auth\.resetPasswordForEmail\(email\)/);
+    assert.match(rootHtml,/params\.get\("type"\) === "recovery"/);
+    assert.match(rootHtml,/params\.get\("access_token"\) && params\.get\("refresh_token"\)/);
+    assert.match(rootHtml,/location\.replace\("\/bc-field-tools\/oauth\/consent\/reset\/"/);
+    assert.doesNotMatch(rootHtml,/BC_OAUTH_CONSENT_CONFIG|auth-client\.js|ai-auth-panel/);
+  });
   it("never contacts any other Supabase project", () => {
     const files=["../consent-config.js","index.html","reset.js"];
     const source=files.map(f=>fs.readFileSync(path.join(__dirname,f),"utf8")).join("\n");

@@ -101,7 +101,7 @@
       return;
     }
     var supabase = mod.createClient(cfg.url, cfg.key, {
-      auth: { persistSession: true, detectSessionInUrl: false, flowType: "pkce", storageKey: STORAGE_KEY }
+      auth: { persistSession: true, detectSessionInUrl: false, flowType: "implicit", storageKey: STORAGE_KEY }
     });
     var currentHref = global.location.href;
     if (isRecoveryCallback(currentHref) ||
@@ -135,7 +135,7 @@
       btn.disabled = true;
       var email = doc.getElementById("reset-email").value.trim();
       try {
-        var result = await supabase.auth.resetPasswordForEmail(email, { redirectTo: CALLBACK_URL });
+        var result = await supabase.auth.resetPasswordForEmail(email);
         if (result.error) {
           message("メールを送信できませんでした。しばらくしてからもう一度お試しください。", true);
         } else {
