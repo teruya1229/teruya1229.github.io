@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="preload" as="image" href="./assets/img/hero-moving-sm.webp" type="image/webp" media="(max-width: 979px)" fetchpriority="high">
+  <link rel="preload" as="image" href="./assets/img/hero-moving-lg.webp" type="image/webp" media="(min-width: 980px)" fetchpriority="high">
   <title>沖縄の家族引越し、前も後も窓口ひとつ。｜BCサービス</title>
   <meta name="description" content="運搬・退去清掃・エアコン移設・家電の買替えと設置まで。沖縄の家族引越しを、BCサービスの窓口ひとつでまとめて相談。まずは予定日と地域だけでも大丈夫です。">
   <meta name="robots" content="index,follow">
@@ -202,9 +204,11 @@
 
   <main>
     <section id="fv" class="sec-fv">
-      <div class="fv__photo">
-        <img src="./assets/img/hero-moving.jpg" alt="明るい新居で段ボールを運ぶ女性">
-      </div>
+      <picture class="fv__photo">
+        <source media="(max-width: 979px)" srcset="./assets/img/hero-moving-sm.webp" type="image/webp">
+        <source media="(min-width: 980px)" srcset="./assets/img/hero-moving-lg.webp" type="image/webp">
+        <img src="./assets/img/hero-moving.jpg" width="1536" height="2752" alt="明るい新居で段ボールを運ぶ女性" fetchpriority="high">
+      </picture>
       <div class="fv__copy">
         <div class="fv__text">
           <h1 class="fv__title">沖縄の家族引越し、<br>前も後も窓口ひとつ。</h1>
