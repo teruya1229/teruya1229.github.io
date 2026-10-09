@@ -1,0 +1,132 @@
+:root {
+  color: #16303f;
+  background: #f4f7f8;
+  font-family: "Helvetica Neue", Arial, "Hiragino Sans", Meiryo, sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.card {
+  max-width: 32rem;
+  margin: 32px auto;
+  padding: 24px 20px;
+  background: #fff;
+  border: 1px solid #dde5ea;
+  border-radius: 16px;
+}
+
+.brand {
+  margin: 0;
+  color: #0f6b71;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+h1 {
+  margin: 8px 0 12px;
+  color: #123b57;
+  font-size: 24px;
+  line-height: 1.35;
+}
+
+#consent-status,
+#consent-error,
+label,
+li,
+p {
+  line-height: 1.6;
+}
+
+#consent-error {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #fff4f2;
+  color: #8a2b22;
+  word-break: keep-all;
+  line-break: strict;
+}
+
+form,
+#consent-details {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+label {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #123b57;
+}
+
+input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #dde5ea;
+  border-radius: 10px;
+  font: inherit;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+button {
+  flex: 1;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button[type="submit"],
+#approve-btn {
+  background: #123b57;
+  color: #fff;
+}
+
+#deny-btn {
+  background: #e8eef1;
+  color: #123b57;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+#client-name,
+#redirect-uri,
+#user-email,
+#scope-list {
+  overflow-wrap: anywhere;
+}
+
+ul {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+@media (max-width: 480px) {
+  .card {
+    margin: 12px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}

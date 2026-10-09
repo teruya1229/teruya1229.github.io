@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>認可の確認 | BCサービス</title>
+  <link rel="stylesheet" href="./consent.css">
+</head>
+<body>
+  <main id="consent-app" class="card">
+    <p class="brand">BCサービス</p>
+    <h1 id="consent-title">接続の確認</h1>
+    <p id="consent-status" role="status">確認しています。</p>
+    <section id="consent-error" hidden></section>
+    <form id="consent-login" hidden>
+      <label>メールアドレス
+        <input id="login-email" name="email" type="email" autocomplete="username" required>
+      </label>
+      <label>パスワード
+        <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+      </label>
+      <button type="submit">ログイン</button>
+    </form>
+    <section id="consent-details" hidden>
+      <p>アプリ: <strong id="client-name"></strong></p>
+      <p>戻り先: <span id="redirect-uri"></span></p>
+      <p>ログイン中: <span id="user-email"></span></p>
+      <p>要求スコープ</p>
+      <ul id="scope-list"></ul>
+      <div class="actions">
+        <button id="approve-btn" type="button">許可する</button>
+        <button id="deny-btn" type="button">拒否する</button>
+      </div>
+    </section>
+  </main>
+  <script src="../../bc-cases-config.js"></script>
+  <script src="./consent.js"></script>
+</body>
+</html>
