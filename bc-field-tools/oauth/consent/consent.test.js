@@ -239,8 +239,8 @@ describe("oauth consent page", () => {
     const config = fs.readFileSync(path.join(dir, "consent-config.js"), "utf8");
     const cases = fs.readFileSync(path.join(dir, "../../bc-cases-config.js"), "utf8");
     assert.match(html, /id="consent-app"/);
-    assert.match(html, /\.\/consent\.js/);
-    assert.match(html, /\.\/consent-config\.js/);
+    assert.match(html, /\/bc-field-tools\/oauth\/consent\/consent\.js\?v=20261009b/);
+    assert.match(html, /\/bc-field-tools\/oauth\/consent\/consent-config\.js\?v=20261009b/);
     assert.doesNotMatch(html, /bc-cases-config/);
     assert.match(js, /BC_OAUTH_CONSENT_CONFIG/);
     assert.match(js, /getAuthorizationDetails/);
