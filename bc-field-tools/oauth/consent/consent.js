@@ -52,21 +52,6 @@
       .filter(Boolean);
   }
 
-  function readSharedSession(storage, key) {
-    try {
-      var raw = storage.getItem(key);
-      if (!raw) return null;
-      var parsed = JSON.parse(raw);
-      if (!parsed || !parsed.access_token || !parsed.refresh_token) return null;
-      return {
-        access_token: String(parsed.access_token),
-        refresh_token: String(parsed.refresh_token)
-      };
-    } catch (_e) {
-      return null;
-    }
-  }
-
   async function loadConsentState(options) {
     var authorizationId = readAuthorizationId(options.search);
     if (!authorizationId) {
@@ -77,10 +62,6 @@
     }
     authorizationId = authorizationId.toLowerCase();
     var user = await currentUser(options.supabase);
-    if (!user && typeof options.adoptSession === "function") {
-      var adopted = await options.adoptSession();
-      if (adopted && adopted.ok) user = await currentUser(options.supabase);
-    }
     if (!user) {
       return {
         view: "login",
@@ -160,7 +141,6 @@
     safeRedirectUrl: safeRedirectUrl,
     loginReturnHref: loginReturnHref,
     splitScopes: splitScopes,
-    readSharedSession: readSharedSession,
     loadConsentState: loadConsentState,
     signInWithPassword: signInWithPassword,
     submitDecision: submitDecision
@@ -198,16 +178,12 @@
   }
 
   function configOrNull() {
-    var cfg = global.BC_FIELD_CASES_CONFIG || {};
+    var cfg = global.BC_OAUTH_CONSENT_CONFIG || {};
     var supabase = cfg.supabase || {};
     var url = String(supabase.url || "").trim();
     var key = String(supabase.publishableKey || "").trim();
     if (!url || !key) return null;
-    return {
-      url: url,
-      key: key,
-      sessionStorageKey: cfg.sessionStorageKey || "ai-bantou.auth.v1.session"
-    };
+    return { url: url, key: key };
   }
 
   async function createSupabase(cfg) {
@@ -216,7 +192,8 @@
       auth: {
         persistSession: true,
         detectSessionInUrl: true,
-        flowType: "pkce"
+        flowType: "pkce",
+        storageKey: "bc-oauth-consent.auth.v1"
       }
     });
   }
@@ -262,13 +239,7 @@
       var state = await loadConsentState({
         search: search,
         returnUrl: returnUrl,
-        supabase: supabase,
-        adoptSession: async function () {
-          var shared = readSharedSession(global.sessionStorage, cfg.sessionStorageKey);
-          if (!shared) return { ok: false };
-          var setResult = await supabase.auth.setSession(shared);
-          return { ok: !(setResult && setResult.error) };
-        }
+        supabase: supabase
       });
       if (state.view === "error" && state.code === "missing_authorization_id") {
         showError("このページには authorization_id が必要です。直接開いた場合は表示できません。");

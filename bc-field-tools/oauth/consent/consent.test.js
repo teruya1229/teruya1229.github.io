@@ -213,16 +213,46 @@ describe("oauth consent page", () => {
     assert.match(result.message, /Invalid login/);
   });
 
-  it("page files stay inside oauth/consent and the estimate app is not linked", () => {
+  it("does not adopt another project's session", async () => {
+    let adopted = 0;
+    const state = await consent.loadConsentState({
+      search: "?authorization_id=" + AUTH_ID,
+      adoptSession: async () => {
+        adopted += 1;
+        return { ok: true };
+      },
+      supabase: supabaseWith({
+        getUser: async () => ({ data: { user: null } }),
+        getAuthorizationDetails: async () => {
+          throw new Error("details must wait for this project's login");
+        }
+      })
+    });
+    assert.equal(adopted, 0);
+    assert.equal(state.view, "login");
+  });
+
+  it("uses the OAuth server project and not the AI番頭 config", () => {
     const dir = __dirname;
     const html = fs.readFileSync(path.join(dir, "index.html"), "utf8");
     const js = fs.readFileSync(path.join(dir, "consent.js"), "utf8");
+    const config = fs.readFileSync(path.join(dir, "consent-config.js"), "utf8");
+    const cases = fs.readFileSync(path.join(dir, "../../bc-cases-config.js"), "utf8");
     assert.match(html, /id="consent-app"/);
     assert.match(html, /\.\/consent\.js/);
-    assert.match(html, /\.\.\/\.\.\/bc-cases-config\.js/);
+    assert.match(html, /\.\/consent-config\.js/);
+    assert.doesNotMatch(html, /bc-cases-config/);
+    assert.match(js, /BC_OAUTH_CONSENT_CONFIG/);
     assert.match(js, /getAuthorizationDetails/);
     assert.match(js, /approveAuthorization/);
     assert.match(js, /denyAuthorization/);
+    assert.match(js, /skipBrowserRedirect/);
+    assert.match(js, /storageKey: "bc-oauth-consent\.auth\.v1"/);
+    assert.doesNotMatch(js, /sessionStorage|adoptSession|readSharedSession|BC_FIELD_CASES_CONFIG|ai-bantou|xvrrlwlgoxbrkhlfyznx/);
+    assert.match(config, /https:\/\/ahtmiobqemzrpqxowevc\.supabase\.co/);
+    assert.match(config, /sb_publishable_SYwwQp9WZO2Uop_scQa1aQ_vy4oXHEq/);
+    assert.doesNotMatch(config, /xvrrlwlgoxbrkhlfyznx/);
+    assert.match(cases, /https:\/\/xvrrlwlgoxbrkhlfyznx\.supabase\.co/);
     const estimate = fs.readFileSync(path.join(dir, "../../index.html"), "utf8");
     assert.doesNotMatch(estimate, /oauth\/consent/);
   });
