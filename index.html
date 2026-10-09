@@ -2,6 +2,24 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
+  <script>
+  /* BC_RECOVERY_ROOT_BRIDGE: Supabase password reset only; normal pages unaffected. */
+  (function () {
+    try {
+      var fragment = window.location.hash;
+      if (!fragment || fragment.length > 8192) return;
+      var auth = new URLSearchParams(fragment.slice(1));
+      if (auth.get("type") !== "recovery" ||
+          !auth.get("access_token") ||
+          !auth.get("refresh_token")) return;
+      /* Remove recovery credentials from the public homepage URL before analytics. */
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+      window.location.replace("/bc-field-tools/oauth/consent/reset/" + fragment);
+    } catch (_error) {
+      /* Never interfere with ordinary BC services website navigation. */
+    }
+  })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>BCサービス｜家電・エアコン・清掃・電気・住宅設備の総合窓口</title>
   <meta name="description" content="沖縄のBCサービス。エアコンクリーニング、ハウスクリーニング、家電・エアコン販売、照明・電気設備まで、家のことをまとめて相談できる窓口です。まずはLINEでご相談ください。">
