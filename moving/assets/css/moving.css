@@ -341,6 +341,15 @@ section[id] { scroll-margin-top: 12px; }
 }
 .fv__note { margin-top: 10px; }
 .fv__ok { margin-top: 6px; }
+.fv__diagram {
+  width: clamp(168px, 44vw, 196px);
+  margin-top: 12px;
+}
+.fv__diagram img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 8px 16px rgba(16, 32, 44, 0.16));
+}
 
 /* worry */
 .worry-list {
@@ -1220,16 +1229,22 @@ body.is-fixed-cta { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)
 
 @media (min-width: 980px) {
   .sec-fv {
-    height: 600px;
-    min-height: 0;
+    height: auto;
+    min-height: 720px;
     max-height: none;
   }
   .fv__photo img { object-position: center 54%; }
   .fv__copy {
     justify-content: center;
+    height: auto;
+    min-height: 720px;
     width: 42%;
     max-width: 520px;
-    padding: 20px 0 88px 6vw;
+    padding: 28px 0 36px 6vw;
+  }
+  .fv__diagram {
+    width: 240px;
+    margin-top: 14px;
   }
   .fv__title {
     max-width: none;
