@@ -41,7 +41,6 @@
     const current=tabs.findIndex(function(tab){return tab.getAttribute('aria-selected')==='true';});
     const next=(ev.key==='Home')?0:(ev.key==='End')?tabs.length-1:(current+(ev.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;
     selectAudience(tabs[next].dataset.audience,true);
-    history.replaceState(null,'','#'+(tabs[next].dataset.audience==='business'?'business':'home'));
   });
   window.addEventListener('hashchange',function(){
     if(location.hash==='#business')activate('business',false);
