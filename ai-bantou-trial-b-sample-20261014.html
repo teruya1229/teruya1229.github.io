@@ -1,0 +1,21 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Bantou Trial B - test only</title><style>body{font:16px system-ui;max-width:650px;margin:70px auto;padding:24px;color:#1c2930}button{background:#005bce;color:white;border:0;border-radius:8px;padding:16px 22px;font-size:18px}p{line-height:1.7}</style><h1>AI Bantou Trial B - sample receiver test</h1><p>Only fictional test data will be sent, once, to the Make webhook URL in the URL fragment. This page never stores or displays that URL. No real customer data.</p><button id="send">Send one synthetic PNG sample</button><p id="status">Ready. Click once.</p><script>
+const button=document.getElementById('send'), status=document.getElementById('status');
+button.addEventListener('click',async()=>{
+button.disabled=true;status.textContent='Preparing a synthetic PNG.';
+try {
+const raw=decodeURIComponent(location.hash.slice(1));const dest=new URL(raw);
+if(dest.protocol!=='https:'||dest.hostname!=='hook.eu1.make.com'||!/^\/[a-zA-Z0-9_-]{20,100}$/.test(dest.pathname))throw Error('Invalid webhook URL');
+const canvas=document.createElement('canvas');canvas.width=800;canvas.height=450;
+const ctx=canvas.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,800,450);ctx.fillStyle='#111111';
+ctx.font='bold 37px sans-serif';ctx.fillText('SYNTHETIC TEST ONLY',35,70);
+ctx.font='26px sans-serif';['Job No: TEST-B-001','Customer: SAMPLE ONLY','Date: 2026/10/20','Time: 10:00','Amount: 9000 JPY','Work: 1 air conditioner','Status: NOT CONFIRMED'].forEach((t,i)=>ctx.fillText(t,35,122+43*i));
+const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('PNG error');
+const file=new File([blob],'trial-b-test.png',{type:'image/png'});
+const transfer=new DataTransfer();transfer.items.add(file);
+const form=document.createElement('form');form.method='POST';form.enctype='multipart/form-data';form.action=dest.href;
+const input=document.createElement('input');input.type='file';input.name='image';input.files=transfer.files;form.append(input);
+for(const [key,value] of Object.entries({operation:'image_analyze',filename:file.name,mimeType:'image/png',imageCount:'1',instruction:'Synthetic test data only. No real customer.'})){const field=document.createElement('input');field.type='hidden';field.name=key;field.value=value;form.append(field)}
+document.body.append(form);status.textContent='Submitting one multipart POST to Make ...';form.submit();
+}catch(e){status.textContent='Not sent: '+e.message;button.disabled=false}
+});
+</script></html>
