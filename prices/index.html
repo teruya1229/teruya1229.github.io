@@ -16,7 +16,16 @@
   <meta property="og:image" content="https://teruya1229.github.io/cursor-test/images/logo-bc.png">
   <title>サービス料金のご案内｜個人・法人｜BCサービス</title>
   <link rel="stylesheet" href="./assets/prices.css">
-  <script defer src="./assets/prices.js"></script>
+  <!-- GA4: prices page views; user interactions are tracked in prices.js -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8LKLFDL3G"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js',new Date());
+    var pricesGaDebug = new URLSearchParams(location.search).get('debug_mode') === 'true';
+    gtag('config','G-X8LKLFDL3G',pricesGaDebug ? {debug_mode:true} : {});
+  </script>
+  <script defer src="./assets/prices.js?v=20261014ga4"></script>
 </head>
 <body>
   <a class="skip-link" href="#content">本文へ移動</a>
