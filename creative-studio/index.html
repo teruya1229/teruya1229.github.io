@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080c1d">
+<meta name="description" content="BC Creative Studio。動画づくりに、火をつけろ。現場の映像を、伝わるリールへ。製品紹介公開中。おきゆいメンバー向け無料β版を準備中、正式版は有料販売予定。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BC Creative Studio｜動画づくりに、火をつけろ。">
+<meta property="og:description" content="ネオンに光る、沖縄発のリール動画制作スタジオ。紹介ページ公開中／無料β版準備中。">
+<meta property="og:url" content="https://teruya1229.github.io/creative-studio/">
+<link rel="canonical" href="https://teruya1229.github.io/creative-studio/">
+<title>BC Creative Studio｜動画づくりに、火をつけろ。</title>
+<style>
+:root{color-scheme:dark;--bg:#070b1a;--panel:#141d35;--text:#f4f8ff;--soft:#d7e4f4;--muted:#b5c7e2;--cyan:#7aefff;--violet:#bcabff;--magenta:#ff90d9}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;overflow-x:hidden;background:radial-gradient(ellipse at 72% 10%,rgba(98,57,202,.20),transparent 45%),radial-gradient(ellipse at 9% 32%,rgba(24,158,218,.12),transparent 43%),var(--bg);color:var(--text);font:16px/1.75 "Noto Sans JP","Hiragino Kaku Gothic ProN",Meiryo,system-ui,sans-serif}
+body:before{content:"";position:absolute;top:0;left:0;right:0;height:790px;z-index:-1;background:linear-gradient(rgba(140,172,230,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(140,172,230,.045) 1px,transparent 1px);background-size:58px 58px;mask-image:linear-gradient(#000,transparent)}
+a{color:inherit}a:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}
+.wrap{width:min(1120px,calc(100% - 44px));margin:auto}
+header{border-bottom:1px solid rgba(150,185,245,.17);background:rgba(7,13,30,.79);backdrop-filter:blur(18px)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:76px}
+.brand{display:flex;gap:12px;align-items:center;text-decoration:none;font-weight:900;font-size:15px;letter-spacing:.06em;line-height:1.3}
+.mark{width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(113,234,255,.7);border-radius:12px;background:linear-gradient(135deg,#1e4273,#352061);box-shadow:0 0 23px rgba(107,213,255,.22)}
+.brand small{display:block;font-size:10px;letter-spacing:.21em;color:var(--muted);margin-top:4px}
+nav{display:flex;gap:23px;align-items:center;color:var(--soft);font-size:14px;font-weight:800}
+nav a{text-decoration:none}nav a:hover{color:var(--cyan)}
+.navbtn{padding:9px 15px;border:1px solid rgba(114,231,255,.42);border-radius:40px;color:var(--cyan)}
+.hero{padding:95px 0 90px}
+.hero-grid{display:grid;grid-template-columns:1.02fr .98fr;gap:52px;align-items:center}
+.eyebrow,.kicker{font-size:12px;font-weight:900;letter-spacing:.14em;color:var(--cyan)}
+.pulse{display:inline-block;width:8px;height:8px;margin-right:9px;background:var(--cyan);border-radius:50%;box-shadow:0 0 14px var(--cyan)}
+h1{font-size:clamp(41px,4.9vw,69px);line-height:1.19;letter-spacing:-.065em;margin:23px 0;font-weight:950}
+.glow{display:block;background:linear-gradient(100deg,#77f2ff,#baaaff 55%,#ff9cdb);color:transparent;background-clip:text;text-shadow:0 0 40px rgba(146,107,245,.2)}
+.lead{font-size:18px;line-height:1.95;color:var(--soft);margin:0 0 23px}
+.tags{display:flex;gap:9px;flex-wrap:wrap;margin:26px 0}
+.tag{display:inline-block;padding:7px 12px;border-radius:40px;background:rgba(23,34,65,.83);border:1px solid rgba(139,185,255,.31);font-size:12px;font-weight:800}
+.tag.ok{color:#a7ffe2}.tag.wait{color:#e2c8ff}
+.buttons{display:flex;gap:12px;flex-wrap:wrap}
+.button{display:inline-flex;align-items:center;justify-content:center;min-height:53px;padding:13px 22px;border-radius:13px;font-weight:900;text-decoration:none;line-height:1.45}
+.primary{color:#071b31;background:linear-gradient(100deg,#7ef2ff,#b8a8ff);box-shadow:0 8px 34px rgba(103,177,255,.21)}
+.primary:hover{filter:brightness(1.09)}
+.secondary{border:1px solid rgba(147,184,241,.34);background:rgba(16,29,55,.85)}
+.caption{font-size:13px;color:var(--muted);margin:20px 0 0}
+.mock{position:relative;padding:14px;border:1px solid rgba(133,202,255,.33);border-radius:22px;background:linear-gradient(155deg,rgba(26,40,77,.96),rgba(8,14,35,.96));box-shadow:0 20px 100px rgba(0,0,0,.42),0 0 54px rgba(84,110,244,.18)}
+.mock:before{position:absolute;inset:-5px;z-index:-1;content:"";border-radius:24px;background:linear-gradient(120deg,rgba(103,231,255,.36),transparent 48%,rgba(203,101,242,.31));filter:blur(18px)}
+.mocktop{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid rgba(160,188,245,.2);padding:6px 4px 15px;font-size:10px;font-weight:900;letter-spacing:.14em;color:var(--soft)}
+.lights{display:flex;gap:6px}.lights b{width:7px;height:7px;border-radius:50%;background:#ff83b6}.lights b:nth-child(2){background:#f2d08d}.lights b:nth-child(3){background:#82ffe4}
+.desk{display:grid;grid-template-columns:.86fr 1.14fr;gap:13px;margin-top:14px}
+.pane{border-radius:12px;padding:12px;background:rgba(16,34,67,.84);border:1px solid rgba(133,180,250,.21);margin-bottom:10px}
+.pane-title,.previewlabel{font-size:10px;letter-spacing:.11em;color:#b3cae9;font-weight:900;margin-bottom:10px}
+.source{display:flex;align-items:center;gap:8px;margin-top:9px;font-size:10px;font-weight:800;color:var(--soft)}
+.thumb{width:32px;height:25px;border-radius:5px;flex:none;background:linear-gradient(115deg,#246b96,#443e94)}
+.source:nth-child(3) .thumb{background:linear-gradient(115deg,#3465ba,#8849af)}
+.source:nth-child(4) .thumb{background:linear-gradient(115deg,#554cac,#b6489f)}
+.source:nth-child(5) .thumb{background:linear-gradient(115deg,#8754ab,#db649f)}
+.meter{height:6px;border-radius:20px;background:linear-gradient(90deg,#7bf2ff 67%,#324663 67%);box-shadow:0 0 10px rgba(92,222,255,.25)}
+.export{padding:8px 3px;text-align:center;border-radius:7px;background:linear-gradient(100deg,#77e8fc,#c0a8ff);color:#0d203a;font-size:10px;font-weight:900}
+.preview{display:flex;flex-direction:column;align-items:center}
+.video{width:min(100%,190px);aspect-ratio:9/15.4;border:1px solid rgba(134,229,255,.65);border-radius:12px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 43%,rgba(116,229,244,.31),transparent 40%),linear-gradient(155deg,#0e375e,#282254 65%,#593371);box-shadow:0 0 31px rgba(93,218,248,.25),inset 0 0 40px rgba(19,22,55,.37)}
+.video:before{content:"";position:absolute;inset:7%;border:1px solid rgba(222,240,255,.19);border-radius:8px}
+.video:after{content:"";position:absolute;top:33%;left:-13%;width:140%;height:25%;transform:rotate(-27deg);border:1px solid rgba(161,239,255,.26);box-shadow:0 0 39px rgba(65,192,236,.22)}
+.play{position:absolute;z-index:2;display:grid;place-items:center;left:50%;top:44%;transform:translate(-50%,-50%);width:59px;height:59px;border-radius:50%;background:rgba(10,21,46,.81);border:1px solid rgba(159,225,255,.72);box-shadow:0 0 25px rgba(109,221,255,.31);font-size:20px}
+.sub{position:absolute;z-index:2;bottom:17%;left:8%;right:8%;padding:6px 3px;text-align:center;font-size:11px;font-weight:900;border-radius:4px;background:rgba(4,8,19,.87)}
+.track{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;width:100%;margin-top:11px}
+.track span{height:21px;border:1px solid rgba(140,202,255,.4);background:linear-gradient(120deg,#1d7398,#4b58a5);border-radius:4px}
+.track span:nth-child(2){background:linear-gradient(120deg,#4360b4,#794fac)}.track span:nth-child(3){background:linear-gradient(120deg,#7651ac,#984da5)}.track span:nth-child(4){background:linear-gradient(120deg,#914d96,#ca549b)}
+.mocknote{font-size:11px;color:#abc2df;text-align:right;margin:10px 0 0}
+section{scroll-margin-top:30px}
+.section{padding:86px 0}
+h2{font-size:clamp(30px,3.5vw,43px);line-height:1.35;letter-spacing:-.045em;margin:12px 0 18px}
+.seclead{max-width:760px;color:var(--soft);font-size:17px;margin:0 0 32px}
+.features{display:grid;grid-template-columns:repeat(2,1fr);gap:17px}
+.card{padding:28px;border-radius:18px;border:1px solid rgba(140,181,248,.24);background:linear-gradient(135deg,rgba(25,38,72,.9),rgba(11,20,43,.89))}
+.symbol{width:45px;height:45px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(125deg,rgba(77,220,249,.16),rgba(168,106,244,.16));color:var(--cyan);border:1px solid rgba(130,225,255,.28);font-size:22px;margin-bottom:16px}
+h3{font-size:20px;margin:0 0 11px;line-height:1.45}
+.card p{font-size:15px;line-height:1.85;color:var(--soft);margin:0}
+.roadmap{background:linear-gradient(120deg,rgba(20,36,71,.79),rgba(33,20,63,.82));border-top:1px solid rgba(149,184,237,.17);border-bottom:1px solid rgba(149,184,237,.17)}
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
+.phase{padding:25px;border-radius:16px;background:rgba(7,17,40,.83);border:1px solid rgba(159,183,244,.27)}
+.num{color:var(--cyan);font-size:12px;font-weight:900;letter-spacing:.11em}
+.phase h3{margin:12px 0;font-size:19px}.phase p{font-size:14px;line-height:1.8;color:var(--soft);margin:0}
+.phase .tag{margin-top:18px}
+.note{font-size:14px;color:var(--muted);margin:25px 0 0}
+.closing{padding:84px 0;text-align:center}
+.closingbox{padding:42px 25px;border:1px solid rgba(133,229,255,.33);border-radius:24px;background:radial-gradient(ellipse at top,rgba(68,118,231,.22),transparent 76%),rgba(9,23,52,.78);box-shadow:0 0 55px rgba(75,112,204,.1)}
+.closing h2{margin:8px 0 17px}.closing p{color:var(--soft);max-width:690px;margin:0 auto}
+.closing .button{margin-top:28px}
+footer{border-top:1px solid rgba(144,169,221,.17);padding:28px 0;color:var(--muted);font-size:13px}
+footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px}
+@media(max-width:900px){.hero{padding:74px 0}.hero-grid{grid-template-columns:1fr}.mock{max-width:550px;margin:auto}.desk{grid-template-columns:.86fr 1.14fr}}
+@media(max-width:650px){.wrap{width:calc(100% - 36px)}.bar{min-height:69px}.brand{font-size:12px}.mark{width:35px;height:35px}.brand small{font-size:9px}nav>a:not(.navbtn){display:none}.navbtn{font-size:12px;padding:9px 12px}h1{font-size:clamp(36px,10vw,51px)}.lead{font-size:16px}.buttons{flex-direction:column}.button{width:100%}.features,.phases{grid-template-columns:1fr}.section{padding:65px 0}.card{padding:25px}.closing{padding:66px 0}.closingbox{padding:33px 20px}footer .wrap{flex-direction:column;text-align:center}}
+@media(max-width:350px){.desk{gap:7px}.pane{padding:9px 7px}.thumb{width:21px;height:21px}.source{gap:4px}.mocktop{font-size:9px}.brand{letter-spacing:0}.navbtn{font-size:11px;padding:8px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header><div class="wrap bar"><a class="brand" href="#top" aria-label="BC Creative Studio トップへ"><span class="mark">BC</span><span>CREATIVE STUDIO<small>VIDEO MAKER / OKINAWA</small></span></a><nav aria-label="ページ内メニュー"><a href="#features">できること</a><a href="#roadmap">リリース計画</a><a class="navbtn" href="#beta">無料β版について ↗</a></nav></div></header>
+<main id="top">
+<div class="hero"><div class="wrap hero-grid"><div><div class="eyebrow"><span class="pulse"></span>BC CREATIVE STUDIO / CREATOR DESK</div><h1>動画づくりに、<span class="glow">火をつけろ。</span></h1><p class="lead">素材を選ぶ。音をのせる。字幕で伝える。<br>日々の現場や仕事の魅力を、ひとつのリールへ。<br>制作する時間までワクワクする、ネオンに光る動画スタジオ。</p><div class="tags"><span class="tag ok">● 製品紹介ページ公開中</span><span class="tag wait">◇ 無料β版は準備中</span></div><div class="buttons"><a class="button primary" href="#roadmap">公開・販売までの流れ →</a><a class="button secondary" href="#features">できることを見る ↓</a></div><p class="caption">※ 現在は製品紹介ページです。アプリ本体のダウンロード提供はまだ始まっていません。</p></div>
+<div class="mock" aria-label="BC Creative Studioのデザインイメージ"><div class="mocktop"><span>BC CREATIVE STUDIO / PRODUCTION DESK</span><span class="lights" aria-hidden="true"><b></b><b></b><b></b></span></div><div class="desk"><div>
+<div class="pane"><div class="pane-title">SOURCE / 01-04</div><div class="source"><span class="thumb"></span>SCENE 01</div><div class="source"><span class="thumb"></span>SCENE 02</div><div class="source"><span class="thumb"></span>SCENE 03</div><div class="source"><span class="thumb"></span>SCENE 04</div></div>
+<div class="pane"><div class="pane-title">AUDIO / MIX</div><div style="font-size:10px;margin-bottom:10px">♫ SOUND TRACK</div><div class="meter"></div></div>
+<div class="pane"><div class="pane-title">EXPORT</div><div class="export">MP4 RENDER ↗</div></div>
+</div><div class="preview"><div class="previewlabel">LIVE CANVAS / 9:16</div><div class="video"><span class="play" aria-hidden="true">▶</span><span class="sub">伝わる映像を、もっと自由に。</span></div><div class="track" aria-hidden="true"><span></span><span></span><span></span><span></span></div></div></div><p class="mocknote">※ デザインを表現したイメージです</p></div>
+</div></div>
+<section class="section" id="features"><div class="wrap"><div class="kicker">CREATE WITHOUT COMPLEXITY</div><h2>素材から完成動画まで、<br>ひとつの制作デスクで。</h2><p class="seclead">複雑な操作に追われず、伝えたい場面とメッセージに集中するためのツールです。以下は開発版で動作確認している機能です。</p>
+<div class="features"><article class="card"><div class="symbol" aria-hidden="true">▣</div><h3>縦型プレビュー</h3><p>9:16の画面で仕上がりを確認。再生・停止・シークしながら動画を整えられます。</p></article><article class="card"><div class="symbol" aria-hidden="true">▤</div><h3>最大4本の素材編集</h3><p>使うシーンの区間や順番を調整。清掃・設備のビフォーアフター動画にも。</p></article><article class="card"><div class="symbol" aria-hidden="true">♫</div><h3>BGMと音量調整</h3><p>曲を選んで試聴し、音量を調整。配布版の収録音源は再配布条件の確認後に決定します。</p></article><article class="card"><div class="symbol" aria-hidden="true">✦</div><h3>字幕・CTA・MP4</h3><p>字幕と最後の案内画面まで制作。完成動画はMP4形式で書き出します。</p></article></div></div></section>
+<section class="section roadmap" id="roadmap"><div class="wrap"><div class="kicker">ROADMAP / RELEASE PLAN</div><h2>まずは無料β版。<br>実際の声で磨いて、正式販売へ。</h2><p class="seclead">おきゆいメンバーへの先行提供を予定しています。無料β版で使い勝手や不具合を検証し、その後の正式版は有料販売を計画しています。</p>
+<div class="phases"><article class="phase"><div class="num">PHASE 01</div><h3>製品紹介ページ</h3><p>コンセプト・主な機能・今後の公開計画を紹介します。</p><span class="tag ok">現在公開中</span></article><article id="beta" class="phase"><div class="num">PHASE 02</div><h3>おきゆいメンバー向け無料β版</h3><p>対象メンバーへ先行提供し、PCでの使いやすさと動作を検証・改善します。</p><span class="tag wait">配布準備中</span></article><article class="phase"><div class="num">PHASE 03</div><h3>正式版を有料販売</h3><p>β版の検証後、継続利用できる製品として販売予定。価格・発売時期は未定です。</p><span class="tag">販売予定</span></article></div>
+<p class="note">Windows PC向けのローカル動作を基本に準備しています。対応環境・配布内容・楽曲の扱いはβ版の配布前に確定します。仕様と予定は変更となる場合があります。</p></div></section>
+<section class="closing"><div class="wrap"><div class="closingbox"><div class="kicker">MADE FOR CREATORS</div><h2>「編集しなきゃ」を、<br>「つくりたい」に変える。</h2><p>沖縄から生まれたBC Creative Studio。毎日の仕事で本当に使える制作ツールを目指して、まずは限定β版から育てていきます。</p><a class="button primary" href="#roadmap">無料β版・正式販売の予定を見る ↑</a><p class="caption">案内方法・配布日程は準備が整い次第お知らせします。</p></div></div></section>
+</main>
+<footer><div class="wrap"><span>© BCサービス / BC Creative Studio</span><span>沖縄発・PC向け動画制作ツール</span><a href="https://teruya1229.github.io/">BCサービス公式サイト ↗</a></div></footer>
+</body></html>
