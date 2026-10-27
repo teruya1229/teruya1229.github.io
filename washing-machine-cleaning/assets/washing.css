@@ -17,3 +17,48 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.related-service{transition:none}}
 /* 洗濯機クリーニング：2026年11月30日までのキャンペーン価格表示 */
 .hero__prices .campaign-list-price{display:block;font-size:12px;font-weight:700;color:#657985;text-decoration:line-through;margin:3px 0 0}.hero__prices .campaign-discount{display:inline-block;font-size:12px;font-weight:900;color:#aa420d;background:#fff0df;padding:2px 9px;border-radius:999px;margin-top:3px}.price-card__regular{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:#5c7280;margin-top:16px;font-weight:700}.price-card__regular del{color:#5c7280}.price-card__regular span{color:#aa420d;background:#fff0df;padding:3px 10px;border-radius:99px;font-weight:900}.price-card__regular+.price-card__price{margin-top:8px}.price-card__price span:first-child{font-size:12px}
+
+/* 2026-10-27: お客様の声・ドラム式総脱着の料金/対応範囲 */
+.hero__scope{max-width:460px;color:#13546b;font-size:12px;line-height:1.6;margin:-2px 0 9px;padding:8px 10px;border-left:3px solid var(--teal);background:rgba(255,255,255,.74)}
+.hero__scope strong{font-weight:900}
+.reviews__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:960px;margin-inline:auto}
+.review-card{min-width:0;margin:0;background:#fff;border:1px solid #d1e5e3;border-radius:17px;padding:25px 27px;box-shadow:0 6px 20px rgba(18,60,83,.035)}
+.review-card--featured{grid-column:span 2;border-color:#9ad1cc;padding:28px 32px;box-shadow:0 10px 28px rgba(18,60,83,.07)}
+.review-card__head{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap;margin-bottom:12px}
+.review-card__stars{color:#e57720;font-size:19px;letter-spacing:.05em;line-height:1.2}
+.review-card__tag{display:inline-block;color:#16757c;font-size:12px;font-weight:800;background:#eaf7f4;border-radius:99px;padding:5px 10px}
+.review-card__source{font-size:12px;color:#627c83}
+.review-card blockquote{margin:0;color:#234455;font-size:14px;line-height:1.95;overflow-wrap:anywhere}
+.review-card--featured blockquote{font-size:16px}
+.review-card figcaption{font-size:12px;color:#637b83;margin-top:15px;padding-top:12px;border-top:1px solid #edf1f2}
+.reviews__note{max-width:960px;margin:16px auto 0;color:#61777f;font-size:12px;line-height:1.7}
+.price-card__scope strong{color:#134f63}
+.price-card .price-card__scope{min-height:0}
+.price-card .price-card__option{min-height:0;background:#eef8f5;border-radius:10px;padding:12px 13px;color:#14516a;font-weight:800;font-size:13px;margin-top:11px}
+.price-card__option strong{display:inline;color:#0d5664;font-size:17px;white-space:nowrap}
+.price-card__option small{display:block;color:#51737a;font-size:11px;font-weight:600;line-height:1.6;margin-top:5px}
+.drum-policy{max-width:920px;margin:22px auto 0;padding:25px 27px;background:#fff;border:1px solid #a5d4cf;border-radius:16px}
+.drum-policy__heading span{font-size:12px;font-weight:900;color:#16858b}
+.drum-policy__heading h3{font-size:20px;line-height:1.45;color:var(--navy);margin-top:4px}
+.drum-policy__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:18px}
+.drum-policy__grid>div{padding:15px 14px;background:#f4faf9;border-radius:10px;min-width:0}
+.drum-policy__grid strong{font-size:13px;color:#145e69}
+.drum-policy__grid p{font-size:13px;line-height:1.8;color:#4c6874;margin-top:6px}
+.drum-policy__grid b{color:var(--navy)}
+.drum-policy__photo{border-top:1px solid #e1ecee;margin-top:18px;padding-top:16px}
+.drum-policy__photo strong{font-size:16px;color:var(--navy)}
+.drum-policy__photo p{font-size:13px;color:#526b77;line-height:1.8;margin-top:6px}
+.drum-policy__photo a{display:inline-block;margin-top:10px;font-size:14px;font-weight:900;color:#15777b;text-underline-offset:4px}
+@media(max-width:720px){
+.hero__scope{max-width:none;margin:-6px 0 -6px;font-size:11px}
+.reviews__grid{grid-template-columns:1fr;gap:12px}
+.review-card--featured{grid-column:auto}
+.review-card,.review-card--featured{padding:22px 20px}
+.review-card--featured blockquote{font-size:14px}
+.review-card__source{font-size:11px}
+.drum-policy{padding:20px 18px}
+.drum-policy__heading h3{font-size:18px}
+.drum-policy__grid{grid-template-columns:1fr;gap:9px}
+.drum-policy__grid>div{padding:13px 14px}
+.drum-policy__photo strong{font-size:15px}
+}
