@@ -2,7 +2,7 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.09.21-009";
+  const APP_VERSION = "2026.11.02-001";
   /** 公開可能な anon key のみ（Edge gateway用。特権キーや外部API秘密は載せない） */
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
@@ -1283,7 +1283,7 @@
     let thumb = "未選択";
     if (state.missingBlob) thumb = "再登録が必要";
     else if (state.previewFailed) thumb = "プレビュー不可";
-    else if (state.objectUrl) thumb = `<img alt="${escapeAttr(def.title)}" src="${state.objectUrl}" data-photo-preview="1">`;
+    else if (state.objectUrl) thumb = `<button class="photo-thumb-open" type="button" data-action="preview-photo" aria-label="${escapeAttr(def.title)}を拡大表示"><img alt="${escapeAttr(def.title)}" src="${state.objectUrl}" data-photo-preview="1"><span>タップして拡大</span></button>`;
     const rt = getAiPhotoRuntime(def.id);
     const canAi = SURVEY_PHOTO_IDS.has(def.id);
     let aiLabel = "写真AIで読む";
@@ -1298,6 +1298,7 @@
           <button type="button" class="mini-btn primary" data-action="pick" ${rt.busy ? "disabled" : ""}>${has ? "差し替え" : "追加"}</button>
           <button type="button" class="mini-btn" data-action="remove" ${has && !rt.busy ? "" : "disabled"}>消す</button>
         </div>
+        ${has && !state.missingBlob && state.blob instanceof Blob ? `<button type="button" class="mini-btn photo-device-save" data-action="save-device">端末にも保存・共有</button><p class="photo-device-message" data-device-message hidden aria-live="polite"></p>` : ""}
         ${canAi ? `<button type="button" class="mini-btn" data-action="ai-photo" style="width:100%" ${rt.busy ? "disabled" : ""}>${escapeHtml(aiLabel)}</button>` : ""}
         ${follow}
       </div>
@@ -2170,6 +2171,11 @@
     markAllPhotosDeleted,
     clearPendingPhotoOps,
     hasPendingPhotoOps,
+    getOriginalPhoto(id) {
+      const photo = photoState[id];
+      if (!ALL_PHOTO_DEFS.some((item) => item.id === id) || !photo || !(photo.blob instanceof Blob) || photo.missingBlob) return null;
+      return { blob: photo.blob, fileName: photo.fileName || id + ".jpg", mimeType: photo.mimeType || photo.blob.type, title: ALL_PHOTO_DEFS.find((item) => item.id === id).title };
+    },
     initEmptyUi,
     showSharedCaseGateMessage,
     noteSharedCaseLocalDataHint,
