@@ -203,6 +203,7 @@
     const phaseEl = document.getElementById("current-case-phase");
     const updatedEl = document.getElementById("current-case-updated");
     const retryBtn = document.getElementById("save-retry-btn");
+    const topSaveBtn = document.getElementById("save-top-btn");
 
     if (!runtime) return;
 
@@ -257,6 +258,12 @@
     if (retryBtn instanceof HTMLButtonElement) {
       retryBtn.hidden = !(runtime.status === "error" || runtime.conflictState);
       if (runtime.conflictState) retryBtn.hidden = true;
+    }
+    if (topSaveBtn instanceof HTMLButtonElement) {
+      topSaveBtn.textContent = runtime.saving ? "保存中…" : (runtime.status === "error" || runtime.saveError ? "再保存" : "保存");
+      if (topSaveBtn.dataset.bcfdLockPrev == null) {
+        topSaveBtn.disabled = !runtime.storageOk || !!runtime.uiLocked || !!runtime.deleteRequested || !!runtime.saving || !!runtime.conflictState;
+      }
     }
     updateConflictPanel();
   }
@@ -1133,9 +1140,11 @@
     document.getElementById("new-case-btn")?.addEventListener("click", () => {
       void createAndOpenNewCase();
     });
-    document.getElementById("save-now-btn")?.addEventListener("click", () => {
-      void flushAutosave().then((ok) => {
-        if (!ok) setStatus("error", "保存に失敗しました。再試行してください。");
+    ["save-now-btn", "save-top-btn"].forEach((id) => {
+      document.getElementById(id)?.addEventListener("click", () => {
+        void flushAutosave().then((ok) => {
+          if (!ok) setStatus("error", "保存に失敗しました。入力内容は保持されています。再試行してください。");
+        });
       });
     });
     document.getElementById("save-retry-btn")?.addEventListener("click", () => {
