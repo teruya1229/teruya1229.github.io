@@ -18,7 +18,7 @@
   <meta name="robots" content="noindex, nofollow" />
   <meta name="theme-color" content="#1c3d5a" />
   <title>BCサービス 現場アプリ</title>
-  <link rel="stylesheet" href="./style.css?v=20260921-009" />
+  <link rel="stylesheet" href="./style.css?v=20261102-001" />
 </head>
 <body>
   <div class="app">
@@ -28,6 +28,7 @@
           <div class="brand"><b>BCサービス</b></div>
           <div class="case-chip">
             <p id="save-status" class="save-status save-idle" aria-live="polite">保存待ち</p>
+            <button id="save-top-btn" class="top-save-btn" type="button" disabled>保存</button>
             <button id="more-menu-btn" class="icon-btn" type="button" aria-label="メニュー">⋯</button>
           </div>
         </div>
@@ -75,6 +76,7 @@
         <div id="ai-suggestions"></div>
 
         <p class="section-label">写真　任意・後から追加できます</p>
+        <p class="photo-storage-note">写真は案件保存が成功すると、このブラウザ内に保管されます。スマホの写真アプリにも残すには、各写真の「端末にも保存・共有」を選んでください。</p>
         <div id="photo-cards" class="photo-grid"></div>
         <div id="ai-case-brief"></div>
         <p class="hint" style="margin-top:8px">分電盤は外から見える範囲だけ。カバーは外さないでください。</p>
@@ -98,6 +100,7 @@
         <h2 class="q">施工の記録</h2>
         <div id="exec-fields"></div>
         <p class="section-label">施工中の写真</p>
+        <p class="photo-storage-note">スマホの写真アプリへの保存は、写真ごとの操作が必要です。</p>
         <div id="exec-photo-cards" class="photo-grid"></div>
         <div id="exec-lists"></div>
         <button id="exec-stop-btn" class="btn btn-danger" type="button">作業を止める</button>
@@ -109,6 +112,7 @@
         <h2 class="q">完了の確認</h2>
         <div id="comp-fields"></div>
         <p class="section-label">完了写真</p>
+        <p class="photo-storage-note">スマホの写真アプリへの保存は、写真ごとの操作が必要です。</p>
         <div id="comp-photo-cards" class="photo-grid"></div>
         <div id="comp-checks"></div>
         <div id="comp-lists"></div>
@@ -229,16 +233,29 @@
     </div>
   </div>
 
+  <div id="photo-viewer-overlay" class="overlay photo-viewer-overlay" hidden>
+    <div class="photo-viewer-box" role="dialog" aria-modal="true" aria-label="写真の拡大表示">
+      <div class="photo-viewer-bar">
+        <span id="photo-viewer-title">写真の確認</span>
+        <button type="button" id="photo-viewer-close" class="btn btn-secondary">閉じる</button>
+      </div>
+      <img id="photo-viewer-image" alt="写真を拡大表示" />
+      <p class="photo-storage-note">iPhoneでは画像を長押しし、「写真に保存」を選んでください。端末やブラウザによって表示は異なります。</p>
+      <a id="photo-viewer-download" class="btn btn-secondary" href="#" download>原本ファイルをダウンロード</a>
+    </div>
+  </div>
+
   <input id="backup-import-input" type="file" accept=".bcfd,application/vnd.bc-field-diagnosis,application/octet-stream" hidden />
 
-  <script src="./bc-cases-config.js?v=20260921-009"></script>
-  <script src="./bc-cases-client.js?v=20260921-009"></script>
-  <script src="./storage.js?v=20260921-009"></script>
-  <script src="./estimate.js?v=20260921-009"></script>
-  <script src="./image-prep.js?v=20260921-009"></script>
-  <script src="./ai-field-logic.js?v=20260921-009"></script>
-  <script src="./app.js?v=20260921-009"></script>
-  <script src="./backup.js?v=20260921-009"></script>
-  <script src="./case-persistence.js?v=20260921-009"></script>
+  <script src="./bc-cases-config.js?v=20261102-001"></script>
+  <script src="./bc-cases-client.js?v=20261102-001"></script>
+  <script src="./storage.js?v=20261102-001"></script>
+  <script src="./estimate.js?v=20261102-001"></script>
+  <script src="./image-prep.js?v=20261102-001"></script>
+  <script src="./ai-field-logic.js?v=20261102-001"></script>
+  <script src="./app.js?v=20261102-001"></script>
+  <script src="./backup.js?v=20261102-001"></script>
+  <script src="./case-persistence.js?v=20261102-001"></script>
+  <script src="./photo-device.js?v=20261102-001"></script>
 </body>
 </html>
