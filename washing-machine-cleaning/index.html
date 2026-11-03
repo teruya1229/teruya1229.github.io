@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#103f58">
-  <meta name="description" content="沖縄南部の洗濯機クリーニングならBCサービス。2026年11月30日まで縦型13,000円、ドラム式25,000円（税込）。ドラム式の通常コースは槽取り外しなし。総脱着は対応機種のみ＋8,000円、背面ボルト式は不可。型番・扉内部の写真で事前確認。">
+  <meta name="description" content="沖縄南部の洗濯機クリーニングならBCサービス。2026年11月30日まで縦型7kg以下13,000円・8〜9kg15,000円・10kg以上17,000円、ドラム式25,000円（税込）。ドラム式の通常コースは槽取り外しなし。総脱着は対応機種のみ＋8,000円、背面ボルト式は不可。型番・扉内部の写真で事前確認。">
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://teruya1229.github.io/washing-machine-cleaning/">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -13,13 +13,35 @@
   <meta property="og:site_name" content="BCサービス">
   <meta property="og:locale" content="ja_JP">
   <meta property="og:title" content="洗濯機の見えない汚れまで、分解して洗浄。｜BCサービス">
-  <meta property="og:description" content="11月30日まで縦型13,000円・ドラム式25,000円（税込）。ドラム式は通常槽取り外しなし。総脱着は対応機種のみ＋8,000円。型番と扉内部の写真で事前確認。">
+  <meta property="og:description" content="11月30日まで縦型7kg以下13,000円・8〜9kg15,000円・10kg以上17,000円、ドラム式25,000円（税込）。ドラム式は通常槽取り外しなし。総脱着は対応機種のみ＋8,000円。型番と扉内部の写真で事前確認。">
   <meta property="og:url" content="https://teruya1229.github.io/washing-machine-cleaning/">
   <meta property="og:image" content="https://teruya1229.github.io/cursor-test/images/washer-cleaning-after.jpg">
   <link rel="stylesheet" href="./assets/washing.css?v=20261027a">
   <style>
     .review-card__citation{display:block;margin-top:8px;color:#657984;font-size:10px;line-height:1.6;overflow-wrap:anywhere}
     .review-card__citation a{display:block;color:#526c78;text-decoration:underline;text-decoration-color:#a2b6bd;text-underline-offset:3px;overflow-wrap:anywhere}
+
+    /* 縦型洗濯機・容量別料金表。既存の口コミ／ドラム式料金は変更しない */
+    .micro-note a{color:#136d79;text-decoration:underline;text-underline-offset:2px}
+    .price-card>p.washer-capacity__intro{min-height:0;margin-top:12px;color:#4f6874;font-size:13px;line-height:1.7}
+    .washer-capacity__intro strong{color:#aa420d}
+    .washer-capacity__table{width:100%;margin:15px 0 16px;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+    .washer-capacity__table caption{caption-side:top;text-align:left;color:#4c6570;font-size:12px;font-weight:700;padding-bottom:8px}
+    .washer-capacity__table th,.washer-capacity__table td{padding:11px 5px;border-bottom:1px solid #e0e9eb;white-space:nowrap}
+    .washer-capacity__table thead th{color:#58717b;font-size:11px;font-weight:700}
+    .washer-capacity__table th:first-child{text-align:left}
+    .washer-capacity__table th:not(:first-child),.washer-capacity__table td{text-align:right}
+    .washer-capacity__table tbody th{color:#164657;font-weight:800}
+    .washer-capacity__table td del{color:#7a8c92}
+    .washer-capacity__table tbody td:last-child{background:#eef8f5;color:#0e5965}
+    .washer-capacity__table td strong{font-weight:900;font-size:14px}
+    .price-card>p.washer-capacity__detail{min-height:0;color:#4f6874;font-size:13px;line-height:1.75}
+    @media(max-width:390px){
+      .washer-capacity__table{font-size:11px}
+      .washer-capacity__table th,.washer-capacity__table td{padding:9px 3px}
+      .washer-capacity__table thead th{font-size:10px}
+      .washer-capacity__table td strong{font-size:12px}
+    }
   </style>
   <script type="application/ld+json">
   {
@@ -53,11 +75,11 @@
           <p class="hero__lead">縦型も、ドラム式も。<br>メーカー・機種を確認して、<strong>できる洗浄を正直にご案内。</strong></p>
           <div class="hero__trust" aria-label="サービスの特徴"><span>縦型・ドラム式</span><span>事前に料金確認</span><span>現場経験17年</span><span>11/30まで期間限定キャンペーン</span></div>
           <div class="hero__prices" aria-label="2026年11月30日までのキャンペーン料金">
-            <div><span>縦型洗濯機</span><small class="campaign-list-price">通常15,000円</small><strong><small>税込</small>13,000<small>円</small></strong><small class="campaign-discount">2,000円OFF</small></div>
+            <div><span>縦型洗濯機（7kg以下）</span><small class="campaign-list-price">通常15,000円</small><strong><small>税込</small>13,000<small>円</small></strong><small class="campaign-discount">2,000円OFF</small></div>
             <div><span>ドラム式洗濯機</span><small class="campaign-list-price">通常28,000円</small><strong><small>税込</small>25,000<small>円</small></strong><small class="campaign-discount">3,000円OFF</small></div>
           </div>
           <p class="hero__scope">ドラム式は通常、槽の取り外しなし。<strong>総脱着は対応機種のみ＋8,000円（税込）</strong>／背面ボルト式は総脱着不可。</p>
-          <p class="micro-note">※料金は目安。機種・設置状況・汚れ具合により作業範囲や金額が変わる場合があります。ご依頼前に確認してご案内します。</p>
+          <p class="micro-note">※縦型8〜9kgは15,000円、10kg以上は17,000円（キャンペーン税込）。<a href="#price">容量別料金表を見る</a><br>※料金は目安。機種・設置状況・汚れ具合により作業範囲や金額が変わる場合があります。ご依頼前に確認してご案内します。</p>
           <a class="btn btn--line btn--wide" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="hero"><span class="line-bubble" aria-hidden="true">LINE</span> 写真を送って無料相談 <span aria-hidden="true">→</span></a>
           <p class="btn-sub">まずは洗濯機の型番・写真を送るだけでOK</p>
         </div>
@@ -124,8 +146,23 @@
       </div>
     </section>
     <section class="section section--soft" id="price">
-      <div class="container"><div class="sec-head"><p class="section-kicker">料金のご案内</p><h2>洗濯機のタイプ別料金</h2><p><strong>2026年11月30日までの期間限定キャンペーン！</strong> 縦型2,000円OFF・ドラム式3,000円OFF。写真と型番で対応可否を確認してからご案内します。</p></div>
-      <div class="price-grid"><article class="price-card"><p class="price-card__type">縦型洗濯機</p><h3>分解クリーニング</h3><div class="price-card__regular">通常価格（税込）<del>15,000円</del><span>2,000円OFF</span></div><p class="price-card__price"><span>キャンペーン税込</span><strong>13,000</strong><span>円</span></p><p>洗濯槽や取り外し可能な部品を、機種に合わせて洗浄します。</p><a class="btn btn--line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="price-vertical">縦型の写真を送って相談 →</a></article><article class="price-card price-card--featured"><p class="price-card__type">ドラム式洗濯機</p><h3>分解クリーニング</h3><div class="price-card__regular">通常価格（税込）<del>28,000円</del><span>3,000円OFF</span></div><p class="price-card__price"><span>キャンペーン税込</span><strong>25,000</strong><span>円</span></p><p class="price-card__scope"><strong>通常コースはドラム槽の取り外しなし。</strong><br>乾燥経路や取り外せる部品など、機種に応じて洗浄します。</p><p class="price-card__option">総脱着オプション <strong>＋8,000円（税込）</strong><small>対応機種のみ／背面ボルト式は総脱着非対応</small></p><a class="btn btn--line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="price-drum">ドラム式の写真を送って相談 →</a></article></div>
+      <div class="container"><div class="sec-head"><p class="section-kicker">料金のご案内</p><h2>洗濯機のタイプ別料金</h2><p><strong>2026年11月30日までの期間限定キャンペーン！</strong> 縦型は洗濯容量別に全サイズ2,000円OFF・ドラム式3,000円OFF。写真と型番で対応可否を確認してからご案内します。</p></div>
+      <div class="price-grid"><article class="price-card">
+          <p class="price-card__type">縦型洗濯機</p>
+          <h3>分解クリーニング</h3>
+          <p class="washer-capacity__intro">キャンペーン期間中は、<strong>全容量2,000円OFF</strong>。洗濯容量に合わせて料金を選べます。</p>
+          <table class="washer-capacity__table">
+            <caption>縦型洗濯機の洗濯容量別料金（税込）</caption>
+            <thead><tr><th scope="col">洗濯容量</th><th scope="col">通常料金</th><th scope="col">キャンペーン</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">7kg以下</th><td><del>15,000円</del></td><td><strong>13,000円</strong></td></tr>
+              <tr><th scope="row">8〜9kg</th><td><del>17,000円</del></td><td><strong>15,000円</strong></td></tr>
+              <tr><th scope="row">10kg以上</th><td><del>19,000円</del></td><td><strong>17,000円</strong></td></tr>
+            </tbody>
+          </table>
+          <p class="washer-capacity__detail">洗濯槽や取り外し可能な部品を、機種に合わせて洗浄します。表示価格は税込です。</p>
+          <a class="btn btn--line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="price-vertical">縦型の写真を送って相談 →</a>
+        </article><article class="price-card price-card--featured"><p class="price-card__type">ドラム式洗濯機</p><h3>分解クリーニング</h3><div class="price-card__regular">通常価格（税込）<del>28,000円</del><span>3,000円OFF</span></div><p class="price-card__price"><span>キャンペーン税込</span><strong>25,000</strong><span>円</span></p><p class="price-card__scope"><strong>通常コースはドラム槽の取り外しなし。</strong><br>乾燥経路や取り外せる部品など、機種に応じて洗浄します。</p><p class="price-card__option">総脱着オプション <strong>＋8,000円（税込）</strong><small>対応機種のみ／背面ボルト式は総脱着非対応</small></p><a class="btn btn--line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="price-drum">ドラム式の写真を送って相談 →</a></article></div>
 
       <div class="drum-policy" id="drum-detachment" aria-labelledby="drum-policy-title">
         <div class="drum-policy__heading"><span>ドラム式をご検討の方へ</span><h3 id="drum-policy-title">ドラム槽の総脱着は、別料金・対応機種のみ。</h3></div>
@@ -136,7 +173,7 @@
         </div>
         <div class="drum-policy__photo"><strong>総脱着できるか、写真で事前に見分けられます。</strong><p><b>① 洗濯機のメーカー・型番が分かる写真</b>と<b>② 扉を開いた内部の写真</b>をLINEで送ってください。機種の構造を確認し、脱着可否と作業内容をお伝えします。</p><a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="drum-photo">LINEで型番・扉内部の写真を送る →</a></div>
       </div>
-      <div class="price-notes"><strong>ご予約前にお伝えしたいこと</strong><ul><li>キャンペーンは2026年11月30日まで。縦型は通常15,000円から13,000円、ドラム式は通常28,000円から25,000円（いずれも税込）です。</li><li>ドラム式の表示価格はドラム槽の取り外しを含まない通常洗浄です。総脱着は対応機種のみ別途8,000円（税込）。背面ボルト式は総脱着に対応していません。</li><li>上記は税込の料金目安です。機種・汚れの状態・設置条件・作業範囲によって料金が変わる場合があります。</li><li>事前確認のうえ、料金と作業内容をご案内します。作業が難しい機種はお断りする場合があります。</li><li>乾燥不良や異音など、機械的な故障は洗浄で改善しない場合があります。</li></ul></div></div>
+      <div class="price-notes"><strong>ご予約前にお伝えしたいこと</strong><ul><li>キャンペーンは2026年11月30日まで。縦型は7kg以下が通常15,000円→13,000円、8〜9kgが通常17,000円→15,000円、10kg以上が通常19,000円→17,000円。ドラム式は通常28,000円→25,000円（すべて税込）です。</li><li>ドラム式の表示価格はドラム槽の取り外しを含まない通常洗浄です。総脱着は対応機種のみ別途8,000円（税込）。背面ボルト式は総脱着に対応していません。</li><li>上記は税込の料金目安です。機種・汚れの状態・設置条件・作業範囲によって料金が変わる場合があります。</li><li>事前確認のうえ、料金と作業内容をご案内します。作業が難しい機種はお断りする場合があります。</li><li>乾燥不良や異音など、機械的な故障は洗浄で改善しない場合があります。</li></ul></div></div>
     </section>
     <section class="section about" id="about">
       <div class="container about__grid"><div class="about__photo"><img src="/assets/rep-teruya.webp" width="600" height="600" alt="BCサービス代表・照屋昴" loading="lazy" decoding="async" onerror="this.hidden=true"></div><div class="about__copy"><p class="section-kicker">BCサービスについて</p><h2>清掃・設備の現場経験を、<br>ご家庭の洗濯機にも。</h2><p>南城市を拠点に、沖縄南部で清掃・空調・住まいの設備に関わってきたBCサービスです。代表の照屋 昴が、清掃・現場経験17年を活かしてご相談をお受けします。</p><p>「洗えばよいのか、修理や買替えを考えた方がよいのか」も、状態を聞いて一緒に整理します。清掃だけで解決するとは限らないので、できること・できないことを事前にお伝えします。</p><div class="about__chips"><span>清掃・現場経験17年</span><span>第二種電気工事士</span><span>南城市拠点</span></div></div></div>
