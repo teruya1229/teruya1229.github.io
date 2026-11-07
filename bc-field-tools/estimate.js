@@ -8,6 +8,8 @@
   const RANGE_STATUS = "正本下限・現場条件で調整";
   /** 収集運搬・リサイクルは互換用。新規は ac_dispose に統合 */
   const LEGACY_STATUS = "旧項目（互換用）";
+  const ELECTRIC_PRICE_VERSION = "electrical-2026-11-07";
+  const ELECTRICAL_OLD_DEFAULTS = Object.freeze({ dedicated: 18000, breaker: 15000, outlet: 5000, wire_ext: 2200, volt_change: 5500 });
 
   const initialCatalog = [
     {
@@ -72,16 +74,21 @@
     {
       category: "軽い電気工事",
       items: [
-        { id: "outlet", name: "コンセント交換", price: 5000, unit: "箇所", status: RANGE_STATUS },
+        { id: "outlet", name: "コンセント交換（旧料金・既存案件用）", price: 5000, unit: "箇所", status: LEGACY_STATUS },
+        { id: "outlet_with_work", name: "コンセント交換（他工事と同時・別箇所）", price: 3300, unit: "箇所", status: "専用回路・電圧切替に含まれる標準コンセントは別計上しない" },
+        { id: "outlet_visit", name: "コンセント交換（単独訪問）", price: 5500, unit: "箇所", status: "単独訪問時のみ" },
         { id: "switch", name: "スイッチ交換", price: 5000, unit: "箇所", status: "5,000円〜・現場条件で調整" },
         { id: "light", name: "照明交換", price: 5000, unit: "箇所", status: "5,000円〜・現場条件で調整" },
         { id: "vent_fan", name: "換気扇交換", price: 10000, unit: "箇所", status: "10,000円〜・現場条件で調整" },
         { id: "leak_check", name: "漏電点検", price: 8000, unit: "式", status: "8,000円〜・現場条件で調整" },
-        { id: "dedicated", name: "専用回路", price: 18000, unit: "回路", status: RANGE_STATUS },
-        { id: "breaker", name: "ブレーカー交換", price: 15000, unit: "個", status: RANGE_STATUS },
+        { id: "dedicated", name: "専用回路（旧料金・既存案件用）", price: 18000, unit: "回路", status: LEGACY_STATUS },
+        { id: "dedicated_std", name: "エアコン専用回路新設（標準露出配線10m・分岐ブレーカー・専用コンセント込）", price: 22000, unit: "回路", status: "標準配線10m以内・適合分岐ブレーカー・専用コンセント込。接地新設／隠蔽／特殊盤は別途見積" },
+        { id: "dedicated_excess_m", name: "専用回路の標準10m超過配線", price: 1650, unit: "m", status: "総配線長10m超の部分のみ。専用回路新設とセット" },
+        { id: "breaker", name: "ブレーカー交換（旧15,000円〜・対象要確認）", price: 15000, unit: "個", status: LEGACY_STATUS },
+        { id: "breaker_branch", name: "分岐ブレーカー交換（2P2E 20A・適合部材込）", price: 5500, unit: "個", status: "既存回路で必要な場合のみ。専用回路新設には標準品を包含" },
         { id: "volt_change", name: "100V / 200V 電圧切替", price: 5500, unit: "回路", status: "推奨初期値" },
         { id: "hole", name: "穴あけ追加", price: 8800, unit: "箇所", status: "推奨初期値" },
-        { id: "wire_ext", name: "配線延長", price: 2200, unit: "m", status: "推奨初期値" },
+        { id: "wire_ext", name: "配線延長（旧料金・既存案件用）", price: 2200, unit: "m", status: LEGACY_STATUS },
       ],
     },
     {
@@ -129,6 +136,8 @@
     if (!state.prices || typeof state.prices !== "object" || Array.isArray(state.prices)) state.prices = {};
     if (!state.selected || typeof state.selected !== "object" || Array.isArray(state.selected)) state.selected = {};
     if (!Array.isArray(state.custom)) state.custom = [];
+    if (!state.lockedPrices || typeof state.lockedPrices !== "object" || Array.isArray(state.lockedPrices)) state.lockedPrices = {};
+    if (!state.pricingVersion) state.pricingVersion = "legacy";
     knownIds.forEach((id) => {
       if (!state.selected[id]) state.selected[id] = { checked: false, qty: 1 };
       if (typeof state.selected[id].qty !== "number") {
@@ -166,6 +175,8 @@
       note: "",
       selected: emptySelectedMap(),
       custom: [],
+      lockedPrices: {},
+      pricingVersion: ELECTRIC_PRICE_VERSION,
     };
   }
 
@@ -185,6 +196,12 @@
           checked: Boolean(row.checked),
           qty: Number.isFinite(qty) ? qty : 1,
         };
+      });
+    }
+    base.pricingVersion = raw.pricingVersion || "legacy";
+    if (raw.lockedPrices && typeof raw.lockedPrices === "object" && !Array.isArray(raw.lockedPrices)) {
+      knownIds.forEach((id) => {
+        if (Number.isFinite(raw.lockedPrices[id])) base.lockedPrices[id] = raw.lockedPrices[id];
       });
     }
     if (Array.isArray(raw.custom)) {
@@ -234,11 +251,17 @@
 
   function hydrateFromCaseEstimate(caseEstimate, prices) {
     const fields = normalizeCaseEstimate(caseEstimate);
-    return {
-      ...fields,
-      prices:
-        prices && typeof prices === "object" && !Array.isArray(prices) ? { ...prices } : {},
-    };
+    const savedPrices = prices && typeof prices === "object" && !Array.isArray(prices) ? { ...prices } : {};
+    // Historical case estimates had no per-case price snapshot. Capture the visible
+    // price on first reopen; do not silently reprice them to the new electrical catalog.
+    if (fields.pricingVersion === "legacy") {
+      knownIds.forEach((id) => {
+        if (!fields.selected[id] || !fields.selected[id].checked || Number.isFinite(fields.lockedPrices[id])) return;
+        const previous = Object.prototype.hasOwnProperty.call(ELECTRICAL_OLD_DEFAULTS,id) ? ELECTRICAL_OLD_DEFAULTS[id] : itemById[id].price;
+        fields.lockedPrices[id] = Number.isFinite(savedPrices[id]) ? savedPrices[id] : previous;
+      });
+    }
+    return { ...fields, prices: savedPrices };
   }
 
   const NIGHT_EARLY_ID = "night_early";
@@ -285,8 +308,13 @@
     "angle",
     // 電気
     "outlet",
+    "outlet_with_work",
+    "outlet_visit",
     "dedicated",
+    "dedicated_std",
+    "dedicated_excess_m",
     "breaker",
+    "breaker_branch",
     "volt_change",
     "hole",
     "wire_ext",
@@ -306,7 +334,30 @@
   }
 
   function storedOrCatalogPrice(state, item) {
+    if (state && state.selected && state.selected[item.id] && state.selected[item.id].checked &&
+        state.lockedPrices && Number.isFinite(state.lockedPrices[item.id])) return state.lockedPrices[item.id];
     return state.prices[item.id] ?? item.price;
+  }
+  function lockLinePrice(state, id) {
+    const item = itemById[id];
+    if (!item || id === NIGHT_EARLY_ID) return;
+    if (!state.lockedPrices || typeof state.lockedPrices !== "object") state.lockedPrices = {};
+    if (!Number.isFinite(state.lockedPrices[id])) {
+      state.lockedPrices[id] = Number.isFinite(state.prices && state.prices[id]) ? state.prices[id] : item.price;
+    }
+  }
+  function electricConflicts(state, candidate) {
+    const selected = (state && state.selected) || {};
+    const active = (id) => !!(selected[id] && selected[id].checked) || id === candidate;
+    if (active("dedicated_std") && (active("dedicated") || active("volt_change") || active("outlet") || active("breaker") || active("breaker_branch") || active("wire_ext") || active("outlet_visit"))) {
+      return "専用回路22,000円には標準コンセント・標準分岐ブレーカーを含み、電圧切替は別計上しません。異なる箇所なら明細を分けてください。";
+    }
+    if (active("dedicated") && active("dedicated_std")) return "新旧の専用回路料金を同時選択できません。";
+    if (active("outlet_with_work") && active("outlet_visit")) return "コンセント交換の同時施工と単独訪問は同じ箇所に併用できません。";
+    if (active("dedicated_excess_m") && !active("dedicated_std")) return "10m超の専用回路延長は、専用回路新設とセットで計上してください。";
+    if (active("volt_change") && (active("outlet") || active("outlet_visit") || active("outlet_with_work"))) return "既存回路の電圧切替には標準コンセント交換を含みます。別箇所の工事は明細を分けてください。";
+    if (active("wire_ext") && active("dedicated_excess_m")) return "旧配線延長と新10m超過配線を二重計上しないでください。";
+    return "";
   }
 
   function isNightEarlyWorkId(id) {
@@ -417,7 +468,7 @@
     initialCatalog.forEach((cat) =>
       cat.items.forEach((item) => {
         // 夜間・早朝は自動計算のためマスターJSONには 0 を載せる
-        prices[item.id] = item.id === NIGHT_EARLY_ID ? 0 : storedOrCatalogPrice(state, item);
+        prices[item.id] = item.id === NIGHT_EARLY_ID ? 0 : (state.prices[item.id] ?? item.price);
       })
     );
     return prices;
@@ -485,14 +536,20 @@
     }
 
     const dedicatedNeeded = s.workType === "専用コンセント新設" || s.dedicatedCircuit === "なし";
-    if (dedicatedNeeded) addLine(lines, "dedicated", 1, "専用回路の工事");
-
-    if (s.workType === "電圧切替を含む可能性" || s.voltChange === "必要") {
-      addLine(lines, "volt_change", 1, "電圧切替");
+    if (dedicatedNeeded) {
+      addLine(lines, "dedicated_std", 1, "標準露出配線10m・標準分岐ブレーカー・専用コンセント込み");
+      const distance = !s.wireDistanceUnknown && Number.isFinite(Number(s.wireDistance)) ? Number(s.wireDistance) : null;
+      if (distance !== null && distance > 10) addLine(lines, "dedicated_excess_m", Math.round((distance - 10) * 2) / 2, "標準10mを超える部分");
+      if (distance === null) notices.push({title:"配線距離を要確認",detail:"専用回路の配線長が不明です。10m超の追加費用は未計上です。"});
+      if (s.voltChange === "必要") notices.push({title:"電圧切替費用の包含",detail:"新設専用回路は適切な電圧で施工するため、電圧切替5,500円は加算しません。"});
+      if (s.wiringRoute && s.wiringRoute !== "露出配線になりそう") notices.push({title:"配線ルート要確認",detail:"隠蔽配線・特殊盤・接地新設などは一式料金の対象外です。"});
+    } else if (s.workType === "電圧切替を含む可能性" || s.voltChange === "必要") {
+      addLine(lines, "volt_change", 1, "既存専用回路の電圧切替（標準コンセント交換込）");
     }
 
     if (pipeExtM > 0) addLine(lines, "pipe_ext", pipeExtM, "追加配管");
-    if (billableWireM > 0) addLine(lines, "wire_ext", billableWireM, "追加料金になる配線延長");
+    if (billableWireM > 0 && !dedicatedNeeded) addLine(lines, "wire_ext", billableWireM, "旧配線延長項目（内容要確認）");
+    if (billableWireM > 0 && dedicatedNeeded) notices.push({title:"配線延長の二重計上防止",detail:"専用回路の10m超過分は総配線距離から算出します。手動の配線延長量を重ねて加算しません。"});
     if (holeCount > 0) addLine(lines, "hole", holeCount, "穴あけ");
     if (coverOn) addLine(lines, "cover", 1, "化粧カバー");
 
@@ -556,6 +613,7 @@
       if (!next.selected[line.id]) next.selected[line.id] = { checked: false, qty: 1 };
       next.selected[line.id].checked = true;
       next.selected[line.id].qty = Number(line.qty);
+      lockLinePrice(next, line.id);
     });
     if (meta && meta.customer && !String(next.customer || "").trim()) {
       next.customer = meta.customer;
@@ -626,6 +684,9 @@
     isLegacyItem,
     catalogItemsForDisplay,
     catalogUnitStep,
+    lockLinePrice,
+    electricConflicts,
+    ELECTRIC_PRICE_VERSION,
     shouldShowStatus,
     isNightEarlyWorkId,
     nightEarlyAmount,

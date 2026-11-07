@@ -2,7 +2,7 @@
   "use strict";
 
   /** 公開版バージョン（表示・cache-buster・?v= を一致させる） */
-  const APP_VERSION = "2026.11.02-001";
+  const APP_VERSION = "2026.11.07-001";
   /** 公開可能な anon key のみ（Edge gateway用。特権キーや外部API秘密は載せない） */
   const SUPABASE_ANON_KEY =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFodG1pb2JxZW16cnBxeG93ZXZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQyNzE3MTEsImV4cCI6MjA5OTg0NzcxMX0.rtOtISU6UvH7Lue7pxW5dTQ5Jy0XWuBflSknuyiFtE4";
@@ -1774,7 +1774,14 @@
           </div>
         </div>`
       : "";
-    nbox.innerHTML = taxNotice + fieldNotices.map((n) => `<div class="notice"><b>${escapeHtml(n.title)}</b>${escapeHtml(n.detail)}</div>`).join("");
+    const electricWarning = E.electricConflicts(quoteState);
+    const electricNotice = electricWarning
+      ? `<div class="notice" role="alert"><b>電気工事の二重計上を確認</b>${escapeHtml(electricWarning)}　既存案件の明細は自動変更しません。</div>`
+      : "";
+    const legacyNotice = quoteState.pricingVersion === "legacy"
+      ? `<div class="notice"><b>既存見積を保護</b>旧案件の選択済み単価は案件内に固定して再表示します。初回固定前の過去提示額は当時の控えとも照合してください。</div>`
+      : "";
+    nbox.innerHTML = taxNotice + electricNotice + legacyNotice + fieldNotices.map((n) => `<div class="notice"><b>${escapeHtml(n.title)}</b>${escapeHtml(n.detail)}</div>`).join("");
     const mbox = el("est-materials");
     mbox.innerHTML = fieldMaterials.length
       ? `<div class="materials"><b>準備する材料</b><ul>${fieldMaterials.map((m) =>
@@ -1839,7 +1846,17 @@
     const noteBits = [];
     if (site.workType) noteBits.push("作業：" + displayWorkType(site.workType));
     if (site.outdoorPlace) noteBits.push("室外機：" + site.outdoorPlace);
-    quoteState = E.mergeLinesIntoState(quoteState, built.lines, {
+    const alreadySelected = new Set(Object.keys(quoteState.selected || {}).filter(id => quoteState.selected[id]?.checked));
+    const accepted = [];
+    for (const line of built.lines) {
+      const clash = E.electricConflicts(quoteState, line.id);
+      if (clash && !alreadySelected.has(line.id)) {
+        fieldNotices.push({ title: "既存見積の重複を確認", detail: clash });
+      } else {
+        accepted.push(line);
+      }
+    }
+    quoteState = E.mergeLinesIntoState(quoteState, accepted, {
       customer: caseName,
       note: noteBits.join(" / "),
     });
@@ -1860,7 +1877,13 @@
   function toggleItem(id) {
     const E = window.BCEstimate;
     if (!quoteState.selected[id]) quoteState.selected[id] = { checked: false, qty: 1 };
-    quoteState.selected[id].checked = !quoteState.selected[id].checked;
+    const nextChecked = !quoteState.selected[id].checked;
+    if (nextChecked) {
+      const collision = E.electricConflicts(quoteState, id);
+      if (collision) { window.alert(collision); return; }
+      E.lockLinePrice(quoteState, id);
+    }
+    quoteState.selected[id].checked = nextChecked;
     if (!quoteState.selected[id].qty) quoteState.selected[id].qty = 1;
     if (id === E.NIGHT_EARLY_ID) quoteState.selected[id].qty = 1;
     persistQuote(quoteState);
@@ -1877,7 +1900,10 @@
       quoteState.selected[id].checked = false;
       quoteState.selected[id].qty = step;
     } else {
+      const conflict = E.electricConflicts(quoteState, id);
+      if (conflict && !quoteState.selected[id].checked) { window.alert(conflict); return; }
       quoteState.selected[id].checked = true;
+      E.lockLinePrice(quoteState, id);
     }
     persistQuote(quoteState);
     renderEstimate();
@@ -2022,6 +2048,8 @@
     }
     if (t.id === "cta-to-estimate") { goToEstimateFromField(); return; }
     if (t.id === "cta-copy") {
+      const conflict = window.BCEstimate.electricConflicts(quoteState);
+      if (conflict) { window.alert("工事項目の重複を確認してください。\\n" + conflict); return; }
       const text = window.BCEstimate.quoteText(quoteState);
       navigator.clipboard.writeText(text).then(() => window.alert("見積文をコピーしました")).catch(() => window.prompt("コピーしてください", text));
       return;

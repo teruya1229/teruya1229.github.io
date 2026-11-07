@@ -269,9 +269,9 @@ describe("buildFieldLines / mergeLinesIntoState regression", () => {
     const ids = built.lines.map((l) => l.id);
     assert.ok(ids.includes("install_std"));
     assert.ok(ids.includes("remove_std"));
-    assert.ok(ids.includes("dedicated"));
+    assert.ok(ids.includes("dedicated_std"));
     assert.ok(ids.includes("pipe_ext"));
-    assert.ok(ids.includes("wire_ext"));
+    assert.equal(ids.includes("wire_ext"), false);
     assert.ok(ids.includes("hole"));
     assert.ok(ids.includes("cover"));
     assert.equal(ids.includes("ac_dispose"), false);
