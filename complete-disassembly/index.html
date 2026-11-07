@@ -2156,18 +2156,39 @@
   })();
   </script>
 
-  <!-- GA4: LINE / 電話クリック計測 -->
+  <!-- GA4: LINE / 電話クリック計測（共通のLP別・位置別項目） -->
   <script>
   (function() {
+    var params = new URLSearchParams(window.location.search);
+    var isDebug = params.get('debug') === '1' || params.get('debug_mode') === 'true';
+    function getLocation(anchor) {
+      var direct = anchor.getAttribute('data-cta-location');
+      if (direct) return direct;
+      if (anchor.closest('.hero')) return 'hero';
+      if (anchor.closest('.line-cta-wrap')) return 'bottom';
+      return 'unknown';
+    }
     document.addEventListener('click', function(e) {
       var anchor = e.target.closest('a');
       if (!anchor || typeof window.gtag !== 'function') return;
       var href = anchor.getAttribute('href') || '';
-      if (href.indexOf('lin.ee') !== -1) {
-        gtag('event', 'line_click', { link_url: href });
-      } else if (href.indexOf('tel:') === 0) {
-        gtag('event', 'phone_click', { link_url: href });
-      }
+      var isLine = href.indexOf('https://lin.ee/') === 0;
+      var isPhone = href.indexOf('tel:') === 0;
+      if (!isLine && !isPhone) return;
+      var type = isLine ? 'line' : 'tel';
+      gtag('event', isLine ? 'line_click' : 'phone_click', {
+        page_type: 'complete_disassembly_lp',
+        page_slug: '/complete-disassembly/',
+        page_path: '/complete-disassembly/',
+        cta_type: type,
+        cta_target: type,
+        cta_location: getLocation(anchor),
+        cta_label: (anchor.textContent || anchor.getAttribute('aria-label') || '').replace(/\s+/g, ' ').trim().substring(0, 100),
+        link_url: href,
+        debug_flag: isDebug,
+        debug_mode: isDebug,
+        transport_type: 'beacon'
+      });
     }, true);
   })();
   </script>
