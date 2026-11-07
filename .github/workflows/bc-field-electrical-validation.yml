@@ -1,0 +1,37 @@
+name: BC field electrical pricing isolated validation
+on:
+  push:
+    branches:
+      - test/bc-field-electrical-pricing-20261107
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: All existing and electrical pricing regression tests
+        working-directory: bc-field-tools
+        run: node --test tests/*.test.js
+      - name: Install isolated browser automation
+        run: |
+          npm install --no-save --no-package-lock playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Start local server and mobile smoke
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/bc-field-server.log 2>&1 &
+          sleep 2
+          NODE_PATH="$GITHUB_WORKSPACE/node_modules" node bc-field-tools/tests/mobile-smoke.cjs
+      - name: Upload mobile screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: electrical-field-mobile-qa
+          path: |
+            ${{ runner.temp }}/bc-field-mobile.png
+            ${{ runner.temp }}/bc-field-preview.png
+          if-no-files-found: ignore
