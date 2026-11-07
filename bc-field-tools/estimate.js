@@ -468,7 +468,7 @@
     initialCatalog.forEach((cat) =>
       cat.items.forEach((item) => {
         // 夜間・早朝は自動計算のためマスターJSONには 0 を載せる
-        prices[item.id] = item.id === NIGHT_EARLY_ID ? 0 : storedOrCatalogPrice(state, item);
+        prices[item.id] = item.id === NIGHT_EARLY_ID ? 0 : (state.prices[item.id] ?? item.price);
       })
     );
     return prices;
