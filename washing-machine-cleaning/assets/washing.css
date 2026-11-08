@@ -18,7 +18,7 @@
 /* 洗濯機クリーニング：2026年11月30日までのキャンペーン価格表示 */
 .hero__prices .campaign-list-price{display:block;font-size:12px;font-weight:700;color:#657985;text-decoration:line-through;margin:3px 0 0}.hero__prices .campaign-discount{display:inline-block;font-size:12px;font-weight:900;color:#aa420d;background:#fff0df;padding:2px 9px;border-radius:999px;margin-top:3px}.price-card__regular{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:#5c7280;margin-top:16px;font-weight:700}.price-card__regular del{color:#5c7280}.price-card__regular span{color:#aa420d;background:#fff0df;padding:3px 10px;border-radius:99px;font-weight:900}.price-card__regular+.price-card__price{margin-top:8px}.price-card__price span:first-child{font-size:12px}
 
-/* 2026-10-27: お客様の声・ドラム式総脱着の料金/対応範囲 */
+/* 2026-10-27: お客様の声・ドラム式槽脱着の料金/対応範囲 */
 .hero__scope{max-width:460px;color:#13546b;font-size:12px;line-height:1.6;margin:-2px 0 9px;padding:8px 10px;border-left:3px solid var(--teal);background:rgba(255,255,255,.74)}
 .hero__scope strong{font-weight:900}
 .reviews__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:960px;margin-inline:auto}
@@ -61,4 +61,23 @@
 .drum-policy__grid{grid-template-columns:1fr;gap:9px}
 .drum-policy__grid>div{padding:13px 14px}
 .drum-policy__photo strong{font-size:15px}
+}
+
+/* 2026-11-08: 施工写真の統一サイズ・スマホ最適化（料金/CTAは変更しない） */
+.symptoms__grid{align-items:stretch}
+.symptom{display:flex;flex-direction:column;min-width:0;overflow:hidden;padding:0}
+.symptom__photo{display:block;width:100%;aspect-ratio:1/1;overflow:hidden;background:#f3f7f7;margin:0;border-bottom:1px solid #e2e9e9}
+.symptom__photo img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+.symptom__content{display:flex;flex-direction:column;flex:1;padding:23px 24px 26px}
+.symptom__content .symptom__num{margin-bottom:10px}
+.step-card__photo{width:100%;aspect-ratio:4/3;margin:13px 0 14px;overflow:hidden;border-radius:12px;background:#f0f5f4;border:1px solid #dce7e5}
+.step-card__photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.step-card__photo--contain img{object-fit:contain}
+.step-card__photo--reassembled img{object-position:center 42%}
+@media(max-width:720px){
+  .symptom{padding:0}
+  .symptom__photo{aspect-ratio:4/3}
+  .symptom__content{padding:19px 21px 23px}
+  .symptom__content .symptom__num{margin-bottom:7px}
+  .step-card__photo{aspect-ratio:4/3;margin:12px 0 13px}
 }
