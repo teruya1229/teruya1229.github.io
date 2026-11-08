@@ -1,0 +1,35 @@
+name: Washer public live Chrome and WebKit smoke
+on:
+  push:
+    branches:
+      - test/washing-live-browser-20261108
+    paths:
+      - washing-machine-cleaning/tests/public-live-smoke.cjs
+      - .github/workflows/washer-public-live-smoke.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install actual browser engines
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+          npx playwright install --with-deps chromium webkit
+      - name: Check deployed public LP
+        run: node washing-machine-cleaning/tests/public-live-smoke.cjs
+      - name: Save evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: washer-public-live-browser-evidence
+          path: ${{ runner.temp }}/washer-public-smoke/
+          if-no-files-found: warn
