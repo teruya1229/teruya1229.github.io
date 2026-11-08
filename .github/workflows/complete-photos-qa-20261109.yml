@@ -76,6 +76,57 @@ jobs:
             }finally{await browser.close()}
           })().catch(e=>{console.error(e.stack||e);process.exit(1)});
           JS
+      - name: Verify published comparison photos on live GitHub Pages
+        run: |
+          node <<'JS'
+          const {chromium}=require('playwright');
+          const fs=require('fs');
+          (async()=>{
+            const b=await chromium.launch({headless:true});
+            const results=[];
+            try{
+              for(const width of [1440,390,320]){
+                const c=await b.newContext({viewport:{width,height:900}});
+                const p=await c.newPage();
+                await p.route('**/*',r=>{
+                  const host=new URL(r.request().url()).hostname;
+                  return host==='teruya1229.github.io'?r.continue():r.abort('blockedbyclient');
+                });
+                const errors=[];
+                p.on('pageerror',e=>errors.push(e.message));
+                const response=await p.goto('https://teruya1229.github.io/complete-disassembly/?photo_qa=20261109',{waitUntil:'domcontentloaded',timeout:40000});
+                if(response.status()!==200)throw Error('LIVE_HTTP_'+response.status());
+                const icons=p.locator('.sec-beforeafter-refresh img.svc-card-img');
+                if(await icons.count()!==2)throw Error('LIVE_PHOTO_COUNT');
+                const names=['coil-before-after.webp','fan-before-after.webp'];
+                for(let i=0;i<2;i++){
+                  const img=icons.nth(i);
+                  await img.evaluate(el=>{el.loading='eager'});
+                  await img.scrollIntoViewIfNeeded();
+                  await p.waitForFunction(i=>{
+                    const el=document.querySelectorAll('.sec-beforeafter-refresh img.svc-card-img')[i];
+                    return !!el?.currentSrc && el.complete;
+                  },i,{timeout:15000});
+                  const data=await img.evaluate(async el=>{
+                    const link=new URL(el.getAttribute('src'),document.baseURI).href;
+                    const res=await fetch(link,{cache:'no-store'});
+                    if(!res.ok || !(res.headers.get('content-type')||'').includes('image/'))throw Error('PHOTO_HTTP '+res.status+' '+link);
+                    await el.decode();
+                    return {src:el.getAttribute('src'),w:el.naturalWidth,h:el.naturalHeight,fit:getComputedStyle(el).objectFit};
+                  });
+                  if(!data.src.endsWith(names[i])||data.w!==1200||data.h<400||data.fit!=='contain')throw Error('LIVE_IMAGE_BAD_'+JSON.stringify(data));
+                }
+                const overflow=await p.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+                if(overflow>0 || errors.length)throw Error('OVERFLOW_OR_JS '+width+' '+overflow+' '+JSON.stringify(errors));
+                fs.mkdirSync('qa-photos',{recursive:true});
+                await p.locator('.sec-beforeafter-refresh').screenshot({path:'qa-photos/LIVE-'+width+'.png'});
+                results.push({width,status:'PASS',http:200,images:2,decoded:true,overflow,errors:0});
+                await c.close();
+              }
+              console.log('COMPLETE_PHOTOS_LIVE_QA '+JSON.stringify({status:'PASS',results}));
+            }finally{await b.close()}
+          })().catch(e=>{console.error(e.stack||e);process.exit(1)});
+          JS
       - name: Save screenshots
         if: always()
         uses: actions/upload-artifact@v4
