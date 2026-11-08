@@ -1169,6 +1169,33 @@
       color: var(--brand-dark, #142e46);
       margin: 0 0 8px;
     }
+  
+    /* 2026-11-08: approved twelve icons. Scoped to this LP, no shared stylesheet changes. */
+    .consultation-flow .cd-flow-icon {
+      display: block; width: 80px; height: 80px; max-width: 100%;
+      object-fit: contain; margin: 0 auto 9px; flex-shrink: 0;
+    }
+    .sec-about .about-feature-icon,
+    .sec-reason .reason-card-icon {
+      width: 52px; height: 52px; background: transparent; border-radius: 0;
+      align-items: center; justify-content: center; padding: 0; overflow: visible;
+    }
+    .sec-about .about-feature-icon .cd-card-icon,
+    .sec-reason .reason-card-icon .cd-card-icon {
+      display: block; width: 52px; height: 52px; max-width: 100%;
+      object-fit: contain;
+    }
+    .sec-price .price-insurance-point .cd-assurance-icon {
+      display: block; width: 52px; height: 52px; object-fit: contain;
+      margin: 0 0 10px; max-width: 100%;
+    }
+    @media (max-width: 359px) {
+      .consultation-flow .cd-flow-icon { width: 72px; height: 72px; }
+      .sec-about .about-feature-icon, .sec-reason .reason-card-icon,
+      .sec-about .about-feature-icon .cd-card-icon,
+      .sec-reason .reason-card-icon .cd-card-icon { width: 46px; height: 46px; }
+    }
+
   </style>
 
   <!-- 構造化データ: LocalBusiness / Service / BreadcrumbList -->
@@ -1458,14 +1485,17 @@
         <p class="flow-lead">はじめての方でも、LINEで簡単にご相談いただけます。</p>
         <ul class="flow-list">
           <li class="flow-item card">
+            <img class="cd-flow-icon" src="./assets/icons/01-step-line.webp" alt="" width="80" height="80" loading="lazy" decoding="async">
             <span class="flow-step">① LINEでエアコンの写真・型番を送る</span>
             <span class="flow-desc">エアコンの型番や設置状況を確認します</span>
           </li>
           <li class="flow-item card">
+            <img class="cd-flow-icon" src="./assets/icons/02-step-quote.webp" alt="" width="80" height="80" loading="lazy" decoding="async">
             <span class="flow-step">② 完全分解が必要か・料金目安を確認</span>
             <span class="flow-desc">状態を確認して適した方法をご案内します。通常分解で十分な場合もあります</span>
           </li>
           <li class="flow-item card">
+            <img class="cd-flow-icon" src="./assets/icons/03-step-visit.webp" alt="" width="80" height="80" loading="lazy" decoding="async">
             <span class="flow-step">③ 日程を決めて訪問・施工</span>
             <span class="flow-desc">通常エアコンの完全分解は90〜150分が目安です</span>
           </li>
@@ -1560,21 +1590,21 @@
 
         <ul class="about-feature-list">
           <li class="about-feature-card card">
-            <span class="about-feature-icon" aria-hidden="true">🔧</span>
+            <span class="about-feature-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/04-feature-drainpan-fan.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
             <div class="about-feature-body">
               <h3>ドレンパン・ファンまで分解</h3>
               <p>本体から部品を取り外し、奥まで洗浄します。</p>
             </div>
           </li>
           <li class="about-feature-card card">
-            <span class="about-feature-icon" aria-hidden="true">💧</span>
+            <span class="about-feature-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/05-feature-deep-dirt.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
             <div class="about-feature-body">
               <h3>内部の汚れまで対応</h3>
               <p>通常洗浄では届きにくい内部の汚れもしっかり。</p>
             </div>
           </li>
           <li class="about-feature-card card">
-            <span class="about-feature-icon" aria-hidden="true">⚙</span>
+            <span class="about-feature-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/06-feature-circuit.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
             <div class="about-feature-body">
               <h3>基板周辺まで対応</h3>
               <p>機種によっては基板周辺まで分解して対応します。</p>
@@ -1592,7 +1622,7 @@
         <ul class="reason-cards">
           <li class="reason-card-item card">
             <span class="reason-card-num" aria-hidden="true">01</span>
-            <span class="reason-card-icon" aria-hidden="true">🌀</span>
+            <span class="reason-card-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/07-reason-deep.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
             <div class="reason-card-body">
               <span class="reason-card-label">REASON 1</span>
               <h3>奥の汚れまで洗いやすい</h3>
@@ -1601,7 +1631,7 @@
           </li>
           <li class="reason-card-item card">
             <span class="reason-card-num" aria-hidden="true">02</span>
-            <span class="reason-card-icon" aria-hidden="true">💨</span>
+            <span class="reason-card-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/08-reason-odor.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
             <div class="reason-card-body">
               <span class="reason-card-label">REASON 2</span>
               <h3>ニオイの原因まで確認</h3>
@@ -1610,7 +1640,7 @@
           </li>
           <li class="reason-card-item card">
             <span class="reason-card-num" aria-hidden="true">03</span>
-            <span class="reason-card-icon" aria-hidden="true">🛡</span>
+            <span class="reason-card-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/09-reason-clean.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
             <div class="reason-card-body">
               <span class="reason-card-label">REASON 3</span>
               <h3>通常洗浄後も内部汚れが気になる方にも</h3>
@@ -1754,14 +1784,17 @@
           <p class="price-insurance-lead">万が一、作業中の破損や不具合が発生した場合も、メーカー修理の手配を含めて誠実に対応いたします。</p>
           <div class="price-insurance-points" aria-label="万一時の対応方針">
             <div class="price-insurance-point">
+              <img class="cd-assurance-icon" src="./assets/icons/10-assurance-insurance.webp" alt="" width="52" height="52" loading="lazy" decoding="async">
               <h4 class="price-insurance-point-title"><span>1</span>保険加入</h4>
               <p>作業中の万一に備え、損害賠償保険に加入しています。</p>
             </div>
             <div class="price-insurance-point">
+              <img class="cd-assurance-icon" src="./assets/icons/11-assurance-check.webp" alt="" width="52" height="52" loading="lazy" decoding="async">
               <h4 class="price-insurance-point-title"><span>2</span>事前確認</h4>
               <p>機種・年式・設置状況を確認し、リスクがある場合は事前にご説明します。</p>
             </div>
             <div class="price-insurance-point">
+              <img class="cd-assurance-icon" src="./assets/icons/12-assurance-repair.webp" alt="" width="52" height="52" loading="lazy" decoding="async">
               <h4 class="price-insurance-point-title"><span>3</span>修理手配</h4>
               <p>作業中の破損や不具合が発生した場合は、メーカー修理の手配を含めて対応します。</p>
             </div>
