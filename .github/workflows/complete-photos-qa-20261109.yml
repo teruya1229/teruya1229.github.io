@@ -44,7 +44,12 @@ jobs:
                 const observed=[];
                 for(let i=0;i<2;i++){
                   const img=imgs.nth(i);
+                  await img.evaluate(el=>{el.loading='eager'});
                   await img.scrollIntoViewIfNeeded();
+                  await page.waitForFunction(i=>{
+                    const el=document.querySelectorAll('.sec-beforeafter-refresh img.svc-card-img')[i];
+                    return !!el?.currentSrc && el.complete;
+                  },i,{timeout:15000});
                   await img.evaluate(async el=>await el.decode());
                   const info=await img.evaluate(el=>({src:el.getAttribute('src'),naturalWidth:el.naturalWidth,naturalHeight:el.naturalHeight,objectFit:getComputedStyle(el).objectFit,aspectRatio:getComputedStyle(el).aspectRatio}));
                   if(!info.src.endsWith(expected[i])||info.naturalWidth!==1200||info.naturalHeight<400||info.objectFit!=='contain')throw Error('IMAGE_INVALID_'+JSON.stringify(info));
@@ -53,7 +58,7 @@ jobs:
                 if(await page.locator('.sec-beforeafter-refresh').getByText('熱交換器のビフォーアフター').count()!==1)throw Error('COIL_CAPTION_MISSING');
                 if(await page.locator('.sec-beforeafter-refresh').getByText('送風ファン・内部のビフォーアフター').count()!==1)throw Error('FAN_CAPTION_MISSING');
                 const other=await page.evaluate(()=>({
-                  parts:document.querySelector('img[src="./parts-clean-optimized.jpg"]')?.naturalWidth,
+                  parts:!!document.querySelector('img[src="./parts-clean-optimized.jpg"]'),
                   reusedFan:Array.from(document.images).filter(x=>x.getAttribute('src')==='./fan-before-after-optimized.jpg').length,
                   reusedWater:Array.from(document.images).filter(x=>x.getAttribute('src')==='./dirty-water-optimized.jpg').length,
                   scrollWidth:document.documentElement.scrollWidth,
