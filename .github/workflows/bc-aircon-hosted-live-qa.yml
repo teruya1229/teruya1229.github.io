@@ -1,0 +1,35 @@
+name: BC aircon hosted browser live QA
+on:
+  push:
+    branches: [qa/aircon-bantou-real-page-20261108]
+    paths:
+      - .github/workflows/bc-aircon-hosted-live-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Audit real published page (hosted browser, not Browser Bantou)
+        env:
+          QA_LINUX_FALLBACK: '1'
+        run: node scripts/qa/bc-aircon-bantou-live-qa.cjs
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bc-aircon-hosted-live-proof
+          path: output/bc-aircon-bantou-live-qa/
+          if-no-files-found: warn
