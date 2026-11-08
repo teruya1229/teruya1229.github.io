@@ -1,0 +1,94 @@
+/* 3問診断専用。既存LPのスタイルには干渉しない */
+.washer-diagnosis {
+  padding: 70px 0 72px;
+  background: linear-gradient(150deg,#eaf8f4 0%,#f7fbf9 58%,#fff 100%);
+  border-bottom: 1px solid #d8e9e5;
+}
+.washer-diagnosis__inner { max-width: 1020px; }
+.washer-diagnosis__intro { max-width: 760px; margin: 0 auto 28px; text-align: center; }
+.washer-diagnosis__intro .section-kicker { margin-bottom: 9px; }
+.washer-diagnosis__intro h2 {
+  font-size: clamp(26px,3vw,37px); line-height: 1.4;
+  color: var(--navy); letter-spacing: .01em; font-weight: 900;
+}
+.washer-diagnosis__intro p:last-child {
+  color: #436573; font-size: 14px; margin-top: 11px; line-height: 1.8;
+}
+.washer-diagnosis__form { background: #fff; padding: 27px 29px 25px; border: 1px solid #cde3e0; border-radius: 20px; box-shadow: 0 14px 40px rgba(12,58,66,.07); }
+.washer-diagnosis__questions { display:grid; grid-template-columns: .95fr .95fr 1.2fr; gap: 20px; align-items: start; }
+.washer-diagnosis__question { border: 0; padding: 0; margin: 0; min-width: 0; }
+.washer-diagnosis__question legend, .washer-diagnosis__label {
+  display: block; font-size: 14px; font-weight: 900; color: #173d50;
+  line-height: 1.5; margin-bottom: 11px;
+}
+.washer-diagnosis__step { color: #14838a; margin-right: 7px; font-size: 12px; font-weight: 900; }
+.washer-diagnosis__types { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+.washer-diagnosis__type { position: relative; min-width: 0; }
+.washer-diagnosis__type input { position: absolute; opacity: 0; width: 1px; height: 1px; top: 50%; left: 50%; }
+.washer-diagnosis__type span {
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  padding: 12px 7px; min-height: 52px; border: 2px solid #ccdfe1; border-radius: 10px;
+  color: #335a68; font-size: 14px; font-weight: 800; cursor: pointer; transition: background-color .15s,border-color .15s;
+}
+.washer-diagnosis__type input:checked + span { color: #0c5964; background: #e0f7f1; border-color: #15999a; }
+.washer-diagnosis__type input:focus-visible + span { outline: 3px solid #197e99; outline-offset: 3px; }
+.washer-diagnosis__select {
+  display:block; width: 100%; min-width: 0; min-height: 52px; padding: 9px 34px 9px 12px;
+  border: 2px solid #ccdfe1; border-radius: 10px;
+  background: #fff; color: #173d50; font: 700 14px/1.5 var(--font);
+  cursor: pointer; color-scheme: light;
+}
+.washer-diagnosis__select:focus-visible, .washer-diagnosis button:focus-visible {
+  outline: 3px solid #197e99; outline-offset: 3px;
+}
+.washer-diagnosis__hint { margin: 12px 0 0; color: #57747d; text-align: center; font-size: 12px; line-height: 1.7; }
+.washer-diagnosis__submit {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; min-height: 54px; width: min(100%,400px); margin: 21px auto 0;
+  border: none; border-radius: 12px; background: #123f58; color: #fff;
+  font: 900 16px/1.4 var(--font); cursor: pointer;
+}
+.washer-diagnosis__submit:hover { background: #0b5867; }
+.washer-diagnosis__error { text-align: center; margin: 11px 0 0; color: #af3b26; font-size: 14px; font-weight: 800; }
+.washer-diagnosis__result {
+  margin: 28px 0 0; padding: 27px 30px 23px;
+  border: 2px solid #9accc7; background: #fff; border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(10,66,67,.07); scroll-margin-top: 93px;
+}
+.washer-diagnosis__result[hidden], .washer-diagnosis__error[hidden] { display: none; }
+.washer-diagnosis__result:focus { outline:none; }
+.washer-diagnosis__result-kicker { font-size: 12px; color: #0b7d80; font-weight: 900; letter-spacing: .08em; }
+.washer-diagnosis__result h3 { margin: 7px 0 8px; font-size: clamp(20px,2.4vw,27px); line-height: 1.45; color: var(--navy); }
+.washer-diagnosis__result-desc { font-size: 14px; line-height: 1.8; color: #435f6e; }
+.washer-diagnosis__score-list { display: grid; gap: 13px; margin: 23px 0 14px; }
+.washer-diagnosis__score-label { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-size: 14px; font-weight: 800; color: #1b4a5b; }
+.washer-diagnosis__score-label strong { font-size: 20px; font-variant-numeric: tabular-nums; }
+.washer-diagnosis__track { background: #eaf0f0; height: 10px; border-radius: 999px; overflow: hidden; margin-top: 4px; }
+.washer-diagnosis__fill { display: block; width: 0; height: 100%; border-radius: 999px; transition: width .35s ease; }
+.washer-diagnosis__fill--clean { background: #168c89; }
+.washer-diagnosis__fill--inspect { background: #d48b36; }
+.washer-diagnosis__fill--replace { background: #5e7da3; }
+.washer-diagnosis__age-note { margin: 10px 0; color: #254f61; font-size: 13px; font-weight: 750; }
+.washer-diagnosis__disclaimer { font-size: 12px; color: #647981; line-height: 1.75; padding: 12px 13px; background: #f5f8f8; border-radius: 10px; }
+.washer-diagnosis__actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 19px; }
+.washer-diagnosis__actions .btn { flex: 1 1 270px; max-width: none; }
+.washer-diagnosis__section-links { display: flex; flex: 1 1 265px; gap: 10px 16px; justify-content: center; flex-wrap: wrap; font-size: 13px; font-weight: 850; }
+.washer-diagnosis__section-links a { color: #12697b; text-underline-offset: 3px; }
+.washer-diagnosis__after { text-align: center; margin: 21px 0 0; font-size: 13px; color: #51707a; }
+@media(max-width: 790px) {
+  .washer-diagnosis__questions { grid-template-columns: 1fr; gap: 16px; }
+  .washer-diagnosis__form { padding: 24px 22px; }
+}
+@media(max-width: 720px) {
+  .washer-diagnosis { padding: 44px 0 48px; }
+  .washer-diagnosis__intro { margin-bottom: 22px; }
+  .washer-diagnosis__intro p:last-child { font-size: 13px; }
+  .washer-diagnosis__form { padding: 20px 17px; border-radius: 16px; }
+  .washer-diagnosis__question legend, .washer-diagnosis__label { margin-bottom: 8px; }
+  .washer-diagnosis__result { padding: 23px 18px; margin-top: 19px; }
+  .washer-diagnosis__actions { gap: 16px; }
+  .washer-diagnosis__actions .btn { flex-basis: 100%; }
+}
+@media(prefers-reduced-motion: reduce) {
+  .washer-diagnosis__fill, .washer-diagnosis__type span { transition: none; }
+}

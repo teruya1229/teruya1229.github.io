@@ -1,0 +1,35 @@
+name: Washer diagnosis Chrome QA fallback (isolated Linux)
+on:
+  push:
+    branches:
+      - feature/washer-three-question-diagnosis-20261108
+    paths:
+      - .github/workflows/washer-diagnosis-linux-qa.yml
+      - washing-machine-cleaning/**
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated Chromium for UI QA
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Browser tests (no analytics network)
+        run: node washing-machine-cleaning/tests/diagnosis-browser-qa.cjs
+      - name: Screenshot and test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: washer-diagnosis-chromium-qa
+          path: ${{ runner.temp }}/washer-diagnosis-qa/
+          if-no-files-found: warn

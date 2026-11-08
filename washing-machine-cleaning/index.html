@@ -17,6 +17,7 @@
   <meta property="og:url" content="https://teruya1229.github.io/washing-machine-cleaning/">
   <meta property="og:image" content="https://teruya1229.github.io/cursor-test/images/washer-cleaning-after.jpg">
   <link rel="stylesheet" href="./assets/washing.css?v=20261027a">
+  <link rel="stylesheet" href="./assets/diagnosis.css?v=20261108a">
   <style>
     .review-card__citation{display:block;margin-top:8px;color:#657984;font-size:10px;line-height:1.6;overflow-wrap:anywhere}
     .review-card__citation a{display:block;color:#526c78;text-decoration:underline;text-decoration-color:#a2b6bd;text-underline-offset:3px;overflow-wrap:anywhere}
@@ -56,6 +57,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8LKLFDL3G"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-X8LKLFDL3G');</script>
   <script src="./assets/washing.js?v=20261013a" defer></script>
+  <script src="./assets/diagnosis.js?v=20261108a" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">本文へスキップ</a>
@@ -94,6 +96,86 @@
         </div>
       </div>
       <div class="hero__bottom"><div class="container"><span>洗濯槽の裏側</span><span>部品の洗浄</span><span>洗浄後の確認</span></div></div>
+    </section>
+
+    <section class="washer-diagnosis" id="diagnosis" aria-labelledby="washer-diagnosis-title">
+      <div class="container washer-diagnosis__inner">
+        <div class="washer-diagnosis__intro">
+          <p class="section-kicker">30秒・無料のセルフチェック</p>
+          <h2 id="washer-diagnosis-title">その不調、洗浄？ 点検？ <span style="white-space:nowrap">買い替え？</span></h2>
+          <p>3つ選ぶだけで、次に何を確認するべきか目安が分かります。メーカー名・型番の入力は不要です。</p>
+        </div>
+        <form class="washer-diagnosis__form" id="washer-diagnosis-form" novalidate>
+          <div class="washer-diagnosis__questions">
+            <fieldset class="washer-diagnosis__question">
+              <legend><span class="washer-diagnosis__step">Q1</span> 洗濯機の種類は？</legend>
+              <div class="washer-diagnosis__types">
+                <label class="washer-diagnosis__type"><input type="radio" name="washer_type" value="top"><span>縦型</span></label>
+                <label class="washer-diagnosis__type"><input type="radio" name="washer_type" value="drum"><span>ドラム式</span></label>
+              </div>
+            </fieldset>
+            <div class="washer-diagnosis__question">
+              <label class="washer-diagnosis__label" for="washer-diagnosis-age"><span class="washer-diagnosis__step">Q2</span> 使用年数は？</label>
+              <select class="washer-diagnosis__select" id="washer-diagnosis-age" name="usage_age">
+                <option value="">選んでください</option>
+                <option value="under1">1年未満</option>
+                <option value="1to4">1〜4年</option>
+                <option value="5to6">5〜6年</option>
+                <option value="7to8">7〜8年</option>
+                <option value="9plus">9年以上</option>
+              </select>
+            </div>
+            <div class="washer-diagnosis__question">
+              <label class="washer-diagnosis__label" for="washer-diagnosis-symptom"><span class="washer-diagnosis__step">Q3</span> 気になる症状は？</label>
+              <select class="washer-diagnosis__select" id="washer-diagnosis-symptom" name="symptom">
+                <option value="">選んでください</option>
+                <option value="flakes">衣類に汚れ・黒いカスが付く</option>
+                <option value="odor">洗濯機・衣類のニオイが気になる</option>
+                <option value="drying">乾燥しにくい・時間がかかる</option>
+                <option value="error">エラー表示・途中で止まる</option>
+                <option value="spin">脱水できない</option>
+                <option value="vibration">異常な振動・大きな異音</option>
+                <option value="leak">水漏れしている</option>
+                <option value="maintenance">特に不調なし・予防清掃</option>
+              </select>
+            </div>
+          </div>
+          <p class="washer-diagnosis__hint">※診断は相談前の目安です。症状が急に悪化した場合は使用を控えてください。</p>
+          <button class="washer-diagnosis__submit" type="submit">結果を見る <span aria-hidden="true">→</span></button>
+          <p id="washer-diagnosis-error" class="washer-diagnosis__error" role="alert" hidden></p>
+        </form>
+
+        <div class="washer-diagnosis__result" id="washer-diagnosis-result" tabindex="-1" aria-live="polite" hidden>
+          <p class="washer-diagnosis__result-kicker">3問診断の結果</p>
+          <h3 id="washer-diagnosis-headline"></h3>
+          <p class="washer-diagnosis__result-desc" id="washer-diagnosis-explanation"></p>
+          <div class="washer-diagnosis__score-list" aria-label="対応方法の優先度">
+            <div>
+              <div class="washer-diagnosis__score-label"><span>クリーニング</span><strong id="washer-diagnosis-percent-clean">0%</strong></div>
+              <div class="washer-diagnosis__track"><span class="washer-diagnosis__fill washer-diagnosis__fill--clean" id="washer-diagnosis-bar-clean" role="progressbar" aria-label="清掃の対応優先度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></span></div>
+            </div>
+            <div>
+              <div class="washer-diagnosis__score-label"><span>修理・点検</span><strong id="washer-diagnosis-percent-inspect">0%</strong></div>
+              <div class="washer-diagnosis__track"><span class="washer-diagnosis__fill washer-diagnosis__fill--inspect" id="washer-diagnosis-bar-inspect" role="progressbar" aria-label="修理・点検の対応優先度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></span></div>
+            </div>
+            <div>
+              <div class="washer-diagnosis__score-label"><span>買い替え</span><strong id="washer-diagnosis-percent-replace">0%</strong></div>
+              <div class="washer-diagnosis__track"><span class="washer-diagnosis__fill washer-diagnosis__fill--replace" id="washer-diagnosis-bar-replace" role="progressbar" aria-label="買い替えの対応優先度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></span></div>
+            </div>
+          </div>
+          <p class="washer-diagnosis__age-note" id="washer-diagnosis-age-note"></p>
+          <p class="washer-diagnosis__disclaimer">※割合はBCサービスが仮設定した<strong>相談・対応の優先度</strong>で、故障の確率・清掃で直る確率・統計実績ではありません。現物確認前に修理や買い替えを確定するものではありません。</p>
+          <div class="washer-diagnosis__actions">
+            <a class="btn btn--line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="diagnosis_result">LINEで無料相談 <span aria-hidden="true">→</span></a>
+            <nav class="washer-diagnosis__section-links" aria-label="洗濯機サービス詳細">
+              <a href="#why">洗浄内容を見る</a>
+              <a href="#price">料金を見る</a>
+              <a href="#movie">施工事例を見る</a>
+            </nav>
+          </div>
+          <p class="washer-diagnosis__after">相談後、必要に応じて清掃・点検・新品購入の選択肢をご案内します。訪問点検は必要に応じて有料でご案内します。</p>
+        </div>
+      </div>
     </section>
     <section class="section symptoms" id="concerns">
       <div class="container">
@@ -188,6 +270,11 @@
       <details><summary>洗濯機のニオイやドラム式の乾燥不良は直りますか？</summary><p>内部の汚れやホコリが原因なら改善する場合がありますが、故障や経年劣化などが原因の場合は洗浄では改善しません。必ず改善するとはお約束できません。</p></details>
       <details><summary>写真は何を撮ればいいですか？</summary><p>洗濯機の全体写真、メーカーと型番が読めるラベル、設置場所の周囲が分かる写真があると助かります。ドラム式で総脱着をご希望の場合は、扉を開いた内部の写真も送ってください。最初は全体の写真1枚からでも大丈夫です。</p></details>
       <details><summary>洗濯機の買替えや設置も相談できますか？</summary><p>はい。クリーニングだけでなく、状況に応じて新品洗濯機の買替えや設置もご相談いただけます。商品や工事の条件は個別にご案内します。</p></details>
+      <details><summary>洗濯機は何年ごとにクリーニングするといいですか？</summary><p>使用状況によって汚れ方は異なります。年数だけで清掃が必須になるわけではありません。黒いカスやニオイなどの症状、日頃のお手入れ状況を確認してクリーニングをご提案します。</p></details>
+      <details><summary>「5年保証」と修理部品の保有期間は同じですか？</summary><p>異なります。5年保証は契約内容によって無償修理などが受けられる期間で、部品の保有期間はメーカーが修理用部品を用意しておく目安です。保証が終わっていても修理できる場合があり、保証中でも対象外の作業があります。メーカーごとの条件はご相談後に確認します。</p></details>
+      <details><summary>使用7年以上の洗濯機も分解洗浄できますか？</summary><p>年数だけで一律にお断りするわけではありません。ただし樹脂やパッキンなどの劣化、分解時の破損リスク、修理部品の入手可否が関係します。機種と状態をBCサービス側で確認し、清掃・修理・買い替えのどれが適切かご案内します。</p></details>
+      <details><summary>ドラム式の乾燥が遅いのは、ホコリ詰まりですか？</summary><p>乾燥経路のホコリなどが原因となることもありますが、センサーやヒーター等の故障、設置・使い方による場合もあります。分解洗浄で必ず改善するものではありません。症状を確認して必要な対応をご案内します。</p></details>
+      <details><summary>洗浄しても不調が改善しなかったら？</summary><p>不調の原因が部品故障などの場合、洗浄しても改善しないことがあります。その場合は修理や買い替えの選択肢をご案内します。作業前に清掃の対応範囲・料金・改善を保証できない点を説明します。</p></details>
     </div></div></section>
     <section class="section related-services" aria-labelledby="related-title"><div class="container">
       <div class="sec-head"><p class="section-kicker">あわせて相談できるサービス</p><h2 id="related-title">家のこと、まとめてBCサービスへ。</h2><p>洗濯機以外のお困りごとも、必要なページからご相談いただけます。</p></div>
