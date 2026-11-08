@@ -6,7 +6,7 @@
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
 <meta content="#0b354b" name="theme-color"/>
 <meta content="沖縄南部のエアコン総合相談窓口、BCサービス。冷えない・水漏れ・異音・カビ臭さ。修理・クリーニング・新品買い替え・取付から、状態に合う方法をご案内。LINE相談は無料、現地点検は有料。" name="description"/>
-<meta content="aircon-v13-3-final-portrait-fix-20261108" name="lp-build"/>
+<meta content="aircon-v14-claude-cro-20261108" name="lp-build"/>
 <meta content="index,follow" name="robots"/>
 <link href="https://teruya1229.github.io/aircon/" rel="canonical"/>
 <link href="/favicon.ico" rel="icon" type="image/x-icon"/>
@@ -687,6 +687,46 @@ img[data-profile].is-unavailable {display:none;}
 .hero__disclaimer strong{color:#173d4d!important;font-weight:800}
 .hero__person small{color:#3f5d68!important;font-size:14px!important}
 </style>
+<style id="bc-v14-published">
+/* v14 CRO review: use actual onsite photos as proof, not unsupported percentages.
+   Only visual ordering and wording: triage v0.5 / safety / LINE / GA4 stay intact. */
+.hero__grid{align-items:center}
+.hero__media{justify-content:center;align-items:stretch}
+.hero__media .hero__visual.hero__visual--photo{width:100%;height:460px;min-height:460px;border-radius:16px;transform:none;margin:0;box-shadow:0 22px 48px rgba(7,54,67,.16)}
+.hero__media .hero__photo{object-position:center 50%}
+.hero__media .hero__photo-caption{padding:21px 23px}
+.hero__media .hero__photo-caption strong{font-size:24px}
+.hero .hero__lead{max-width:535px}
+.hero .hero__person{margin-top:22px}
+.hero__media .hero__photo-source{font-size:13px}
+/* The ranking scores remain internal to the original formula, never a claim of probabilities. */
+#bc-diagnosis .diagnosis__bars,
+#bc-diagnosis #bc-priority-label,
+#bc-diagnosis .diagnosis__notice--before{display:none!important}
+#bc-diagnosis #bc-result-panel:focus:not(:focus-visible){outline:0}
+#bc-diagnosis .diagnosis__result-note{font-size:13px;line-height:1.65;color:#55707a}
+.voices__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.voice-card,.voice-card--featured{min-height:unset}
+@media(max-width:900px){
+ .hero__media .hero__visual.hero__visual--photo{height:390px;min-height:390px}
+}
+@media(max-width:680px){
+ .hero{padding-bottom:26px}
+ .hero__grid{gap:0}
+ .hero__media .hero__visual.hero__visual--photo{height:245px;min-height:245px;margin-top:20px;border-radius:14px;border:3px solid #fff}
+ .hero__media .hero__photo-caption{padding:15px}
+ .hero__media .hero__photo-caption strong{font-size:17px}
+ .hero .hero__lead{font-size:16px;line-height:1.72}
+ .hero .hero__person{margin-top:16px}
+ .voices__grid{grid-template-columns:1fr;gap:8px}
+ .section--choices{padding-top:58px}
+ #bc-diagnosis .diagnosis__result-note{font-size:13px}
+}
+@media(max-width:370px){
+ .hero__media .hero__visual.hero__visual--photo{height:215px;min-height:215px}
+ .hero__media .hero__photo-caption strong{font-size:16px}
+}
+</style>
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -705,7 +745,7 @@ img[data-profile].is-unavailable {display:none;}
 <div class="hero__headline">
 <p class="eyebrow"><span class="eyebrow__rule"></span> 沖縄南部｜修理・洗浄・買い替えのご相談</p>
 <h1 id="hero-title">エアコンの不調、<br/><span>修理？ 洗浄？</span><br/><em>買い替え？</em></h1>
-<p class="hero__lead">冷えない・水漏れ・風が出ない。<br/><strong>修理か、洗浄か、買い替えか。</strong>何を頼めばいいか迷ったら、まずは症状を聞かせてください。</p>
+<p class="hero__lead">冷えない・水漏れ・風が出ない。<br/>「何を頼めばいい？」と迷ったら、症状と写真から一緒に考えます。</p>
 </div>
 <div class="hero__actionzone">
 <a class="btn btn--line btn--hero" data-cta-location="hero" href="https://lin.ee/Q1s3uqV" rel="noopener noreferrer" target="_blank"><span aria-hidden="true" class="line-icon">L</span><span>LINEで症状・写真を無料相談</span><span aria-hidden="true" class="btn__arrow">↗</span></a>
@@ -715,10 +755,7 @@ img[data-profile].is-unavailable {display:none;}
 </div>
 </div>
 <div class="hero__media">
-<figure aria-labelledby="experience-note" class="hero__experience">
-<img alt="BCサービス代表の現場経験に基づく体感の割合。買い替えが必要約10パーセント、修理で改善20〜30パーセント、クリーニングで改善60〜70パーセント。実績の集計結果ではありません。" decoding="async" height="1402" loading="lazy" src="assets/representative-estimates.webp" width="1122"/>
-<figcaption id="experience-note"><strong>これは代表の体感であり、集計データ・改善確率ではありません。</strong>3問診断で表示する割合とも異なります。原因・機種によって変わります。</figcaption>
-</figure>
+
 <figure class="hero__visual hero__visual--photo">
 <img alt="実際のエアコン分解洗浄で、取り外した部品を手作業で洗浄している様子" class="hero__photo" decoding="async" fetchpriority="high" height="800" loading="eager" src="assets/hero-cleaning.webp" width="1040"/>
 <figcaption class="hero__photo-caption">
@@ -804,7 +841,7 @@ img[data-profile].is-unavailable {display:none;}
 <div class="diagnosis__bar-row repair"><div class="diagnosis__bar-header"><span>修理・点検</span><strong id="bc-pct-repair">—</strong></div><div aria-label="修理・点検の検討割合" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="diagnosis__track" id="bc-bar-repair" role="progressbar"><div class="diagnosis__fill" id="bc-fill-repair"></div></div></div>
 <div class="diagnosis__bar-row replace"><div class="diagnosis__bar-header"><span>買い替え</span><strong id="bc-pct-replace">—</strong></div><div aria-label="買い替えの検討割合" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="diagnosis__track" id="bc-bar-replace" role="progressbar"><div class="diagnosis__fill" id="bc-fill-replace"></div></div></div>
 </div>
-<div class="diagnosis__consult"><a class="diagnosis__line" data-cta-location="diagnosis_result" href="https://lin.ee/Q1s3uqV" id="bc-line" rel="noopener noreferrer" target="_blank">この結果をLINEで相談 <span aria-hidden="true">↗</span></a><button class="diagnosis__copy" id="bc-copy" type="button">結果をコピー</button></div><p class="diagnosis__result-note">LINEボタンで結果のコピーも試みます。LINEのトークに貼り付けてご相談ください（自動送信はしません）。現地での点検・診断は有料です。</p><p class="diagnosis__copy-status" id="bc-copy-status" role="status"></p><textarea aria-label="手動でコピーする相談文" class="diagnosis__manual" hidden="" id="bc-manual" readonly=""></textarea><div class="diagnosis__caution" id="bc-safety"><strong>見逃したくない異常</strong><p>焦げ臭い・プラグの異常な発熱・ブレーカーが何度も落ちる場合は、すぐに使用を中止して点検を依頼してください。水漏れはメーカーも使用を控えるよう案内しています。電源付近への水掛かりや異音がある場合も運転を止めてご相談ください。</p></div>
+<div class="diagnosis__consult"><a class="diagnosis__line" data-cta-location="diagnosis_result" href="https://lin.ee/Q1s3uqV" id="bc-line" rel="noopener noreferrer" target="_blank">この結果をLINEで相談 <span aria-hidden="true">↗</span></a><button class="diagnosis__copy" id="bc-copy" type="button">結果をコピー</button></div><p class="diagnosis__result-note">結果は自動送信されません。必要ならコピーしてLINEに貼り付けてください。訪問点検は有料です。</p><p class="diagnosis__copy-status" id="bc-copy-status" role="status"></p><textarea aria-label="手動でコピーする相談文" class="diagnosis__manual" hidden="" id="bc-manual" readonly=""></textarea><div class="diagnosis__caution" id="bc-safety"><strong>見逃したくない異常</strong><p>焦げ臭い・プラグの異常な発熱・ブレーカーが何度も落ちる場合は、すぐに使用を中止して点検を依頼してください。水漏れはメーカーも使用を控えるよう案内しています。電源付近への水掛かりや異音がある場合も運転を止めてご相談ください。</p></div>
 
 
 
@@ -814,10 +851,7 @@ img[data-profile].is-unavailable {display:none;}
 </section>
 </div>
 </section>
-<figure aria-label="代表の体感による全体的な傾向。上の3問診断とは別の目安です" class="experience-mobile container">
-<img alt="BCサービス代表の体感。買い替え約10%、修理20〜30%、洗浄60〜70%。統計や改善確率ではありません。" decoding="async" height="1402" loading="lazy" src="assets/representative-estimates.webp" width="1122"/>
-<figcaption><strong>代表の現場感覚をまとめた参考図です。</strong> 統計データや改善確率ではなく、上の3問診断とは別の目安です。</figcaption>
-</figure>
+
 
 <section aria-labelledby="services-title" class="section section--choices" id="services"><div class="container">
 <div class="section-heading"><h2 id="services-title">「直す・洗う・替える」を、<br/><span>ひとつの相談窓口で。</span></h2></div>
@@ -847,18 +881,8 @@ img[data-profile].is-unavailable {display:none;}
 <blockquote>「とても丁寧に作業して下さり、クリーニング後の汚れも見せてもらいました。エアコンの効きが良くなりとても快適になったので、またお願いしようと思います。」</blockquote>
 <figcaption><span>八重瀬町のお客様</span></figcaption>
 </figure>
-<figure class="voice-card">
-<div class="voice-card__top"><span class="voice-card__kind">エアコンクリーニング</span></div>
 
-<blockquote>「柔軟に対応いただき、とても綺麗に仕上げていただけました。とても信頼出来る方でしたので、また何かあれば依頼します。悩んでる皆様にもオススメしたいです。」</blockquote>
-<figcaption><span>南城市のお客様</span></figcaption>
-</figure>
-<figure class="voice-card">
-<div class="voice-card__top"><span class="voice-card__kind">エアコンクリーニング</span></div>
 
-<blockquote>「エアコン2台分掃除してもらいました。水が我が家のエアコンの汚れで真っ黒でびっくりしました！！凄く綺麗にしてくれて助かりました✨ 対応も良かったので、リピートして次の年もお願いしました＾＿＾」</blockquote>
-<figcaption><span>豊見城市のお客様</span></figcaption>
-</figure>
 </div>
 <p class="voices__note">※エアコン洗浄のお客様の感想です。修理への評価ではありません。出典：<a href="https://teruya1229.github.io/complete-disassembly/">完全分解洗浄LP</a>・<a href="https://teruya1229.github.io/cursor-test/">エアコンクリーニングLP</a></p>
 </div>
@@ -1186,9 +1210,8 @@ img[data-profile].is-unavailable {display:none;}
       lines.push(fields.symptom.value === 'danger' ? '電気系の異常：該当あり・運転中止' : '電気系の異常：この3問では個別に確認していません');
       lines.push('初期案内：' + title.textContent, 'ご案内：' + advice.textContent);
       if (!warning.hidden) lines.push('注意：' + warning.textContent);
-      if (latest.pcts && !inspectReason()) lines.push('検討割合：クリーニング ' + latest.pcts.clean + '%／修理・点検 ' + latest.pcts.repair + '%／買い替え ' + latest.pcts.replace + '%');
-      else lines.push('検討割合：安全・原因の点検優先のため表示なし');
-      lines.push('次の確認：' + (fields.symptom.value === 'leak' ? '水漏れの場所とドレンホースの状態を写真で相談。メーカーは使用を控えるよう推奨。電源付近が濡れる・多量に漏れる場合は使用を中止して点検へ。' : latest.next), '※％は仮の配点による検討の目安です。改善する確率ではありません。', '型番・写真を添えて相談します。');
+      lines.push('対応方法は3問からの暫定案内で、原因や改善の確率を確定するものではありません。');
+      lines.push('次の確認：' + (fields.symptom.value === 'leak' ? '水漏れの場所とドレンホースの状態を写真で相談。メーカーは使用を控えるよう推奨。電源付近が濡れる・多量に漏れる場合は使用を中止して点検へ。' : latest.next), '型番・写真を添えて相談します。');
       return lines.join('\n');
     }
     async function copy() {
