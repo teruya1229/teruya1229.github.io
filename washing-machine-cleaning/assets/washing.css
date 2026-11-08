@@ -81,3 +81,17 @@
   .symptom__content .symptom__num{margin-bottom:7px}
   .step-card__photo{aspect-ratio:4/3;margin:12px 0 13px}
 }
+
+
+/* 2026-11-08 ご相談〜作業まで：STEP 01〜03の軽量アイコン */
+.flow-grid>.flow-card{display:flex;flex-direction:column;min-width:0}
+.flow-card__header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;min-height:90px}
+.flow-grid .flow-card__header span{margin:0;flex-shrink:0;padding-top:2px}
+.flow-card__icon{display:block;width:96px;height:96px;max-width:45%;object-fit:contain;flex-shrink:0;margin:-12px -10px 0 0;filter:drop-shadow(0 4px 9px rgba(0,0,0,.11))}
+.flow-grid>.flow-card strong{margin-top:0;line-height:1.4}
+.flow-grid>.flow-card p{line-height:1.75}
+@media(max-width:720px){
+  .flow-grid>.flow-card{padding:20px 22px}
+  .flow-card__header{min-height:82px}
+  .flow-card__icon{width:90px;height:90px;margin:-9px -8px 0 0}
+}

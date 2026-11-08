@@ -1,0 +1,31 @@
+name: Washer flow icons Chrome verification
+on:
+  push:
+    branches: [feat/washing-flow-icons-20261108]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  browser-qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated Chrome runtime
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Verify flow icons and capture screenshots
+        run: node washing-machine-cleaning/tests/flow-icons-qa-20261108.cjs
+      - name: Save visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: washer-flow-icons-visual-qa
+          path: ${{ runner.temp }}/washer-flow-icons-qa/
+          if-no-files-found: warn
