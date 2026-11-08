@@ -19,9 +19,11 @@
   var utmMedium = (params.get('utm_medium') || '').toLowerCase();
   var referringHost = '';
   try { referringHost = new URL(document.referrer).hostname.toLowerCase(); } catch (_) {}
-  var igSource = /(^|[_\\-.])(instagram|insta|ig)([_\\-.]|$)/.test(utmSource);
-  var igRef = /(^|\\.)instagram\\.com$/.test(referringHost);
-  var paid = /(^|[_\\-.])(paid|cpc|ppc|ads|ad)([_\\-.]|$)/.test(utmMedium);
+  // UTMが明示的なときだけInstagram広告として補助分類。
+  // 媒体不明のPaid SocialをInstagramと決めつけない。
+  var igSource = ['instagram', 'insta', 'ig', 'instagram_ads', 'ig_ads'].indexOf(utmSource) !== -1;
+  var igRef = referringHost === 'instagram.com' || referringHost.endsWith('.instagram.com');
+  var paid = ['paid_social', 'paidsocial', 'cpc', 'ppc', 'ads', 'paid', 'social_paid'].indexOf(utmMedium) !== -1;
   var trafficHint = igSource && paid ? 'instagram_paid' :
     (igSource || igRef ? 'instagram_unconfirmed' : 'other_or_unknown');
 
