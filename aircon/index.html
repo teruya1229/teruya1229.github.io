@@ -6,7 +6,7 @@
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
 <meta content="#0b354b" name="theme-color"/>
 <meta content="沖縄南部のエアコン総合相談窓口、BCサービス。冷えない・水漏れ・異音・カビ臭さ。修理・クリーニング・新品買い替え・取付から、状態に合う方法をご案内。LINE相談は無料、現地点検は有料。" name="description"/>
-<meta content="aircon-v13-2-canonical-logo-20261108" name="lp-build"/>
+<meta content="aircon-v13-3-final-portrait-fix-20261108" name="lp-build"/>
 <meta content="index,follow" name="robots"/>
 <link href="https://teruya1229.github.io/aircon/" rel="canonical"/>
 <link href="/favicon.ico" rel="icon" type="image/x-icon"/>
@@ -492,6 +492,10 @@ img[data-profile].is-unavailable {display:none;}
 .policy__area p{grid-column:2;color:#3d5d68;font-size:15px;line-height:1.75}
 .final__owner{display:flex;align-items:center;text-align:left;gap:15px;max-width:390px;margin:0 auto 31px;padding:14px 17px;border:1px solid #ffffff3b;border-radius:15px;background:#ffffff14}
 .final__owner-photo{width:73px!important;height:73px!important;flex:0 0 73px!important;border:3px solid #d9eeea}
+.final__owner-photo{position:relative;display:inline-grid;place-items:center;overflow:hidden;border-radius:50%;isolation:isolate}
+.final__owner-photo img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;z-index:1}
+.final__owner-photo .portrait__fallback{position:absolute;inset:0;z-index:0}
+
 .final__owner strong{display:block;font-size:16px;line-height:1.55;color:#fff}
 .final__owner p{font-size:15px;line-height:1.55;color:#e2eeec;margin-top:4px}
 .final__hint{font-size:16px!important;font-weight:700;color:#eaf3f0!important;line-height:1.7;margin:20px auto 0!important}
