@@ -1196,6 +1196,14 @@
       .sec-reason .reason-card-icon .cd-card-icon { width: 46px; height: 46px; }
     }
 
+
+    /* Before/After collages must show both panels without cropping. */
+    .sec-beforeafter-refresh .svc-card-img {
+      aspect-ratio: auto;
+      object-fit: contain;
+      height: auto;
+      background: #f5f8fb;
+    }
   </style>
 
   <!-- 構造化データ: LocalBusiness / Service / BreadcrumbList -->
@@ -1669,8 +1677,8 @@
         <h2 class="section-title">ここまで分解して洗浄します</h2>
         <div class="services-grid">
           <figure class="svc-card card">
-            <img src="./parts-clean-optimized.jpg" alt="取り外した分解部品" width="600" height="400" loading="lazy" class="svc-card-img">
-            <figcaption>分解部品</figcaption>
+            <img src="./assets/photos/parts-disassembled.webp" alt="完全分解で取り外した送風ファン・ドレンパンなどの部品" width="600" height="400" loading="lazy" decoding="async" class="svc-card-img">
+            <figcaption>ここまで取り外して洗浄する分解部品</figcaption>
           </figure>
           <figure class="svc-card card">
             <img src="./fan-before-after-optimized.jpg" alt="ファン内部のビフォーアフター" width="600" height="400" loading="lazy" class="svc-card-img">
@@ -1712,17 +1720,17 @@
       </div>
     </section>
 
-    <section class="section">
+    <section class="section sec-beforeafter-refresh">
       <div class="container">
-        <h2 class="section-title">洗浄前後でここまで変わります（ファン内部中心）</h2>
+        <h2 class="section-title">洗浄前後でここまで変わります（熱交換器・送風ファン）</h2>
         <div class="services-grid">
           <figure class="svc-card card">
-            <img src="./fan-before-after-optimized.jpg" alt="ファン内部のビフォーアフター" width="600" height="400" loading="lazy" class="svc-card-img">
-            <figcaption>ファン内部のビフォーアフター（主な変化）</figcaption>
+            <img src="./assets/photos/coil-before-after.webp" alt="エアコン熱交換器の洗浄前と洗浄後の比較写真" width="1200" height="475" loading="lazy" decoding="async" class="svc-card-img">
+            <figcaption>熱交換器のビフォーアフター</figcaption>
           </figure>
           <figure class="svc-card card">
-            <img src="./dirty-water-optimized.jpg" alt="洗浄後に出た汚水" width="600" height="400" loading="lazy" class="svc-card-img">
-            <figcaption>補助証拠：洗浄後に出た汚水</figcaption>
+            <img src="./assets/photos/fan-before-after.webp" alt="エアコン送風ファン内部の洗浄前と洗浄後の比較写真" width="1200" height="560" loading="lazy" decoding="async" class="svc-card-img">
+            <figcaption>送風ファン・内部のビフォーアフター</figcaption>
           </figure>
         </div>
       </div>
