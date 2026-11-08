@@ -27,12 +27,25 @@ async function useEngine(engine, label, widths) {
       const errors = [];
       const ga4 = [];
       const received = [];
+      const googleNetwork = [];
       page.on('pageerror',e=>errors.push(String(e.message)));
       page.on('request',req=>{
-        if(/google-analytics\.com\/g\/collect/.test(req.url())) ga4.push({method:req.method(),host:(new URL(req.url())).hostname, ga4Request:true});
+        if(/(googletagmanager|google-analytics)\.com/.test(req.url())) {
+          const entry={kind:'request',host:new URL(req.url()).hostname,path:new URL(req.url()).pathname,method:req.method()};
+          googleNetwork.push(entry);
+          if(/google-analytics\.com\/g\/collect/.test(req.url())) ga4.push(entry);
+        }
       });
       page.on('response',response=>{
-        if(/google-analytics\.com\/g\/collect/.test(response.url())) received.push(response.status());
+        if(/(googletagmanager|google-analytics)\.com/.test(response.url())) {
+          googleNetwork.push({kind:'response',host:new URL(response.url()).hostname,path:new URL(response.url()).pathname,status:response.status()});
+          if(/google-analytics\.com\/g\/collect/.test(response.url())) received.push(response.status());
+        }
+      });
+      page.on('requestfailed',req=>{
+        if(/(googletagmanager|google-analytics)\.com/.test(req.url())) {
+          googleNetwork.push({kind:'failed',host:new URL(req.url()).hostname,path:new URL(req.url()).pathname,error:req.failure()?.errorText||'unknown'});
+        }
       });
       // Videos are not part of diagnosis; do not modify the analytics requests.
       await page.route(/youtube(-nocookie)?\.com/,route=>route.abort());
@@ -73,6 +86,7 @@ async function useEngine(engine, label, widths) {
           dataLayerEvents:events,
           GA4HttpRequests:ga4.length,
           GA4HttpResponseCodes:received,
+          googleNetworkTrace:googleNetwork,
           GA4Id: 'G-X8LKLFDL3G',
           caveat:'HTTP request/response is transport-level observation, not an Analytics property ingestion proof'
         };
