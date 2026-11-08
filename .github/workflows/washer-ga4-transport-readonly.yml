@@ -1,0 +1,35 @@
+name: Washer GA4 transport read-only audit
+on:
+  push:
+    branches:
+      - test/washing-live-browser-20261108
+    paths:
+      - washing-machine-cleaning/tests/ga4-transport-readonly.cjs
+      - .github/workflows/washer-ga4-transport-readonly.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ga4-transport:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated Chrome runtime
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Audit live tag execution while blocking GA4 outbound hits
+        run: node washing-machine-cleaning/tests/ga4-transport-readonly.cjs
+      - name: Save test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: washer-ga4-transport-readonly
+          path: ${{ runner.temp }}/washer-ga4-transport/
+          if-no-files-found: warn
