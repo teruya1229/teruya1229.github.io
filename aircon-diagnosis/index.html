@@ -5,98 +5,164 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#f5f8f7">
-<meta name="description" content="買い替え・修理・クリーニングの検討割合と理由を確認できるBCサービスの試作版。％は故障確率ではありません。">
+<meta name="description" content="エアコンの年数と症状から、買い替え・修理・クリーニングの目安を確認できるBCサービスのかんたんチェック。">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<title>洗う？直す？買い替える？｜BCサービス エアコン相談チェック（試作）</title>
+<title>洗う？直す？買い替える？｜BCサービス エアコン かんたんチェック（試作）</title>
 <link rel="icon" href="https://teruya1229.github.io/favicon.ico">
-<link rel="stylesheet" href="./style.css?v=02">
-<script defer src="./logic.js?v=02"></script>
-<style>
-[hidden]{display:none!important}.skip{position:absolute;left:8px;top:-70px;z-index:10;background:white;padding:12px}.skip:focus{top:8px}.preview-strip{background:#173b3c;color:white;padding:8px 20px;text-align:center;font-size:12px;line-height:1.6}.examples{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;align-items:center}.examples>span{font-size:12px;color:#526f70;font-weight:700}.examples button{background:#fff;border:1px solid #b9cdcb;color:#305a5d;padding:8px 11px;border-radius:9px;font-size:12px;min-height:44px}.examples button:hover{background:#e6f2ef}.score-caption{font-size:12px;font-weight:750;color:#49666a;margin:14px 0 0}.optional{border-top:1px solid var(--edge);padding-top:18px}.optional summary{cursor:pointer;font-weight:750;font-size:14px;min-height:44px}.optional .fields{margin-top:12px}.safety-select{background:#fffbf7;border:1px solid #ecd4c4;border-radius:13px;padding:15px}.safety-select .qnum{background:#f8e7dc;color:#9b4e2d}.result-panel{position:static;scroll-margin-top:15px}.panel-count{white-space:nowrap}.next{background:#e9f3ef;border-radius:10px;padding:12px;margin:15px 0;font-size:13px}.next strong{display:block;color:#145b50;font-size:12px;margin-bottom:4px}.manual{width:100%;min-height:200px;border:1px solid #8aa7a7;border-radius:9px;padding:10px;font:inherit;font-size:14px;margin-top:10px}.guide details{background:white;border:1px solid var(--edge);border-radius:12px;padding:16px;margin-top:15px}.guide summary{cursor:pointer;font-weight:750}.guide details p{font-size:13px}.guide details a{overflow-wrap:anywhere}.basis li{font-size:12px}.notice{border:1px solid #d8e4e5}.mobile-jump{display:none}.privacy-note{font-size:12px;color:#62797a;margin:13px 0 0}.result-topline .demo{font-size:11px}.hero h1{margin-top:17px}.hero .hero-foot{margin-top:16px}.footer a{margin:0 7px}.bar-track{width:100%}.bar-fill{min-width:0}.line-btn{font-size:15px}.result-note strong{color:#355c5c}.hero p strong{font-weight:750;color:#33595a}
-@media(min-width:851px){.result-panel{margin-top:0}.layout{grid-template-columns:minmax(0,1.03fr) minmax(340px,.97fr)}}
-@media(max-width:850px){.mobile-jump{display:block;position:fixed;bottom:calc(12px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:#155c60;color:#fff;text-align:center;text-decoration:none;padding:12px 23px;border-radius:99px;font-size:14px;font-weight:750;box-shadow:0 5px 20px #173b3c33;z-index:20;white-space:nowrap}.footer{padding-bottom:100px}.panel-count{font-size:11px}.hero{padding-top:26px}}
-@media(max-width:380px){.panel-top{align-items:flex-start}.panel-count{font-size:10px}.panel-title{font-size:16px}.question{font-size:15px}}
-</style>
+<link rel="stylesheet" href="./style.css?v=03">
+<script defer src="./logic.js?v=03"></script>
 </head>
 <body>
-<a class="skip" href="#bc-diagnosis">チェック項目へ</a>
-<div class="preview-strip">試作・検品用｜仮の配点です。診断結果の正確さを保証するものではありません。</div>
-<header class="site-head"><div class="wrap header-inner">
-<a class="brand" href="https://teruya1229.github.io/"><img class="brand-mark" src="https://teruya1229.github.io/cursor-test/images/logo-bc.png" width="33" height="33" alt="">BCサービス</a>
-<span class="header-tag">エアコン総合向け｜相談前のかんたんチェック</span>
-</div></header>
+<a class="skip" href="#bc-form">チェック項目へ</a>
+<header class="site-head">
+  <div class="wrap header-inner">
+    <a class="brand" href="https://teruya1229.github.io/"><img class="brand-mark" src="https://teruya1229.github.io/cursor-test/images/logo-bc.png" width="28" height="28" alt="">BCサービス</a>
+    <span class="demo">試作</span>
+  </div>
+</header>
 <main>
-<section class="hero"><div class="wrap">
-<span class="kicker">AIR CONDITIONER CHECK</span>
-<h1>そのエアコン、<br><span>洗う？ 直す？ 買い替える？</span></h1>
-<p>年数と症状から、3つの<strong>検討割合とその理由</strong>を表示。お悩みを整理して、そのままLINE相談につなげます。</p>
-<div class="hero-foot"><span>登録不要</span><span>入力内容の自動送信なし</span><span>最後は人が確認</span></div>
-<div class="examples" aria-label="試作用の入力例"><span>入力例で試す</span><button type="button" data-example="clean">汚れが気になる</button><button type="button" data-example="repair">エラーで止まる</button><button type="button" data-example="replace">長年使用・高額修理</button></div>
-</div></section>
-<div class="wrap layout" id="bc-diagnosis">
-<section class="panel form-panel" aria-labelledby="form-title">
-<div class="panel-top"><h2 class="panel-title" id="form-title">エアコンの状態を確認</h2><span class="panel-count">基本4＋任意3項目</span></div>
-<div class="fields">
-<div class="field safety-select"><label for="q-danger" class="question"><span class="qnum">01</span><span>まず、安全に関わる症状は？</span></label>
-<p class="note" id="safety-help">焦げ臭い／電源プラグが異常に熱い／ブレーカーが繰り返し落ちる</p>
-<select id="q-danger" required aria-describedby="safety-help"><option value="">選択してください</option><option value="no">このような症状はない</option><option value="yes">1つでも当てはまる</option><option value="unknown">確認できていない・分からない</option></select></div>
-<div class="field"><label for="q-age" class="question"><span class="qnum">02</span><span>使用年数は？</span></label>
-<select id="q-age" required><option value="">選択してください</option><option value="new">4年以内</option><option value="mid">5〜8年</option><option value="old">9〜12年</option><option value="very_old">13年以上</option><option value="unknown">分からない</option></select>
-<p class="note">年数の区分は試作用です。年数だけで買い替えとは判断しません。</p></div>
-<div class="field"><label for="q-symptom" class="question"><span class="qnum">03</span><span>いちばん困っている症状は？</span></label>
-<select id="q-symptom" required><option value="">選択してください</option><option value="smell">カビ臭い・嫌なニオイ（焦げ臭さ以外）</option><option value="dirt">内部にカビ・ホコリが見える</option><option value="air">風が弱い</option><option value="poor">冷えない・暖まらない</option><option value="stop">エラー表示・途中停止</option><option value="leak">室内機から水漏れ</option><option value="noise">異音・異常振動</option><option value="none">故障はないが気になる</option><option value="maintenance">定期的に掃除したい</option></select></div>
-<div class="field"><label for="q-performance" class="question"><span class="qnum">04</span><span>冷房・暖房の効きは？</span></label>
-<select id="q-performance"><option value="unknown">未確認・分からない</option><option value="normal">いつもどおり効く</option><option value="weak">少し効きが悪い</option><option value="none">ほとんど効かない</option></select></div>
-<details class="optional"><summary>追加の3項目でもう少し詳しく（任意）</summary><div class="fields">
-<div class="field"><label for="q-filter" class="question"><span class="qnum">05</span><span>フィルターの状態は？</span></label>
-<select id="q-filter"><option value="unknown">未確認・分からない</option><option value="dirty">ホコリで汚れている</option><option value="clean">目立つ汚れはない</option></select></div>
-<div class="field"><label for="q-wash" class="question"><span class="qnum">06</span><span>専門業者の内部洗浄はいつ？</span></label>
-<select id="q-wash"><option value="unknown">分からない</option><option value="recent">1年以内</option><option value="some">1年超〜3年未満</option><option value="old">3年以上前</option><option value="never">一度も頼んでいない</option></select></div>
-<div class="field"><label for="q-quote" class="question"><span class="qnum">07</span><span>修理見積もりは出ている？</span></label>
-<select id="q-quote"><option value="none">見積もりしていない</option><option value="under">1万円未満</option><option value="medium">1万〜3万円未満</option><option value="high">3万〜5万円未満</option><option value="very_high">5万円以上</option><option value="unavailable">部品なし・修理不可と言われた</option></select>
-<p class="note">BCサービスの料金表ではなく、お手元の修理見積もりを入力する欄です。</p></div>
-</div></details></div>
-<div class="form-footer"><button class="reset" id="bc-reset" type="button">入力をリセット</button><p>選ぶたびに結果が変わります</p></div>
-<p class="privacy-note">入力はこの画面内で処理します。相談文はコピー後、ご自身でLINEに貼り付けて送信します。</p>
-<noscript><p class="warning">JavaScriptが無効のため計算できません。<a href="https://lin.ee/Q1s3uqV">LINEから直接ご相談ください。</a></p></noscript>
-</section>
-<aside class="panel result-panel" id="bc-result-panel" aria-labelledby="result-heading">
-<div class="result-topline"><h2 id="result-heading">検討の目安</h2><span class="demo">試作 v0.2</span></div>
-<div id="bc-placeholder" class="placeholder"><div class="placeholder-symbol" aria-hidden="true">?</div><p><strong>安全確認・使用年数・主な症状</strong>を<br>選ぶと結果が表示されます。</p></div>
-<div id="bc-results" hidden aria-live="polite">
-<p class="result-label">まず検討する方向</p><h3 id="bc-result-title"></h3><p id="bc-advice"></p>
-<div id="bc-warning" class="warning" role="alert" hidden></div>
-<p class="score-caption" id="bc-score-caption">3つの検討割合｜合計100％・仮の配点</p>
-<div id="bc-bars" class="bar-stack">
-<div class="bar-row replace"><div class="bar-header"><span class="bar-label">買い替え</span><strong id="bc-pct-replace" class="bar-value">—</strong></div><div class="bar-track" role="progressbar" id="bc-bar-replace" aria-label="買い替えの検討割合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill" id="bc-fill-replace"></div></div></div>
-<div class="bar-row repair"><div class="bar-header"><span class="bar-label">修理・点検</span><strong id="bc-pct-repair" class="bar-value">—</strong></div><div class="bar-track" role="progressbar" id="bc-bar-repair" aria-label="修理・点検の検討割合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill" id="bc-fill-repair"></div></div></div>
-<div class="bar-row clean"><div class="bar-header"><span class="bar-label">クリーニング</span><strong id="bc-pct-clean" class="bar-value">—</strong></div><div class="bar-track" role="progressbar" id="bc-bar-clean" aria-label="クリーニングの検討割合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill" id="bc-fill-clean"></div></div></div>
-</div>
-<p class="notice"><strong>％は「故障確率」「修理成功率」ではありません。</strong> 年数・症状などへの仮の配点を、合計100％にした検討の目安です。実績データで検証した数値ではなく、正式な診断・見積もりでもありません。</p>
-<div class="basis"><h3>今回の判断理由</h3><ul id="bc-notes"></ul></div>
-<div class="next"><strong>次に確認すること</strong><span id="bc-next"></span></div>
-<button type="button" id="bc-copy" class="copy">結果と入力内容をコピー</button>
-<a class="line-btn" id="bc-line" href="https://lin.ee/Q1s3uqV" target="_blank" rel="noopener noreferrer">LINEを開いて相談する</a>
-<p id="bc-copy-status" class="copy-status" role="status"></p>
-<textarea id="bc-manual" class="manual" aria-label="手動でコピーする相談文" readonly hidden></textarea>
-<p class="result-note"><strong>①コピー → ②LINEを開く → ③貼り付けて送信</strong><br>型番ラベル・症状・エラー表示の写真も添えてください。最終判断は照屋が状態を確認して行います。</p>
-</div>
-</aside></div>
-<section class="guide"><div class="wrap">
-<h2>「古いから交換」だけでは決めません。</h2>
-<p>まず安全と症状を確認し、年数・汚れ・洗浄歴・修理費を組み合わせて比較します。何も不具合がなければ、今すぐ有料作業が必要とは限りません。</p>
-<details><summary>この試作の判断基準と限界</summary>
-<p>ニオイ・汚れが中心なら清掃方向、エラー・停止やほとんど効かない場合は点検方向、長期使用と高額修理が重なる場合は買い替え比較を強める仮ルールです。安全上の症状は割合計算より優先します。</p>
-<p>点数・年数区分・金額区分はこの試作で設定したもので、メーカー公認の診断式ではありません。機種・畳数・故障箇所・保証・新品価格・沖縄の設置環境などを十分に反映していません。照屋の実案件で配点を検品してから総合LPへの組み込みを判断します。</p>
-<p>部品保有期間はメーカー・製品によって定められ、購入日ではなく製造打ち切り時点から数える場合があります。「使用10年＝修理不可」ではありません。</p>
-</details>
-<details><summary>参考にしたメーカーの案内</summary>
-<p>安全上の症状や基本的な切り分けの参考です。表示する％の根拠・精度を保証する資料ではありません。</p>
-<p><a href="https://www.daikin.co.jp/taisetsu/shouan" target="_blank" rel="noopener noreferrer">ダイキン：長年使用するエアコンの安全確認</a><br><a href="https://nacpt.daikincc.com/faq/customer/web/knowledge3008.html" target="_blank" rel="noopener noreferrer">ダイキン：冷えない場合の確認事項</a><br><a href="https://nacpt.daikincc.com/faq/customer/web/knowledge3011.html" target="_blank" rel="noopener noreferrer">ダイキン：室内機からの水漏れ</a><br><a href="https://panasonic.jp/support/repair/warranty.html" target="_blank" rel="noopener noreferrer">パナソニック：補修用性能部品の保有期間</a></p>
-</details>
-</div></section>
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">エアコン かんたんチェック</p>
+      <h1>洗う？直す？買い替える？</h1>
+    </div>
+  </section>
+  <div class="wrap layout" id="bc-diagnosis">
+    <form class="panel form-panel" id="bc-form" aria-label="エアコンの状態">
+      <div class="fields">
+        <div class="field">
+          <label for="q-age" class="question"><span class="qnum">1</span><span>使用年数は？</span></label>
+          <select id="q-age" required>
+            <option value="">選んでください</option>
+            <option value="new">4年以内</option>
+            <option value="mid">5〜8年</option>
+            <option value="old">9〜12年</option>
+            <option value="very_old">13年以上</option>
+            <option value="unknown">分からない</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="q-symptom" class="question"><span class="qnum">2</span><span>気になる症状は？</span></label>
+          <select id="q-symptom" required>
+            <option value="">選んでください</option>
+            <option value="smell">カビ臭い</option>
+            <option value="dirt">カビ・ホコリが見える</option>
+            <option value="air">風が弱い</option>
+            <option value="poor">冷えない・暖まらない</option>
+            <option value="stop">エラー表示・途中停止</option>
+            <option value="leak">室内機から水漏れ</option>
+            <option value="noise">異音・異常振動</option>
+            <option value="none">故障はないが気になる</option>
+            <option value="maintenance">定期的に掃除したい</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="q-performance" class="question"><span class="qnum">3</span><span>冷暖房の効きは？</span></label>
+          <select id="q-performance">
+            <option value="unknown">未確認・分からない</option>
+            <option value="normal">いつもどおり効く</option>
+            <option value="weak">少し効きが悪い</option>
+            <option value="none">ほとんど効かない</option>
+          </select>
+        </div>
+      </div>
+      <details class="optional">
+        <summary>詳しく入力する</summary>
+        <div class="fields">
+          <div class="field">
+            <label for="q-filter" class="question"><span class="qnum">4</span><span>フィルターの状態は？</span></label>
+            <select id="q-filter">
+              <option value="unknown">未確認・分からない</option>
+              <option value="dirty">ホコリで汚れている</option>
+              <option value="clean">目立つ汚れはない</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="q-wash" class="question"><span class="qnum">5</span><span>業者に洗浄を頼んだのは？</span></label>
+            <select id="q-wash">
+              <option value="unknown">分からない</option>
+              <option value="recent">1年以内</option>
+              <option value="some">1年超〜3年未満</option>
+              <option value="old">3年以上前</option>
+              <option value="never">一度も頼んでいない</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="q-quote" class="question"><span class="qnum">6</span><span>修理の見積もり額は？</span></label>
+            <select id="q-quote">
+              <option value="none">見積もりしていない</option>
+              <option value="under">1万円未満</option>
+              <option value="medium">1万〜3万円未満</option>
+              <option value="high">3万〜5万円未満</option>
+              <option value="very_high">5万円以上</option>
+              <option value="unavailable">部品なし・修理不可と言われた</option>
+            </select>
+          </div>
+        </div>
+      </details>
+      <div class="form-actions">
+        <button class="submit" id="bc-submit" type="submit">結果を見る</button>
+        <button class="reset" id="bc-reset" type="button">リセット</button>
+      </div>
+      <noscript><p class="warning">JavaScriptが無効のため計算できません。<a href="https://lin.ee/Q1s3uqV">LINEから直接ご相談ください。</a></p></noscript>
+    </form>
+
+    <section class="panel result-panel" id="bc-result-panel" aria-labelledby="result-heading" tabindex="-1" hidden>
+      <h2 id="result-heading">チェック結果</h2>
+      <div id="bc-results" aria-live="polite">
+        <h3 id="bc-result-title"></h3>
+        <p id="bc-advice"></p>
+        <div id="bc-bars" class="bar-stack">
+          <div class="bar-row replace">
+            <div class="bar-header"><span class="bar-label">買い替え</span><strong id="bc-pct-replace" class="bar-value">—</strong></div>
+            <div class="bar-track" role="progressbar" id="bc-bar-replace" aria-label="買い替えの検討割合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill" id="bc-fill-replace"></div></div>
+          </div>
+          <div class="bar-row repair">
+            <div class="bar-header"><span class="bar-label">修理・点検</span><strong id="bc-pct-repair" class="bar-value">—</strong></div>
+            <div class="bar-track" role="progressbar" id="bc-bar-repair" aria-label="修理・点検の検討割合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill" id="bc-fill-repair"></div></div>
+          </div>
+          <div class="bar-row clean">
+            <div class="bar-header"><span class="bar-label">クリーニング</span><strong id="bc-pct-clean" class="bar-value">—</strong></div>
+            <div class="bar-track" role="progressbar" id="bc-bar-clean" aria-label="クリーニングの検討割合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill" id="bc-fill-clean"></div></div>
+          </div>
+        </div>
+        <p class="notice">※割合は判断の目安です。故障確率ではありません。</p>
+        <details class="reasons" id="bc-reasons">
+          <summary>判断の理由</summary>
+          <ul id="bc-notes"></ul>
+        </details>
+        <div id="bc-warning" class="warning" role="alert" hidden></div>
+        <div class="safety-note" id="bc-safety">
+          <h4>この症状があれば要点検</h4>
+          <p>焦げ臭い／プラグが異常に熱い／ブレーカーが何度も落ちる</p>
+          <p>使用を止めてご相談ください。</p>
+        </div>
+        <div class="consult-actions">
+          <button type="button" id="bc-copy" class="copy">結果をコピー</button>
+          <a class="line-btn" id="bc-line" href="https://lin.ee/Q1s3uqV" target="_blank" rel="noopener noreferrer">LINEで相談する</a>
+        </div>
+        <p class="result-note">コピーした結果をLINEに貼り付けてください。</p>
+        <p id="bc-copy-status" class="copy-status" role="status"></p>
+        <textarea id="bc-manual" class="manual" aria-label="手動でコピーする相談文" readonly hidden></textarea>
+      </div>
+    </section>
+  </div>
 </main>
-<a href="#bc-result-panel" id="bc-mobile-jump" class="mobile-jump" hidden>検討結果を見る ↓</a>
-<footer class="footer"><div class="wrap">BCサービス｜エアコン相談チェック・試作版<br><a href="https://teruya1229.github.io/">総合サイト</a><a href="https://teruya1229.github.io/privacy/">プライバシーポリシー</a><br>家庭用壁掛けエアコン向け。業務用・特殊機種は個別にご相談ください。</div></footer>
+<footer class="footer">
+  <div class="wrap">
+    <details class="references">
+      <summary>判断基準・参考資料</summary>
+      <p>家庭用壁掛けエアコン向けの試作です。年数・症状・効きなどをもとに、検討の目安を表示します。配点はメーカー公認の診断式ではなく、最終判断には状態の確認が必要です。</p>
+      <p>部品の有無は機種によって異なります。使用年数だけで修理不可とは判断しません。</p>
+      <ul>
+        <li><a href="https://www.daikin.co.jp/taisetsu/shouan" target="_blank" rel="noopener noreferrer">ダイキン：エアコンの安全確認</a></li>
+        <li><a href="https://nacpt.daikincc.com/faq/customer/web/knowledge3008.html" target="_blank" rel="noopener noreferrer">ダイキン：冷えない場合</a></li>
+        <li><a href="https://nacpt.daikincc.com/faq/customer/web/knowledge3011.html" target="_blank" rel="noopener noreferrer">ダイキン：室内機からの水漏れ</a></li>
+        <li><a href="https://panasonic.jp/support/repair/warranty.html" target="_blank" rel="noopener noreferrer">パナソニック：補修用性能部品の保有期間</a></li>
+      </ul>
+    </details>
+    <p class="footer-links"><a href="https://teruya1229.github.io/">総合サイト</a><a href="https://teruya1229.github.io/privacy/">プライバシーポリシー</a></p>
+  </div>
+</footer>
 </body>
 </html>

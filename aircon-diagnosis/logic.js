@@ -1,9 +1,10 @@
-/* BC aircon triage v0.2: provisional rules, NOT calibrated probabilities.
+/* BC aircon triage v0.3: provisional rules, NOT calibrated probabilities.
  * No inputs leave this page automatically. No analytics or storage is added.
- * Safety overrides run before required-field validation. */
+ * Safety guidance follows the results; the form does not collect safety answers.
+ * Explicit safety flags remain supported for direct calculate() callers. */
 (function () {
   'use strict';
-  var VERSION = '0.2';
+  var VERSION = '0.3';
   var KEYS = ['replace', 'repair', 'clean'];
   var LABELS = {replace: '買い替え', repair: '修理・点検', clean: 'クリーニング'};
   var TABLES = {
@@ -52,7 +53,6 @@
       reasons: ['安全状態が不明なため、割合による判定は保留しています。', '確認のために危険な部分へ触れたり、分解したりする必要はありません。'],
       next: '異常が疑われる場合は運転を止めて点検を相談してください。'
     };
-    if (input.danger !== 'no' && input.danger !== false) return null;
     if (!own(TABLES.age, input.age) || !own(TABLES.symptom, input.symptom)) return null;
     var v = {age: input.age, symptom: input.symptom};
     ['performance','filter','wash','quote'].forEach(function (k) {
@@ -90,15 +90,15 @@
     var leader = sorted[0];
     var nearTie = pcts[sorted[0]] - pcts[sorted[1]] < 8;
     var noProblem = !abnormal && !quoted && v.symptom === 'none' && v.performance !== 'weak';
-    var heading = nearTie ? '現時点では2つの方向を比較' : 'まず「' + LABELS[leader] + '」を検討';
+    var heading = nearTie ? LABELS[sorted[0]] + 'と' + LABELS[sorted[1]] + 'を比較' : LABELS[leader] + 'を検討';
     var advice = {
-      replace: '新品の総額と修理見積もりを比較する方向です。型番・部品供給・保証の有無を確認してから決めましょう。',
-      repair: 'まず不具合の原因確認を。修理可能か、いくらかかるかが分かってから買い替えと比較します。',
-      clean: '正常運転していて汚れが中心なら、清掃を検討する方向です。汚れの場所と程度を確認し、フィルターのお手入れだけでよいかも確認します。'
+      replace: '修理費と新品の総額を比べてみましょう。',
+      repair: '原因と修理費を確認してから判断しましょう。',
+      clean: '汚れの状態に合ったお掃除を検討しましょう。'
     }[leader];
-    if (nearTie) advice = LABELS[sorted[0]] + 'と' + LABELS[sorted[1]] + 'の目安が近い状態です。型番・写真・点検結果を確認して判断します。';
-    if (noProblem) { heading = '今すぐ作業が必要とは判断しません'; advice = '以下は、相談するときの方向性の比較です。不具合がなければ、状態確認と普段のお手入れだけでよい場合もあります。'; }
-    if (caution) { heading = '使用を止めて、まず点検を'; advice = '水漏れ・異常な音は点検を優先してください。下の割合は、その後に検討する対応の目安で、再運転や清掃を勧めるものではありません。'; }
+    if (nearTie) advice = '型番や写真を確認して判断します。';
+    if (noProblem) { heading = '今すぐ作業が必要とは限りません'; advice = '不具合がなければ、普段のお手入れで十分な場合もあります。'; }
+    if (caution) { heading = 'まずは点検をご相談ください'; advice = '原因を確認してから、修理・買い替えを判断します。'; }
     if (v.age === 'unknown' || v.performance === 'unknown') reasons.push('年数または効き具合が不明なため、結果は特に暫定的です。型番ラベルと状況を確認してください。');
     return {
       status: caution ? 'caution' : 'ok', pcts: pcts, leading: leader,
@@ -109,12 +109,12 @@
   function init() {
     var root = document.getElementById('bc-diagnosis');
     if (!root) return;
-    var names = ['danger','age','symptom','performance','filter','wash','quote'];
+    var form = document.getElementById('bc-form');
+    var names = ['age','symptom','performance','filter','wash','quote'];
     var fields = {};
     names.forEach(function (k) { fields[k] = document.getElementById('q-' + k); });
     if (names.some(function (k) { return !fields[k]; })) return;
-    var results = document.getElementById('bc-results');
-    var placeholder = document.getElementById('bc-placeholder');
+    var panel = document.getElementById('bc-result-panel');
     var title = document.getElementById('bc-result-title');
     var advice = document.getElementById('bc-advice');
     var notes = document.getElementById('bc-notes');
@@ -124,23 +124,21 @@
     var manual = document.getElementById('bc-manual');
     var latest = null;
     var copyVersion = 0;
+    var submitted = false;
     function values() { var v = {}; names.forEach(function (k) { v[k] = fields[k].value; }); return v; }
     function update() {
       copyVersion++;
-      latest = calculate(values());
+      latest = submitted ? calculate(values()) : null;
       status.textContent = '';
       manual.hidden = true;
       manual.value = '';
-      results.hidden = !latest;
-      placeholder.hidden = !!latest;
-      document.getElementById('bc-mobile-jump').hidden = !latest;
+      panel.hidden = !latest;
       if (!latest) return;
       title.textContent = latest.heading;
       advice.textContent = latest.advice;
-      warning.hidden = latest.status === 'ok';
-      warning.textContent = latest.status === 'hold' ? '安全状態が不明なため、％の表示を保留しています。' : '割合の比較より、使用中止・安全確認・点検が先です。';
+      warning.hidden = latest.status !== 'caution';
+      warning.textContent = latest.status === 'caution' ? '水漏れ・異常な音がある場合も、使用を止めて点検をご相談ください。' : '';
       bars.hidden = !latest.pcts;
-      document.getElementById('bc-score-caption').hidden = !latest.pcts;
       KEYS.forEach(function (k) {
         var n = latest.pcts ? latest.pcts[k] : 0;
         document.getElementById('bc-pct-' + k).textContent = latest.pcts ? n + '%' : '—';
@@ -149,13 +147,13 @@
       });
       while (notes.firstChild) notes.removeChild(notes.firstChild);
       latest.reasons.forEach(function (reason) { var li = document.createElement('li'); li.textContent = reason; notes.appendChild(li); });
-      document.getElementById('bc-next').textContent = latest.next;
     }
     function summary() {
       if (!latest) return '';
-      var titles = {danger:'危険な症状',age:'使用年数',symptom:'主な症状',performance:'冷暖房の効き',filter:'フィルター',wash:'専門業者の洗浄',quote:'修理見積もり'};
+      var titles = {age:'使用年数',symptom:'主な症状',performance:'冷暖房の効き',filter:'フィルター',wash:'専門業者の洗浄',quote:'修理見積もり'};
       var lines = ['【BCサービス エアコン相談｜試作 v' + VERSION + '】'];
       names.forEach(function (k) { var f = fields[k]; lines.push(titles[k] + '：' + (f.value ? f.options[f.selectedIndex].text : '未入力')); });
+      lines.push('焦げ臭さ・プラグ発熱・ブレーカー落ち：このチェックでは未確認');
       lines.push('初期案内：' + latest.heading);
       if (latest.pcts) lines.push('検討割合：買い替え ' + latest.pcts.replace + '%／修理・点検 ' + latest.pcts.repair + '%／クリーニング ' + latest.pcts.clean + '%');
       else lines.push('検討割合：安全確認優先のため算出なし');
@@ -178,29 +176,27 @@
         try { ok = document.execCommand('copy'); } catch (_error) { ok = false; }
         if (ok) manual.hidden = true;
       }
-      status.textContent = ok ? 'コピーしました。LINEを開き、貼り付けて送信してください。' : '下の相談文を長押し・選択してコピーしてください。自動送信はされません。';
+      status.textContent = ok ? 'コピーしました。LINEに貼り付けてください。' : '下の文章を長押ししてコピーしてください。';
     }
     function reset() {
-      fields.danger.value = ''; fields.age.value = ''; fields.symptom.value = '';
+      submitted = false;
+      fields.age.value = ''; fields.symptom.value = '';
       fields.performance.value = 'unknown'; fields.filter.value = 'unknown'; fields.wash.value = 'unknown'; fields.quote.value = 'none';
-      update(); fields.danger.focus();
+      form.querySelector('.optional').open = false;
+      update(); fields.age.focus();
     }
-    var examples = {
-      clean: {danger:'no',age:'mid',symptom:'dirt',performance:'normal',filter:'dirty',wash:'never',quote:'none'},
-      repair: {danger:'no',age:'new',symptom:'stop',performance:'none',filter:'clean',wash:'recent',quote:'under'},
-      replace: {danger:'no',age:'very_old',symptom:'poor',performance:'none',filter:'clean',wash:'recent',quote:'very_high'}
-    };
-    root.addEventListener('change', update);
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      submitted = true;
+      update();
+      if (!latest) return;
+      title.setAttribute('tabindex', '-1');
+      title.focus({preventScroll: true});
+      panel.scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start'});
+    });
+    form.addEventListener('change', update);
     document.getElementById('bc-copy').addEventListener('click', copy);
     document.getElementById('bc-reset').addEventListener('click', reset);
-    document.querySelectorAll('[data-example]').forEach(function (button) {
-      button.addEventListener('click', function () {
-        var example = examples[button.getAttribute('data-example')];
-        if (!example) return;
-        names.forEach(function (k) { fields[k].value = example[k]; }); update();
-        document.getElementById('bc-result-panel').scrollIntoView({behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'});
-      });
-    });
     update();
   }
   if (typeof module !== 'undefined' && module.exports) module.exports = {calculate:calculate, version:VERSION, tables:TABLES};
@@ -210,3 +206,4 @@
     else init();
   }
 })();
+
