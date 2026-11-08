@@ -1,0 +1,29 @@
+/* BC Service replacement estimator. Additive styles only; existing LP styles untouched. */
+.ae-shell{background:#fff;border:1px solid #d7e1de;border-radius:20px;padding:clamp(20px,3.6vw,38px);box-shadow:0 8px 24px rgba(10,52,55,.07)}
+.ae-eyebrow{font-size:.83rem;color:#006b6c;font-weight:800;letter-spacing:.04em;margin:0 0 9px}
+.ae-intro{max-width:750px;margin:0 0 22px;color:#4a5d5f}
+.ae-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:24px;align-items:start}
+.ae-controls{display:grid;gap:18px;min-width:0}
+.ae-field{display:grid;gap:8px;min-width:0}
+.ae-field label,.ae-group legend{font-weight:800;color:#1d2d2f}
+.ae-field select{display:block;width:100%;border:1.5px solid #9eb8b3;border-radius:10px;background:#fff;color:#1d2d2f;font:inherit;padding:13px 12px;min-height:48px}
+.ae-group{min-width:0;border:1px solid #d7e1de;border-radius:12px;padding:14px;margin:0}
+.ae-group legend{padding:0 6px}
+.ae-option{display:flex;gap:10px;align-items:flex-start;padding:8px 0;line-height:1.6;cursor:pointer}
+.ae-option input{width:20px;height:20px;margin:3px 0 0;flex:0 0 20px;accent-color:#007a33}
+.ae-help{font-size:.83rem;color:#536667;margin:0}
+.ae-result{background:#f0f7f4;border:1px solid #c5ded3;border-radius:16px;padding:22px;min-width:0}
+.ae-label{font-size:.86rem;color:#3c5554;margin:0 0 4px}
+.ae-price{display:block;font-size:1.24rem;font-weight:800;color:#154d4e;line-height:1.3;margin-bottom:16px}
+.ae-total{display:block;font-size:clamp(1.65rem,4vw,2.2rem);font-weight:900;color:#007a33;line-height:1.3;overflow-wrap:anywhere;margin-bottom:5px}
+.ae-result-title{font-size:1.06rem;font-weight:900;margin:18px 0 5px}
+.ae-quote{font-size:.9rem;color:#344b48;margin:8px 0 18px;white-space:pre-wrap;overflow-wrap:anywhere}
+.ae-cta{display:grid;gap:10px}
+.ae-copy{width:100%;font:inherit;border:2px solid #007a33;background:#fff;color:#00632a;font-weight:800;border-radius:10px;padding:12px 16px;min-height:48px;cursor:pointer}
+.ae-copy:hover{background:#e9f6ee}
+.ae-line{display:block;background:#007a33;color:#fff!important;text-decoration:none!important;text-align:center;font-weight:800;border-radius:10px;padding:14px 16px;min-height:48px}
+.ae-line:hover{background:#00632a}
+.ae-copy:focus-visible,.ae-line:focus-visible,.ae-field select:focus-visible,.ae-option input:focus-visible{outline:3px solid #116ed2;outline-offset:3px}
+.ae-status{font-size:.82rem;min-height:1.4em;margin:8px 0 0;color:#1f6653}
+.ae-caution{font-size:.8rem;color:#536667;margin:18px 0 0;line-height:1.75}
+@media(max-width:760px){.ae-layout{grid-template-columns:minmax(0,1fr)}.ae-shell{padding:19px}.ae-result{padding:20px}.ae-total{font-size:1.85rem}}
