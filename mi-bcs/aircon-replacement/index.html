@@ -1446,6 +1446,8 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="./aircon-estimator.css">
+  <script defer src="./aircon-estimator.js"></script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8LKLFDL3G"></script>
   <script>
@@ -1566,6 +1568,67 @@
         </article>
       </div>
     </section>
+    <section class="section section-light" id="aircon-estimator" aria-labelledby="ae-heading">
+      <div class="container">
+        <div class="ae-shell">
+          <p class="ae-eyebrow">かんたん料金チェック</p>
+          <h2 class="section-title" id="ae-heading">エアコン買替え費用をシミュレーション</h2>
+          <p class="ae-intro">お部屋の広さと設置条件を選ぶだけ。すでに掲載している本体・標準取付・標準撤去込みの価格をもとに、確定している追加費だけ計算します。</p>
+          <div class="ae-layout">
+            <div class="ae-controls">
+              <div class="ae-field">
+                <label for="ae-size">① 取り付けるお部屋の広さ</label>
+                <select id="ae-size">
+                  <option value="6">6畳用</option>
+                  <option value="8">8畳用</option>
+                  <option value="10">10畳用</option>
+                  <option value="14">14畳用</option>
+                </select>
+              </div>
+              <div class="ae-field">
+                <label for="ae-stairs">② 搬入・搬出の条件</label>
+                <select id="ae-stairs">
+                  <option value="standard">1〜2階、またはエレベーターあり：追加なし</option>
+                  <option value="3">エレベーターなし3階：+2,200円</option>
+                  <option value="4">エレベーターなし4階：+3,300円</option>
+                  <option value="5">エレベーターなし5階：+4,400円</option>
+                  <option value="6plus">エレベーターなし6階以上：要見積もり</option>
+                </select>
+              </div>
+              <fieldset class="ae-group">
+                <legend>③ 該当しそうな追加作業（複数選択可）</legend>
+                <label class="ae-option"><input type="checkbox" id="ae-pipe"><span>配管が4mを超えそう</span></label>
+                <label class="ae-option"><input type="checkbox" id="ae-cover"><span>配管の化粧カバーを付けたい</span></label>
+                <label class="ae-option"><input type="checkbox" id="ae-location"><span>室外機が屋根・壁面・吊り下げ等</span></label>
+                <label class="ae-option"><input type="checkbox" id="ae-power"><span>専用回路・コンセント・電圧などの工事が必要</span></label>
+                <label class="ae-option"><input type="checkbox" id="ae-hole"><span>新しい穴あけ・特殊な壁への施工</span></label>
+                <label class="ae-option"><input type="checkbox" id="ae-other"><span>高所・別階・その他の特殊作業</span></label>
+                <p class="ae-help">チェックした項目は、現場条件で金額が変わるため自動加算せず個別見積もりに引き継ぎます。</p>
+              </fieldset>
+            </div>
+            <aside class="ae-result" aria-label="概算結果" aria-live="polite">
+              <p class="ae-label">税込・標準入替えセット価格</p>
+              <output class="ae-price" id="ae-base">99,800円〜</output>
+              <p class="ae-label">自動計算できる追加費（階段作業）</p>
+              <output class="ae-price" id="ae-extra">+0円</output>
+              <p class="ae-label">現時点で計算できる下限目安</p>
+              <output class="ae-total" id="ae-total">99,800円〜</output>
+              <p class="ae-help">※未確定の追加工事費は含みません。</p>
+              <h3 class="ae-result-title">個別確認が必要な項目</h3>
+              <p class="ae-quote" id="ae-quote">追加工事の条件を確認してください。</p>
+              <div class="ae-cta">
+                <button class="ae-copy" type="button" id="ae-copy">選択内容をコピー</button>
+                <a class="ae-line" href="https://lin.ee/Q1s3uqV" target="_blank" rel="noopener noreferrer" data-cta-purpose="diagnosis">LINEで正式見積もりを相談</a>
+              </div>
+              <p id="ae-status" class="ae-status" role="status" aria-live="polite"></p>
+              <p class="ae-caution">LINEではコピーした内容と、室内機・室外機・型番ラベル・コンセント・配管周辺の写真をお送りください。</p>
+            </aside>
+          </div>
+          <p class="ae-caution">このシミュレーターは既設壁掛けエアコンの買替え・入替え向けです。新規設置、特殊な撤去や電気工事、機種指定、設置条件により総額は異なります。正式金額・施工可否は写真または現地確認後にご案内します。</p>
+        </div>
+      </div>
+    </section>
+
     <section class="section section-light" id="extra-fees">
       <div class="container">
         <h2 class="section-title">追加料金が発生する主なケース</h2>
