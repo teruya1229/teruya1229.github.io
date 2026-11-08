@@ -35,3 +35,5 @@ jobs:
           if-no-files-found: warn
 
 # v13.3 public deployment repeat QA: check final CTA portrait and canonical logo.
+
+# Verified production v14 visual acceptance replay 2026-11-08.
