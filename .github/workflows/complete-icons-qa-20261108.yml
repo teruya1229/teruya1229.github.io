@@ -123,7 +123,14 @@ jobs:
                 for(let i=0;i<12;i++){
                   const el=icons.nth(i);
                   await el.scrollIntoViewIfNeeded({timeout:12000});
-                  await el.evaluate(async img=>{try{await img.decode()}catch(e){const resp=await fetch(img.currentSrc,{cache:'no-store'}).catch(err=>({status:'NETWORK_ERROR',message:String(err)}));throw Error('LIVE_IMAGE_DECODE '+img.currentSrc+' HTTP='+resp.status+' TYPE='+resp.headers?.get?.('content-type')+' naturalWidth='+img.naturalWidth+' '+e.message)}});
+                  await el.evaluate(img=>{img.loading='eager';});
+                  await page.waitForFunction(i=>{const img=document.querySelectorAll('img[src*="/assets/icons/"]')[i];return !!img.currentSrc && img.complete;},i,{timeout:18000});
+                  await el.evaluate(async img=>{
+                    const url=new URL(img.getAttribute('src'),document.baseURI).href;
+                    const response=await fetch(url,{cache:'no-store'});
+                    if(response.status!==200 || !(response.headers.get('content-type')||'').includes('image/'))throw Error('LIVE_ICON_HTTP '+url+' '+response.status+' '+response.headers.get('content-type'));
+                    try{await img.decode()}catch(e){throw Error('LIVE_IMAGE_DECODE '+url+' naturalWidth='+img.naturalWidth+' '+e.message);}
+                  });
                   const result=await el.evaluate(img=>({src:img.getAttribute('src'),w:img.naturalWidth,h:img.naturalHeight,rect:img.getBoundingClientRect().width}));
                   if(!result.src.endsWith(names[i])||result.w!==192||result.h!==192||result.rect<38)throw Error('LIVE_ICON_BAD '+JSON.stringify({i,...result}));
                   statuses.push(result);
