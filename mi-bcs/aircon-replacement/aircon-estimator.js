@@ -42,13 +42,13 @@
       base: base,
       stairAmount: stairAmount,
       extras: extras,
-      text: '【BCサービス エアコン買替え概算相談】\\n' +
-        '畳数：' + sizeEl.value + '畳\\n' +
-        '階段搬入条件：' + floorLabel + '\\n' +
-        'LP掲載の標準入替え価格：' + yen(base) + '〜\\n' +
-        '確定している階段作業費：' + yen(stairAmount) + '\\n' +
-        '現在計算できる下限目安：' + yen(base + stairAmount) + '〜\\n' +
-        '別途確認したい項目：' + (extras.length ? extras.join('、') : '特になし（現地条件により変わる場合があります）') + '\\n' +
+      text: '【BCサービス エアコン買替え概算相談】\n' +
+        '畳数：' + sizeEl.value + '畳\n' +
+        '階段搬入条件：' + floorLabel + '\n' +
+        'LP掲載の標準入替え価格：' + yen(base) + '〜\n' +
+        '確定している階段作業費：' + yen(stairAmount) + '\n' +
+        '現在計算できる下限目安：' + yen(base + stairAmount) + '〜\n' +
+        '別途確認したい項目：' + (extras.length ? extras.join('、') : '特になし（現地条件により変わる場合があります）') + '\n' +
         '※本体・標準取付・標準撤去・リサイクル対応・工事5年保証込みの買替えプラン。配管等の別途見積費用は未加算です。正式金額と施工可否を確認してください。'
     };
   }
@@ -58,7 +58,7 @@
     extraEl.textContent = '+' + yen(data.stairAmount);
     totalEl.textContent = yen(data.base + data.stairAmount) + '〜';
     quoteEl.textContent = data.extras.length
-      ? '次の項目は金額未加算・別途確認：\\n・' + data.extras.join('\\n・')
+      ? '次の項目は金額未加算・別途確認：\n・' + data.extras.join('\n・')
       : '追加工事が発生しなければ上記が標準入替え価格の目安です。';
     statusEl.textContent = '';
   }
