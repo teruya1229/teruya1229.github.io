@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+<defs>
+  <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#0B3947" flood-opacity=".12"/></filter>
+  <linearGradient id="mint" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#27BE91"/><stop offset="1" stop-color="#07805E"/></linearGradient>
+  <linearGradient id="warm" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#F6AD69"/><stop offset="1" stop-color="#D9783E"/></linearGradient>
+</defs>
+<!-- Paid on-site inspection/diagnosis/work -->
+<circle cx="125" cy="129" r="109" fill="#FFF0E5"/>
+<circle cx="29" cy="174" r="5" fill="#EFBE90"/>
+<g filter="url(#shadow)">
+ <rect x="29" y="56" width="166" height="108" rx="19" fill="white" stroke="#164D5B" stroke-width="9"/>
+ <path d="M44 126h137" stroke="#B6D8DA" stroke-width="5" stroke-linecap="round"/>
+ <path d="M54 143h117" stroke="#164D5B" stroke-width="6" stroke-linecap="round"/>
+ <path d="M69 152h85" stroke="#90BFC4" stroke-width="4" stroke-linecap="round"/>
+ <circle cx="172" cy="76" r="4" fill="#11AE7B"/>
+</g>
+<!-- magnifying glass inspection -->
+<g filter="url(#shadow)">
+ <circle cx="121" cy="161" r="37" fill="#DDF4EE" stroke="#0F4857" stroke-width="9"/>
+ <circle cx="115" cy="154" r="21" fill="#BDE8E0"/>
+ <path d="M148 189l46 43" stroke="#0F4857" stroke-width="19" stroke-linecap="round"/>
+ <path d="M148 189l46 43" stroke="#39B393" stroke-width="9" stroke-linecap="round"/>
+</g>
+<!-- clearly distinct paid badge -->
+<g filter="url(#shadow)">
+ <circle cx="197" cy="69" r="35" fill="url(#warm)" stroke="white" stroke-width="5"/>
+ <path d="m182 49 15 21 15-21m-30 22h30m-30 13h30m-15-14v29" fill="none" stroke="white" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>

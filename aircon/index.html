@@ -6,7 +6,7 @@
 <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
 <meta content="#0b354b" name="theme-color"/>
 <meta content="沖縄南部のエアコン総合相談窓口、BCサービス。冷えない・水漏れ・異音・カビ臭さ。修理・クリーニング・新品買い替え・取付から、状態に合う方法をご案内。LINE相談は無料、現地点検は有料。" name="description"/>
-<meta content="aircon-v14-claude-cro-20261108" name="lp-build"/>
+<meta content="aircon-v14-policy-icons-20261108" name="lp-build"/>
 <meta content="index,follow" name="robots"/>
 <link href="https://teruya1229.github.io/aircon/" rel="canonical"/>
 <link href="/favicon.ico" rel="icon" type="image/x-icon"/>
@@ -727,6 +727,25 @@ img[data-profile].is-unavailable {display:none;}
  .hero__media .hero__photo-caption strong{font-size:16px}
 }
 </style>
+<style id="bc-policy-icon-refresh">
+/* Scoped to the three fee/coverage cards only; v14 logic and other sections remain untouched. */
+.section--policy .policy__items>div{grid-template-columns:76px minmax(0,1fr);column-gap:14px;row-gap:3px;padding:14px 17px;}
+.section--policy .policy__icon{display:block;grid-column:1;grid-row:1 / span 2;width:76px;height:76px;max-width:none;object-fit:contain;align-self:center;}
+.section--policy .policy__label{grid-column:2;display:flex;align-items:center;gap:7px;flex-wrap:wrap;min-width:0;}
+.section--policy .policy__label strong{flex:1 1 138px;font-size:15px;line-height:1.65;}
+.section--policy .policy__tag{display:inline-flex;align-items:center;justify-content:center;padding:5px 8px;border-radius:7px;font-size:12px;font-weight:900;line-height:1.3;white-space:nowrap;}
+.section--policy .policy__tag--free{color:#087651;background:#e2f7ee;}
+.section--policy .policy__tag--cost{color:#a65418;background:#ffeddc;}
+.section--policy .policy__tag--area{color:#155b60;background:#e5f1ef;}
+.section--policy .policy__items p{grid-column:2;margin-top:2px;}
+@media(max-width:600px){
+ .section--policy .policy__items>div{grid-template-columns:64px minmax(0,1fr);column-gap:12px;row-gap:4px;padding:12px;}
+ .section--policy .policy__icon{width:64px;height:64px;}
+ .section--policy .policy__label{gap:6px;}
+ .section--policy .policy__label strong{flex-basis:120px;font-size:14px;line-height:1.55;}
+ .section--policy .policy__tag{font-size:11px;padding:4px 7px;}
+}
+</style>
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -887,7 +906,7 @@ img[data-profile].is-unavailable {display:none;}
 <p class="voices__note">※エアコン洗浄のお客様の感想です。修理への評価ではありません。出典：<a href="https://teruya1229.github.io/complete-disassembly/">完全分解洗浄LP</a>・<a href="https://teruya1229.github.io/cursor-test/">エアコンクリーニングLP</a></p>
 </div>
 </section>
-<section class="section section--policy" id="policy"><div class="container policy__grid"><div><h2>相談は無料。<br/><span>訪問は、費用を確認してから。</span></h2></div><div class="policy__items"><div><span class="policy__badge policy__badge--free">無料</span><strong>LINEでの事前相談</strong></div><div><span class="policy__badge policy__badge--cost">有料</span><strong>現地での点検・診断・作業</strong><p>ご訪問前に内容と費用をご案内し、ご了解いただいてからお伺いします。</p></div><div class="policy__area"><span class="policy__badge policy__badge--area">地域</span><strong>沖縄南部を中心に対応</strong><p>南城市・八重瀬町・与那原町・南風原町・豊見城市・糸満市・那覇市。その他地域も作業内容によりご相談ください。</p></div></div></div></section>
+<section class="section section--policy" id="policy"><div class="container policy__grid"><div><h2>相談は無料。<br/><span>訪問は、費用を確認してから。</span></h2></div><div class="policy__items"><div><img class="policy__icon" src="assets/policy-line-consult.svg" width="256" height="256" alt="" loading="lazy" decoding="async"/><div class="policy__label"><span class="policy__tag policy__tag--free">無料</span><strong>LINEでの事前相談</strong></div></div><div><img class="policy__icon" src="assets/policy-paid-visit.svg" width="256" height="256" alt="" loading="lazy" decoding="async"/><div class="policy__label"><span class="policy__tag policy__tag--cost">有料</span><strong>現地での点検・診断・作業</strong></div><p>ご訪問前に内容と費用をご案内し、ご了解いただいてからお伺いします。</p></div><div class="policy__area"><img class="policy__icon" src="assets/policy-south-okinawa.svg" width="256" height="256" alt="" loading="lazy" decoding="async"/><div class="policy__label"><span class="policy__tag policy__tag--area">地域</span><strong>沖縄南部を中心に対応</strong></div><p>南城市・八重瀬町・与那原町・南風原町・豊見城市・糸満市・那覇市。その他地域も作業内容によりご相談ください。</p></div></div></div></section>
 
 <section class="section section--faq" id="faq"><div class="container"><div class="section-heading section-heading--center"><h2>よくあるご質問</h2></div><div class="faq-list"><details><summary>修理か洗浄か分からなくても相談できますか？<span aria-hidden="true">＋</span></summary><p>もちろんです。症状・型番・使用年数・設置状況を伺い、修理・洗浄・買い替えなどから対応方法をご案内します。写真だけでは判断できないこともあります。</p></details><details><summary>どんなエアコンでも修理してもらえますか？<span aria-hidden="true">＋</span></summary><p>機種、部品の供給状況、症状などにより対応できない場合があります。冷媒系統などの専門作業は協力会社へ連携し、メーカー修理が適切なケースはその旨をご案内します。</p></details><details><summary>エアコンの買い替えや取付もお願いできますか？<span aria-hidden="true">＋</span></summary><p>はい。新品エアコンの提案・販売・取付、既設機の撤去などをご相談いただけます。商品本体の販売は合同会社MI.BCS、現場作業はBCサービスまたは提携事業者が担当します。</p></details></div></div></section>
 <section class="final" id="contact"><div class="container final__inner"><div class="final__owner"><span class="portrait final__owner-photo"><span aria-hidden="true" class="portrait__fallback">照</span><img alt="" data-profile="" decoding="async" height="600" loading="lazy" src="https://teruya1229.github.io/cursor-test/images/teruya-profile.png" width="600"/></span><div><strong>BCサービス代表　照屋 昴</strong><p>清掃・現場経験17年／第二種電気工事士</p></div></div><h2>「どうしたらいい？」<br/>まずはLINEで聞かせてください。</h2><p class="final__hint">型番シールと症状の写真があれば、よりスムーズにご案内できます。</p><a class="btn btn--line btn--last" data-cta-location="bottom" href="https://lin.ee/Q1s3uqV" rel="noopener noreferrer" target="_blank"><span aria-hidden="true" class="line-icon">L</span><span>LINEで写真・症状を無料相談</span><span aria-hidden="true" class="btn__arrow">↗</span></a><p class="final__fine">※現地での点検・診断・作業は有料です。料金は訪問前にご案内します。</p><a class="final__phone" data-cta-location="bottom" href="tel:05017241338">電話でのご相談：050-1724-1338</a></div></section>
