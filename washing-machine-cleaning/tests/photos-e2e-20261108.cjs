@@ -26,7 +26,8 @@ const server=http.createServer((req,res)=>{
     for(const sel of ['.symptom__photo img','.step-card__photo img'])await page.locator(sel).first().waitFor();
     const data=await page.evaluate(async()=>{
       const a=[...document.querySelectorAll('.symptom__photo img,.step-card__photo img')];
-      await Promise.all(a.map(el=>el.decode()));
+      a.forEach(el=>{el.loading='eager';});
+      await Promise.race([Promise.all(a.map(el=>el.decode())),new Promise((_,reject)=>setTimeout(()=>reject(new Error('Photo decode timeout')),12000))]);
       return {width:innerWidth,docWidth:document.documentElement.scrollWidth,images:a.map(x=>({src:x.getAttribute('src'),natural:x.naturalWidth+'x'+x.naturalHeight,width:Math.round(x.getBoundingClientRect().width),height:Math.round(x.getBoundingClientRect().height),complete:x.complete,parent:x.parentElement.className,card:x.closest('.symptom')?'symptom':'step'})),typos:document.body.textContent.includes('総脱着'),diagnosis:!!document.getElementById('washer-diagnosis-form'),line:document.querySelector('a[data-cta-location="diagnosis_result"]')?.href};
     });
     if(data.images.length!==6||data.images.some(x=>!x.complete||x.natural.startsWith('0x')))throw new Error('Image not loaded '+width+': '+JSON.stringify(data.images));
