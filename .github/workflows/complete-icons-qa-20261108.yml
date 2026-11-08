@@ -90,6 +90,56 @@ jobs:
             }finally{await b.close()}
           })().catch(e=>{console.error(e.stack||e);process.exit(1)});
           JS
+      - name: Verify live GitHub Pages icons and responsive layout
+        shell: bash
+        run: |
+          node <<'JS'
+          const { chromium }=require('playwright');
+          const fs=require('fs');
+          (async()=>{
+            const names=[
+              '01-step-line.webp','02-step-quote.webp','03-step-visit.webp',
+              '04-feature-drainpan-fan.webp','05-feature-deep-dirt.webp','06-feature-circuit.webp',
+              '07-reason-deep.webp','08-reason-odor.webp','09-reason-clean.webp',
+              '10-assurance-insurance.webp','11-assurance-check.webp','12-assurance-repair.webp'];
+            const b=await chromium.launch({headless:true});
+            const outcomes=[];
+            try {
+              for(const width of [1440,390,320]){
+                const context=await b.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
+                const page=await context.newPage();
+                await page.route('**/*',route=>{
+                  const host=new URL(route.request().url()).hostname;
+                  if(host==='teruya1229.github.io')return route.continue();
+                  return route.abort('blockedbyclient');
+                });
+                const errors=[];
+                page.on('pageerror',e=>errors.push(e.message));
+                const resp=await page.goto('https://teruya1229.github.io/complete-disassembly/?verify_icons=20261108',{waitUntil:'domcontentloaded',timeout:45000});
+                if(resp.status()!==200)throw Error('LIVE_HTTP '+resp.status());
+                const icons=page.locator('img[src*="/assets/icons/"]');
+                if(await icons.count()!==12)throw Error('LIVE_COUNT '+await icons.count());
+                const statuses=[];
+                for(let i=0;i<12;i++){
+                  const el=icons.nth(i);
+                  await el.scrollIntoViewIfNeeded({timeout:12000});
+                  await el.evaluate(async img=>await img.decode());
+                  const result=await el.evaluate(img=>({src:img.getAttribute('src'),w:img.naturalWidth,h:img.naturalHeight,rect:img.getBoundingClientRect().width}));
+                  if(!result.src.endsWith(names[i])||result.w!==192||result.h!==192||result.rect<38)throw Error('LIVE_ICON_BAD '+JSON.stringify({i,...result}));
+                  statuses.push(result);
+                }
+                const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-window.innerWidth);
+                if(overflow>0)throw Error('LIVE_OVERFLOW '+width+':'+overflow);
+                if(errors.length)throw Error('LIVE_JS_ERRORS '+JSON.stringify(errors));
+                await page.locator('.consultation-flow').screenshot({path:'qa-screenshots/'+width+'-LIVE-steps.png'});
+                await page.locator('.sec-reason .reason-cards').screenshot({path:'qa-screenshots/'+width+'-LIVE-reasons.png'});
+                outcomes.push({width,http:resp.status(),icons:statuses.length,decoded:true,overflow,errors:errors.length,status:'PASS'});
+                await context.close();
+              }
+              console.log('COMPLETE_ICONS_LIVE_QA '+JSON.stringify({status:'PASS',cases:outcomes}));
+            }finally{await b.close()}
+          })().catch(e=>{console.error(e.stack||e);process.exit(1)})
+          JS
       - name: Save visual screenshots for human review
         if: always()
         uses: actions/upload-artifact@v4
