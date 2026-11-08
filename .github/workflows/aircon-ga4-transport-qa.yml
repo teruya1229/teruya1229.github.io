@@ -1,0 +1,26 @@
+name: BC aircon GA4 production event transport QA (isolated)
+on:
+  push:
+    branches: [qa/aircon-bantou-real-page-20261108]
+    paths:
+      - .github/workflows/aircon-ga4-transport-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-live-ga4:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install disposable browser (no site change)
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Verify pageview and CTA GA4 requests with debug mode
+        run: node scripts/qa/aircon-ga4-live-transport.cjs
