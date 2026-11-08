@@ -33,3 +33,5 @@ jobs:
           name: bc-aircon-hosted-live-proof
           path: output/bc-aircon-bantou-live-qa/
           if-no-files-found: warn
+
+# v13.3 public deployment repeat QA: check final CTA portrait and canonical logo.
