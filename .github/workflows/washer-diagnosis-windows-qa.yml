@@ -1,0 +1,47 @@
+name: Washer diagnosis Windows Chrome QA (isolated)
+on:
+  push:
+    branches:
+      - feature/washer-three-question-diagnosis-20261108
+    paths:
+      - washing-machine-cleaning/**
+      - .github/workflows/washer-diagnosis-windows-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  washer-diagnosis-windows:
+    name: Windows Chrome test (no external analytics)
+    runs-on: [self-hosted, Windows]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install test-only Playwright in runner temp
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $pkgDir = Join-Path $env:RUNNER_TEMP 'washer-qa-node'
+          New-Item -Path $pkgDir -ItemType Directory -Force | Out-Null
+          npm install --prefix $pkgDir --no-audit --no-fund --no-package-lock playwright@1.58.2
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & (Join-Path $pkgDir 'node_modules/.bin/playwright.cmd') install chromium
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Run isolated browser tests and save screenshots
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $env:NODE_PATH = Join-Path $env:RUNNER_TEMP 'washer-qa-node/node_modules'
+          node washing-machine-cleaning/tests/diagnosis-browser-qa.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Upload QA evidence (report and screenshots)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: washer-diagnosis-windows-chrome-qa
+          path: ${{ runner.temp }}/washer-diagnosis-qa/
+          if-no-files-found: warn
