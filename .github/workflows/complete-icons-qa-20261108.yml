@@ -1,0 +1,99 @@
+name: Complete-disassembly 12-icons visual QA
+on:
+  push:
+    branches: [feat/complete-disassembly-icons-20261108]
+    paths:
+      - 'complete-disassembly/**'
+      - '.github/workflows/complete-icons-qa-20261108.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  visual-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install test browser
+        shell: bash
+        run: |
+          npm install --no-save --no-package-lock playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Serve site and verify supplied icons across four widths
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/cd-qa-server.log 2>&1 &
+          node <<'JS'
+          const {chromium}=require('playwright');
+          const fs=require('fs');
+          (async()=>{
+            const expected=[
+              '01-step-line.webp','02-step-quote.webp','03-step-visit.webp',
+              '04-feature-drainpan-fan.webp','05-feature-deep-dirt.webp','06-feature-circuit.webp',
+              '07-reason-deep.webp','08-reason-odor.webp','09-reason-clean.webp',
+              '10-assurance-insurance.webp','11-assurance-check.webp','12-assurance-repair.webp'
+            ];
+            const b=await chromium.launch({headless:true});
+            const results=[];
+            try{
+              for(const width of [1440,820,390,320]){
+                const context=await b.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
+                const page=await context.newPage();
+                await page.route('**/*',r=>{
+                  const u=r.request().url();
+                  if(u.startsWith('http://127.0.0.1:8765/'))return r.continue();
+                  return r.abort('blockedbyclient');
+                });
+                const errors=[];
+                page.on('pageerror',e=>errors.push(e.message));
+                const response=await page.goto('http://127.0.0.1:8765/complete-disassembly/',{waitUntil:'domcontentloaded',timeout:30000});
+                await page.locator('.sec-price .cd-assurance-icon').last().scrollIntoViewIfNeeded();
+                await page.waitForTimeout(1000);
+                const data=await page.evaluate(async()=>{
+                  const icons=Array.from(document.querySelectorAll('img[src*="/assets/icons/"]'));
+                  for(const i of icons){await i.decode();}
+                  const rects=icons.map(x=>({src:x.getAttribute('src'),loaded:x.complete && x.naturalWidth===192 && x.naturalHeight===192,width:Math.round(x.getBoundingClientRect().width),height:Math.round(x.getBoundingClientRect().height)}));
+                  return {
+                    count:icons.length,
+                    rects,
+                    docWidth:document.documentElement.scrollWidth,
+                    viewportWidth:window.innerWidth,
+                    step:document.querySelectorAll('.consultation-flow .cd-flow-icon').length,
+                    features:document.querySelectorAll('.sec-about .cd-card-icon').length,
+                    reasons:document.querySelectorAll('.sec-reason .cd-card-icon').length,
+                    assurance:document.querySelectorAll('.sec-price .cd-assurance-icon').length,
+                    lineUrl:document.querySelector('.hero .line-cta')?.href||'',
+                    title:document.title
+                  }
+                });
+                if(response.status()!==200)throw Error('PAGE_HTTP_'+response.status());
+                if(errors.length)throw Error('JS_ERROR '+JSON.stringify(errors));
+                if(data.count!==12 || data.step!==3 || data.features!==3 || data.reasons!==3 || data.assurance!==3)throw Error('ICON_GROUP_COUNT '+JSON.stringify(data));
+                if(data.docWidth>data.viewportWidth)throw Error('HORIZONTAL_OVERFLOW '+JSON.stringify(data));
+                if(!data.lineUrl.startsWith('https://lin.ee/'))throw Error('LINE_CTA_MISSING');
+                for(let i=0;i<12;i++){
+                  if(!data.rects[i].src.endsWith(expected[i]))throw Error('ICON_ORDER '+i+' '+data.rects[i].src);
+                  if(!data.rects[i].loaded||data.rects[i].width<38||data.rects[i].height<38)throw Error('ICON_DECODE_OR_SIZE '+JSON.stringify(data.rects[i]));
+                }
+                fs.mkdirSync('qa-screenshots',{recursive:true});
+                for(const [label,selector] of [['steps','.consultation-flow'],['features','.about-feature-list'],['reasons','.reason-cards'],['assurance','.price-insurance-card']]){
+                  await page.locator(selector).screenshot({path:'qa-screenshots/'+width+'-'+label+'.png'});
+                }
+                results.push({width,status:'PASS',...data,errors});
+                await context.close();
+              }
+              console.log('COMPLETE_ICONS_QA '+JSON.stringify({status:'PASS',cases:results}));
+            }finally{await b.close()}
+          })().catch(e=>{console.error(e.stack||e);process.exit(1)});
+          JS
+      - name: Save visual screenshots for human review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: complete-icons-qa-screenshots
+          path: qa-screenshots/
+          if-no-files-found: ignore
