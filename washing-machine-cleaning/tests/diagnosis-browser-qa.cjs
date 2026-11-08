@@ -24,7 +24,7 @@ const server=http.createServer((req,res)=>{
   })
 });
 function events(page) {
-  return page.evaluate(()=>(window.dataLayer||[]).filter(e=>Array.isArray(e)&&e[0]==='event').map(e=>({name:e[1],props:e[2]||{}})))
+  return page.evaluate(()=>(window.dataLayer||[]).filter(e=>e&&e[0]==='event').map(e=>({name:e[1],props:e[2]||{}})))
 }
 async function run() {
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
@@ -36,7 +36,7 @@ async function run() {
     catch(e){report.chrome_error=String(e.message).slice(0,250);browser=await chromium.launch({headless:true});report.browser='Playwright Chromium'}
     for(const width of [1440,820,390,360,320]){
       const ctx=await browser.newContext({viewport:{width,height:850},reducedMotion:'reduce'});
-      await ctx.route(/https?:\\/\\/(www\\.googletagmanager\\.com|www\\.google-analytics\\.com|www\\.youtube-nocookie\\.com|www\\.youtube\\.com)\\//,route=>route.abort());
+      await ctx.route('**/*', route=>{const target=route.request().url();return target.startsWith('http://127.0.0.1:')?route.continue():route.abort();});
       const page=await ctx.newPage();
       const pageErrors=[];
       page.on('pageerror',e=>pageErrors.push(e.message));
