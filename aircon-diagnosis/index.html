@@ -10,7 +10,7 @@
 <title>洗う？直す？買い替える？｜BCサービス エアコン かんたんチェック（試作）</title>
 <link rel="icon" href="https://teruya1229.github.io/favicon.ico">
 <link rel="stylesheet" href="./style.css?v=03">
-<script defer src="./logic.js?v=04"></script>
+<script defer src="./logic.js?v=05"></script>
 </head>
 <body>
 <a class="skip" href="#bc-form">チェック項目へ</a>
@@ -78,13 +78,14 @@
             </select>
           </div>
           <div class="field">
-            <label for="q-wash" class="question"><span class="qnum">5</span><span>業者に洗浄を頼んだのは？</span></label>
+            <label for="q-wash" class="question"><span class="qnum">5</span><span>業者による洗浄は？</span></label>
             <select id="q-wash">
               <option value="unknown">分からない</option>
               <option value="recent">1年以内</option>
               <option value="some">1年超〜3年未満</option>
               <option value="old">3年以上前</option>
               <option value="never">一度も頼んでいない</option>
+              <option value="not_improved">洗浄したが症状が改善しない</option>
             </select>
           </div>
           <div class="field">
@@ -113,20 +114,20 @@
         <h3 id="bc-result-title"></h3>
         <p id="bc-advice"></p>
         <div id="bc-bars" class="bar-stack">
-          <div class="bar-row replace">
-            <div class="bar-header"><span class="bar-label">買い替え</span><strong id="bc-pct-replace" class="bar-value">—</strong></div>
-            <div class="bar-track" role="progressbar" id="bc-bar-replace" aria-label="買い替えの検討割合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill" id="bc-fill-replace"></div></div>
+          <div class="bar-row clean">
+            <div class="bar-header"><span class="bar-label">クリーニング</span><strong id="bc-pct-clean" class="bar-value">—</strong></div>
+            <div class="bar-track" role="progressbar" id="bc-bar-clean" aria-label="クリーニングの検討割合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill" id="bc-fill-clean"></div></div>
           </div>
           <div class="bar-row repair">
             <div class="bar-header"><span class="bar-label">修理・点検</span><strong id="bc-pct-repair" class="bar-value">—</strong></div>
             <div class="bar-track" role="progressbar" id="bc-bar-repair" aria-label="修理・点検の検討割合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill" id="bc-fill-repair"></div></div>
           </div>
-          <div class="bar-row clean">
-            <div class="bar-header"><span class="bar-label">クリーニング</span><strong id="bc-pct-clean" class="bar-value">—</strong></div>
-            <div class="bar-track" role="progressbar" id="bc-bar-clean" aria-label="クリーニングの検討割合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill" id="bc-fill-clean"></div></div>
+          <div class="bar-row replace">
+            <div class="bar-header"><span class="bar-label">買い替え</span><strong id="bc-pct-replace" class="bar-value">—</strong></div>
+            <div class="bar-track" role="progressbar" id="bc-bar-replace" aria-label="買い替えの検討割合" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="bar-fill" id="bc-fill-replace"></div></div>
           </div>
         </div>
-        <p class="notice">※割合は判断の目安です。故障確率ではありません。</p>
+        <p class="notice">※検討の目安です。改善する確率ではありません。</p>
         <details class="reasons" id="bc-reasons">
           <summary>判断の理由</summary>
           <ul id="bc-notes"></ul>
@@ -152,7 +153,7 @@
   <div class="wrap">
     <details class="references">
       <summary>判断基準・参考資料</summary>
-      <p>家庭用壁掛けエアコン向けの試作です。年数・症状・効きなどをもとに、検討の目安を表示します。配点はメーカー公認の診断式ではなく、最終判断には状態の確認が必要です。</p>
+      <p>家庭用壁掛けエアコン向けの試作です。年数・症状・効きなどをもとに、検討の目安を表示します。配点は清掃を先に検討する方針を反映したもので、実測の改善率ではありません。最終判断には状態の確認が必要です。</p>
       <p>部品の有無は機種によって異なります。使用年数だけで修理不可とは判断しません。</p>
       <ul>
         <li><a href="https://www.daikin.co.jp/taisetsu/shouan" target="_blank" rel="noopener noreferrer">ダイキン：エアコンの安全確認</a></li>

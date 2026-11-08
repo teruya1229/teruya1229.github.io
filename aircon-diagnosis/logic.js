@@ -1,10 +1,10 @@
-/* BC aircon triage v0.4: provisional rules, NOT calibrated probabilities.
+/* BC aircon triage v0.5: consultation priorities, NOT calibrated probabilities.
  * No inputs leave this page automatically. No analytics or storage is added.
- * Safety guidance follows the results; the form does not collect safety answers.
- * Explicit safety flags remain supported for direct calculate() callers. */
+ * Cleaning-first is conditional on checking dirt/blockage and safety.
+ * Known faults, unsuccessful cleaning, and safety concerns take priority. */
 (function () {
   'use strict';
-  var VERSION = '0.4';
+  var VERSION = '0.5';
   var KEYS = ['replace', 'repair', 'clean'];
   var LABELS = {replace: '買い替え', repair: '修理・点検', clean: 'クリーニング'};
   var TABLES = {
@@ -12,13 +12,13 @@
     symptom: {smell: [-4,-5,55], dirt: [-6,-8,60], air: [-4,17,55], poor: [-7,28,46], stop: [15,65,-10], leak: [-7,28,46], noise: [9,65,-10], none: [0,-8,5], maintenance: [0,-8,20]},
     performance: {normal: [-2,-5,10], weak: [5,15,5], none: [10,40,-15], unknown: [0,0,0]},
     filter: {dirty: [0,0,12], clean: [0,0,-2], unknown: [0,0,0]},
-    wash: {recent: [0,0,-10], some: [0,0,4], old: [0,0,10], never: [0,0,14], unknown: [0,0,0]},
+    wash: {recent: [0,0,-10], some: [0,0,4], old: [0,0,10], never: [0,0,14], unknown: [0,0,0], not_improved: [0,45,-35]},
     quote: {none: [0,0,0], under: [-8,30,0], medium: [3,16,0], high: [20,4,0], very_high: [40,-5,0], unavailable: [80,-15,-20]}
   };
   var SYMPTOM_REASON = {
     smell: 'ニオイが主な悩みのため、汚れの確認を重視しました。焦げ臭さは別扱いです。',
     dirt: '内部の目に見える汚れを、清掃を検討する材料にしました。',
-    air: 'フィルターや内部の汚れを確認し、まず清掃を検討します。改善しなければ修理・点検が必要です。',
+    air: 'フィルターや内部の汚れを確認し、必要なら清掃。改善しなければ修理・点検を検討します。',
     poor: '汚れが原因なら清掃で改善する場合があります。冷媒や機械の不具合は修理・点検が必要です。',
     stop: 'エラー・途中停止があるため、清掃を頼む前に原因確認を優先します。',
     leak: '排水の詰まりなら清掃で改善する場合があります。水漏れ中は運転を止め、原因を確認してから作業を判断します。',
@@ -62,32 +62,47 @@
     Object.keys(TABLES).forEach(function (k) {
       TABLES[k][v[k]].forEach(function (n, i) { score[i] += n; });
     });
-    var abnormal = ['poor','stop','leak','noise'].indexOf(v.symptom) !== -1 || v.performance === 'none';
+    var cleaningFailed = v.wash === 'not_improved';
+    var abnormal = ['poor','stop','leak','noise'].indexOf(v.symptom) !== -1 || v.performance === 'none' || cleaningFailed;
     var quoted = v.quote !== 'none';
-    var cleaningComparison = ['poor','leak'].indexOf(v.symptom) !== -1 && !quoted;
+    var cleaningComparison = ['poor','leak'].indexOf(v.symptom) !== -1 && !quoted && !cleaningFailed;
+    // Prefer checking dirt/blockage before paid cleaning, not cleaning every fault.
+    // A recent wash alone does NOT mean cleaning has failed for the current symptom.
+    var cleaningFirst = !quoted && !cleaningFailed &&
+      (['smell','dirt','air','poor','leak','maintenance'].indexOf(v.symptom) !== -1 ||
+       (v.symptom === 'none' && v.performance === 'weak')) &&
+      (v.performance !== 'none' || cleaningComparison) &&
+      !(v.symptom === 'maintenance' && v.wash === 'recent');
     var old = v.age === 'old' || v.age === 'very_old';
     var costly = v.quote === 'high' || v.quote === 'very_high';
     var caution = v.symptom === 'leak' || v.symptom === 'noise';
     var reasons = [SYMPTOM_REASON[v.symptom]];
-    if (v.performance === 'none') reasons.push('ほとんど効かないため、汚れの有無にかかわらず故障等の点検を先に行う想定です。');
+    if (v.performance === 'none') reasons.push('ほとんど効かない場合は、清掃で直ると決めつけず、作業前に原因を確認します。');
     if (old && (abnormal || quoted)) {
       reasons.push('長く使用しているため、修理費・部品供給・今後使う期間を比較する想定です。年数だけで修理不可とは判断しません。');
       if (costly) score[0] += v.age === 'very_old' ? 60 : 45;
     }
-    if (v.age === 'new' && (abnormal || quoted)) reasons.push('比較的新しいため、買い替え前に保証・延長保証の対象かも確認してください。');
+    if (v.age === 'new' && (abnormal || quoted)) reasons.push('比較的新しいため、有料作業の前に保証・延長保証の対象かも確認してください。');
     if (costly) reasons.push('入力された修理見積もりが高めのため、新品の総額との比較を重視しました。');
     if (v.quote === 'under' || v.quote === 'medium') reasons.push('入力された修理見積もりを、修理を検討する材料にしました。見積範囲・追加費・保証は別途確認が必要です。');
     if (v.filter === 'dirty') reasons.push('フィルター汚れは、まず取扱説明書に沿ったお手入れで改善する場合もあります。有料の内部洗浄が必須という意味ではありません。');
     if (v.wash === 'old' || v.wash === 'never') reasons.push('洗浄履歴も補助材料にしています。年数だけで清掃の必要性は確定しません。');
-    if (['stop','noise'].indexOf(v.symptom) !== -1 || (v.performance === 'none' && !cleaningComparison)) score[2] = Math.min(score[2], 7);
+    if (['stop','noise'].indexOf(v.symptom) !== -1 || cleaningFailed || (v.performance === 'none' && !cleaningComparison)) score[2] = Math.min(score[2], 7);
     else if (quoted) score[2] = Math.min(score[2], 20);
-    // Business review: compare cleaning and repair before a confirmed fault or quotation.
-    // These are consultation priorities, not measured fault or cleaning-success probabilities.
+    // Consultation priorities only; these weights are not measured success rates.
     if (cleaningComparison && v.performance === 'none') {
       score[1] -= 35;
       score[2] += 28;
     }
     if (!abnormal && !quoted && (v.symptom === 'none' || v.symptom === 'maintenance')) score[0] = Math.min(score[0], 10);
+    if (cleaningFirst) {
+      score[2] += 18;
+      score[1] = Math.max(5, score[1] - 5);
+      reasons.push('まず汚れ・詰まりを確認し、必要なら清掃。それでも改善しなければ修理・点検へ進む方針を反映しています。');
+    }
+    if (cleaningFailed) {
+      reasons.unshift('洗浄しても症状が改善していないため、繰り返し清掃するより原因確認・修理を優先します。');
+    }
     var pcts = percentages(score);
     if (v.quote === 'unavailable') {
       pcts = {replace:90, repair:5, clean:5};
@@ -105,24 +120,35 @@
     }[leader];
     if (nearTie) advice = '型番や写真を確認して判断します。';
     if (noProblem) { heading = '今すぐ作業が必要とは限りません'; advice = '不具合がなければ、普段のお手入れで十分な場合もあります。'; }
-    if (v.symptom === 'air' && !quoted && v.performance !== 'none' && leader === 'clean') {
+    if (cleaningFirst && leader === 'clean' && !noProblem) {
       heading = 'まずはクリーニングを検討';
-      advice = '汚れを確認してクリーニング。改善しなければ修理・点検へ。';
+      advice = '汚れ・詰まりを確認。必要なら清掃し、改善しなければ修理・点検へ。';
     }
-    if (v.symptom === 'poor' && cleaningComparison) {
-      heading = 'クリーニングと修理を比較';
-      advice = v.performance === 'none' ? 'ほとんど効かない場合は原因確認が先。汚れなら清掃、故障なら修理へ。' : '汚れが原因ならクリーニング。改善しなければ修理・点検へ。';
+    if (v.symptom === 'poor' && v.performance === 'none' && !quoted && !cleaningFailed) {
+      heading = 'まずは原因を確認';
+      advice = '汚れならクリーニング。故障なら修理・点検へ。作業前に切り分けます。';
     }
     if (v.symptom === 'leak' && cleaningComparison) {
-      heading = 'クリーニングと修理を比較';
-      advice = '排水の詰まりなら清掃。改善しなければ修理・点検へ。';
+      heading = 'まずは排水の詰まりを確認';
+      advice = '詰まりが原因ならクリーニング。改善しなければ修理・点検へ。';
     }
-    if (v.symptom === 'noise' || (v.symptom === 'leak' && quoted)) { heading = 'まずは点検をご相談ください'; advice = '原因を確認してから、修理・買い替えを判断します。'; }
+    if (cleaningFailed && !quoted) {
+      heading = '清掃で改善しないため、修理・点検へ';
+      advice = '追加の清掃はせず、原因と修理費を確認しましょう。';
+    }
+    if (v.symptom === 'stop' || v.symptom === 'noise' || (v.symptom === 'leak' && quoted) ||
+        (v.performance === 'none' && !cleaningComparison && !cleaningFailed)) {
+      heading = 'まずは点検をご相談ください';
+      advice = '清掃で直ると決めつけず、原因を確認してから作業を判断します。';
+    }
     if (v.age === 'unknown' || v.performance === 'unknown') reasons.push('年数または効き具合が不明なため、結果は特に暫定的です。型番ラベルと状況を確認してください。');
+    var next = abnormal || quoted ? '型番・エラー表示・状況の写真を添えて相談。保証がある場合は契約窓口も確認。' : '型番ラベルと汚れの写真を添えて相談。内部の自己分解・洗浄はしないでください。';
+    if (cleaningFirst) next = '型番と症状の写真を添えて相談。汚れ・詰まりを確認し、必要なら清掃、改善しなければ修理・点検。';
+    if (cleaningFailed) next = '洗浄した時期と、改善しなかった症状を添えて修理・点検を相談。';
+    if (caution) next = '運転を止め、型番と症状の写真を添えて相談。作業前に原因と安全を確認。';
     return {
       status: caution ? 'caution' : 'ok', pcts: pcts, leading: leader,
-      heading: heading, advice: advice, reasons: reasons,
-      next: abnormal || quoted ? '型番・エラー表示・状況の写真を添えて相談。保証がある場合は契約窓口も確認。' : '型番ラベルと汚れの写真を添えて相談。内部の自己分解・洗浄はしないでください。'
+      heading: heading, advice: advice, reasons: reasons, next: next
     };
   }
   function init() {
@@ -175,9 +201,9 @@
       lines.push('焦げ臭さ・プラグ発熱・ブレーカー落ち：このチェックでは未確認');
       lines.push('初期案内：' + latest.heading, 'ご案内：' + latest.advice);
       if (latest.status === 'caution') lines.push('注意：' + warning.textContent);
-      if (latest.pcts) lines.push('検討割合：買い替え ' + latest.pcts.replace + '%／修理・点検 ' + latest.pcts.repair + '%／クリーニング ' + latest.pcts.clean + '%');
+      if (latest.pcts) lines.push('検討割合：クリーニング ' + latest.pcts.clean + '%／修理・点検 ' + latest.pcts.repair + '%／買い替え ' + latest.pcts.replace + '%');
       else lines.push('検討割合：安全確認優先のため算出なし');
-      lines.push('次の確認：' + latest.next, '※％は仮の配点による目安です。故障確率・修理成功率ではありません。', '型番・写真を添えて相談します。');
+      lines.push('次の確認：' + latest.next, '※％は仮の配点による検討の目安です。改善する確率ではありません。', '型番・写真を添えて相談します。');
       return lines.join('\n');
     }
     async function copy() {
@@ -203,6 +229,7 @@
       fields.age.value = ''; fields.symptom.value = '';
       fields.performance.value = 'unknown'; fields.filter.value = 'unknown'; fields.wash.value = 'unknown'; fields.quote.value = 'none';
       form.querySelector('.optional').open = false;
+      document.getElementById('bc-reasons').open = false;
       update(); fields.age.focus();
     }
     form.addEventListener('submit', function (event) {
@@ -226,4 +253,3 @@
     else init();
   }
 })();
-
