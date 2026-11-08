@@ -4,8 +4,8 @@ const out=path.join(process.cwd(),'output','bc-aircon-bantou-live-qa');fs.mkdirS
 function probe(port){return new Promise(resolve=>{const q=http.get('http://127.0.0.1:'+port+'/json/version',res=>{let s='';res.on('data',v=>s+=v);res.on('end',()=>{try{resolve(JSON.parse(s).webSocketDebuggerUrl?'http://127.0.0.1:'+port:null)}catch{resolve(null)}})});q.on('error',()=>resolve(null));q.setTimeout(300,()=>{q.destroy();resolve(null)})})}
 async function main(){
  let cdp=null;for(const port of [9222,9223,9224,9333,9225,9226,9227,9228,9229,9230,9231,9232,9233,9234,9235,9236,9237,9238,9239]){cdp=await probe(port);if(cdp)break}
- if(!cdp)throw Error('BrowserBantou shared Chrome CDP unavailable; no fallback');
- const browser=await pw.chromium.connectOverCDP(cdp,{timeout:15000}),rows=[];
+ if(!cdp && process.env.QA_LINUX_FALLBACK!=='1')throw Error('BrowserBantou shared Chrome CDP unavailable; no fallback');
+ const browser=cdp?await pw.chromium.connectOverCDP(cdp,{timeout:15000}):await pw.chromium.launch({headless:true,args:['--no-sandbox']}),rows=[];
  try{
   for(const [w,h] of [[1440,900],[390,844],[320,700]]){
    const ctx=await browser.newContext({viewport:{width:w,height:h},deviceScaleFactor:1});const page=await ctx.newPage();let errors=[],failed=[];
@@ -30,6 +30,6 @@ async function main(){
   const canonical=await page.locator('header .brand').first().evaluate(e=>e.outerHTML.slice(0,400)).catch(()=>null);
   rows.push({canonical});console.log('BANTOU_CANONICAL '+canonical);await ctx.close();
  }finally{try{await browser.close()}catch{}}
- fs.writeFileSync(path.join(out,'qa.json'),JSON.stringify({cdp,rows},null,2));console.log('BANTOU_SUCCESS');
+ fs.writeFileSync(path.join(out,'qa.json'),JSON.stringify({engine:cdp?'BrowserBantou-CDP':'GitHubHosted-Linux-Chromium',cdp,rows},null,2));console.log('BANTOU_SUCCESS');
 }
 main().catch(e=>{fs.writeFileSync(path.join(out,'error.txt'),String(e.stack||e));console.error('BANTOU_FAIL '+String(e.stack||e));process.exitCode=1});
