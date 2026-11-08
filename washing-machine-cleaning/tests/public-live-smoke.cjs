@@ -52,6 +52,28 @@ async function useEngine(engine, label, widths) {
       const main=await page.goto(TARGET,{waitUntil:'domcontentloaded',timeout:45000});
       check(!!main && main.status()===200,label+' '+width+': LP HTTP status '+(main&&main.status()));
       await page.locator('#washer-diagnosis-form').waitFor({state:'visible',timeout:20000});
+      const photoState=await page.evaluate(async()=>{
+        const elements=[...document.querySelectorAll('.symptom__photo img,.step-card__photo img')];
+        elements.forEach(img=>{img.loading='eager';});
+        await Promise.race([
+          Promise.all(elements.map(img=>img.decode())),
+          new Promise((_,reject)=>setTimeout(()=>reject(new Error('public photo loading timeout')),15000))
+        ]);
+        return {
+          sources:elements.map(img=>img.getAttribute('src')),
+          sizes:elements.map(img=>({width:Math.round(img.getBoundingClientRect().width),height:Math.round(img.getBoundingClientRect().height),natural:img.naturalWidth})),
+          typo:document.body.textContent.includes('総脱着'),
+          page:document.documentElement.scrollWidth
+        };
+      });
+      check(photoState.sources.length===6,label+' '+width+': expected 6 new photos');
+      check(!photoState.typo,label+' '+width+': old typo still visible');
+      check(photoState.sizes.every(img=>img.natural>0),label+' '+width+': missing photo');
+      for(const i of [0,3]) {
+        check(new Set(photoState.sizes.slice(i,i+3).map(x=>x.width+'x'+x.height)).size===1,label+' '+width+': inconsistent photo dimensions');
+      }
+      if(label==='chrome'&&width===390)report.photoUrls=photoState.sources;
+
       const info=await page.evaluate(()=>({
         scrollWidth:document.documentElement.scrollWidth,
         innerWidth:window.innerWidth,
