@@ -1,0 +1,37 @@
+name: BC aircon shared Browser Bantou live QA
+on:
+  push:
+    branches: [qa/aircon-bantou-real-page-20261108]
+    paths:
+      - .github/workflows/bc-aircon-bantou-live-qa.yml
+      - scripts/qa/bc-aircon-bantou-live-qa.cjs
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: [self-hosted, Windows]
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Inspect on known Windows Runner
+        shell: pwsh
+        run: |
+          if ($env:RUNNER_NAME -ne 'bc-bantou-dev') { throw "Wrong runner" }
+          $local = 'C:\dev\browser-bantou\node_modules\playwright'
+          if (-not (Test-Path $local)) {
+            $pkg = Join-Path $env:RUNNER_TEMP 'aircon-live-qa-deps'
+            npm install --prefix $pkg --no-audit --no-fund --no-package-lock playwright@1.58.2
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+          $env:NODE_PATH = "C:\dev\browser-bantou\node_modules;$(Join-Path $env:RUNNER_TEMP 'aircon-live-qa-deps\node_modules')"
+          node scripts/qa/bc-aircon-bantou-live-qa.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Browser Bantou screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bc-aircon-bantou-live-qa
+          path: output/bc-aircon-bantou-live-qa/
+          if-no-files-found: warn
