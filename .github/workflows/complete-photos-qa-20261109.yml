@@ -1,7 +1,7 @@
 name: Complete-disassembly photo refresh QA 20261109
 on:
   push:
-    branches: [feat/complete-photo-refresh-20261109]
+    branches: [feat/complete-photo-refresh-20261109, feat/complete-parts-photo-20261109]
     paths:
       - 'complete-disassembly/**'
       - '.github/workflows/complete-photos-qa-20261109.yml'
@@ -38,6 +38,17 @@ jobs:
                 page.on('pageerror',e=>errors.push(e.message));
                 const response=await page.goto('http://127.0.0.1:8765/complete-disassembly/',{waitUntil:'domcontentloaded',timeout:30000});
                 if(response.status()!==200)throw Error('HTTP_'+response.status());
+                const parts=page.locator('img[src="./assets/photos/parts-ready-560.webp"]');
+                if(await parts.count()!==1)throw Error('PARTS_IMG_COUNT '+await parts.count());
+                await parts.evaluate(img=>{img.loading='eager'});
+                await parts.scrollIntoViewIfNeeded();
+                await page.waitForFunction(()=>{
+                  const img=document.querySelector('img[src="./assets/photos/parts-ready-560.webp"]');
+                  return !!img?.currentSrc && img.complete;
+                },{timeout:12000});
+                await parts.evaluate(async el=>await el.decode());
+                const partsInfo=await parts.evaluate(el=>({src:el.getAttribute('src'),naturalWidth:el.naturalWidth,naturalHeight:el.naturalHeight}));
+                if(partsInfo.naturalWidth!==560||partsInfo.naturalHeight!==373)throw Error('PARTS_IMG_DIM '+JSON.stringify(partsInfo));
                 const imgs=page.locator('.sec-beforeafter-refresh img.svc-card-img');
                 if(await imgs.count()!==2)throw Error('LOWER_IMAGE_COUNT');
                 const expected=['coil-before-after.webp','fan-before-after.webp'];
@@ -58,17 +69,18 @@ jobs:
                 if(await page.locator('.sec-beforeafter-refresh').getByText('熱交換器のビフォーアフター').count()!==1)throw Error('COIL_CAPTION_MISSING');
                 if(await page.locator('.sec-beforeafter-refresh').getByText('送風ファン・内部のビフォーアフター').count()!==1)throw Error('FAN_CAPTION_MISSING');
                 const other=await page.evaluate(()=>({
-                  parts:!!document.querySelector('img[src="./parts-clean-optimized.jpg"]'),
+                  parts:document.querySelector('img[src="./assets/photos/parts-ready-560.webp"]')?.naturalWidth,
                   reusedFan:Array.from(document.images).filter(x=>x.getAttribute('src')==='./fan-before-after-optimized.jpg').length,
                   reusedWater:Array.from(document.images).filter(x=>x.getAttribute('src')==='./dirty-water-optimized.jpg').length,
                   scrollWidth:document.documentElement.scrollWidth,
                   viewportWidth:window.innerWidth,
                   lineLink:document.querySelector('.hero .line-cta')?.href
                 }));
-                if(other.reusedFan!==1||other.reusedWater!==1||!other.parts||other.scrollWidth>other.viewportWidth||!other.lineLink?.startsWith('https://lin.ee/'))throw Error('REGRESSION '+JSON.stringify(other));
+                if(other.reusedFan!==1||other.reusedWater!==1||other.parts!==560||other.scrollWidth>other.viewportWidth||!other.lineLink?.startsWith('https://lin.ee/'))throw Error('REGRESSION '+JSON.stringify(other));
                 if(errors.length)throw Error('JS_ERRORS '+JSON.stringify(errors));
                 fs.mkdirSync('qa-photos',{recursive:true});
                 await page.locator('.sec-beforeafter-refresh').screenshot({path:'qa-photos/photos-'+width+'.png'});
+                await parts.locator('..').screenshot({path:'qa-photos/parts-'+width+'.png'});
                 results.push({width,http:200,images:observed,overflow:0,jsErrors:0,other});
                 await ctx.close();
               }
