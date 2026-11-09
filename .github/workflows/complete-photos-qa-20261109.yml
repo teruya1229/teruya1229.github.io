@@ -88,6 +88,58 @@ jobs:
             }finally{await browser.close()}
           })().catch(e=>{console.error(e.stack||e);process.exit(1)});
           JS
+      - name: Verify publicly deployed parts photograph on GitHub Pages
+        run: |
+          node <<'JS'
+          const fs=require('fs');
+          const {chromium}=require('playwright');
+          (async()=>{
+            const b=await chromium.launch({headless:true});
+            const results=[];
+            try {
+              for(const width of [1440,390,320]){
+                const c=await b.newContext({viewport:{width,height:900},reducedMotion:'reduce'});
+                const p=await c.newPage();
+                await p.route('**/*',r=>{
+                  const hostname=new URL(r.request().url()).hostname;
+                  return hostname==='teruya1229.github.io'?r.continue():r.abort('blockedbyclient');
+                });
+                const errors=[];
+                p.on('pageerror',e=>errors.push(e.message));
+                const response=await p.goto('https://teruya1229.github.io/complete-disassembly/?parts_verify=20261109',{waitUntil:'domcontentloaded',timeout:45000});
+                if(response.status()!==200)throw Error('LIVE_PAGE_HTTP '+response.status());
+                const img=p.locator('img[src="./assets/photos/parts-ready-560.webp"]');
+                if(await img.count()!==1)throw Error('LIVE_PARTS_IMAGE_NOT_PRESENT');
+                await img.evaluate(el=>{el.loading='eager'});
+                await img.scrollIntoViewIfNeeded();
+                await p.waitForFunction(()=>{
+                  const el=document.querySelector('img[src="./assets/photos/parts-ready-560.webp"]');
+                  return !!el?.currentSrc && el.complete;
+                },null,{timeout:15000});
+                const info=await img.evaluate(async el=>{
+                  const url=new URL(el.getAttribute('src'),document.baseURI).href;
+                  const res=await fetch(url,{cache:'no-store'});
+                  if(!res.ok||(res.headers.get('content-type')||'').indexOf('image/webp')<0)throw Error('IMAGE_HTTP_OR_TYPE '+res.status+' '+res.headers.get('content-type'));
+                  await el.decode();
+                  return {url,src:el.getAttribute('src'),w:el.naturalWidth,h:el.naturalHeight,rect:el.getBoundingClientRect().width,alt:el.alt};
+                });
+                if(info.w!==560||info.h!==373||info.rect<100||!info.alt.includes('完全分解'))throw Error('LIVE_PARTS_MISMATCH '+JSON.stringify(info));
+                const other=await p.evaluate(()=>({
+                  comparePhotos:document.querySelectorAll('.sec-beforeafter-refresh img.svc-card-img').length,
+                  icons:document.querySelectorAll('img[src*="/assets/icons/"]').length,
+                  overflow:document.documentElement.scrollWidth-window.innerWidth,
+                  line:document.querySelector('.hero .line-cta')?.href
+                }));
+                if(other.comparePhotos!==2||other.icons!==12||other.overflow>0||!other.line?.startsWith('https://lin.ee/')||errors.length)throw Error('LIVE_REGRESSION '+JSON.stringify(other)+' '+JSON.stringify(errors));
+                fs.mkdirSync('qa-photos',{recursive:true});
+                await img.locator('..').screenshot({path:'qa-photos/LIVE-parts-'+width+'.png'});
+                results.push({width,status:'PASS',pageHTTP:200,imageHTTP:200,image:info.src,decoded:true,overflow:0,errors:0});
+                await c.close();
+              }
+              console.log('COMPLETE_PARTS_LIVE_QA '+JSON.stringify({status:'PASS',results}));
+            } finally {await b.close()}
+          })().catch(e=>{console.error(e.stack||e);process.exit(1)});
+          JS
       - name: Save screenshots
         if: always()
         uses: actions/upload-artifact@v4
