@@ -1,0 +1,46 @@
+name: Budil real Windows PC Google busy read (isolated)
+on:
+  push:
+    branches:
+      - ci/budil-pc-real-calendar-e2e-20261110
+    paths:
+      - scripts/budil-pc-real-e2e.cjs
+      - .github/workflows/budil-pc-real-e2e-20261110.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  budil-real-pc:
+    name: Real public Budil to local worker (isolated Windows browser)
+    runs-on: [self-hosted, Windows]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          clean: false
+      - name: Identify authorized Windows runner
+        shell: pwsh
+        run: |
+          if ($env:RUNNER_NAME -cne 'bc-bantou-dev') {
+            Write-Output "RUNNER_IDENTITY=MISMATCH"
+            exit 1
+          }
+          Write-Output "RUNNER_IDENTITY=MATCH"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install disposable browser test dependency
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $dir=Join-Path $env:RUNNER_TEMP 'budil-e2e-deps'
+          New-Item -Path $dir -ItemType Directory -Force | Out-Null
+          npm install --prefix $dir --no-package-lock --no-audit --no-fund playwright@1.58.2
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Run real published Budil Google busy E2E
+        shell: pwsh
+        run: |
+          $env:NODE_PATH=Join-Path $env:RUNNER_TEMP 'budil-e2e-deps/node_modules'
+          node scripts/budil-pc-real-e2e.cjs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
