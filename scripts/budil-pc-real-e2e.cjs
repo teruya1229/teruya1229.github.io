@@ -56,8 +56,8 @@ let browser=null;
   await page.locator('#budil-gpt-run').click();
   await page.waitForFunction(()=>{
     const el=document.querySelector('#budil-gpt-google-read');
-    return el&&!el.hidden;
-  },{timeout:13000});
+    return !!el&&!el.hidden;
+  },null,{timeout:13000});
   console.log('GPT_GOOGLE_READ_PANEL=VISIBLE');
   await page.locator('#budil-gpt-google-consent').check();
   await page.locator('#budil-gpt-google-check').click();
