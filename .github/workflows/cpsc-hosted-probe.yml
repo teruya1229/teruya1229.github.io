@@ -36,13 +36,17 @@ jobs:
       - name: One official API GET for bounded product schema inspection
         env:
           EVIDENCE_DIR: ${{ runner.temp }}/cpsc-schema-evidence
-        run: python3 ai-data-factory/cpsc_schema_probe.py
+        run: |
+          python3 ai-data-factory/cpsc_schema_probe.py
+          python3 ai-data-factory/cpsc_candidates.py --raw "$EVIDENCE_DIR/raw_recall_data_review_only.json" --inventory ai-data-factory/fixtures/inventory_synthetic_16.csv --out "$EVIDENCE_DIR/inventory_review_only.csv"
       - name: Preserve product schema evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: cpsc-schema-review-only
-          path: ${{ runner.temp }}/cpsc-schema-evidence/*.json
+          path: |
+            ${{ runner.temp }}/cpsc-schema-evidence/*.json
+            ${{ runner.temp }}/cpsc-schema-evidence/*.csv
           retention-days: 1
           if-no-files-found: warn
       - name: Preserve read-only execution evidence
