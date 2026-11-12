@@ -1,0 +1,38 @@
+name: CPSC historical backfill audit (isolated one-shot)
+
+on:
+  push:
+    branches: [experiment/cpsc-hosted-20261112]
+    paths:
+      - '.github/workflows/cpsc-history-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  historical-audit:
+    if: github.ref == 'refs/heads/experiment/cpsc-hosted-20261112'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Offline history tests
+        run: PYTHONPATH=ai-data-factory python3 -m unittest discover -s ai-data-factory/tests -p 'test_history.py' -v
+      - name: Single bounded CPSC full-history API request
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/cpsc-history-audit
+        run: PYTHONPATH=ai-data-factory python3 ai-data-factory/cpsc_history.py --output "$EVIDENCE_DIR"
+      - name: Preserve compressed historical data and review-only analysis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cpsc-history-audit-review-only
+          path: |
+            ${{ runner.temp }}/cpsc-history-audit/*.json
+            ${{ runner.temp }}/cpsc-history-audit/*.gz
+          retention-days: 1
+          if-no-files-found: warn
