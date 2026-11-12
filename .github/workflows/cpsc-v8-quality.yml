@@ -1,0 +1,47 @@
+name: CPSC v8 isolated typed-table quality proof
+
+on:
+  push:
+    branches: [experiment/cpsc-hosted-20261112]
+    paths:
+      - '.github/workflows/cpsc-v8-quality.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  typed-table-proof:
+    if: github.ref == 'refs/heads/experiment/cpsc-hosted-20261112'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout test branch with no persisted credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Offline regression tests (existing plus v8)
+        run: PYTHONPATH=ai-data-factory python3 -m unittest discover -s ai-data-factory/tests -p 'test_*.py' -v
+      - name: One official bounded history request
+        env:
+          OUT: ${{ runner.temp }}/cpsc-v8-proof
+        run: PYTHONPATH=ai-data-factory python3 ai-data-factory/cpsc_history.py --output "$OUT"
+      - name: Parse flattened table columns into review-only evidence
+        env:
+          OUT: ${{ runner.temp }}/cpsc-v8-proof
+        run: |
+          PYTHONPATH=ai-data-factory python3 ai-data-factory/quality_backfill_v8.py --history "$OUT/historical_index_review_only.jsonl.gz" --output "$OUT"
+          python3 ai-data-factory/review_ui_v8.py --sample "$OUT/table_review_sample_v8.json" --out "$OUT/table_review_v8.html"
+          python3 -c 'import json,os,pathlib; p=pathlib.Path(os.environ["OUT"]); q=json.loads((p/"table_quality_report_v8.json").read_text()); assert q["counts"]["source_records"]>5000; assert q["counts"]["typed_model_tokens"]>0; assert q["counts"]["no_rule_promotion"]==q["counts"]["complex_table_notices"]; assert q["automatic_adjudication_enabled"] is False; assert q["candidate_precision"]=="NOT_MEASURED_INDEPENDENTLY"; print("V8_DATA_GUARD_PASS")'
+      - name: Save isolated temporary review evidence, not public deployment
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cpsc-v8-typed-table-review-only
+          path: |
+            ${{ runner.temp }}/cpsc-v8-proof/table_quality_report_v8.json
+            ${{ runner.temp }}/cpsc-v8-proof/table_review_sample_v8.json
+            ${{ runner.temp }}/cpsc-v8-proof/table_review_queue_v8.jsonl.gz
+            ${{ runner.temp }}/cpsc-v8-proof/table_review_v8.html
+          retention-days: 1
+          if-no-files-found: warn
