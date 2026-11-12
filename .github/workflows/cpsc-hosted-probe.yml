@@ -1,0 +1,43 @@
+name: CPSC isolated read-only API proof
+
+on:
+  push:
+    branches:
+      - experiment/cpsc-hosted-20261112
+    paths:
+      - .github/workflows/cpsc-hosted-probe.yml
+      - ai-data-factory/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cpsc-isolated-probe-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  cpsc-probe:
+    name: CPSC official API read-only proof
+    if: github.ref == 'refs/heads/experiment/cpsc-hosted-20261112'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout experiment files with no persisted credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Offline regression tests
+        run: python3 -m unittest discover -s ai-data-factory/tests -p 'test_*.py' -v
+      - name: One official API GET with bounded response
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/cpsc-probe-evidence
+        run: python3 ai-data-factory/cpsc_probe.py --days 14 --output "$EVIDENCE_DIR"
+      - name: Preserve read-only execution evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cpsc-isolated-probe-evidence
+          path: ${{ runner.temp }}/cpsc-probe-evidence/*.json
+          retention-days: 3
+          if-no-files-found: warn
