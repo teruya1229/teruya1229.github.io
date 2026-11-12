@@ -1,0 +1,44 @@
+name: CPSC v7 isolated extraction accuracy and review queue
+
+on:
+  push:
+    branches: [experiment/cpsc-hosted-20261112]
+    paths:
+      - '.github/workflows/cpsc-v7-quality.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    if: github.ref == 'refs/heads/experiment/cpsc-hosted-20261112'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Checkout without persistence
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Offline extractor and review gate regression
+        run: PYTHONPATH=ai-data-factory python3 -m unittest discover -s ai-data-factory/tests -p 'test_v7_quality.py' -v
+      - name: Bounded official history read-only GET
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/cpsc-v7-quality
+        run: PYTHONPATH=ai-data-factory python3 ai-data-factory/cpsc_history.py --output "$EVIDENCE_DIR"
+      - name: Offline review-queue build with no verdict activation
+        env:
+          EVIDENCE_DIR: ${{ runner.temp }}/cpsc-v7-quality
+        run: |
+          PYTHONPATH=ai-data-factory python3 ai-data-factory/quality_backfill_v7.py --history "$EVIDENCE_DIR/historical_index_review_only.jsonl.gz" --out "$EVIDENCE_DIR"
+          python3 -c 'import json,os,pathlib; p=pathlib.Path(os.environ["EVIDENCE_DIR"]); q=json.loads((p/"model_quality_report_v7.json").read_text()); assert q["metrics"]["rows"]>5000; assert q["automatic_adjudication_enabled"] is False; assert q["verified_precision"]=="NOT_MEASURED"'
+      - name: Preserve temporary review-only evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cpsc-v7-quality-review-only
+          path: |
+            ${{ runner.temp }}/cpsc-v7-quality/model_quality_report_v7.json
+            ${{ runner.temp }}/cpsc-v7-quality/priority_review_100_v7.json
+          retention-days: 1
+          if-no-files-found: warn
