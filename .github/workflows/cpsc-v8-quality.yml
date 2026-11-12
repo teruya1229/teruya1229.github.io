@@ -5,6 +5,11 @@ on:
     branches: [experiment/cpsc-hosted-20261112]
     paths:
       - '.github/workflows/cpsc-v8-quality.yml'
+      - 'ai-data-factory/cpsc_table_parser_v8.py'
+      - 'ai-data-factory/quality_backfill_v8.py'
+      - 'ai-data-factory/review_ui_v8.py'
+      - 'ai-data-factory/tests/test_*v8.py'
+      - 'ai-data-factory/fixtures/real_notices_14_v8.json'
   workflow_dispatch:
 
 permissions:
