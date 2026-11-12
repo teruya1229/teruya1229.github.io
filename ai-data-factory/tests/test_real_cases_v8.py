@@ -2,7 +2,7 @@ import json,pathlib,sys,unittest
 sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[1]))
 import cpsc_table_parser_v8 as p
 
-RECORDS={v['RecallID']:v for v in json.loads((pathlib.Path(__file__).resolve().parents[1]/'fixtures/real_notices_14.json').read_text())['notices']}
+RECORDS={v['RecallID']:v for v in json.loads((pathlib.Path(__file__).resolve().parents[1]/'fixtures/real_notices_14_v8.json').read_text())['notices']}
 
 def models(data):
  return [c['value'] for row in data['rows'] for c in row['cells'] if c['role']=='MODEL_IDENTIFIER']
