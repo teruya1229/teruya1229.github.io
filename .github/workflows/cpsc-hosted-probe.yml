@@ -39,6 +39,9 @@ jobs:
         run: |
           python3 ai-data-factory/cpsc_schema_probe.py
           python3 ai-data-factory/cpsc_candidates.py --raw "$EVIDENCE_DIR/raw_recall_data_review_only.json" --inventory ai-data-factory/fixtures/inventory_synthetic_16.csv --out "$EVIDENCE_DIR/inventory_review_only.csv"
+          python3 ai-data-factory/cpsc_condition_extractor.py --raw "$EVIDENCE_DIR/raw_recall_data_review_only.json" --out "$EVIDENCE_DIR/condition_proposals_unreviewed.json"
+          python3 ai-data-factory/cpsc_verdict.py --raw "$EVIDENCE_DIR/raw_recall_data_review_only.json" --inventory ai-data-factory/fixtures/inventory_synthetic_16.csv --out "$EVIDENCE_DIR/notice_scoped_verdicts_synthetic.csv"
+          python3 ai-data-factory/verify_generated.py --verdicts "$EVIDENCE_DIR/notice_scoped_verdicts_synthetic.csv" --drafts "$EVIDENCE_DIR/condition_proposals_unreviewed.json"
       - name: Preserve product schema evidence
         if: always()
         uses: actions/upload-artifact@v4

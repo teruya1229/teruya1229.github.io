@@ -1,0 +1,87 @@
+[
+  {
+    "RecallID": 11045,
+    "RecallNumber": "27066",
+    "Description": "This recall involves Arlopu Slide Playsets with model numbers KT-CS17 and LY-31. The plastic playsets are designed for indoor or outdoor use and contain multiple activity components, including a slide and a basketball hoop. The playsets are available in tan, red, blue, yellow, gray and green. Model number KT-CS17 is printed on a label located on the underside of the elevated platform of the playset.  Model LY-31 is printed on a label located on the upper back panel behind the slide of the playset.",
+    "URL": "https://cpsc.gov/Recalls/2027/Arlopu-Recalls-Slide-Playsets-Due-to-Risk-of-Serious-Injury-and-Death-from-Head-and-Neck-Entrapment-Hazards",
+    "Title": "Arlopu Recalls Slide Playsets Due to Risk of Serious Injury and Death from Head and Neck Entrapment Hazards",
+    "Products": [
+      {
+        "Name": "Arlopu Slide Playsets",
+        "Description": "",
+        "Model": "",
+        "Type": "Slides or Sliding Boards",
+        "CategoryID": "717",
+        "NumberOfUnits": "About 10,318"
+      }
+    ]
+  },
+  {
+    "RecallID": 11048,
+    "RecallNumber": "27065",
+    "Description": "This recall involves lithium-ion rechargeable battery packs intended for use with Bose S1 Pro and S1 Pro+ Portable Bluetooth Speaker Systems. The serial number of the battery packs included in this recall begins with any one of the following six digits: 083723, 078352, 084105, 078591, 078592, 084106, or 086409.  The 17-digit serial number for the battery pack is printed on a label placed at the bottom of the battery pack. The affected battery packs were sold with S1 Pro and S1 Pro+ Portable Bluetooth Speaker Systems and sold separately as accessories or replacement parts.",
+    "URL": "https://www.cpsc.gov/Recalls/2027/Bose-Recalls-Lithium-Ion-Battery-Packs-for-S1-Pro-and-S1-Pro-Bluetooth-Speaker-Systems-Due-to-Risk-of-Injury-from-Fire-and-Overheating-Hazards-0",
+    "Title": "Bose Recalls Lithium-Ion Battery Packs for S1 Pro and S1 Pro+ Bluetooth Speaker Systems Due to Risk of Injury from Fire and Overheating Hazards",
+    "Products": [
+      {
+        "Name": "Bose S1 Pro System Battery Pack and S1 Pro+ System Battery Packs for use with Bose S1 Pro and Bose S1 Pro+ Speaker Systems.",
+        "Description": "",
+        "Model": "",
+        "Type": "Speakers",
+        "CategoryID": "2141",
+        "NumberOfUnits": "About 634,759 (In addition, about 35,400 were sold in Canada)"
+      }
+    ]
+  },
+  {
+    "RecallID": 11046,
+    "RecallNumber": "27069",
+    "Description": "This recall involves Gourmia 9-SliceDigitalAir Fryer Ovens with model number GTF7530, and UPC Code 810002862779. The recalled ovens are stainless steel and have two spring-loaded glass front French doors with metal handles. The Ovens can be identified with model and UPC codes on packaging. The Model number GTF7530 and codes 3021 to 0126 can also be found on a label on back of the unit.",
+    "URL": "https://www.cpsc.gov/Recalls/2027/Gourmia-Recalls-9-Slice-Digital-Air-Fryer-Ovens-Due-to-Burn-Hazard",
+    "Title": "Gourmia Recalls 9-Slice Digital Air Fryer Ovens Due to Burn Hazard",
+    "Products": [
+      {
+        "Name": "Gourmia Stainless Steel Digital 9 Slice Digital Air Fryer Ovens",
+        "Description": "",
+        "Model": "",
+        "Type": "Electric Counter-top Ovens, Broilers or Toaster Ovens",
+        "CategoryID": "549",
+        "NumberOfUnits": "About 175,951"
+      }
+    ]
+  },
+  {
+    "RecallID": 11051,
+    "RecallNumber": "27067",
+    "Description": "This recall involves Little Giant ladders with Rapid Locks. Rapid Locks are designed to insert into ladder rungs for the purpose of adjusting the ladder’s height. Rapid Locks are black or orange and are located on each ladder leg. The affected models are Adjustable Fortress 2.0, Conquest 2.0, Dark Horse 2.0, Epic, King Kombo XT, Leveler, MegaLite, MegaLite+, Multi, Quantum and Vector. The brand name Little Giant and the model name are located on the side of the ladder. Only ladders without an orange rectangular “QC” sticker on the rail above one of the Rapid Locks are included in this recall.",
+    "URL": "https://www.cpsc.gov/Recalls/2027/Little-Giant-Recalls-Ladders-with-Rapid-Locks-Due-to-Risk-of-Serious-Injury-from-Fall-Hazard",
+    "Title": "Little Giant Recalls Ladders with Rapid Locks Due to Risk of Serious Injury from Fall Hazard",
+    "Products": [
+      {
+        "Name": "Little Giant ladders with Rapid Locks",
+        "Description": "",
+        "Model": "",
+        "Type": "Ladders & Accessories",
+        "CategoryID": "2024",
+        "NumberOfUnits": "About 3,662,000"
+      }
+    ]
+  },
+  {
+    "RecallID": 11056,
+    "RecallNumber": "27073",
+    "Description": "This recall involves Vevor-branded 20-inch and 24-inch BMX bicycles, models SS24001 and SS24002. The model numbers are printed on the product packaging.  The bicycles were sold in black. The Vevor logo is printed across the downtube of the frame on the bikes.",
+    "URL": "https://cpsc.gov/Recalls/2027/Sanven-Technology-Recalls-Vevor-BMX-Bicycles-Due-to-Risk-of-Serious-Injury-or-Death-from-Crash-Hazard-Violate-Federal-Requirements-for-Bicycles",
+    "Title": "Sanven Technology Recalls Vevor BMX Bicycles Due to Risk of Serious Injury or Death from Crash Hazard; Violate Federal Requirements for Bicycles",
+    "Products": [
+      {
+        "Name": "Vevor BMX Bicycles",
+        "Description": "",
+        "Model": "",
+        "Type": "Minibikes or Trail Bikes",
+        "CategoryID": "1741",
+        "NumberOfUnits": "About 1,950"
+      }
+    ]
+  }
+]
