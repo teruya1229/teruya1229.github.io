@@ -1,0 +1,17 @@
+item_id,brand,model,upc,serial,batch,manufactured_at,market,quantity,product,notes
+INV-001,Gourmia,GTF7530,810002862779,,3125,,US,4,9-Slice Digital Air Fryer Oven,synthetic
+INV-002,Gourmia,GTF7530-Z,,,,,US,8,Digital Air Fryer Oven,synthetic
+INV-003,DREO,DR-HSH015,,,,2025/10,JP,6,Space Heater,synthetic
+INV-004,Bose,S1 Pro,,,,,US,3,Speaker system,synthetic
+INV-005,Arlopu,KT-CS17,,,,,US,1,Slide Playset,synthetic
+INV-006,Vevor,SS24002,,,,,US,5,BMX Bicycle,synthetic
+INV-007,HAIARA,W5 PRO,,,,,US,11,Power Bank,synthetic
+INV-008,Other Brand,W5 PRO,,,,,US,2,Power Bank,synthetic
+INV-009,Little Giant,Rapid Locks,,,,,US,7,Adjustable Ladder,synthetic
+INV-010,3M,TL1302Z,,,,,US,9,Thermal Laminator,synthetic
+INV-011,Whatever Works,K4001,,,,,US,12,Microwave Griller,synthetic
+INV-012,PILLANI,NP4351,,,202607,,US,2,Nursing Pillow,synthetic
+INV-013,Bose,S1 Pro+ battery pack,,,,,US,2,Rechargeable Battery,synthetic
+INV-014,Example Corp,ZX200,,,,,US,10,Sample product,synthetic
+INV-015,,GTF7530,,,,,US,3,Missing brand,synthetic
+INV-016,Gourmia,GTF7530,000000000000,,,,US,1,Oven,synthetic
