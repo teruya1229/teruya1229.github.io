@@ -50,7 +50,7 @@
 .drum-policy__photo p{font-size:13px;color:#526b77;line-height:1.8;margin-top:6px}
 .drum-policy__photo a{display:inline-block;margin-top:10px;font-size:14px;font-weight:900;color:#15777b;text-underline-offset:4px}
 @media(max-width:720px){
-.hero__scope{max-width:none;margin:-6px 0 -6px;font-size:11px}
+.hero__scope{order:4;max-width:none;margin:-6px 0 -6px;font-size:11px}
 .reviews__grid{grid-template-columns:1fr;gap:12px}
 .review-card--featured{grid-column:auto}
 .review-card,.review-card--featured{padding:22px 20px}
