@@ -139,13 +139,16 @@ async function run() {
       const hero=page.locator('a[data-cta-location="hero"]');
       await hero.click();
       const href=await hero.getAttribute('href');
+      const target=await hero.getAttribute('target');
       const base='https://line.me/R/oaMessage/%40657tpifw/?';
       if(dev.mobile) {
         expect(href.startsWith(base),'Mobile chat link missing '+dev.name+': '+href);
+        expect(target===null,'Mobile LINE chat unexpectedly opens a popup '+dev.name);
         expect(decodeURIComponent(href.slice(base.length)).includes('【洗濯機LPからのご相談】'),
           'Mobile chat prefill missing '+dev.name);
       } else {
         expect(href==='https://lin.ee/tsilra6','Desktop fallback destination changed');
+        expect(target==='_blank','Desktop link target unexpectedly changed');
       }
       const ev=await events(page);
       expect(ev.filter(e=>e.name==='line_click'&&e.props.cta_location==='hero').length===1,
