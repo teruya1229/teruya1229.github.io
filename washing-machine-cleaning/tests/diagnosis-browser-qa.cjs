@@ -43,6 +43,11 @@ async function run() {
       const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:30000});
       expect(response&&response.status()===200,'HTTP not 200: '+width);
       await page.locator('#washer-diagnosis-form').waitFor({state:'visible'});
+      // A partial form is not a completed diagnostic submission.
+      await page.locator('.washer-diagnosis__submit').click();
+      expect(await page.locator('#washer-diagnosis-result').isHidden(),'Incomplete diagnosis displayed result '+width);
+      expect((await events(page)).filter(e=>e.name==='diagnosis_submit').length===0,
+        'Incomplete diagnosis must not emit diagnosis_submit '+width);
       const loaded=await page.evaluate(()=>({
         css:[...document.styleSheets].some(s=>(s.href||'').includes('diagnosis.css')),
         js:!!document.querySelector('script[src*="diagnosis.js"]'),
@@ -51,6 +56,21 @@ async function run() {
         viewport:window.innerWidth
       }));
       expect(loaded.css && loaded.js && loaded.order,'asset/order failure '+width);
+      if (width<=720) {
+        const order = await page.evaluate(() => {
+          const top = selector => document.querySelector(selector).getBoundingClientRect().top;
+          return {
+            h1: top('.hero h1'), prices: top('.hero__prices'),
+            notice: top('.hero__scope'), disclaimer: top('.micro-note'),
+            cta: top('.hero .btn--wide'),
+            noticeOrder: getComputedStyle(document.querySelector('.hero__scope')).order
+          };
+        });
+        expect(order.noticeOrder==='4','Mobile notice CSS order missing '+width);
+        expect(order.h1<order.prices && order.prices<order.notice
+          && order.notice<order.disclaimer && order.disclaimer<order.cta,
+          'Mobile first-view content order broken '+width+': '+JSON.stringify(order));
+      }
       expect(loaded.width <= loaded.viewport+1,'Horizontal overflow '+width+': '+loaded.width+' > '+loaded.viewport);
       expect(pageErrors.length===0,'JS page errors '+width+' '+pageErrors.join('; '));
       const out=path.join(output,'diagnosis-'+width+'.png');
@@ -96,6 +116,62 @@ async function run() {
       }
       expect(pageErrors.length===0,'JS page error after actions '+width+': '+pageErrors.join('; '));
       report.sizes.push({width,scrollWidth:loaded.width,score,jsErrors:pageErrors.length,pass:true});
+      await ctx.close();
+    }
+    // Mobile LINE deep links: local Chrome validates URL construction only.
+    // Never follow the external URL, add a friend, or send a real message.
+    const devices=[
+      {name:'iPhone',width:390,ua:'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1',mobile:true},
+      {name:'Android',width:360,ua:'Mozilla/5.0 (Linux; Android 15; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36',mobile:true},
+      {name:'Windows',width:1440,ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',mobile:false}
+    ];
+    for (const dev of devices) {
+      const ctx=await browser.newContext({viewport:{width:dev.width,height:850},userAgent:dev.ua,reducedMotion:'reduce'});
+      await ctx.route('**/*', route=>route.request().url().startsWith('http://127.0.0.1:')?route.continue():route.abort());
+      const page=await ctx.newPage(), errors=[];
+      page.on('pageerror',e=>errors.push(e.message));
+      await page.goto('http://127.0.0.1:'+server.address().port+'/washing-machine-cleaning/?utm_source=ig&utm_medium=paid_social',
+        {waitUntil:'domcontentloaded'});
+      await page.locator('a[data-cta-location="hero"]').waitFor({state:'visible'});
+      await page.evaluate(() => document.addEventListener('click',event=>{
+        if(event.target.closest('a[data-cta-location]'))event.preventDefault();
+      }));
+      const hero=page.locator('a[data-cta-location="hero"]');
+      await hero.click();
+      const href=await hero.getAttribute('href');
+      const base='https://line.me/R/oaMessage/%40657tpifw/?';
+      if(dev.mobile) {
+        expect(href.startsWith(base),'Mobile chat link missing '+dev.name+': '+href);
+        expect(decodeURIComponent(href.slice(base.length)).includes('【洗濯機LPからのご相談】'),
+          'Mobile chat prefill missing '+dev.name);
+      } else {
+        expect(href==='https://lin.ee/tsilra6','Desktop fallback destination changed');
+      }
+      const ev=await events(page);
+      expect(ev.filter(e=>e.name==='line_click'&&e.props.cta_location==='hero').length===1,
+        'LINE click event not recorded '+dev.name);
+      expect(ev.filter(e=>e.name==='cta_click'&&e.props.cta_location==='hero').length===1,
+        'Existing CTA event not preserved '+dev.name);
+      expect(ev.find(e=>e.name==='line_click').props.link_url==='https://lin.ee/tsilra6',
+        'GA4 payload exposed prefilled message '+dev.name);
+      if(dev.mobile){
+        await page.locator('input[name="washer_type"][value="drum"]').check();
+        await page.locator('[name="usage_age"]').selectOption('5to6');
+        await page.locator('[name="symptom"]').selectOption('drying');
+        await page.locator('.washer-diagnosis__submit').click();
+        await page.locator('#washer-diagnosis-result').waitFor({state:'visible'});
+        const resultCTA=page.locator('a[data-cta-location="diagnosis_result"]');
+        await resultCTA.click();
+        const diagnosticUrl=await resultCTA.getAttribute('href');
+        expect(diagnosticUrl.startsWith(base),'Diagnostic LINE URL missing '+dev.name);
+        const body=decodeURIComponent(diagnosticUrl.slice(base.length));
+        expect(body.includes('【洗濯機LP・3問診断からのご相談】')
+          &&body.includes('ドラム式')&&body.includes('5〜6年')
+          &&body.includes('乾燥しにくい・時間がかかる'),
+          'Diagnostic text not carried to LINE '+dev.name+': '+body);
+      }
+      expect(errors.length===0,'JavaScript error '+dev.name+': '+errors.join('; '));
+      report.sizes.push({device:dev.name,width:dev.width,mobile:dev.mobile,chatPrefill:dev.mobile,pass:true});
       await ctx.close();
     }
     report.status='PASS';
