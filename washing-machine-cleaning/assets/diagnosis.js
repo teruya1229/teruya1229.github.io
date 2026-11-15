@@ -135,7 +135,6 @@
   });
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    event('diagnosis_submit', { diagnosis_completed: !!(selected('washer_type') && selected('usage_age') && selected('symptom')) });
     var type = selected('washer_type');
     var age = selected('usage_age');
     var symptom = selected('symptom');
@@ -149,6 +148,13 @@
       return;
     }
     if (warning) warning.hidden = true;
+    // Count only successfully completed 3-question diagnosis submissions.
+    event('diagnosis_submit', {
+      diagnosis_completed: true,
+      washer_type: type,
+      usage_age_band: age,
+      symptom_category: symptom
+    });
     render(type, age, symptom, values);
   });
   // 結果後にサービスの説明を実際に見たときだけ1回送信。スクロール前には送らない。
