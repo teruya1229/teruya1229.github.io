@@ -79,6 +79,8 @@
     if (isLine && isMobileLine && !isDebug) {
       href = LINE_CHAT_BASE + encodeURIComponent(preparedMessage(locationName));
       anchor.setAttribute('href', href);
+      // Avoid popup/new-tab handoff failures in Instagram/Facebook in-app browsers.
+      anchor.removeAttribute('target');
     }
     if (isDebug) ev.preventDefault();
 
