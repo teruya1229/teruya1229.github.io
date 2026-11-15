@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - feature/washer-three-question-diagnosis-20261108
-      - fix/washer-mobile-line-diagnosis-20261115
     paths:
       - .github/workflows/washer-diagnosis-linux-qa.yml
       - washing-machine-cleaning/**
