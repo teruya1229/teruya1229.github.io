@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - feature/washer-three-question-diagnosis-20261108
+      - fix/washer-mobile-line-diagnosis-20261115
     paths:
       - washing-machine-cleaning/**
       - .github/workflows/washer-diagnosis-windows-qa.yml
