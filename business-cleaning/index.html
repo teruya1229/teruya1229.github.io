@@ -172,249 +172,8 @@
   }
   </script>
 
-  <style>
-    @media (min-width: 768px) {
-      .biz-list-block ul {
-        max-width: 960px;
-        margin: 0 auto;
-      }
+    <link rel="stylesheet" href="./business-v3.css?v=20261117b">
 
-      .biz-list-block .card {
-        text-align: center;
-        padding: 0.75rem 1rem;
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 720px;
-      }
-
-      .biz-area-text .container > p,
-      .biz-price-text .container > p,
-      .biz-cta-text .container > p {
-        text-align: center;
-      }
-
-      .biz-cta-text .line-cta {
-        display: table;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .profile .profile-img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .profile .profile-title,
-      .profile .profile-name,
-      .profile .profile-message {
-        text-align: center;
-      }
-    }
-
-    .ai-summary-section p {
-      font-size: 0.95rem;
-      line-height: 1.85;
-      color: var(--text-sub, #4b5563);
-      margin-bottom: 14px;
-    }
-
-    .ai-summary-section p:last-child {
-      margin-bottom: 0;
-    }
-
-    .biz-related-nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .biz-related-nav a {
-      color: var(--brand, #1a56db);
-      font-weight: 600;
-      text-decoration: underline;
-      font-size: 0.9375rem;
-    }
-
-    .biz-consult-cases-lead {
-      font-size: 0.95rem;
-      line-height: 1.85;
-      color: var(--text-sub, #4b5563);
-      margin-bottom: 20px;
-    }
-
-    .biz-consult-cases-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-
-    @media (min-width: 768px) {
-      .biz-consult-cases-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-      }
-    }
-
-    .biz-consult-card {
-      padding: 18px 16px;
-      height: 100%;
-    }
-
-    .biz-consult-card h3 {
-      font-size: 1.02rem;
-      font-weight: 700;
-      line-height: 1.45;
-      margin: 0 0 10px;
-      color: var(--text-main, #111827);
-    }
-
-    .biz-consult-card p {
-      font-size: 0.9rem;
-      line-height: 1.75;
-      color: var(--text-sub, #4b5563);
-      margin: 0;
-    }
-
-    .biz-consult-cases-cta {
-      margin-top: 24px;
-      text-align: center;
-    }
-
-    .biz-consult-cases-cta p {
-      font-size: 0.9rem;
-      line-height: 1.75;
-      color: var(--text-sub, #4b5563);
-      margin-bottom: 14px;
-    }
-
-    .biz-consult-cases-cta .line-cta {
-      display: inline-block;
-    }
-
-    .biz-estimate-checklist-lead {
-      font-size: 0.95rem;
-      line-height: 1.85;
-      color: var(--text-sub, #4b5563);
-      margin-bottom: 20px;
-    }
-
-    .biz-estimate-checklist-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-
-    @media (min-width: 768px) {
-      .biz-estimate-checklist-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-      }
-    }
-
-    @media (min-width: 992px) {
-      .biz-estimate-checklist-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    .biz-instagram-lead {
-      font-size: 0.95rem;
-      line-height: 1.85;
-      color: var(--text-sub, #4b5563);
-      margin-bottom: 0;
-    }
-
-    .case-study-note {
-      font-size: 0.78rem;
-      color: #6b7280;
-      margin-top: 12px;
-      line-height: 1.6;
-      text-align: center;
-    }
-
-    .instagram-embed-wrap {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-      overflow: hidden;
-      max-width: 100%;
-    }
-
-    .instagram-embed-wrap .instagram-media {
-      margin-left: auto !important;
-      margin-right: auto !important;
-    }
-
-    /* BC法人LP v2.0: local CSS only; existing shared assets and analytics remain */
-    .bc-biz-hero .hero-inner { max-width: 940px; padding: 84px 22px 76px; min-height: 70vh; }
-    .bc-biz-hero .hero-bg { object-position: center 45%; }
-    .bc-biz-hero .hero-overlay { background: linear-gradient(180deg,rgba(7,24,38,.91),rgba(7,29,44,.69) 48%,rgba(8,24,40,.94)); }
-    .bc-biz-hero .hero-title { font-size: clamp(1.35rem,4.5vw,3.15rem); line-height: 1.28; letter-spacing: .025em; max-width: 880px; }
-    .bc-biz-hero .hero-title span { color: #b6f6d9; }
-    .bc-biz-hero .hero-lead { font-size: clamp(.94rem,1.7vw,1.13rem); max-width: 790px; margin-bottom: 14px; line-height: 1.88; }
-    .bc-biz-hero .line-cta { max-width: 500px; }
-    .bc-biz-kicker { color: #fff; font-size: .9rem; line-height: 1.65; font-weight: 700; margin: 0 0 18px; padding: 6px 15px; border: 1px solid rgba(255,255,255,.52); border-radius: 24px; background: rgba(3,14,29,.35); }
-    .bc-biz-badges { list-style: none; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; padding: 0; margin: 8px 0 24px; }
-    .bc-biz-badges li { color: #fff; border: 1px solid rgba(255,255,255,.27); border-radius: 8px; background: rgba(255,255,255,.12); padding: 6px 10px; font-size: .84rem; font-weight: 700; }
-    .bc-biz-hero-note { color: rgba(255,255,255,.9); margin: 12px 0 0; font-size: .85rem; line-height: 1.7; }
-    .bc-biz-lead { max-width: 800px; margin: 0 auto 25px; text-align: center; font-size: 1rem; line-height: 1.85; color: #475569; }
-    .bc-biz-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
-    .bc-biz-grid.two { grid-template-columns: repeat(2,minmax(0,1fr)); }
-    .bc-biz-card { height: 100%; box-sizing: border-box; background: #fff; border: 1px solid #d9e5ec; border-radius: 16px; padding: 23px 21px; box-shadow: 0 4px 18px rgba(10,45,65,.06); }
-    .bc-biz-card h3 { margin: 0 0 12px; color: #153951; font-size: 1.15rem; line-height: 1.5; }
-    .bc-biz-card p { margin: 0; color: #465666; font-size: .96rem; line-height: 1.82; }
-    .bc-biz-num { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; margin-bottom: 14px; background: #e0f3ee; color: #0c6255; font-weight: 800; }
-    .bc-biz-photo { display: block; width: 100%; height: 190px; object-fit: cover; border-radius: 12px; margin-bottom: 20px; }
-    .bc-biz-floor-art { height: 190px; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-bottom: 20px; background: repeating-linear-gradient(0deg,transparent 0 56px,rgba(255,255,255,.28) 57px 59px),repeating-linear-gradient(90deg,transparent 0 72px,rgba(255,255,255,.28) 73px 75px),linear-gradient(135deg,#dde8eb,#9db5c1); }
-    .bc-biz-floor-art span { color: #1d4c60; background: rgba(255,255,255,.95); border-radius: 30px; padding: 11px 20px; font-weight: 800; font-size: 1.02rem; }
-    .bc-biz-fine { margin: 18px auto 0; max-width: 780px; text-align: center; color: #596776; font-size: .84rem; line-height: 1.75; }
-    .bc-biz-inline-cta { margin-top: 28px; text-align: center; }
-    .bc-biz-note { margin-top: 22px; background: #f1f9f7; border: 1px solid #d8e9e7; border-radius: 14px; padding: 22px 25px; line-height: 1.84; color: #1e4550; }
-    .bc-biz-note p { margin: 0; }
-    .bc-biz-phone { margin-top: 18px; text-align: center; }
-    .bc-biz-phone a { color: #175978; text-decoration: underline; text-underline-offset: 4px; font-weight: 800; }
-    .bc-biz-floor-before-after { margin: 0 0 20px; }
-    .bc-biz-floor-before-after img { display: block; width: 100%; height: auto; border-radius: 12px; aspect-ratio: 3 / 2; object-fit: contain; background: #edf2f4; }
-    .bc-biz-floor-before-after figcaption { margin-top: 8px; color: #4b5c68; font-size: .83rem; line-height: 1.6; text-align: center; }
-    @media (max-width: 767px) {
-      .bc-biz-hero .hero-inner { padding: 66px 17px 54px; }
-      .bc-biz-kicker { font-size: .77rem; padding: 6px 10px; }
-      .bc-biz-hero .hero-lead { font-size: .94rem; }
-      .bc-biz-badges { gap: 6px; }
-      .bc-biz-badges li { font-size: .74rem; padding: 5px 7px; }
-      .bc-biz-grid, .bc-biz-grid.two { grid-template-columns: minmax(0,1fr); }
-      .bc-biz-card { padding: 20px 18px; }
-      .bc-biz-note { padding: 18px; }
-    }
-    /* 法人・床清掃の実口コミ：ページ内限定デザイン */
-    .bc-biz-voices-lead { text-align: center; max-width: 800px; margin: 0 auto 18px; font-size: .98rem; line-height: 1.8; color: #506673; }
-    .bc-biz-voices-proof { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 0 0 28px; }
-    .bc-biz-voices-proof span { background: #e6f6f0; border: 1px solid #c9e8de; color: #164f45; border-radius: 999px; padding: 8px 15px; font-size: .84rem; font-weight: 600; }
-    .bc-biz-voices-proof strong { font-size: 1.06rem; }
-    .bc-biz-voices-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
-    .bc-biz-voice { box-sizing: border-box; margin: 0; min-width: 0; display: flex; flex-direction: column; border: 1px solid #d9e7eb; border-radius: 15px; background: #fff; padding: 22px 19px 18px; box-shadow: 0 5px 18px rgba(11,41,61,.06); }
-    .bc-biz-voice-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
-    .bc-biz-voice-tags span { background: #eaf5f2; color: #145c50; border-radius: 6px; padding: 5px 8px; font-size: .75rem; font-weight: 700; line-height: 1.5; }
-    .bc-biz-voice-tags span + span { background: #eff4fa; color: #345a70; }
-    .bc-biz-voice blockquote { flex: 1; margin: 0; color: #203d50; font-size: .98rem; line-height: 1.85; overflow-wrap: anywhere; }
-    .bc-biz-voice figcaption { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; border-top: 1px solid #e4ecf0; margin-top: 17px; padding-top: 14px; color: #5c7180; font-size: .82rem; line-height: 1.5; }
-    .bc-biz-voice figcaption a { color: #17617a; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
-    .bc-biz-voices-note { max-width: 890px; margin: 23px auto 0; color: #61717b; text-align: center; font-size: .8rem; line-height: 1.8; }
-    .bc-biz-voices-note a { color: #175f7f; text-decoration: underline; text-underline-offset: 3px; }
-    @media (max-width: 900px) { .bc-biz-voices-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
-    @media (max-width: 650px) {
-      .bc-biz-voices-lead { text-align: left; font-size: .94rem; }
-      .bc-biz-voices-grid { grid-template-columns: minmax(0,1fr); gap: 12px; }
-      .bc-biz-voice { padding: 18px 16px 16px; }
-      .bc-biz-voice blockquote { font-size: .95rem; }
-      .bc-biz-voices-proof { justify-content: flex-start; }
-      .bc-biz-voices-proof span { font-size: .78rem; }
-    }
-  </style>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8LKLFDL3G"></script>
   <script>
@@ -435,344 +194,256 @@
     });
   </script>
 </head>
-<body>
+<body class="biz3">
   <header class="header">
     <div class="header-inner">
-      <a href="/" class="logo">BCサービス</a>
-      <nav class="header-nav">
-        <a href="/">トップ</a>
-        <a href="../cursor-test/index.html">家庭用LP</a>
+      <a href="/" class="biz3-logo" aria-label="BCサービス ホームへ"><strong>BCサービス</strong><small>COMMERCIAL CLEANING</small></a>
+      <nav class="header-nav" aria-label="法人向けページ内リンク">
+        <a href="#services">対応サービス</a>
+        <a href="#cases">施工実績</a>
+        <a href="#reviews">お客様の声</a>
+        <a href="#estimate">お見積り</a>
       </nav>
-      <a href="tel:05017241338" class="header-tel">050-1724-1338</a>
+      <a class="header-tel" href="tel:05017241338" data-cta-location="mid" aria-label="BCサービス 050-1724-1338 に電話する"><span aria-hidden="true">☎</span><span class="biz3-tel-desktop">050-1724-1338</span><span class="biz3-tel-mobile">電話相談</span></a>
     </div>
   </header>
-
-  <main>
-    <section class="hero bc-biz-hero">
-      <img src="./business-work-scene-optimized.jpg" alt="BCサービスの業務用エアコン洗浄作業風景" class="hero-bg" width="1400" height="900" fetchpriority="high">
-      <div class="hero-overlay"></div>
-      <div class="hero-inner">
-        <p class="bc-biz-kicker">沖縄の店舗・事務所・施設向け｜天カセ・天吊エアコン洗浄</p>
-        <h1 class="hero-title">店舗のエアコンも、床も。<br><span>清掃はまとめて1社に。</span></h1>
-        <p class="hero-lead">天カセ・天吊の分解洗浄から、床洗浄・ワックスまで一括相談。<br>複数業者への見積依頼や日程調整をまとめ、清掃費用と管理の手間を見直しませんか？</p>
-        <ul class="bc-biz-badges" aria-label="BCサービスの特長">
-          <li>清掃業17年</li><li>第二種電気工事士資格保有</li><li>複数台も相談対応</li>
-        </ul>
-        <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="hero">LINEでまとめて見積り相談</a>
-        <p class="bc-biz-hero-note">写真・台数・床面積など、分かる範囲でご相談ください</p>
+  <main id="main">
+    <section class="biz3-hero" id="top">
+      <div class="biz3-container biz3-hero-grid">
+        <div class="biz3-hero-copy">
+          <p class="biz3-eyebrow">沖縄の店舗・事務所・施設向け｜業務用エアコン・床清掃</p>
+          <h1>店舗のエアコンも、床も。<br><em>清掃の窓口は、ひとつ。</em></h1>
+          <p class="biz3-hero-lead">天カセ・天吊の分解洗浄から、床洗浄・ワックスまで。複数業者への見積依頼や日程調整をまとめて、清掃の手配をもっとシンプルに。</p>
+          <ul class="biz3-trust-line" aria-label="BCサービスの強み">
+            <li>清掃業17年</li>
+            <li>第二種電気工事士資格保有</li>
+            <li>複数台も相談可能</li>
+          </ul>
+          <a class="biz3-line-primary" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="hero"><span aria-hidden="true">LINE</span>でまとめて見積り相談</a>
+          <p class="biz3-hero-small">現場写真・台数・床面積など、分かる範囲で大丈夫です。</p>
+        </div>
+        <figure class="biz3-hero-visual">
+          <img src="./business-work-scene-optimized.jpg" width="780" height="960" alt="BCサービスの実際の天井埋込型エアコン洗浄作業" fetchpriority="high">
+          <figcaption class="biz3-photo-caption">実際の施工風景｜業務用エアコン洗浄</figcaption>
+        </figure>
       </div>
     </section>
 
-    <section class="section section-light bc-biz-issues" id="concerns">
-      <div class="container">
-        <h2 class="section-title">清掃の手配で、こんなお困りごとはありませんか？</h2>
-        <p class="bc-biz-lead">快適な営業環境を保ちたい。でも、複数業者への依頼や日程調整には時間がかかります。</p>
-        <div class="bc-biz-grid">
-          <article class="bc-biz-card"><h3>エアコンのにおい・汚れが気になる</h3><p>天カセ・天吊からにおいがする、汚れが目立つ。店舗環境を整えたい。</p></article>
-          <article class="bc-biz-card"><h3>床の汚れやワックスの劣化が気になる</h3><p>床洗浄・ワックスを頼みたいけれど、エアコンとは別の手配になっている。</p></article>
-          <article class="bc-biz-card"><h3>見積り・発注・日程調整が大変</h3><p>複数台・複数箇所の清掃をまとめて相談できる窓口を探している。</p></article>
+    <section class="biz3-section" id="services">
+      <div class="biz3-container">
+        <p class="biz3-kicker">OUR SERVICES</p>
+        <h2 class="biz3-section-heading">天井のエアコンも、足元の床も。<br>一度にご相談いただけます。</h2>
+        <p class="biz3-section-lead">専門技術が必要なエアコン分解洗浄と、見た目の印象を左右する床の清掃。店舗・事務所・施設の環境に合わせて、作業範囲と段取りをご案内します。</p>
+        <div class="biz3-service-aircon">
+          <figure>
+            <img src="./business-clean-cassette-optimized.jpg" alt="洗浄作業のため分解した天井埋込エアコン" width="600" height="450" loading="lazy">
+            <figcaption class="biz3-photo-label">業務用エアコンの分解・洗浄作業</figcaption>
+          </figure>
+          <div class="biz3-service-copy">
+            <span class="biz3-service-tick">01 / AIR CONDITIONING</span>
+            <h3>天カセ・天吊の<br>分解洗浄</h3>
+            <p>天井カセット型（天カセ）・天井吊下型（天吊）を中心に、複数台の業務用エアコン清掃にも対応。汚れやにおい、ドレン詰まり・水漏れなどの相談も、機種と設置条件を確認しながらご案内します。</p>
+            <ul class="biz3-service-points"><li>機種・型番で作業範囲を確認</li><li>複数台の施工相談</li><li>水漏れ・不具合相談</li></ul>
+          </div>
         </div>
-      </div>
-    </section>
-    <section class="section bc-biz-services" id="services">
-      <div class="container">
-        <h2 class="section-title">エアコン分解洗浄も、床ワックスもまとめて相談</h2>
-        <p class="bc-biz-lead">清掃業17年の現場経験をもとに、機種・床材・施工条件を確認して現場に合う内容をご案内します。</p>
-        <div class="bc-biz-grid two">
-          <article class="bc-biz-card">
-            <img src="./business-clean-cassette-optimized.jpg" alt="BCサービスが清掃した天井カセット型エアコン" class="bc-biz-photo" width="600" height="400" loading="lazy">
-            <h3>01｜業務用エアコンの分解洗浄</h3>
-            <p>天井カセット型（天カセ）・天井吊下型（天吊）を中心に、店舗・事務所の業務用エアコン清掃をご相談いただけます。汚れ・においのほか、ドレン詰まりや水漏れなども症状を確認してご案内します。機種や設置状況により分解範囲・対応可否が異なります。</p>
-          </article>
-          <article class="bc-biz-card">
-            <figure class="bc-biz-floor-before-after">
-              <a href="./floor-wax-before-after.webp" target="_blank" rel="noopener noreferrer" aria-label="床ワックス施工前と施工後の比較写真を拡大して見る">
-                <img src="./floor-wax-before-after.webp" alt="BCサービスの床ワックス施工前（左）・施工後（右）の実際の比較写真" width="720" height="480" loading="lazy" decoding="async">
-              </a>
-              <figcaption>床ワックス施工例｜左：施工前 ／ 右：施工後（写真をタップして拡大）</figcaption>
-            </figure>
-            <h3>02｜床洗浄・ワックス清掃</h3>
-            <p>店舗・事務所・施設の床洗浄、ワックス施工もエアコン清掃とまとめてご相談ください。床材・面積・汚れの状態を確認し、現場に合った内容をご案内します。</p>
-          </article>
-        </div>
-        <p class="bc-biz-fine">竣工清掃・改修後清掃・ガラス清掃など、その他の現場清掃もご相談いただけます。</p>
-      </div>
-    </section>
-    <section class="section section-light bc-biz-benefits" id="benefits">
-      <div class="container">
-        <h2 class="section-title">清掃をまとめて依頼する、3つのメリット</h2>
-        <div class="bc-biz-grid">
-          <article class="bc-biz-card"><span class="bc-biz-num">01</span><h3>相談窓口を一本化</h3><p>エアコンと床の清掃を別々に依頼する手間を減らし、まとめて相談できます。</p></article>
-          <article class="bc-biz-card"><span class="bc-biz-num">02</span><h3>日程・作業の段取りを整理</h3><p>営業時間や定休日に配慮し、現場に合った施工順序・日程を調整します。</p></article>
-          <article class="bc-biz-card"><span class="bc-biz-num">03</span><h3>清掃費用をまとめて検討</h3><p>機種・台数・床面積・清掃範囲を確認し、まとめて見積りをご案内します。</p></article>
-        </div>
-        <p class="bc-biz-fine">※一括依頼による値引きや費用削減を保証するものではありません。現場条件を確認してご案内します。</p>
-        <div class="bc-biz-inline-cta"><a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="benefits">LINEでまとめて見積り相談</a></div>
-      </div>
-    </section>
-    <section class="section bc-biz-strength">
-      <div class="container">
-        <h2 class="section-title">専門技術と現場経験で、清掃・設備の相談をサポート</h2>
-        <div class="bc-biz-grid">
-          <article class="bc-biz-card"><span class="bc-biz-num">17</span><h3>清掃業17年の経験</h3><p>店舗・施設など、現場ごとの養生や清掃範囲を確認し作業内容をご案内します。</p></article>
-          <article class="bc-biz-card"><span class="bc-biz-num">技</span><h3>第二種電気工事士資格保有</h3><p>清掃だけでなく、水漏れ・エラーなど空調の不具合もご相談いただけます。</p></article>
-          <article class="bc-biz-card"><span class="bc-biz-num">連</span><h3>必要に応じ専門業者と連携</h3><p>修理・入替・専門工事は内容と法令要件を確認し、メーカー・協力会社と連携します。</p></article>
-        </div>
-        <div class="bc-biz-note"><p><strong>BCサービスが相談窓口となり、現場内容を整理します。</strong> 自社で担当する清掃業務と、協力会社・メーカー等との連携が必要な施工を事前に確認し、作業範囲・費用をご案内します。</p></div>
       </div>
     </section>
 
-    <!-- 法人LP：くらしのマーケット BCサービス店舗の実口コミ。2026-11-17、店舗ID/カテゴリ/個別URL確認 -->
-    <section class="section section-light bc-biz-voices" id="reviews" aria-labelledby="bc-biz-voices-title">
-      <div class="container">
-        <h2 class="section-title" id="bc-biz-voices-title">店舗・事務所の清掃でいただいたお客様の声</h2>
-        <p class="bc-biz-voices-lead">業務用エアコンや床洗浄・ワックスの施工をご利用いただいたお客様の口コミから抜粋しました。<br>内容は、各カードの「口コミ原文を見る」からご確認いただけます。</p>
-        <div class="bc-biz-voices-proof" aria-label="2026年11月17日確認時の口コミ件数">
-          <span><strong>9件</strong> 天井埋込エアコン清掃の口コミ</span>
-          <span><strong>5件</strong> フロアクリーニングの口コミ</span>
+    <section class="biz3-section biz3-section--paper" id="floor">
+      <div class="biz3-container biz3-floor-feature">
+        <div class="biz3-service-copy">
+          <span class="biz3-service-tick">02 / FLOOR MAINTENANCE</span>
+          <h2 class="biz3-section-heading">床の印象も、<br>ここまで変わります。</h2>
+          <p>床洗浄・ワックスも、エアコン清掃と一緒にご相談いただけます。床材・面積・汚れの状態を確認し、営業スケジュールに配慮してご案内します。</p>
+          <p class="biz3-muted">竣工清掃・改修後清掃・ガラス清掃などもご相談ください。</p>
         </div>
-        <div class="bc-biz-voices-grid">
+        <figure>
+          <a href="./floor-wax-before-after.webp" target="_blank" rel="noopener noreferrer" aria-label="床洗浄ワックス施工のビフォーアフター写真を拡大する">
+            <img src="./floor-wax-before-after.webp" alt="BCサービスの床ワックス施工前（左）と施工後（右）のビフォーアフター実写真" width="720" height="480" loading="lazy" decoding="async">
+          </a>
+          <figcaption>BCサービス施工実績｜床ワックス ビフォー／アフター（タップして拡大）</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="biz3-section" id="cases">
+      <div class="biz3-container">
+        <p class="biz3-kicker">REAL WORK / REAL RESULTS</p>
+        <h2 class="biz3-section-heading">施工の様子を、写真でご確認ください。</h2>
+        <p class="biz3-section-lead">加工イメージではなく、BCサービスの実際の作業写真です。分解の様子や内部の汚れ、洗浄後の状態をご覧いただけます。</p>
+        <div class="biz3-proof">
+          <figure class="biz3-proof-main">
+            <img src="./business-coil-before-after-optimized.jpg" alt="業務用エアコン熱交換器の洗浄前・洗浄後の比較写真" width="800" height="540" loading="lazy">
+            <figcaption>熱交換器の洗浄前・洗浄後</figcaption>
+          </figure>
+          <div class="biz3-proof-side">
+            <figure><img src="./business-work-scene-optimized.jpg" alt="業務用エアコンを養生して清掃する作業風景" width="450" height="650" loading="lazy"><figcaption>天井埋込型の洗浄作業</figcaption></figure>
+            <figure><img src="./business-dirty-water-optimized.jpg" alt="業務用エアコンの洗浄で排出された汚水" width="450" height="650" loading="lazy"><figcaption>洗浄後に出た汚水</figcaption></figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="biz3-section biz3-section--cloud" id="benefits">
+      <div class="biz3-container">
+        <p class="biz3-kicker">ONE POINT OF CONTACT</p>
+        <h2 class="biz3-section-heading">清掃をまとめて依頼する、3つのメリット。</h2>
+        <div class="biz3-benefit-grid">
+          <div class="biz3-benefit-item"><span class="biz3-benefit-num">01</span><h3>相談窓口を一本化</h3><p>エアコン清掃と床洗浄を別々に手配する手間を減らし、相談・見積りをまとめられます。</p></div>
+          <div class="biz3-benefit-item"><span class="biz3-benefit-num">02</span><h3>段取りをシンプルに</h3><p>営業日・定休日・現場環境を踏まえ、施工順序や日程調整をご案内します。</p></div>
+          <div class="biz3-benefit-item"><span class="biz3-benefit-num">03</span><h3>費用をまとめて検討</h3><p>台数・床面積・清掃範囲を整理して、お見積りをまとめてご案内します。</p></div>
+        </div>
+        <p class="biz3-benefit-fine">※一括依頼による割引や費用削減を保証するものではありません。機種・現場条件によって施工範囲・料金は変わります。</p>
+      </div>
+    </section>
+
+    <section class="biz3-section" id="reviews" aria-labelledby="biz3-reviews-heading">
+      <div class="biz3-container">
+        <p class="biz3-kicker">CUSTOMER REVIEWS</p>
+        <div class="biz3-review-head">
+          <h2 class="biz3-section-heading" id="biz3-reviews-heading">実際にご依頼いただいた、お客様の声。</h2>
+          <div class="biz3-review-counts"><span><strong>9件</strong> 天井埋込エアコン清掃</span><span><strong>5件</strong> 床清掃・ワックス</span></div>
+        </div>
+        <p class="biz3-section-lead">くらしのマーケットのBCサービス店舗に寄せられた口コミです。業務用エアコン、事務所の床清掃、ワックス施工への声を掲載しています。</p>
+        <div class="biz3-review-grid">
           <figure class="bc-biz-voice">
             <div class="bc-biz-voice-tags"><span>天井埋込エアコン</span><span>リピート利用</span></div>
             <blockquote>業務用エアコン今回で2回目ですが、作業が丁寧です ありがとうございました</blockquote>
             <figcaption><span>ONEさん｜2026年1月1日</span><a href="https://curama.jp/aircon/ceiling/SER697834815/review/91810e8d-6b88-48ee-831c-4ec742601227/" target="_blank" rel="noopener noreferrer" aria-label="ONEさんの口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
           </figure>
-          <figure class="bc-biz-voice">
-            <div class="bc-biz-voice-tags"><span>天井埋込エアコン</span><span>技術・料金への評価</span></div>
-            <blockquote>とても丁寧に作業していただき、エアコンも綺麗になりました。料金も良心的だと思います。</blockquote>
-            <figcaption><span>匿名のお客様｜2026年2月26日</span><a href="https://curama.jp/aircon/ceiling/SER697834815/review/ef2d9ec7-0e7b-4127-93dc-5d61baf8a3d0/" target="_blank" rel="noopener noreferrer" aria-label="匿名のお客様の口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
-          </figure>
-          <figure class="bc-biz-voice">
-            <div class="bc-biz-voice-tags"><span>天井埋込エアコン</span><span>店舗での施工</span></div>
-            <blockquote>店舗の天井埋め込み式のクーラーをクリーニングして頂きました。</blockquote>
-            <figcaption><span>ナリナリさん｜2024年6月3日</span><a href="https://curama.jp/aircon/ceiling/SER697834815/review/cf8971e3-9a9c-4ae7-ba41-afed84f8e0e4/" target="_blank" rel="noopener noreferrer" aria-label="ナリナリさんの口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
-          </figure>
-          <figure class="bc-biz-voice">
+<figure class="bc-biz-voice">
             <div class="bc-biz-voice-tags"><span>フロアクリーニング</span><span>事務所の床清掃</span></div>
             <blockquote>数年気になっていた事務所フローリングの黒い汚れをポリッシャーで綺麗にして頂きました。スピーディーに、しっかり清掃対応してくれて、助かりました。</blockquote>
             <figcaption><span>匿名のお客様｜2023年12月20日</span><a href="https://curama.jp/floor-cleaning/SER413529828/review/48cf7cb4-d1eb-4083-a0a8-f8d54071447c/" target="_blank" rel="noopener noreferrer" aria-label="匿名のお客様の口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
           </figure>
-          <figure class="bc-biz-voice">
+<figure class="bc-biz-voice">
             <div class="bc-biz-voice-tags"><span>フロアクリーニング</span><span>床ワックス施工</span></div>
             <blockquote>粘着マットで剥がれてしまったワックスを剥がしてもらい、ワックスをかけていただきました！</blockquote>
             <figcaption><span>棚橋さん｜2025年8月10日</span><a href="https://curama.jp/floor-cleaning/SER413529828/review/75f1876c-7ca5-48cf-bd44-1dccd647518c/" target="_blank" rel="noopener noreferrer" aria-label="棚橋さんの口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
           </figure>
-          <figure class="bc-biz-voice">
+        </div>
+        <details class="biz3-more-voices">
+          <summary>ほかのお客様の声を3件見る</summary>
+          <div class="biz3-review-grid"><figure class="bc-biz-voice">
+            <div class="bc-biz-voice-tags"><span>天井埋込エアコン</span><span>技術・料金への評価</span></div>
+            <blockquote>とても丁寧に作業していただき、エアコンも綺麗になりました。料金も良心的だと思います。</blockquote>
+            <figcaption><span>匿名のお客様｜2026年2月26日</span><a href="https://curama.jp/aircon/ceiling/SER697834815/review/ef2d9ec7-0e7b-4127-93dc-5d61baf8a3d0/" target="_blank" rel="noopener noreferrer" aria-label="匿名のお客様の口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
+          </figure>
+<figure class="bc-biz-voice">
+            <div class="bc-biz-voice-tags"><span>天井埋込エアコン</span><span>店舗での施工</span></div>
+            <blockquote>店舗の天井埋め込み式のクーラーをクリーニングして頂きました。</blockquote>
+            <figcaption><span>ナリナリさん｜2024年6月3日</span><a href="https://curama.jp/aircon/ceiling/SER697834815/review/cf8971e3-9a9c-4ae7-ba41-afed84f8e0e4/" target="_blank" rel="noopener noreferrer" aria-label="ナリナリさんの口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
+          </figure>
+<figure class="bc-biz-voice">
             <div class="bc-biz-voice-tags"><span>フロアクリーニング</span><span>仕上がり・定期清掃</span></div>
             <blockquote>大変綺麗にしていただいて大満足です。 今後は定期的に、汚れる前にお願いしたいと思いました。</blockquote>
             <figcaption><span>匿名のお客様</span><a href="https://curama.jp/floor-cleaning/SER413529828/review/3e440a82-142f-49b8-98ed-598b9d5f43ad/" target="_blank" rel="noopener noreferrer" aria-label="匿名のお客様の口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
-          </figure>
-        </div>
-        <p class="bc-biz-voices-note">出典：くらしのマーケット「ＢＣサービス」店舗の<a href="https://curama.jp/aircon/ceiling/SER697834815/review/" target="_blank" rel="noopener noreferrer">天井埋込エアコン清掃</a>・<a href="https://curama.jp/floor-cleaning/SER413529828/review/" target="_blank" rel="noopener noreferrer">フロアクリーニング</a>の口コミ（件数は2026年11月17日確認時点）。掲載文は個々の投稿の抜粋です。清掃対象・汚れ・施工条件により仕上がりは異なります。</p>
+          </figure></div>
+        </details>
+        <p class="biz3-review-source">出典：くらしのマーケット「ＢＣサービス」店舗の<a href="https://curama.jp/aircon/ceiling/SER697834815/review/" target="_blank" rel="noopener noreferrer">天井埋込エアコン清掃</a>・<a href="https://curama.jp/floor-cleaning/SER413529828/review/" target="_blank" rel="noopener noreferrer">フロアクリーニング</a>の口コミ（件数は2026年11月17日確認時点）。掲載文は個々の投稿の抜粋です。清掃対象・汚れ・施工条件により仕上がりは異なります。</p>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container">
-        <h2 class="section-title">作業イメージ</h2>
-        <div class="services-grid">
-          <figure class="svc-card card">
-            <img src="./business-work-scene-optimized.jpg" alt="業務用エアコンの洗浄作業風景" width="600" height="400" loading="lazy" class="svc-card-img">
-            <figcaption>業務用エアコンの洗浄作業風景</figcaption>
-          </figure>
-          <figure class="svc-card card">
-            <img src="./business-coil-before-after-optimized.jpg" alt="熱交換器のビフォーアフター" width="600" height="400" loading="lazy" class="svc-card-img">
-            <figcaption>熱交換器のビフォーアフター</figcaption>
-          </figure>
-          <figure class="svc-card card">
-            <img src="./business-clean-cassette-optimized.jpg" alt="洗浄後の天井カセットエアコン" width="600" height="400" loading="lazy" class="svc-card-img">
-            <figcaption>洗浄後の天井カセットエアコン</figcaption>
-          </figure>
-          <figure class="svc-card card">
-            <img src="./business-dirty-water-optimized.jpg" alt="洗浄後に出た汚水" width="600" height="400" loading="lazy" class="svc-card-img">
-            <figcaption>洗浄後に出た汚水</figcaption>
-          </figure>
+    <section class="biz3-section biz3-trust-section" id="about">
+      <div class="biz3-container biz3-trust-layout">
+        <img class="biz3-profile-image" src="../cursor-test/images/teruya-profile.png" width="360" height="360" alt="BCサービス代表 照屋 昴" loading="lazy">
+        <div>
+          <p class="biz3-kicker">WHY BC SERVICE</p>
+          <h2 class="biz3-section-heading">現場を知るからこそ、<br>安心できる窓口に。</h2>
+          <p>清掃業17年の現場経験と第二種電気工事士資格を活かし、現場の状態や作業条件を確認してご案内します。</p>
+          <ul class="biz3-capability-list"><li><strong>17年</strong>清掃業の現場経験</li><li><strong>第二種</strong>電気工事士資格保有</li><li><strong>一括相談</strong>施工・設備の相談窓口</li></ul>
+          <p>BCサービスが相談窓口となり、自社対応の清掃と協力会社・メーカー等との連携が必要な修理・入替・専門工事を整理して、作業範囲と費用をご案内します。</p>
+          <p class="biz3-signature">BCサービス代表　照屋 昴</p>
+          <a href="/representative/">代表が仕事で大切にしていることを読む</a>
         </div>
       </div>
     </section>
 
-    <section class="section section-light biz-area-text">
-      <div class="container">
-        <h2 class="section-title">対応エリア</h2>
-        <p>沖縄本島内対応<br>案件内容・規模に応じてご相談ください</p>
-      </div>
-    </section>
-
-    <section class="section biz-price-text">
-      <div class="container">
-        <h2 class="section-title">料金について</h2>
-        <p>業務用エアコン清掃や竣工清掃は、<br>台数・広さ・作業内容によって変わるため<br>現場状況を確認のうえお見積りいたします。</p>
-        <p>まずはLINEで写真や内容をお送りください。</p>
-      </div>
-    </section>
-
-    <section class="section biz-instagram-section">
-      <div class="container">
-        <h2 class="section-title">Instagramで見る業務向け清掃・作業事例</h2>
-        <p class="biz-instagram-lead">
-          BCサービスのInstagramでは、実際の作業の様子や清掃前後の状態を紹介しています。店舗・事務所・施設のエアコン清掃や床清掃を検討している方は、現場の雰囲気や作業の流れを確認する参考にしてください。
-        </p>
-
-        <div class="instagram-embed-wrap">
-          <blockquote class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/p/DMh62EjPcNu/?utm_source=ig_embed&amp;utm_campaign=loading"
-            data-instgrm-version="14"
-            style="background:#FFF; border:0; border-radius:12px; margin:0 auto; max-width:540px; min-width:280px; width:100%;">
-          </blockquote>
-        </div>
-
-        <p class="case-study-note">※Instagramの投稿が表示されない場合は、Instagramアプリまたはブラウザでご確認ください。</p>
-      </div>
-    </section>
-
-    <section class="section biz-consult-cases">
-      <div class="container">
-        <h2 class="section-title">業務用エアコンでよくあるご相談</h2>
-        <p class="biz-consult-cases-lead">
-          店舗や事務所の業務用エアコンでは、汚れによるにおいや風量低下だけでなく、ドレンまわりの詰まりや水漏れ、フロートスイッチの不具合によるエラー停止の相談もあります。BCサービスでは、現場写真やエラー状況を確認しながら、清掃で対応できる範囲か、部品交換や別対応が必要かを整理してご案内します。
-        </p>
-        <div class="biz-consult-cases-grid">
-          <article class="card biz-consult-card">
-            <h3>ドレンホース詰まり・水漏れの相談</h3>
-            <p>業務用エアコンでは、排水経路に汚れがたまることでドレンホースが詰まり、ドレンパンに水がたまって水漏れやエラー停止につながることがあります。水が垂れる、エラーが出て止まる、ドレンパンに水が残るといった症状がある場合は、清掃とあわせて排水まわりの状態確認をご相談ください。</p>
-          </article>
-          <article class="card biz-consult-card">
-            <h3>フロートスイッチの不具合・交換相談</h3>
-            <p>ドレンパン内の水位を検知するフロートスイッチが正常に動かない場合、ドレンパンが満水になったり、エアコンがエラーで停止することがあります。症状や機種によって対応方法は変わりますが、フロートスイッチの交換相談にも対応可能です。写真や型番、エラー内容を送っていただけると確認しやすくなります。</p>
-          </article>
-          <article class="card biz-consult-card">
-            <h3>エアコン清掃と床清掃をまとめて相談</h3>
-            <p>店舗や事務所では、エアコン清掃と床清掃を別々の業者に依頼していて、日程調整や発注管理が大変になることがあります。BCサービスでは、業務用エアコン清掃と床清掃をまとめて相談できるため、複数業者とのやり取りを減らし、現場ごとの段取りを整理しやすくなります。</p>
-          </article>
-          <article class="card biz-consult-card">
-            <h3>複数台・営業中の段取り相談</h3>
-            <p>業務用エアコンは、台数・設置場所・営業時間によって作業の進め方が変わります。営業前後の作業、複数台の順番、養生範囲、床や什器まわりの保護など、現場に合わせた段取りをご相談いただけます。</p>
-          </article>
-        </div>
-        <div class="biz-consult-cases-cta">
-          <p>エラー表示・水漏れ・清掃範囲が分からない場合も、まずは写真や型番をLINEで送ってご相談ください。</p>
-          <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="biz-consult-cases">LINEで業務用エアコン清掃を相談する</a>
+    <section class="biz3-section" id="scope">
+      <div class="biz3-container">
+        <p class="biz3-kicker">SERVICE AREA / RELATED REQUESTS</p>
+        <h2 class="biz3-section-heading">こんなご相談にも対応します。</h2>
+        <div class="biz3-scope">
+          <div>
+            <h3>業務用エアコンの不具合</h3>
+            <p>清掃のご依頼とあわせて、水漏れ・ドレン詰まり・フロートスイッチ不具合などの相談もお受けします。機種・エラー表示・設置状況を確認し、清掃と修理の対応範囲をご案内します。</p>
+            <ul><li>ドレン詰まり・水漏れ相談</li><li>エラー停止・部品交換相談</li><li>複数台の施工順序・営業中の段取り</li></ul>
+          </div>
+          <div>
+            <h3>店舗・施設の清掃全般</h3>
+            <p>エアコンだけでなく、床・ガラス・竣工清掃などもまとめてご相談ください。必要に応じ協力会社と連携します。</p>
+            <ul><li>床洗浄・ワックス・ガラス清掃</li><li>竣工清掃・改修後清掃</li><li>対応エリア：沖縄本島内（案件規模により相談）</li></ul>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section section-light biz-estimate-checklist">
-      <div class="container">
-        <h2 class="section-title">見積り相談の前に送っていただきたい情報</h2>
-        <p class="biz-estimate-checklist-lead">
-          業務用エアコン清掃や店舗・事務所清掃は、機種・台数・設置状況・作業範囲によって作業内容や料金が変わります。LINEで事前に写真や情報を送っていただけると、現場確認や見積りの目安をスムーズにお伝えしやすくなります。
-        </p>
-        <div class="biz-estimate-checklist-grid">
-          <article class="card biz-consult-card">
-            <h3>エアコン本体と設置場所の写真</h3>
-            <p>天井埋込型・天井吊下型・壁掛け型など、エアコンの形状が分かる写真を送ってください。脚立や養生が必要か、周囲に什器や棚があるかも確認しやすくなります。</p>
-          </article>
-          <article class="card biz-consult-card">
-            <h3>型番・メーカーが分かる写真</h3>
-            <p>本体の型番シールやリモコン、エラー表示が分かる写真があると、対応可否や部品確認、フロートスイッチなどの相談時にも確認しやすくなります。</p>
-          </article>
-          <article class="card biz-consult-card">
-            <h3>台数と設置場所</h3>
-            <p>清掃したい台数、設置されている場所、天井高、作業スペースの有無を教えてください。複数台の場合は、作業順序や所要時間の目安を整理しやすくなります。</p>
-          </article>
-          <article class="card biz-consult-card">
-            <h3>水漏れ・エラー・においなどの症状</h3>
-            <p>水漏れ、ドレン詰まり、エラー停止、風のにおい、吹き出し口の汚れなど、気になる症状があれば事前に教えてください。清掃で確認できる範囲か、部品交換や別対応が必要かを整理しやすくなります。</p>
-          </article>
-          <article class="card biz-consult-card">
-            <h3>床清掃や追加作業の有無</h3>
-            <p>エアコン清掃とあわせて床清掃も相談したい場合は、床材・広さ・汚れの状態が分かる写真を送ってください。別々の業者に頼む手間を減らしたい場合も、まとめて相談できます。</p>
-          </article>
-          <article class="card biz-consult-card">
-            <h3>希望時期・作業可能時間</h3>
-            <p>営業前・営業後・定休日など、作業しやすい時間帯があれば教えてください。店舗営業や来客予定に合わせて、できるだけ無理のない段取りを確認します。</p>
-          </article>
-        </div>
-        <div class="biz-consult-cases-cta">
-          <p>写真がすべて揃っていなくても大丈夫です。分かる範囲で送っていただければ、確認に必要な情報をこちらからご案内します。</p>
-          <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="biz-estimate-checklist">LINEで写真を送って見積り相談する</a>
+    <section class="biz3-section biz3-section--paper" id="estimate">
+      <div class="biz3-container">
+        <div class="biz3-quote-box">
+          <p class="biz3-kicker">QUICK ESTIMATE</p>
+          <h2 class="biz3-quote-heading">見積り相談は、<br>分かる範囲の写真と情報から。</h2>
+          <p class="biz3-quote-lead">料金は機種・台数・天井高・床面積・作業時間などで変わります。写真確認後に概算のご相談が可能です。詳しい状態や施工範囲を確認したうえでお見積りをご案内します。</p>
+          <div class="biz3-quote-items">
+            <div><strong>エアコンの写真・型番</strong><p>メーカー・形状・設置場所が分かる写真</p></div>
+            <div><strong>台数・床面積・気になる症状</strong><p>水漏れ・におい・ワックスの状態など</p></div>
+            <div><strong>希望時期・作業可能時間</strong><p>定休日・営業時間外などの希望</p></div>
+          </div>
+          <div class="biz3-quote-action">
+            <a class="biz3-line-primary" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="mid">LINEで写真を送って見積り相談</a>
+            <a href="tel:05017241338" class="biz3-text-link" data-cta-location="mid">電話で相談：050-1724-1338</a>
+          </div>
+          <div class="biz3-quote-flow">
+            <div class="biz3-quote-step"><strong><em>01</em> LINE・電話で相談</strong>写真・台数・ご希望を分かる範囲でお知らせください。</div>
+            <div class="biz3-quote-step"><strong><em>02</em> 現場条件を確認</strong>必要に応じ現地確認し、作業内容と施工体制を整理します。</div>
+            <div class="biz3-quote-step"><strong><em>03</em> お見積り・日程調整</strong>費用と作業内容をご案内し、ご納得後に日程を調整します。</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="section biz-pricing-guide">
-      <div class="container">
-        <h2 class="section-title">料金・見積りの考え方</h2>
-        <p class="biz-estimate-checklist-lead">
-          業務用エアコン清掃や店舗・事務所清掃は、家庭用エアコンと違い、機種・台数・設置場所・作業時間・床清掃の有無によって作業内容が大きく変わります。そのため、BCサービスでは現場写真や台数、型番、気になる症状を確認したうえで、作業内容と料金目安をご案内しています。
-        </p>
-        <div class="biz-estimate-checklist-grid">
-          <article class="card biz-consult-card">
-            <h3>機種・形状で作業内容が変わります</h3>
-            <p>天井埋込型、天井吊下型、壁掛け型など、業務用エアコンは形状によって分解範囲や養生方法が変わります。型番や本体写真があると、作業内容の確認がしやすくなります。</p>
-          </article>
-          <article class="card biz-consult-card">
-            <h3>台数・設置場所で作業時間が変わります</h3>
-            <p>複数台まとめて清掃する場合や、天井が高い場所、什器や棚が近い場所では、作業順序や養生範囲の確認が必要です。台数と設置場所が分かると、段取りや所要時間の目安を出しやすくなります。</p>
-          </article>
-          <article class="card biz-consult-card">
-            <h3>水漏れ・エラーの有無で確認内容が変わります</h3>
-            <p>ドレンホースの詰まり、水漏れ、エラー停止、フロートスイッチの不具合が疑われる場合は、清掃だけでなく排水まわりや部品確認が必要になることがあります。症状やエラー内容を事前に共有いただけると確認しやすくなります。</p>
-          </article>
-          <article class="card biz-consult-card">
-            <h3>床清掃をまとめる場合は範囲確認が必要です</h3>
-            <p>エアコン清掃と床清掃をまとめて相談する場合は、床材・広さ・汚れの状態によって作業内容が変わります。別々の業者に依頼する手間を減らしたい場合も、写真を送ってまとめてご相談いただけます。</p>
-          </article>
-          <article class="card biz-consult-card">
-            <h3>料金目安は写真確認後にご案内します</h3>
-            <p>正確な料金は現場状況や作業範囲によって変わるため、写真・台数・型番・症状を確認したうえで目安をご案内します。内容が分からない場合も、まずは分かる範囲でLINEからご相談ください。</p>
-          </article>
-        </div>
-        <div class="biz-consult-cases-cta">
-          <p>概算を知りたい場合は、エアコン本体・型番・設置場所・台数が分かる写真をLINEで送ってください。床清掃も一緒に相談したい場合は、床の写真や広さも分かる範囲でお知らせください。</p>
-          <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="biz-pricing-guide">LINEで料金目安を相談する</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-light sec-faq" id="faq">
-      <div class="container">
-        <h2 class="section-title">業務用エアコン清掃・店舗清掃のよくある質問</h2>
-        <p class="faq-page-intro">店舗・事務所・施設の業務用エアコン清掃や床清掃について、よくあるご相談をまとめました。現場の状況によって作業内容や料金は変わるため、写真・台数・型番・エラー内容などをLINEで送っていただけると確認しやすくなります。</p>
-        <div class="faq-list plan-compare--single">
+    <section class="biz3-section" id="faq">
+      <div class="biz3-narrow">
+        <p class="biz3-kicker">FREQUENTLY ASKED QUESTIONS</p>
+        <h2 class="biz3-section-heading">よくあるご質問</h2>
+        <div class="biz3-faq">
           <details class="faq-details">
             <summary>業務用エアコン清掃は営業時間外でも相談できますか？</summary>
             <div class="faq-details-body">
               <p>はい、店舗や事務所の営業時間に合わせて相談できます。営業前・営業後・定休日など、現場の状況に応じて作業しやすい時間帯を確認します。台数や設置場所によって作業時間が変わるため、事前に写真や台数を送っていただけると段取りを組みやすくなります。</p>
             </div>
           </details>
-          <details class="faq-details">
+<details class="faq-details">
             <summary>天井埋込型や天井吊下型のエアコンも対応できますか？</summary>
             <div class="faq-details-body">
               <p>天井埋込型・天井吊下型・壁掛け型など、業務用エアコンの清掃相談に対応しています。機種や設置状況によって作業内容が変わるため、型番・設置写真・台数を確認したうえで、対応可否や料金目安をご案内します。</p>
             </div>
           </details>
-          <details class="faq-details">
+<details class="faq-details">
             <summary>ドレンホースの詰まりや水漏れも相談できますか？</summary>
             <div class="faq-details-body">
               <p>はい、ドレンホースの詰まりや水漏れの相談も可能です。業務用エアコンでは、排水経路に汚れがたまることでドレンパンに水が残り、水漏れやエラー停止につながる場合があります。症状によって対応範囲が変わるため、写真やエラー内容を確認してご案内します。</p>
             </div>
           </details>
-          <details class="faq-details">
+<details class="faq-details">
             <summary>フロートスイッチの交換にも対応できますか？</summary>
             <div class="faq-details-body">
               <p>フロートスイッチの不具合や交換相談にも対応可能です。ドレンパン内の水位を検知する部品のため、不具合があるとエラー停止や水漏れにつながることがあります。ただし、機種や部品状況によって対応方法が変わるため、型番や症状を確認してからのご案内になります。</p>
             </div>
           </details>
-          <details class="faq-details">
+<details class="faq-details">
             <summary>エアコン清掃と床清掃をまとめて依頼できますか？</summary>
             <div class="faq-details-body">
               <p>はい、エアコン清掃と床清掃をまとめてご相談いただけます。別々の業者へ依頼すると日程調整や発注管理が大変になりやすいため、同じ現場でまとめて相談したい場合は、清掃範囲・床材・エアコン台数を確認して段取りをご案内します。</p>
             </div>
           </details>
-          <details class="faq-details">
+<details class="faq-details">
             <summary>複数台まとめて見積りできますか？</summary>
             <div class="faq-details-body">
               <p>複数台の見積り相談も可能です。店舗・事務所・施設では、設置場所や台数によって作業順序、養生範囲、作業時間が変わります。台数・機種・設置場所が分かる写真を送っていただけると、確認がスムーズです。</p>
             </div>
           </details>
-          <details class="faq-details">
+<details class="faq-details">
             <summary>現場写真だけで概算相談できますか？</summary>
             <div class="faq-details-body">
               <p>写真だけでも概算相談は可能です。正確な金額は現場状況や機種確認後になりますが、エアコンの型番、設置状況、汚れ具合、台数、床清掃の有無などが分かる写真を送っていただけると、作業内容や料金目安を事前に整理しやすくなります。</p>
@@ -782,51 +453,33 @@
       </div>
     </section>
 
-    <section class="section section-light biz-related-nav">
-      <div class="container">
-        <h2 class="section-title">関連ページ</h2>
-        <div class="card" style="padding:24px;">
-          <ul>
-            <li><a href="../cursor-test/">家庭向けエアコンクリーニングはこちら</a></li>
-            <li><a href="../complete-disassembly/">完全分解クリーニングの詳しい説明はこちら</a></li>
-            <li><a href="../cursor-test/cases.html">施工事例一覧を見る</a></li>
-            <li><a href="../cursor-test/faq.html">よくある質問を見る</a></li>
-            <li><a href="../cursor-test/south.html">対応エリアのまとめを見る</a></li>
-          </ul>
+    <section class="biz3-contact" id="contact">
+      <div class="biz3-container">
+        <p class="biz3-kicker" style="color:#e2c89f">CONTACT US</p>
+        <h2 class="biz3-section-heading">エアコン1台から複数台、床ワックスまで。<br>まとめてご相談ください。</h2>
+        <p>写真が揃っていなくても大丈夫です。現場の状況を整理し、必要な作業とお見積りをご案内します。</p>
+        <div class="biz3-contact-actions">
+          <a class="biz3-line-primary" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="bottom">LINEでまとめて見積り相談</a>
+          <a class="biz3-contact-phone" href="tel:05017241338" data-cta-location="bottom">電話で相談 050-1724-1338</a>
         </div>
-      </div>
-    </section>
-
-    <section class="section profile section-light">
-      <div class="container">
-        <h2 class="section-title">ご相談から作業まで丁寧に対応します</h2>
-        <img src="../cursor-test/images/teruya-profile.png" alt="代表 照屋昴" width="360" height="360" loading="lazy" class="profile-img">
-        <p class="profile-title">BCサービス 代表</p>
-        <p class="profile-name"><strong>照屋 昴</strong></p>
-        <p class="profile-message">清掃業17年・エアコンクリーニング7年の経験をもとに、<br>現場ごとの条件を確認しながら、段取りから作業完了まで丁寧に対応します。<br>元請け様・建設会社様・店舗運営のご担当者様からのご相談にも柔軟に対応します。</p>
-        <p style="margin:16px auto 0;text-align:center"><a href="/representative/" style="color:#175978;font-weight:700;text-decoration:underline;text-underline-offset:4px">代表が仕事で大切にしていることを読む →</a></p>
-      </div>
-    </section>
-
-    <section class="section section-light bc-biz-flow" id="estimate">
-      <div class="container">
-        <h2 class="section-title">お見積りまでの流れ</h2>
-        <div class="bc-biz-grid">
-          <article class="bc-biz-card"><span class="bc-biz-num">01</span><h3>LINE・電話で相談</h3><p>型番・台数、床の写真や広さ、希望時期などを分かる範囲でお知らせください。</p></article>
-          <article class="bc-biz-card"><span class="bc-biz-num">02</span><h3>現場条件・作業範囲を確認</h3><p>必要に応じて現地確認し、作業内容や施工体制を整理します。</p></article>
-          <article class="bc-biz-card"><span class="bc-biz-num">03</span><h3>お見積り・日程をご案内</h3><p>作業内容と費用を事前にご案内し、ご納得いただいてから日程を調整します。</p></article>
-        </div>
-      </div>
-    </section>
-    <section class="section biz-cta-text" id="contact">
-      <div class="container">
-        <h2 class="section-title">エアコン1台から複数台・床ワックスまで、まとめてご相談ください</h2>
-        <p>写真・台数・床面積など分かる範囲で大丈夫です。<br>店舗・事務所の清掃の手配を、BCサービスがお手伝いします。</p>
-        <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="bottom">LINEでまとめて見積り相談</a>
-        <p class="bc-biz-phone">電話のご相談：<a href="tel:05017241338">050-1724-1338</a></p>
       </div>
     </section>
   </main>
+  <footer class="biz3-footer">
+    <div class="biz3-container biz3-footer-inner">
+      <a class="biz3-footer-brand" href="/">BCサービス</a>
+      <nav class="biz3-footer-links" aria-label="フッターナビゲーション">
+        <a href="/representative/">代表紹介</a>
+        <a href="/privacy/">プライバシーポリシー</a>
+        <a href="../complete-disassembly/">エアコンクリーニング</a>
+        <a href="https://www.instagram.com/bcservicenanjyo/" target="_blank" rel="noopener noreferrer">Instagram施工事例</a>
+      </nav>
+    </div>
+  </footer>
+  <nav class="biz3-mobile-actions" aria-label="スマートフォンの問い合わせ窓口">
+    <a class="biz3-mobile-line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="sticky">LINEで見積り相談</a>
+    <a class="biz3-mobile-phone" href="tel:05017241338" data-cta-location="sticky">電話で相談</a>
+  </nav>
   <!-- GA4 CTA click tracking + debug toast -->
   <script>
   (function() {
@@ -850,6 +503,8 @@
     }
 
     function detectLocation(anchor) {
+      var explicitLocation = anchor.getAttribute('data-cta-location') || '';
+      if (/^(hero|mid|bottom|sticky)$/.test(explicitLocation)) return explicitLocation;
       var cls0 = (typeof anchor.className === 'string' ? anchor.className : '').toLowerCase();
       if (/\bheader-tel\b/.test(cls0)) return 'mid';
       var node = anchor;
