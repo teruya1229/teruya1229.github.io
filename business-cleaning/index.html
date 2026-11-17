@@ -390,6 +390,30 @@
       .bc-biz-card { padding: 20px 18px; }
       .bc-biz-note { padding: 18px; }
     }
+    /* 法人・床清掃の実口コミ：ページ内限定デザイン */
+    .bc-biz-voices-lead { text-align: center; max-width: 800px; margin: 0 auto 18px; font-size: .98rem; line-height: 1.8; color: #506673; }
+    .bc-biz-voices-proof { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 0 0 28px; }
+    .bc-biz-voices-proof span { background: #e6f6f0; border: 1px solid #c9e8de; color: #164f45; border-radius: 999px; padding: 8px 15px; font-size: .84rem; font-weight: 600; }
+    .bc-biz-voices-proof strong { font-size: 1.06rem; }
+    .bc-biz-voices-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+    .bc-biz-voice { box-sizing: border-box; margin: 0; min-width: 0; display: flex; flex-direction: column; border: 1px solid #d9e7eb; border-radius: 15px; background: #fff; padding: 22px 19px 18px; box-shadow: 0 5px 18px rgba(11,41,61,.06); }
+    .bc-biz-voice-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+    .bc-biz-voice-tags span { background: #eaf5f2; color: #145c50; border-radius: 6px; padding: 5px 8px; font-size: .75rem; font-weight: 700; line-height: 1.5; }
+    .bc-biz-voice-tags span + span { background: #eff4fa; color: #345a70; }
+    .bc-biz-voice blockquote { flex: 1; margin: 0; color: #203d50; font-size: .98rem; line-height: 1.85; overflow-wrap: anywhere; }
+    .bc-biz-voice figcaption { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; border-top: 1px solid #e4ecf0; margin-top: 17px; padding-top: 14px; color: #5c7180; font-size: .82rem; line-height: 1.5; }
+    .bc-biz-voice figcaption a { color: #17617a; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+    .bc-biz-voices-note { max-width: 890px; margin: 23px auto 0; color: #61717b; text-align: center; font-size: .8rem; line-height: 1.8; }
+    .bc-biz-voices-note a { color: #175f7f; text-decoration: underline; text-underline-offset: 3px; }
+    @media (max-width: 900px) { .bc-biz-voices-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+    @media (max-width: 650px) {
+      .bc-biz-voices-lead { text-align: left; font-size: .94rem; }
+      .bc-biz-voices-grid { grid-template-columns: minmax(0,1fr); gap: 12px; }
+      .bc-biz-voice { padding: 18px 16px 16px; }
+      .bc-biz-voice blockquote { font-size: .95rem; }
+      .bc-biz-voices-proof { justify-content: flex-start; }
+      .bc-biz-voices-proof span { font-size: .78rem; }
+    }
   </style>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8LKLFDL3G"></script>
@@ -495,6 +519,51 @@
           <article class="bc-biz-card"><span class="bc-biz-num">連</span><h3>必要に応じ専門業者と連携</h3><p>修理・入替・専門工事は内容と法令要件を確認し、メーカー・協力会社と連携します。</p></article>
         </div>
         <div class="bc-biz-note"><p><strong>BCサービスが相談窓口となり、現場内容を整理します。</strong> 自社で担当する清掃業務と、協力会社・メーカー等との連携が必要な施工を事前に確認し、作業範囲・費用をご案内します。</p></div>
+      </div>
+    </section>
+
+    <!-- 法人LP：くらしのマーケット BCサービス店舗の実口コミ。2026-11-17、店舗ID/カテゴリ/個別URL確認 -->
+    <section class="section section-light bc-biz-voices" id="reviews" aria-labelledby="bc-biz-voices-title">
+      <div class="container">
+        <h2 class="section-title" id="bc-biz-voices-title">店舗・事務所の清掃でいただいたお客様の声</h2>
+        <p class="bc-biz-voices-lead">業務用エアコンや床洗浄・ワックスの施工をご利用いただいたお客様の口コミから抜粋しました。<br>内容は、各カードの「口コミ原文を見る」からご確認いただけます。</p>
+        <div class="bc-biz-voices-proof" aria-label="2026年11月17日確認時の口コミ件数">
+          <span><strong>9件</strong> 天井埋込エアコン清掃の口コミ</span>
+          <span><strong>5件</strong> フロアクリーニングの口コミ</span>
+        </div>
+        <div class="bc-biz-voices-grid">
+          <figure class="bc-biz-voice">
+            <div class="bc-biz-voice-tags"><span>天井埋込エアコン</span><span>リピート利用</span></div>
+            <blockquote>業務用エアコン今回で2回目ですが、作業が丁寧です ありがとうございました</blockquote>
+            <figcaption><span>ONEさん｜2026年1月1日</span><a href="https://curama.jp/aircon/ceiling/SER697834815/review/91810e8d-6b88-48ee-831c-4ec742601227/" target="_blank" rel="noopener noreferrer" aria-label="ONEさんの口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
+          </figure>
+          <figure class="bc-biz-voice">
+            <div class="bc-biz-voice-tags"><span>天井埋込エアコン</span><span>技術・料金への評価</span></div>
+            <blockquote>とても丁寧に作業していただき、エアコンも綺麗になりました。料金も良心的だと思います。</blockquote>
+            <figcaption><span>匿名のお客様｜2026年2月26日</span><a href="https://curama.jp/aircon/ceiling/SER697834815/review/ef2d9ec7-0e7b-4127-93dc-5d61baf8a3d0/" target="_blank" rel="noopener noreferrer" aria-label="匿名のお客様の口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
+          </figure>
+          <figure class="bc-biz-voice">
+            <div class="bc-biz-voice-tags"><span>天井埋込エアコン</span><span>店舗での施工</span></div>
+            <blockquote>店舗の天井埋め込み式のクーラーをクリーニングして頂きました。</blockquote>
+            <figcaption><span>ナリナリさん｜2024年6月3日</span><a href="https://curama.jp/aircon/ceiling/SER697834815/review/cf8971e3-9a9c-4ae7-ba41-afed84f8e0e4/" target="_blank" rel="noopener noreferrer" aria-label="ナリナリさんの口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
+          </figure>
+          <figure class="bc-biz-voice">
+            <div class="bc-biz-voice-tags"><span>フロアクリーニング</span><span>事務所の床清掃</span></div>
+            <blockquote>数年気になっていた事務所フローリングの黒い汚れをポリッシャーで綺麗にして頂きました。スピーディーに、しっかり清掃対応してくれて、助かりました。</blockquote>
+            <figcaption><span>匿名のお客様｜2023年12月20日</span><a href="https://curama.jp/floor-cleaning/SER413529828/review/48cf7cb4-d1eb-4083-a0a8-f8d54071447c/" target="_blank" rel="noopener noreferrer" aria-label="匿名のお客様の口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
+          </figure>
+          <figure class="bc-biz-voice">
+            <div class="bc-biz-voice-tags"><span>フロアクリーニング</span><span>床ワックス施工</span></div>
+            <blockquote>粘着マットで剥がれてしまったワックスを剥がしてもらい、ワックスをかけていただきました！</blockquote>
+            <figcaption><span>棚橋さん｜2025年8月10日</span><a href="https://curama.jp/floor-cleaning/SER413529828/review/75f1876c-7ca5-48cf-bd44-1dccd647518c/" target="_blank" rel="noopener noreferrer" aria-label="棚橋さんの口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
+          </figure>
+          <figure class="bc-biz-voice">
+            <div class="bc-biz-voice-tags"><span>フロアクリーニング</span><span>仕上がり・定期清掃</span></div>
+            <blockquote>大変綺麗にしていただいて大満足です。 今後は定期的に、汚れる前にお願いしたいと思いました。</blockquote>
+            <figcaption><span>匿名のお客様</span><a href="https://curama.jp/floor-cleaning/SER413529828/review/3e440a82-142f-49b8-98ed-598b9d5f43ad/" target="_blank" rel="noopener noreferrer" aria-label="匿名のお客様の口コミ原文をくらしのマーケットで確認する">口コミ原文を見る</a></figcaption>
+          </figure>
+        </div>
+        <p class="bc-biz-voices-note">出典：くらしのマーケット「ＢＣサービス」店舗の<a href="https://curama.jp/aircon/ceiling/SER697834815/review/" target="_blank" rel="noopener noreferrer">天井埋込エアコン清掃</a>・<a href="https://curama.jp/floor-cleaning/SER413529828/review/" target="_blank" rel="noopener noreferrer">フロアクリーニング</a>の口コミ（件数は2026年11月17日確認時点）。掲載文は個々の投稿の抜粋です。清掃対象・汚れ・施工条件により仕上がりは異なります。</p>
       </div>
     </section>
 
