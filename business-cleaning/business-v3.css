@@ -110,7 +110,7 @@
 .biz3 .biz3-review-counts { display:flex; gap:20px; flex-wrap:wrap; font-size:12px; font-weight:750; color:#455f67; }
 .biz3 .biz3-review-counts strong { font-size:20px; color:var(--biz-sea); }
 .biz3 .biz3-review-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }
-.biz3 .bc-biz-voice { padding:26px 24px 21px; background:#fff; border-radius:12px; border:1px solid #d8e2df; box-shadow:0 6px 18px rgba(18,42,51,.055); }
+.biz3 .bc-biz-voice { margin:0; min-width:0; display:flex; flex-direction:column; padding:26px 24px 21px; background:#fff; border-radius:12px; border:1px solid #d8e2df; box-shadow:0 6px 18px rgba(18,42,51,.055); }
 .biz3 .bc-biz-voice-tags { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:18px; }
 .biz3 .bc-biz-voice-tags span { border-radius:3px; background:#e9f2ee; color:#22666b; font-size:11px; font-weight:800; line-height:1.5; padding:5px 9px; }
 .biz3 .bc-biz-voice-tags span + span { background:#f3eee5; color:#745b3a; }
