@@ -596,6 +596,19 @@
       };
 
       if (typeof window.gtag === 'function') {
+        // A business-LP-only event: keep the shared cta_click for existing reports,
+        // but use this distinct event for the business campaign's conversion goal.
+        if (ctaType === 'line' || ctaType === 'tel') {
+          gtag('event', 'business_contact_click', {
+            cta_type: eventData.cta_type,
+            cta_target: eventData.cta_target,
+            cta_location: eventData.cta_location,
+            page_type: PAGE_TYPE,
+            page_slug: PAGE_SLUG,
+            debug_flag: isDebug,
+            transport_type: 'beacon'
+          });
+        }
         if (isDebug) {
           e.preventDefault();
           var navigated = false;
