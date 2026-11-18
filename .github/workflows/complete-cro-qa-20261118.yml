@@ -1,7 +1,7 @@
 name: Complete-disassembly CRO review QA (pre-publish)
 on:
   push:
-    branches: [perf/cd-case-photos-webp-20261118]
+    branches: [fix/cd-lp-case-gallery-mobile-20261118]
     paths:
       - 'complete-disassembly/**'
       - '.github/workflows/complete-cro-qa-20261118.yml'
@@ -115,6 +115,12 @@ jobs:
                 const areaLinksVisible=await areaDetails.locator('a').first().isVisible();
                 await page.locator('.ai-summary-section').screenshot({path:'qa-cro/stage-'+width+'-area-open.png',timeout:45000});
                 await areaDetails.locator('summary').click();
+                const casePhotoLink=page.locator('.sec-case-studies .cd-case-photo-link').first();
+                await casePhotoLink.click();
+                const casePhotoModalOpen=await page.locator('#cd-photo-dialog').evaluate(el=>el.open&&el.querySelector('img').complete&&el.querySelector('img').naturalWidth>0);
+                await page.screenshot({path:'qa-cro/stage-'+width+'-case-modal.png'});
+                await page.locator('#cd-photo-dialog .cd-photo-dialog-close').click();
+                const casePhotoModalClosed=await page.locator('#cd-photo-dialog').evaluate(el=>!el.open);
                 const infoDetails=page.locator('.sec-price .cd-price-details');
                 const priceDetailInitiallyClosed=await infoDetails.evaluate(el=>!el.open);
                 await infoDetails.locator('summary').click();
@@ -140,6 +146,10 @@ jobs:
                     phone:document.querySelector('.header-tel')?.getAttribute('href'),
                     booking:document.querySelector('.hero .air-reserve-subcta')?.getAttribute('href'),
                     faq:document.querySelectorAll('.sec-faq details').length,
+                    caseGalleryColumns:(()=>{const grid=document.querySelector('.sec-case-studies .case-study-photos');return grid?getComputedStyle(grid).gridTemplateColumns.split(' ').length:0})(),
+                    caseGalleryLinks:document.querySelectorAll('.sec-case-studies .cd-case-photo-link').length,
+                    caseGalleryImageSizes:[...document.querySelectorAll('.sec-case-studies .case-study-photos img')].map(el=>Math.round(el.getBoundingClientRect().height)),
+
                     actualCaseSources:[...document.querySelectorAll('.sec-case-studies .case-study-photos img')].map(i=>i.getAttribute('src')),
                     actualCaseRendered:[...document.querySelectorAll('.sec-case-studies .case-study-photos img')].every(i=>i.naturalWidth>0&&i.naturalHeight>0),
                     finalCtaPhotoCount:document.querySelectorAll('.sec-line-photo .line-photo-list li').length===2,
@@ -150,7 +160,7 @@ jobs:
                 });
                 await page.locator('.hero .line-cta').click();
                 const events=await page.evaluate(()=>window.dataLayer?.filter(x=>x?.[0]==='event').map(x=>x[1])||[]);
-                const row={width,http:response.status(),...data,heroHeight,menuStatus,modalOpen,modalClosed,priceDetailInitiallyClosed,priceDetailExpanded,priceDetailsVisible,technicalInitiallyClosed,technicalExpanded,technicalSixIcons,videoInitiallyClosed,videoExpanded,videoIframePresent,areaInitiallyClosed,areaExpanded,areaLinksVisible,loaded:pictureReport.length,brokenImages:pictureReport.filter(i=>!i.ready),errors,badLocal,events};
+                const row={width,http:response.status(),...data,heroHeight,menuStatus,modalOpen,modalClosed,casePhotoModalOpen,casePhotoModalClosed,priceDetailInitiallyClosed,priceDetailExpanded,priceDetailsVisible,technicalInitiallyClosed,technicalExpanded,technicalSixIcons,videoInitiallyClosed,videoExpanded,videoIframePresent,areaInitiallyClosed,areaExpanded,areaLinksVisible,loaded:pictureReport.length,brokenImages:pictureReport.filter(i=>!i.ready),errors,badLocal,events};
                 const issues=[];
                 if(row.http!==200)issues.push('HTTP');
                 if(row.sections!==13)issues.push('SECTION_COUNT');
@@ -159,6 +169,8 @@ jobs:
                 if(row.headings[1]!=='こんなお悩み、ありませんか？'||!row.headings[2].includes('写真で見る')||!row.headings[3].includes('お客様の声'))issues.push('FLOW_ORDER');
                 if(row.brokenImages.length)issues.push('IMAGE_DECODE_OR_MISSING');
                 if(!row.actualCaseRendered||row.actualCaseSources.length!==4||row.actualCaseSources.some(src=>!src.endsWith('-optimized.webp')))issues.push('CASE_WEBP_RENDER');
+                if(row.caseGalleryColumns!==2||row.caseGalleryLinks!==4||!row.casePhotoModalOpen||!row.casePhotoModalClosed)issues.push('CASE_GALLERY_GRID_OR_ZOOM');
+                if(width<=390 && row.caseGalleryImageSizes.some(h=>h>195))issues.push('CASE_GALLERY_TOO_TALL');
                 if(width<768 && (!row.menuStatus.visible||!row.menuStatus.linksFit||!row.menuStatus.closed))issues.push('MOBILE_NAV');
                 if(!row.modalOpen||!row.modalClosed)issues.push('PHOTO_MODAL');
                 if(width<768 && row.heroHeight>720)issues.push('HERO_TOO_TALL');
@@ -191,7 +203,7 @@ jobs:
                 await baselineContext.close();
               }
             }finally{
-              fs.writeFileSync('qa-cro/report.json',JSON.stringify({branch:'perf/cd-case-photos-webp-20261118',baseline:'origin/main',results,failures},null,2));
+              fs.writeFileSync('qa-cro/report.json',JSON.stringify({branch:'fix/cd-lp-case-gallery-mobile-20261118',baseline:'origin/main',results,failures},null,2));
               await browser.close();
             }
             console.log('COMPLETE_CRO_QA '+JSON.stringify({status:failures.length?'FAIL':'PASS',results,failures}));
