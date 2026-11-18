@@ -113,3 +113,6 @@
  .washer-diagnosis__evidence-link,.washer-diagnosis__voice-link{padding:11px 12px}
  html.washer-diagnosis-inline-line-visible .mobile-bar{visibility:hidden;opacity:0;pointer-events:none}
 }
+
+/* 症状ごとの施工写真へジャンプしても固定ヘッダーで隠れない */
+#symptom-flakes,#symptom-odor,#symptom-drying{scroll-margin-top:88px}
