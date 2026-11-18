@@ -123,3 +123,11 @@
   .hero__diagnosis-copy strong{font-size:13px}
   .hero__diagnosis-time{font-size:9px;padding:6px}
 }
+
+
+/* 2026-11-18: ドラム式25,000円の作業範囲を簡潔に可視化。料金・洗浄条件は不変 */
+.price-card__value{margin:14px 0;padding:15px 16px;border:1px solid #d5e9e5;background:#f4faf8;border-radius:12px}
+.price-card__value>strong{display:block;color:#164e5b;font-size:13px;line-height:1.55}
+.price-card__value ol{margin:8px 0 9px 18px;padding:0;list-style:decimal}
+.price-card__value li{font-size:12px;line-height:1.75;color:#46626c;margin:0 0 2px}
+.price-card__value a{font-size:12px;line-height:1.55;font-weight:850;color:#12697b;text-decoration:underline;text-underline-offset:3px}
