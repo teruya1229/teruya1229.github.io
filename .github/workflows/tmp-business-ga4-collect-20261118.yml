@@ -1,0 +1,70 @@
+name: One-time Business LP GA4 click delivery verification
+on:
+  push:
+    branches:
+      - qa/business-lp-ga4-real-collect-20261118
+    paths:
+      - .github/workflows/tmp-business-ga4-collect-20261118.yml
+permissions:
+  contents: read
+jobs:
+  ga4-real-collect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 13
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          npm install --no-save --no-package-lock playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Click production LINE CTA in debug mode and verify GA4 transport without opening LINE
+        run: |
+          node <<'JS'
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const context=await browser.newContext({viewport:{width:390,height:844},locale:'ja-JP'});
+            const page=await context.newPage();
+            const collected=[],responses=[],errors=[];
+            page.on('pageerror',e=>errors.push(e.message));
+            page.on('request',r=>{
+              try{
+                const u=new URL(r.url());
+                if((u.hostname.endsWith('google-analytics.com')||u.hostname.endsWith('analytics.google.com'))&&u.pathname.endsWith('/g/collect')&&u.searchParams.get('en')==='cta_click'){
+                  collected.push({event:u.searchParams.get('en'),measurementId:u.searchParams.get('tid'),pagePath:u.searchParams.get('dp'),debugEvent:u.searchParams.has('_dbg')});
+                }
+              }catch{}
+            });
+            page.on('response',r=>{
+              try{
+                const u=new URL(r.url());
+                if((u.hostname.endsWith('google-analytics.com')||u.hostname.endsWith('analytics.google.com'))&&u.pathname.endsWith('/g/collect')&&u.searchParams.get('en')==='cta_click'){
+                  responses.push(r.status());
+                }
+              }catch{}
+            });
+            await page.addInitScript(()=>{window.open=()=>null;});
+            await page.route('https://lin.ee/**',r=>r.abort('blockedbyclient'));
+            try{
+              const response=await page.goto('https://teruya1229.github.io/business-cleaning/?debug=1',{waitUntil:'domcontentloaded',timeout:45000});
+              if(response.status()!==200)throw Error('SITE_HTTP_'+response.status());
+              await page.waitForFunction(()=>document.readyState==='complete' && typeof window.gtag==='function',{timeout:20000});
+              await page.waitForTimeout(1300);
+              const a=page.locator('a[data-cta-location="hero"][href^="https://lin.ee/"]');
+              if(await a.count()!==1)throw Error('HERO_CTA_NOT_FOUND');
+              await a.click();
+              for(let i=0;i<18&&collected.length===0;i++)await page.waitForTimeout(600);
+              await page.waitForTimeout(1100);
+              const data=await page.evaluate(()=>Array.from(window.dataLayer||[]).filter(x=>x[0]==='event'&&x[1]==='cta_click').map(x=>({target:x[2]?.cta_target,location:x[2]?.cta_location,pageSlug:x[2]?.page_slug,debug:x[2]?.debug_flag})));
+              const out={status:'PASS',pageHttp:response.status(),clientEvent:data,collectRequests:collected,collectResponseStatus:responses,jsErrors:errors,externalAction:'NO_LINE_MESSAGE_NO_PHONE_CALL'};
+              if(data.length!==1||data[0].target!=='line'||data[0].location!=='hero'||data[0].pageSlug!=='/business-cleaning/')throw Error('WRONG_GTAG_EVENT '+JSON.stringify(out));
+              if(!collected.some(e=>e.measurementId==='G-X8LKLFDL3G'))throw Error('GA4_COLLECT_NOT_SENT '+JSON.stringify(out));
+              if(responses.length && !responses.some(x=>x>=200&&x<300))throw Error('GA4_COLLECT_HTTP_ERROR '+JSON.stringify(out));
+              if(errors.length)throw Error('PAGE_ERRORS '+JSON.stringify(out));
+              console.log('BC_LP_GA4_TRANSPORT '+JSON.stringify(out));
+            } finally {await browser.close();}
+          })().catch(e=>{console.error(e.stack||e);process.exit(1)});
+          JS
