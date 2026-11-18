@@ -1302,6 +1302,43 @@
       .cd-parts-gallery .svc-card figcaption { font-size:.78rem; }
       .sec-price .cd-price-details summary { padding:11px 12px; font-size:.88rem; }
     }
+
+    /* CRO round 4: concise technical proof without deleting any real photos or approved icons */
+    .sec-about .cd-technical-details,
+    .sec-case-studies .cd-case-video {
+      max-width:760px; margin:16px auto 0; border:1px solid #c9d7e5;
+      border-radius:12px; background:#fff; overflow:hidden;
+    }
+    .sec-about .cd-technical-details > summary,
+    .sec-case-studies .cd-case-video > summary {
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      min-height:52px; padding:14px 16px; cursor:pointer; list-style:none;
+      font-size:.96rem; font-weight:750; line-height:1.5; color:#16436d;
+    }
+    .sec-about .cd-technical-details > summary::-webkit-details-marker,
+    .sec-case-studies .cd-case-video > summary::-webkit-details-marker { display:none; }
+    .sec-about .cd-technical-details > summary span,
+    .sec-case-studies .cd-case-video > summary span { font-size:1.25rem; font-weight:800; }
+    .sec-about .cd-technical-details[open] > summary span,
+    .sec-case-studies .cd-case-video[open] > summary span { transform:rotate(45deg); }
+    .sec-about .cd-technical-body { padding:0 12px 16px; border-top:1px solid #e0e9f3; }
+    .sec-about .cd-technical-body > h3,
+    .sec-about .cd-technical-reasons > h3 {
+      margin:16px 6px 10px; font-size:.94rem; color:#193d5c; line-height:1.5; font-weight:750;
+    }
+    .sec-about .cd-technical-body .about-feature-list { margin:0; }
+    .sec-about .cd-technical-reasons { margin-top:20px; padding-top:6px; background:transparent; }
+    .sec-about .cd-technical-reasons .reason-cards { margin:0; }
+    .sec-about .cd-technical-reasons .reason-card-item { margin-bottom:9px; }
+    .sec-about .cd-technical-reasons .reason-card-body { padding-right:28px; }
+    .sec-case-studies .cd-case-video > .case-study-card {
+      border:0; box-shadow:none; border-radius:0; padding:14px 12px 18px; margin:0; border-top:1px solid #e0e9f3;
+    }
+    .sec-case-studies .cd-case-video .youtube-short-wrap { max-width:340px; }
+    @media(max-width:420px) {
+      .sec-about .cd-technical-details > summary,
+      .sec-case-studies .cd-case-video > summary { padding:13px 12px; font-size:.89rem; }
+    }
   </style>
 
   <!-- 構造化データ: LocalBusiness / Service / BreadcrumbList -->
@@ -1572,8 +1609,7 @@
     </div>
   </header>
 
-  <main>
-    <section class="hero">
+<section class="hero">
           <img src="../cursor-test/images/hero-fv.jpg" alt="完全分解クリーニング作業イメージ" class="hero-bg" width="1400" height="900">
           <div class="hero-overlay"></div>
           <div class="hero-inner">
@@ -1589,8 +1625,8 @@
             <p class="air-reserve-note">※Airリザーブは仮予約です。内容確認後に正式確定します。</p>
           </div>
         </section>
-    
-    <section class="section section-light sec-worries">
+
+<section class="section section-light sec-worries">
           <div class="container">
             <h2 class="section-title">こんなお悩み、ありませんか？</h2>
             <p class="cd-worries-lead">見えない場所の汚れが気になるから、洗浄する範囲を写真で確かめたい方へ。</p>
@@ -1601,8 +1637,8 @@
             </ul>
           </div>
         </section>
-    
-    <section class="section sec-beforeafter-refresh">
+
+<section class="section sec-beforeafter-refresh">
           <div class="container">
             <h2 class="section-title">写真で見る、洗浄前と洗浄後の違い</h2>
             <p class="cd-zoom-hint">BCサービスの実際の施工写真です。写真をタップすると拡大できます。</p>
@@ -1618,8 +1654,8 @@
             </div>
           </div>
         </section>
-    
-    <section class="section sec-trust-compact">
+
+<section class="section sec-trust-compact">
           <div class="container">
             <h2 class="section-title">完全分解を依頼されたお客様の声</h2>
             <div class="trust-compact-inner">
@@ -1635,8 +1671,8 @@
             </div>
           </div>
         </section>
-    
-    <section class="section section-light sec-price" id="price-section">
+
+<section class="section section-light sec-price" id="price-section">
           <div class="container">
             <h2 class="section-title">完全分解クリーニング料金</h2>
             <div class="price-cards-grid">
@@ -1722,33 +1758,11 @@
             </div>
           </div>
         </section>
-    
-    <section class="section section-light sec-about">
+
+<section class="section section-light sec-about">
           <div class="container">
             <h2 class="section-title">完全分解とは</h2>
-            <p class="about-lead">通常洗浄では取り外さないことが多い送風ファンやドレンパンを、機種・設置条件を確認して取り外し洗浄します。どこまで違うか、下の比較表で確認できます。</p>
-    
-            <div class="about-range-card card">
-              <p class="about-range-title">洗浄が届く範囲のイメージ</p>
-              <div class="about-range-item">
-                <div class="about-range-item-head">
-                  <span class="about-range-name">通常洗浄</span>
-                  <span class="about-range-note">表面が中心</span>
-                </div>
-                <div class="about-range-track">
-                  <div class="about-range-fill about-range-fill--normal" aria-hidden="true"></div>
-                </div>
-              </div>
-              <div class="about-range-item about-range-item--full">
-                <div class="about-range-item-head">
-                  <span class="about-range-name">完全分解</span>
-                  <span class="about-range-note">内部の奥まで</span>
-                </div>
-                <div class="about-range-track">
-                  <div class="about-range-fill about-range-fill--full" aria-hidden="true"></div>
-                </div>
-              </div>
-            </div>
+            <p class="about-lead">通常洗浄は外さないことが多い送風ファン・ドレンパンも、機種や設置条件を確認して取り外し洗浄します。具体的な違いを比較表でご覧ください。</p>
     
             <div class="about-compare-wrap">
               <h3 class="section-title">通常洗浄では届かない、ファン・ドレンパンまで外します</h3>
@@ -1807,7 +1821,11 @@
               <a href="#case-studies" class="about-case-btn">施工事例を見る →</a>
             </p>
     
-            <ul class="about-feature-list">
+            <details class="cd-technical-details">
+              <summary>分解技術・選ばれる理由を詳しく見る <span aria-hidden="true">＋</span></summary>
+              <div class="cd-technical-body">
+                <h3>分解して確認する主なポイント</h3>
+                <ul class="about-feature-list">
               <li class="about-feature-card card">
                 <span class="about-feature-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/04-feature-drainpan-fan.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
                 <div class="about-feature-body">
@@ -1830,40 +1848,9 @@
                 </div>
               </li>
             </ul>
-          </div>
-        </section>
-    
-    <section class="section section-light cd-parts-gallery">
-          <div class="container">
-            <h2 class="section-title">ここまで分解して洗浄します</h2>
-            <p class="cd-parts-lead">ここまで取り外して洗うから、内部の奥まで確認できます。写真をタップして拡大できます。</p>
-            <div class="services-grid">
-              <figure class="svc-card card">
-                <a class="cd-proof-photo-link" href="./assets/photos/parts-ready-560.webp" target="_blank" rel="noopener noreferrer" aria-label="施工部品の写真を拡大して見る"><img src="./assets/photos/parts-ready-560.webp" alt="完全分解で取り外したエアコンの送風ファン・ドレンパンなどの部品" width="560" height="373" loading="lazy" decoding="async" class="svc-card-img"></a>
-                <figcaption>分解部品</figcaption>
-              </figure>
-              <figure class="svc-card card">
-                <a class="cd-proof-photo-link" href="./fan-before-after-optimized.jpg" target="_blank" rel="noopener noreferrer" aria-label="施工部品の写真を拡大して見る"><img src="./fan-before-after-optimized.jpg" alt="ファン内部のビフォーアフター" width="600" height="400" loading="lazy" class="svc-card-img"></a>
-                <figcaption>ファン内部の汚れ</figcaption>
-              </figure>
-              <figure class="svc-card card">
-                <a class="cd-proof-photo-link" href="./drainpan-before-after-optimized.jpg" target="_blank" rel="noopener noreferrer" aria-label="施工部品の写真を拡大して見る"><img src="./drainpan-before-after-optimized.jpg" alt="ドレンパンのビフォーアフター" width="600" height="400" loading="lazy" class="svc-card-img"></a>
-                <figcaption>ドレンパンの汚れ</figcaption>
-              </figure>
-              <figure class="svc-card card">
-                <a class="cd-proof-photo-link" href="./dirty-water-optimized.jpg" target="_blank" rel="noopener noreferrer" aria-label="施工部品の写真を拡大して見る"><img src="./dirty-water-optimized.jpg" alt="洗浄後に出た汚水" width="600" height="400" loading="lazy" class="svc-card-img"></a>
-                <figcaption>洗浄後に出た汚水</figcaption>
-              </figure>
-            </div>
-          </div>
-        </section>
-    
-    <section class="section sec-reason">
-          <div class="container">
-            <span class="reason-eyebrow">REASONS</span>
-            <h2 class="section-title">完全分解を選ばれる理由</h2>
-            <p class="reason-lead">「ここまでやるの？」という分解だからこそ、仕上がりに納得していただけます。</p>
-            <ul class="reason-cards">
+                <div class="sec-reason cd-technical-reasons">
+                  <h3>完全分解が選ばれる理由</h3>
+                  <ul class="reason-cards">
               <li class="reason-card-item card">
                 <span class="reason-card-num" aria-hidden="true">01</span>
                 <span class="reason-card-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/07-reason-deep.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
@@ -1892,10 +1879,38 @@
                 </div>
               </li>
             </ul>
+                </div>
+              </div>
+            </details>
           </div>
         </section>
-    
-    <section class="section sec-case-studies" id="case-studies">
+
+<section class="section section-light cd-parts-gallery">
+          <div class="container">
+            <h2 class="section-title">ここまで分解して洗浄します</h2>
+            <p class="cd-parts-lead">ここまで取り外して洗うから、内部の奥まで確認できます。写真をタップして拡大できます。</p>
+            <div class="services-grid">
+              <figure class="svc-card card">
+                <a class="cd-proof-photo-link" href="./assets/photos/parts-ready-560.webp" target="_blank" rel="noopener noreferrer" aria-label="施工部品の写真を拡大して見る"><img src="./assets/photos/parts-ready-560.webp" alt="完全分解で取り外したエアコンの送風ファン・ドレンパンなどの部品" width="560" height="373" loading="lazy" decoding="async" class="svc-card-img"></a>
+                <figcaption>分解部品</figcaption>
+              </figure>
+              <figure class="svc-card card">
+                <a class="cd-proof-photo-link" href="./fan-before-after-optimized.jpg" target="_blank" rel="noopener noreferrer" aria-label="施工部品の写真を拡大して見る"><img src="./fan-before-after-optimized.jpg" alt="ファン内部のビフォーアフター" width="600" height="400" loading="lazy" class="svc-card-img"></a>
+                <figcaption>ファン内部の汚れ</figcaption>
+              </figure>
+              <figure class="svc-card card">
+                <a class="cd-proof-photo-link" href="./drainpan-before-after-optimized.jpg" target="_blank" rel="noopener noreferrer" aria-label="施工部品の写真を拡大して見る"><img src="./drainpan-before-after-optimized.jpg" alt="ドレンパンのビフォーアフター" width="600" height="400" loading="lazy" class="svc-card-img"></a>
+                <figcaption>ドレンパンの汚れ</figcaption>
+              </figure>
+              <figure class="svc-card card">
+                <a class="cd-proof-photo-link" href="./dirty-water-optimized.jpg" target="_blank" rel="noopener noreferrer" aria-label="施工部品の写真を拡大して見る"><img src="./dirty-water-optimized.jpg" alt="洗浄後に出た汚水" width="600" height="400" loading="lazy" class="svc-card-img"></a>
+                <figcaption>洗浄後に出た汚水</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+<section class="section sec-case-studies" id="case-studies">
           <div class="container">
             <h2 class="section-title">完全分解クリーニングの施工事例</h2>
             <p class="case-study-lead">
@@ -1949,7 +1964,9 @@
               </div>
             </article>
     
-            <article class="card case-study-card" data-case-id="youtube-short-smkg3bl1ew">
+            <details class="cd-case-video">
+              <summary>▶ 実際の施工動画を見る <span aria-hidden="true">＋</span></summary>
+              <article class="card case-study-card" data-case-id="youtube-short-smkg3bl1ew">
               <h3>動画で見るエアコン完全分解クリーニング</h3>
               <p class="case-study-comment">
                 送風ファンやドレンパンを取り外し、内部の汚れを洗浄する様子を短い動画で確認できます。沖縄中南部でエアコンの風のにおいや内部汚れが気になる方は、完全分解クリーニングの検討材料としてご覧ください。
@@ -1966,11 +1983,12 @@
               </div>
               <p class="case-study-ig-link"><a href="https://www.instagram.com/bcservicenanjyo/" target="_blank" rel="noopener noreferrer">Instagramでも施工事例を見る</a></p>
             </article>
+            </details>
             <p class="related-link"><a href="../cursor-test/cases.html">通常分解も含めた施工事例一覧を見る</a></p>
           </div>
         </section>
-    
-    <section class="section consultation-flow section-light">
+
+<section class="section consultation-flow section-light">
           <div class="container">
             <h2 class="section-title">相談から作業までの流れ（3ステップ）</h2>
             <p class="flow-lead">はじめての方でも、LINEで簡単にご相談いただけます。</p>
@@ -1994,8 +2012,8 @@
             <p class="flow-note">相談だけでも大丈夫です。無理な営業は行いません。</p>
           </div>
         </section>
-    
-    <section class="section profile section-light">
+
+<section class="section profile section-light">
           <div class="container">
             <h2 class="section-title">作業はすべて代表の私が対応します</h2>
             <img src="../cursor-test/images/teruya-profile.png" alt="代表 照屋昴" width="360" height="360" loading="lazy" class="profile-img">
@@ -2005,8 +2023,8 @@
             <p style="margin:18px 0 0"><a href="/aircon-story/" style="color:#185975;font-weight:700;text-decoration:underline;text-underline-offset:4px">代表の想い「エアコン一台で、人を幸せにできる。」を読む →</a></p>
           </div>
         </section>
-    
-    <section class="section section-light sec-faq" id="faq">
+
+<section class="section section-light sec-faq" id="faq">
           <div class="container">
             <h2 class="section-title">よくある質問</h2>
             <p class="faq-page-intro">初めて完全分解クリーニングをご検討の方からよくいただく質問です。沖縄中南部・南城市の現場で実際に施工している内容をもとに、子育て家庭の方にもわかりやすくまとめています。</p>
@@ -2064,8 +2082,8 @@
             <p class="faq-cta">通常のエアコンクリーニングは<a href="../cursor-test/">家庭向けLP</a>、南部の通常分解情報は<a href="../cursor-test/south.html">沖縄南部まとめ</a>、詳しいFAQ一覧は<a href="../cursor-test/faq.html">こちら</a>をご覧ください。</p>
           </div>
         </section>
-    
-    <section class="section ai-summary-section section-light">
+
+<section class="section ai-summary-section section-light">
           <div class="container">
             <h2 class="section-title">沖縄中南部でエアコン完全分解クリーニングを検討している方へ</h2>
             <p>南城市を拠点に、八重瀬町・豊見城市・糸満市・那覇市・南風原町・与那原町・浦添市・西原町・宜野湾市・中城村・北中城村・北谷町・沖縄市・読谷村・うるま市など沖縄中南部16市町村へ対応しています。</p>
@@ -2085,8 +2103,8 @@
             <p class="related-link">店舗・事務所・業務用エアコン清掃をご検討の方は、<a href="../business-cleaning/">法人・店舗向け清掃はこちら</a></p>
           </div>
         </section>
-    
-    <section class="section sec-line-photo">
+
+<section class="section sec-line-photo">
           <div class="container">
             <div class="line-photo-card card">
               <h2 class="section-title">LINEで写真を送るだけで、事前に確認できます</h2>
@@ -2105,8 +2123,7 @@
               </div>
             </div>
           </div>
-        </section>
-  </main>
+        </section>  </main>
   <!-- Image zoom: keeps the original linked images as a fallback -->
   <dialog id="cd-photo-dialog" class="cd-photo-dialog" aria-label="実際の施工写真の拡大表示">
     <button type="button" class="cd-photo-dialog-close" aria-label="拡大写真を閉じる">× 閉じる</button>
