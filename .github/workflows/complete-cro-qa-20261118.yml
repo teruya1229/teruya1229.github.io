@@ -1,7 +1,7 @@
 name: Complete-disassembly CRO review QA (pre-publish)
 on:
   push:
-    branches: [feat/cd-lp-cro-review-20261118]
+    branches: [fix/cd-lp-mobile-cro-20261118]
     paths:
       - 'complete-disassembly/**'
       - '.github/workflows/complete-cro-qa-20261118.yml'
@@ -58,9 +58,9 @@ jobs:
                   return r.abort('blockedbyclient');
                 });
                 const response=await page.goto('http://127.0.0.1:8765/complete-disassembly/?debug=1',{waitUntil:'domcontentloaded',timeout:30000});
-                await page.locator('img').evaluateAll(images=>images.forEach(img=>img.loading='eager'));
+                await page.locator('img[src]').evaluateAll(images=>images.forEach(img=>img.loading='eager'));
                 await page.waitForTimeout(800);
-                const pictureReport=await page.locator('img').evaluateAll(async images=>{
+                const pictureReport=await page.locator('img[src]').evaluateAll(async images=>{
                   return await Promise.all(images.map(async img=>{
                     try{await img.decode()}catch(e){}
                     return {src:img.getAttribute('src'),ready:img.complete&&img.naturalWidth>0,width:img.naturalWidth,height:img.naturalHeight};
@@ -69,6 +69,25 @@ jobs:
                 for(const [label,selector] of [['hero','.hero'],['photos','.sec-beforeafter-refresh'],['review','.sec-trust-compact'],['price','.sec-price']]){
                   await page.locator(selector).screenshot({path:'qa-cro/stage-'+width+'-'+label+'.png',timeout:45000});
                 }
+                const heroHeight = Math.round(await page.locator('.hero').evaluate(el=>el.getBoundingClientRect().height));
+                const menuStatus = {visible:false,linksFit:true,closed:true};
+                const menuSummary=page.locator('.cd-mobile-nav summary');
+                if(width<768){
+                  menuStatus.visible=await menuSummary.isVisible();
+                  if(menuStatus.visible){
+                    await menuSummary.click();
+                    menuStatus.linksFit=await page.locator('.cd-mobile-nav nav a').evaluateAll(els=>els.every(e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=window.innerWidth&&r.width>35;}));
+                    await page.screenshot({path:'qa-cro/stage-'+width+'-menu.png'});
+                    await menuSummary.click();
+                    menuStatus.closed=await page.locator('.cd-mobile-nav').evaluate(el=>!el.open);
+                  }
+                }
+                const firstPhoto=page.locator('.cd-proof-photo-link').first();
+                await firstPhoto.click();
+                const modalOpen=await page.locator('#cd-photo-dialog').evaluate(e=>e.open&&e.querySelector('img').complete&&e.querySelector('img').naturalWidth>0);
+                await page.locator('#cd-photo-dialog').screenshot({path:'qa-cro/stage-'+width+'-photo-modal.png',timeout:45000});
+                await page.keyboard.press('Escape');
+                const modalClosed=await page.locator('#cd-photo-dialog').evaluate(e=>!e.open);
                 const data=await page.evaluate(()=>{
                   const sections=[...document.querySelectorAll('main > section')];
                   const proof=[...document.querySelectorAll('.cd-proof-photo-link')];
@@ -86,19 +105,24 @@ jobs:
                     line:document.querySelector('.hero a.line-cta')?.getAttribute('href'),
                     phone:document.querySelector('.header-tel')?.getAttribute('href'),
                     booking:document.querySelector('.hero .air-reserve-subcta')?.getAttribute('href'),
-                    faq:document.querySelectorAll('.sec-faq details').length
+                    faq:document.querySelectorAll('.sec-faq details').length,
+                    priceCtaAfterCards:(()=>{const a=document.querySelector('.sec-price .price-cards-grid'), b=document.querySelector('.sec-price .cd-price-action'); return !!a&&!!b&&a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING ? !!b.querySelector('a[href="https://lin.ee/tsilra6"]') : false})()
                   };
                 });
                 await page.locator('.hero .line-cta').click();
                 const events=await page.evaluate(()=>window.dataLayer?.filter(x=>x?.[0]==='event').map(x=>x[1])||[]);
-                const row={width,http:response.status(),...data,loaded:pictureReport.length,brokenImages:pictureReport.filter(i=>!i.ready),errors,badLocal,events};
+                const row={width,http:response.status(),...data,heroHeight,menuStatus,modalOpen,modalClosed,loaded:pictureReport.length,brokenImages:pictureReport.filter(i=>!i.ready),errors,badLocal,events};
                 const issues=[];
                 if(row.http!==200)issues.push('HTTP');
-                if(row.sections!==15)issues.push('SECTION_COUNT');
+                if(row.sections!==14)issues.push('SECTION_COUNT');
                 if(row.scrollWidth>row.windowWidth+1)issues.push('HORIZONTAL_OVERFLOW');
                 if(!row.heroPrice || row.reviewsCount!==1)issues.push('HERO_OR_REVIEW');
                 if(row.headings[1]!=='こんなお悩み、ありませんか？'||!row.headings[2].includes('写真で見る')||!row.headings[3].includes('お客様の声'))issues.push('FLOW_ORDER');
                 if(row.brokenImages.length)issues.push('IMAGE_DECODE_OR_MISSING');
+                if(width<768 && (!row.menuStatus.visible||!row.menuStatus.linksFit||!row.menuStatus.closed))issues.push('MOBILE_NAV');
+                if(!row.modalOpen||!row.modalClosed)issues.push('PHOTO_MODAL');
+                if(width<768 && row.heroHeight>720)issues.push('HERO_TOO_TALL');
+                if(!row.priceCtaAfterCards)issues.push('PRICE_CTA_POSITION');
                 if(row.photoLinks.length!==2||row.photoDisplayWidths.some(w=>w<Math.min(280,width-40)))issues.push('PHOTO_VISIBILITY');
                 if(row.priceCards.join('|')!=='14,000円〜|23,000円〜')issues.push('PRICE');
                 if(!row.insurance||row.faq!==8)issues.push('INSURANCE_OR_FAQ');
@@ -113,8 +137,8 @@ jobs:
                 const baseline=await baselineContext.newPage();
                 await baseline.route('**/*',r=>r.request().url().startsWith('http://127.0.0.1:8766/')?r.continue():r.abort('blockedbyclient'));
                 await baseline.goto('http://127.0.0.1:8766/complete-disassembly/',{waitUntil:'domcontentloaded',timeout:30000});
-                await baseline.locator('img').evaluateAll(images=>images.forEach(img=>img.loading='eager'));
-                await baseline.locator('img').evaluateAll(async images=>{await Promise.all(images.map(async img=>{try{await img.decode()}catch(e){}}));});
+                await baseline.locator('img[src]').evaluateAll(images=>images.forEach(img=>img.loading='eager'));
+                await baseline.locator('img[src]').evaluateAll(async images=>{await Promise.all(images.map(async img=>{try{await img.decode()}catch(e){}}));});
 
                 for(const [label,selector] of [['hero','.hero'],['photos','.sec-beforeafter-refresh'],['review','.sec-trust-compact'],['price','.sec-price']]){
                   await baseline.locator(selector).screenshot({path:'qa-cro/main-'+width+'-'+label+'.png',timeout:45000});
@@ -122,7 +146,7 @@ jobs:
                 await baselineContext.close();
               }
             }finally{
-              fs.writeFileSync('qa-cro/report.json',JSON.stringify({branch:'feat/cd-lp-cro-review-20261118',baseline:'origin/main',results,failures},null,2));
+              fs.writeFileSync('qa-cro/report.json',JSON.stringify({branch:'fix/cd-lp-mobile-cro-20261118',baseline:'origin/main',results,failures},null,2));
               await browser.close();
             }
             console.log('COMPLETE_CRO_QA '+JSON.stringify({status:failures.length?'FAIL':'PASS',results,failures}));
