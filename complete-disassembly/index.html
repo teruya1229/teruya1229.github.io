@@ -1227,6 +1227,59 @@
     .cd-proof-photo-link:focus-visible { outline:3px solid #2563eb; outline-offset:4px; }
     @media(min-width:768px) { .sec-worries ul { grid-template-columns:repeat(3,minmax(0,1fr)); } }
     @media(max-width:420px) { .hero .cd-hero-price { font-size:.92rem; } .sec-beforeafter-refresh figure.svc-card { padding:4px; } }
+
+    /* CRO round 2: mobile navigation and shorter first view */
+    .cd-mobile-nav { display:none; }
+    .cd-hero-hint { color:rgba(255,255,255,.91); font-size:.82rem; line-height:1.5; margin:0 auto 10px; max-width:390px; }
+    .hero-subcta-row { max-width:420px; flex-wrap:nowrap; gap:8px; }
+    .hero-subcta-row .air-reserve-subcta,
+    .hero-subcta-row .cd-hero-phone-link {
+      display:flex; flex:1 1 0; min-width:0; min-height:44px; align-items:center; justify-content:center;
+      padding:9px 8px; border-radius:10px; box-sizing:border-box; font-weight:700; font-size:.87rem;
+      line-height:1.35; text-decoration:none; text-align:center; color:#1f2a44; background:#fff;
+      border:1px solid rgba(255,255,255,.65);
+    }
+    .hero-subcta-row .cd-hero-phone-link { color:#fff; background:rgba(13,29,46,.38); }
+    .sec-price .cd-price-action { max-width:680px; margin:16px auto 18px; background:transparent!important; }
+    .sec-price .cd-price-action .mid-cta-card { padding:18px 12px; }
+    .sec-price .cd-price-action .mid-cta-lead { margin-bottom:12px; }
+    .sec-price .cd-price-action .mid-cta-buttons { flex-direction:row; flex-wrap:wrap; gap:10px; }
+    .sec-price .cd-price-action .mid-cta-buttons a { flex:1 1 200px; }
+    .cd-photo-dialog { width:min(96vw,1100px); max-width:none; max-height:92vh; border:0; border-radius:14px; padding:12px; background:#fff; box-shadow:0 18px 65px rgba(0,0,0,.35); }
+    .cd-photo-dialog::backdrop { background:rgba(9,17,30,.88); }
+    .cd-photo-dialog-img { width:100%; max-height:76vh; height:auto; object-fit:contain; display:block; }
+    .cd-photo-dialog-close { display:block; min-height:44px; margin:0 0 8px auto; padding:7px 15px; border:1px solid #b6c4d2; border-radius:8px; background:#fff; color:#172638; font-size:1rem; font-weight:700; cursor:pointer; }
+    .cd-photo-dialog-caption { margin:8px auto 2px; color:#273d51; font-size:.94rem; font-weight:600; text-align:center; }
+    @media(max-width:767px) {
+      .header { padding:7px 14px; }
+      .header-inner { flex-direction:row; align-items:center; justify-content:space-between; gap:8px; }
+      .header-nav { display:none!important; }
+      .cd-mobile-nav { display:block; position:relative; flex:0 0 auto; margin-left:auto; }
+      .cd-mobile-nav summary { list-style:none; display:flex; align-items:center; justify-content:center; gap:6px; min-height:44px; min-width:96px; padding:7px 11px; cursor:pointer; border:1px solid #bfd2e4; border-radius:9px; color:#163963; background:#f6faff; font-size:.88rem; font-weight:700; }
+      .cd-mobile-nav summary::-webkit-details-marker { display:none; }
+      .cd-mobile-nav nav { display:grid; position:absolute; z-index:100; top:calc(100% + 6px); right:0; width:min(78vw,260px); padding:5px; background:#fff; border:1px solid #ccd9e6; border-radius:11px; box-shadow:0 10px 30px rgba(16,36,54,.2); }
+      .cd-mobile-nav nav a { display:flex; align-items:center; min-height:44px; padding:8px 12px; border-radius:7px; color:#163963; text-decoration:none; font-size:.92rem; font-weight:700; }
+      .cd-mobile-nav nav a:focus-visible,.cd-mobile-nav nav a:hover { background:#f0f6ff; }
+      .hero,.hero-inner { min-height:0; }
+      .hero-inner { padding:33px 14px 34px; }
+      .hero-title { margin-bottom:11px; font-size:clamp(1.42rem,6vw,1.65rem); }
+      .hero-lead { margin:0 auto 8px; font-size:.92rem; line-height:1.55; }
+      .hero .cd-hero-price { margin:8px auto 12px; font-size:.93rem; line-height:1.5; }
+      .hero-inner > .line-cta { max-width:360px; margin:0 auto 8px; }
+      .hero-inner .air-reserve-note { margin:8px auto 0; font-size:.72rem; line-height:1.45; }
+      .sec-price .cd-price-action .mid-cta-buttons { flex-direction:column; }
+      .sec-price .cd-price-action .mid-cta-buttons a { flex:0 0 auto; width:100%; max-width:100%; }
+      .sec-price .price-insurance-points { gap:8px; }
+      .sec-price .price-insurance-point { display:grid; grid-template-columns:40px minmax(0,1fr); column-gap:8px; padding:9px 10px; }
+      .sec-price .price-insurance-point .cd-assurance-icon { grid-column:1; grid-row:1 / span 2; width:36px; height:36px; align-self:center; margin:0; }
+      .sec-price .price-insurance-point-title { grid-column:2; margin:0 0 3px; font-size:.86rem; }
+      .sec-price .price-insurance-point p { grid-column:2; font-size:.83rem; line-height:1.55; }
+      .sec-price .price-insurance-card { padding:15px 12px; }
+    }
+    @media(max-width:359px) {
+      .hero-inner { padding-inline:10px; }
+      .hero-subcta-row .air-reserve-subcta,.hero-subcta-row .cd-hero-phone-link { font-size:.8rem; padding-inline:5px; }
+    }
   </style>
 
   <!-- 構造化データ: LocalBusiness / Service / BreadcrumbList -->
@@ -1480,6 +1533,16 @@
         <a href="../cursor-test/south.html">対応エリア</a>
         <a href="#faq">よくある質問</a>
       </nav>
+      <details class="cd-mobile-nav">
+        <summary>メニュー <span aria-hidden="true">▾</span></summary>
+        <nav aria-label="ページ内と関連サービスのメニュー">
+          <a href="/aircon/">エアコン総合</a>
+          <a href="../cursor-test/">家庭向けLP</a>
+          <a href="../cursor-test/cases.html">施工事例</a>
+          <a href="../cursor-test/south.html">対応エリア</a>
+          <a href="#faq">よくある質問</a>
+        </nav>
+      </details>
       <div class="header-tel-wrap">
         <a href="tel:05017241338" class="header-tel">050-1724-1338</a>
         <p class="header-tel-note">作業中は電話に出られない場合があります。写真で確認できるLINE相談がスムーズです。</p>
@@ -1493,21 +1556,15 @@
       <div class="hero-overlay"></div>
       <div class="hero-inner">
         <h1 class="hero-title">沖縄中南部のエアコン<br>完全分解クリーニング</h1>
-        <p class="hero-lead">エアコンのニオイや奥の黒い汚れが気になる方へ。<br>送風ファン・ドレンパンを取り外し、通常洗浄で届きにくい内部まで洗います。沖縄中南部16市町村対応。</p>
+        <p class="hero-lead">エアコンのニオイや奥の黒い汚れが気になる方へ。<br>通常洗浄では届きにくい送風ファン・ドレンパンを取り外して洗浄します。</p>
         <p class="cd-hero-price">完全分解 税込14,000円〜（通常機）／23,000円〜（お掃除機能付き）</p>
-        <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta">LINEで無料相談する</a>
+        <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="hero">LINEで機種写真を送って無料相談</a>
+        <p class="cd-hero-hint">型番・設置写真から、対応可否と料金目安をご案内。</p>
         <div class="hero-subcta-row">
-          <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="hero" aria-label="Airリザーブで空き状況を見て仮予約する">空き状況を見て仮予約する</a>
+          <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="hero" aria-label="Airリザーブで空き状況を見て仮予約する">空き状況・仮予約</a>
+          <a href="tel:05017241338" class="cd-hero-phone-link" data-cta="tel" data-cta-location="hero">電話で相談</a>
         </div>
-        <div class="hero-phone-cta-wrap">
-          <a href="tel:05017241338" class="hero-phone-cta" data-cta="tel" data-cta-location="hero">
-            <span class="hero-phone-cta-label">電話で相談</span>
-            <span class="hero-phone-cta-number">050-1724-1338</span>
-          </a>
-          <p class="hero-phone-cta-note">作業中は電話に出られない場合があります。写真で確認できるLINE相談がスムーズです。</p>
-        </div>
-        <p class="air-reserve-note">※Airリザーブでの受付は仮予約です。内容確認後、LINEまたはお電話にて正式確定となります。</p>
-        <p class="cta-note cta-note--line-priority">写真を送れるLINE相談がおすすめです。<br>型番・設置状況・汚れ具合を確認してから、対応可否と目安料金をご案内します。</p>
+        <p class="air-reserve-note">※Airリザーブは仮予約です。内容確認後に正式確定します。</p>
       </div>
     </section>
 
@@ -1746,6 +1803,16 @@
         <p class="price-card-note">通常エアコンの完全分解は、南部7市町が14,000円（税込）、中部・浦添が15,000円（税込）〜です。</p>
         <p class="price-card-note">2台以上の同時予約で、2台目以降は1台につき1,000円引き</p>
         <p class="price-card-note">※内部までしっかり洗いたい方向けの料金です。設置状況や機種により追加対応が必要な場合があります</p>
+        <div class="sec-mid-cta cd-price-action">
+          <div class="mid-cta-card card">
+            <h3 class="mid-cta-title">料金が分かったら、LINEで機種を確認</h3>
+            <p class="mid-cta-lead">完全分解が可能か、写真と型番から事前にご案内します。</p>
+            <div class="mid-cta-buttons">
+              <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="mid-cta-line" data-cta="line" data-cta-location="mid"><span class="mid-cta-line-icon" aria-hidden="true">💬</span>LINEで相談する</a>
+              <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="mid-cta-air" data-cta="air_reserve" data-cta-location="mid" aria-label="Airリザーブで空き状況を見る"><span class="mid-cta-air-icon" aria-hidden="true">📅</span>空き状況を見る</a>
+            </div>
+          </div>
+        </div>
         <div class="price-included-card card">
           <h3 class="price-included-title">料金に含まれる作業内容</h3>
           <div class="price-included-grid">
@@ -1778,10 +1845,8 @@
           </div>
         </div>
         <div class="price-insurance-card card">
-          <h3 class="price-insurance-title">万一に備えて、損害賠償保険に加入しています</h3>
-          <p class="price-insurance-lead">BCサービスでは、作業中の万一に備えて、最大1億円の損害賠償保険に加入しています。</p>
-          <p class="price-insurance-lead">完全分解は通常洗浄よりも多くの部品を取り外す作業のため、作業前に機種・年式・設置状況を確認し、リスクがある場合は事前にご説明します。</p>
-          <p class="price-insurance-lead">万が一、作業中の破損や不具合が発生した場合も、メーカー修理の手配を含めて誠実に対応いたします。</p>
+          <h3 class="price-insurance-title">最大1億円の損害賠償保険に加入</h3>
+          <p class="price-insurance-lead">施工前に機種・年式・設置条件を確認。万一の破損・不具合にも、メーカー修理の手配を含めて対応します。</p>
           <div class="price-insurance-points" aria-label="万一時の対応方針">
             <div class="price-insurance-point">
               <img class="cd-assurance-icon" src="./assets/icons/10-assurance-insurance.webp" alt="" width="52" height="52" loading="lazy" decoding="async">
@@ -1803,18 +1868,7 @@
       </div>
     </section>
 
-    <section class="section section-light sec-mid-cta">
-      <div class="container">
-        <div class="mid-cta-card card">
-          <h2 class="mid-cta-title">まずはお気軽にご相談ください</h2>
-          <p class="mid-cta-lead">完全分解が必要か迷う場合も、機種や汚れの状態を見ながらご案内します。</p>
-          <div class="mid-cta-buttons">
-            <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="mid-cta-line" data-cta="line" data-cta-location="mid"><span class="mid-cta-line-icon" aria-hidden="true">💬</span>LINEで相談する</a>
-            <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="mid-cta-air" data-cta="air_reserve" data-cta-location="mid" aria-label="Airリザーブで空き状況を見る"><span class="mid-cta-air-icon" aria-hidden="true">📅</span>空き状況を見る</a>
-          </div>
-        </div>
-      </div>
-    </section>
+
 
     <section class="section sec-case-studies" id="case-studies">
       <div class="container">
@@ -2028,6 +2082,34 @@
       </div>
     </section>
   </main>
+  <!-- Image zoom: keeps the original linked images as a fallback -->
+  <dialog id="cd-photo-dialog" class="cd-photo-dialog" aria-label="実際の施工写真の拡大表示">
+    <button type="button" class="cd-photo-dialog-close" aria-label="拡大写真を閉じる">× 閉じる</button>
+    <img class="cd-photo-dialog-img" alt="" decoding="async">
+    <p class="cd-photo-dialog-caption"></p>
+  </dialog>
+  <script>
+    (function() {
+      var dialog = document.getElementById('cd-photo-dialog');
+      if (!dialog || typeof dialog.showModal !== 'function') return;
+      var photo = dialog.querySelector('.cd-photo-dialog-img');
+      var caption = dialog.querySelector('.cd-photo-dialog-caption');
+      var lastTrigger = null;
+      document.addEventListener('click', function(e) {
+        var link = e.target.closest('.cd-proof-photo-link');
+        if (!link || e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        lastTrigger = link;
+        photo.src = link.href;
+        photo.alt = link.querySelector('img')?.alt || '施工写真';
+        caption.textContent = link.closest('figure')?.querySelector('figcaption')?.textContent || '';
+        dialog.showModal();
+      });
+      dialog.querySelector('.cd-photo-dialog-close').addEventListener('click', function() { dialog.close(); });
+      dialog.addEventListener('click', function(e) { if (e.target === dialog) dialog.close(); });
+      dialog.addEventListener('close', function() { if (lastTrigger) lastTrigger.focus(); });
+    })();
+  </script>
   <!-- GA4 CTA click tracking + debug toast -->
   <script>
   (function() {
