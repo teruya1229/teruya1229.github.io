@@ -1,0 +1,35 @@
+name: Washer price value CRO verification
+on:
+  push:
+    branches: [fix/washer-price-value-20261118]
+    paths:
+      - 'washing-machine-cleaning/**'
+      - '.github/workflows/washer-price-value-qa-20261118.yml'
+permissions:
+  contents: read
+jobs:
+  e2e:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated Chrome
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Keep 80-case diagnosis regression
+        run: node washing-machine-cleaning/tests/diagnosis-browser-qa.cjs
+      - name: Verify 90-point price value improvement
+        run: node washing-machine-cleaning/tests/washer-price-value-qa-20261118.cjs
+      - name: Save screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: washer-price-value-five-widths
+          path: /tmp/washer-price-value-qa/
+          if-no-files-found: warn
