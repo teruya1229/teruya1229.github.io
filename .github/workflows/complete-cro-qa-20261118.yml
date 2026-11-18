@@ -23,7 +23,7 @@ jobs:
       - name: Install headless test browser
         run: |
           npm install --no-save --no-package-lock playwright@1.58.2
-          npx playwright install --with-deps chromium
+          google-chrome --version
       - name: Serve branch and main baseline locally
         shell: bash
         run: |
@@ -45,7 +45,7 @@ jobs:
           const failures=[];
           fs.mkdirSync('qa-cro', {recursive:true});
           (async()=>{
-            const browser=await chromium.launch({headless:true});
+            const browser=await chromium.launch({headless:true,channel:'chrome'});
             try{
               for(const width of widths){
                 const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce',deviceScaleFactor:1});
