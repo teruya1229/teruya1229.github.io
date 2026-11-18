@@ -1,0 +1,38 @@
+name: Washer early diagnosis CRO QA (pre-publish)
+on:
+  push:
+    branches: [fix/washer-early-diagnosis-cro-20261118]
+    paths:
+      - 'washing-machine-cleaning/**'
+      - '.github/workflows/washer-early-diagnosis-cro-qa-20261118.yml'
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout approved preview branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated browser
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Existing diagnosis regression (80 scenarios and mobile LINE)
+        run: node washing-machine-cleaning/tests/diagnosis-browser-qa.cjs
+      - name: New early CTA and review-link test
+        run: node washing-machine-cleaning/tests/early-diagnosis-cro-qa-20261118.cjs
+      - name: Archive QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: washer-early-diagnosis-cro-qa
+          path: |
+            /tmp/washer-early-cro-qa/
+          if-no-files-found: warn
