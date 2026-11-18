@@ -17,7 +17,7 @@
   <meta property="og:url" content="https://teruya1229.github.io/washing-machine-cleaning/">
   <meta property="og:image" content="https://teruya1229.github.io/cursor-test/images/washer-cleaning-after.jpg">
   <link rel="stylesheet" href="./assets/washing.css?v=20261115a">
-  <link rel="stylesheet" href="./assets/diagnosis.css?v=20261108a">
+  <link rel="stylesheet" href="./assets/diagnosis.css?v=20261118b">
   <style>
     .review-card__citation{display:block;margin-top:8px;color:#657984;font-size:10px;line-height:1.6;overflow-wrap:anywhere}
     .review-card__citation a{display:block;color:#526c78;text-decoration:underline;text-decoration-color:#a2b6bd;text-underline-offset:3px;overflow-wrap:anywhere}
@@ -57,7 +57,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8LKLFDL3G"></script>
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-X8LKLFDL3G');</script>
   <script src="./assets/washing.js?v=20261115a" defer></script>
-  <script src="./assets/diagnosis.js?v=20261115a" defer></script>
+  <script src="./assets/diagnosis.js?v=20261118b" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">本文へスキップ</a>
@@ -75,6 +75,11 @@
           <p class="eyebrow"><span class="eyebrow__dot"></span> 沖縄南部・那覇エリア対応</p>
           <h1 id="hero-title">洗濯機の汚れ・ニオイ<br><em>見えない奥まで</em><br>分解して洗浄。</h1>
           <p class="hero__lead">縦型もドラム式も、まずはご相談ください。<br>メーカー・機種に合わせて、<strong>作業内容と料金を事前にご案内します。</strong></p>
+          <a class="hero__diagnosis-jump" href="#diagnosis">
+            <span class="hero__diagnosis-time">無料・30秒</span>
+            <span class="hero__diagnosis-copy"><strong>うちの洗濯機、洗浄でいい？</strong><small>3問でチェックして、相談の目安を確認</small></span>
+            <span class="hero__diagnosis-arrow" aria-hidden="true">↓</span>
+          </a>
           <div class="hero__trust" aria-label="サービスの特徴"><span>縦型・ドラム式</span><span>事前に料金確認</span><span>現場経験17年</span><span>11/30まで期間限定キャンペーン</span></div>
           <div class="hero__prices" aria-label="2026年11月30日までのキャンペーン料金">
             <div><span>縦型洗濯機（7kg以下）</span><small class="campaign-list-price">通常15,000円</small><strong><small>税込</small>13,000<small>円</small></strong><small class="campaign-discount">2,000円OFF</small></div>
@@ -149,6 +154,7 @@
           <p class="washer-diagnosis__result-kicker">3問診断の結果</p>
           <h3 id="washer-diagnosis-headline"></h3>
           <p class="washer-diagnosis__result-desc" id="washer-diagnosis-explanation"></p>
+          <p class="washer-diagnosis__score-caption">下記は<strong>対応の検討順序を比べる仮の目安</strong>です。故障・改善の確率ではありません。</p>
           <div class="washer-diagnosis__score-list" aria-label="対応方法の優先度">
             <div>
               <div class="washer-diagnosis__score-label"><span>クリーニング</span><strong id="washer-diagnosis-percent-clean">0%</strong></div>
@@ -165,12 +171,25 @@
           </div>
           <p class="washer-diagnosis__age-note" id="washer-diagnosis-age-note"></p>
           <p class="washer-diagnosis__disclaimer">※割合はBCサービスが仮設定した<strong>相談・対応の優先度</strong>で、故障の確率・清掃で直る確率・統計実績ではありません。現物確認前に修理や買い替えを確定するものではありません。</p>
+          <div class="washer-diagnosis__evidence" aria-label="診断後に確認できる施工写真と口コミ">
+            <p class="washer-diagnosis__evidence-heading">安心して選ぶために、実際の施工と口コミをご覧ください。</p>
+            <div class="washer-diagnosis__evidence-grid">
+              <a class="washer-diagnosis__evidence-link" id="washer-diagnosis-proof-link" href="#why">機種別の分解洗浄の流れを見る →</a>
+              <a class="washer-diagnosis__voice-link" href="#reviews">
+                <strong>お客様の口コミ（一部引用）</strong>
+                <span>「クリーニングだけでなく、設備関係にも詳しく、洗濯機の故障部分についてもご提案いただきました。」</span>
+                <small>現在LP掲載の口コミより。全文と引用元を見る →</small>
+              </a>
+            </div>
+            <p class="washer-diagnosis__evidence-note">※写真は施工事例です。同じ機種への対応や症状の改善を保証するものではありません。</p>
+          </div>
           <div class="washer-diagnosis__actions">
-            <a class="btn btn--line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="diagnosis_result">LINEで無料相談 <span aria-hidden="true">→</span></a>
+            <a class="btn btn--line" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" data-cta-location="diagnosis_result">診断結果をLINEで無料相談 <span aria-hidden="true">→</span></a>
             <nav class="washer-diagnosis__section-links" aria-label="洗濯機サービス詳細">
               <a href="#why">洗浄内容を見る</a>
               <a href="#price">料金を見る</a>
               <a href="#movie">施工事例を見る</a>
+              <a href="#reviews">お客様の口コミを見る</a>
             </nav>
           </div>
           <p class="washer-diagnosis__after">相談後、必要に応じて清掃・点検・新品購入の選択肢をご案内します。訪問点検は必要に応じて有料でご案内します。</p>
@@ -181,15 +200,15 @@
       <div class="container">
         <div class="sec-head"><p class="section-kicker">こんなお悩みはありませんか？</p><h2>毎日の洗濯、<br class="only-sp">なんとなく気になる。</h2><p>洗濯機の見えないところに、汚れがたまっていることがあります。</p></div>
         <div class="symptoms__grid">
-          <article class="symptom">
+          <article class="symptom" id="symptom-flakes">
             <figure class="symptom__photo"><img src="./assets/img/symptom-flakes-before-after.webp" width="1000" height="1000" loading="lazy" decoding="async" alt="洗濯槽に付着した汚れの洗浄前・洗浄後の比較写真"></figure>
             <div class="symptom__content"><span class="symptom__num">01</span><h3>洗濯物に黒いカス</h3><p>洗濯槽の裏側などに付いた汚れが原因になっている場合があります。</p></div>
           </article>
-          <article class="symptom">
+          <article class="symptom" id="symptom-odor">
             <figure class="symptom__photo"><img src="./assets/img/symptom-odor-before-after.webp" width="1000" height="750" loading="lazy" decoding="async" alt="洗濯槽内部に付着した汚れの洗浄前・洗浄後の比較写真"></figure>
             <div class="symptom__content"><span class="symptom__num">02</span><h3>洗濯槽のニオイが気になる</h3><p>市販の槽洗浄だけでは届きにくい場所も、機種に応じて確認します。</p></div>
           </article>
-          <article class="symptom">
+          <article class="symptom" id="symptom-drying">
             <figure class="symptom__photo"><img src="./assets/img/symptom-drying-before-after.webp" width="1000" height="1000" loading="lazy" decoding="async" alt="ドラム式洗濯機のホコリがたまった部分と洗浄後の比較写真"></figure>
             <div class="symptom__content"><span class="symptom__num">03</span><h3>ドラム式の乾燥に時間がかかる</h3><p>ホコリ詰まりなどが関係する場合も。故障が疑われる場合は清掃以外の方法もご案内します。</p></div>
           </article>
