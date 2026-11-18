@@ -44,6 +44,12 @@ const report={status:'RUNNING',viewportChecks:[],symptoms:[],sourceIntegrity:{},
    await page.locator('.washer-diagnosis__submit').click();
    assert(await page.locator('#washer-diagnosis-result').isVisible());
    assert.equal(await page.locator('#washer-diagnosis-proof-link').getAttribute('href'),'#symptom-drying');
+   await page.waitForTimeout(150);
+   if(width<=390) {
+     const resultBar=await page.locator('.mobile-bar').evaluate(el=>({visibility:getComputedStyle(el).visibility,pointer:getComputedStyle(el).pointerEvents}));
+     assert.equal(resultBar.visibility,'hidden','Sticky bar obscures evidence at '+width);
+     assert.equal(resultBar.pointer,'none','Sticky bar intercepts result at '+width);
+   }
    await page.locator('#washer-diagnosis-result').screenshot({path:out+'/evidence-'+width+'.png',animations:'disabled'});
    const line=page.locator('a[data-cta-location="diagnosis_result"]');
    await line.scrollIntoViewIfNeeded();
@@ -67,6 +73,8 @@ const report={status:'RUNNING',viewportChecks:[],symptoms:[],sourceIntegrity:{},
      await page.locator('.washer-diagnosis__voice-link').click();
      assert.equal(await page.evaluate(()=>location.hash),'#reviews');
      await page.locator('#reviews').screenshot({path:out+'/reviews-390.png',animations:'disabled'});
+     await page.waitForTimeout(160);
+     assert.equal(await page.locator('.mobile-bar').evaluate(el=>getComputedStyle(el).visibility),'visible','Sticky CTA should return below result area');
    }
    assert.equal(errors.length,0,'JS errors '+errors.join('; '));
    report.viewportChecks.push({width,measurement,events:events.filter(v=>/diagnosis_|line_click|cta_click/.test(v)),jsErrors:0});
