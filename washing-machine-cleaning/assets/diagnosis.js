@@ -143,14 +143,14 @@
     result.scrollIntoView({ behavior: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
     result.focus({ preventScroll: true });
   }
-  // 本文の診断結果LINEが表示される間、固定LINEを隠して重なりを防止。
-  var inlineLine = result.querySelector('a[data-cta-location="diagnosis_result"]');
-  if (inlineLine && 'IntersectionObserver' in window) {
-    var inlineObserver = new IntersectionObserver(function (entries) {
+  // 診断結果全体の閲覧中は固定CTAを隠し、文字や証拠リンクとの重なりを防止。
+  // 結果エリアの閲覧を終えると元の固定CTAを復帰する。
+  if ('IntersectionObserver' in window) {
+    var resultObserver = new IntersectionObserver(function (entries) {
       var visible = entries.some(function (entry) { return entry.isIntersecting; });
       document.documentElement.classList.toggle('washer-diagnosis-inline-line-visible', visible && !result.hidden);
-    }, { rootMargin: '0px 0px 84px 0px', threshold: 0 });
-    inlineObserver.observe(inlineLine);
+    }, { threshold: 0 });
+    resultObserver.observe(result);
   }
   var typeInputs = form.querySelectorAll('input[name="washer_type"]');
   typeInputs.forEach(function (input) {
