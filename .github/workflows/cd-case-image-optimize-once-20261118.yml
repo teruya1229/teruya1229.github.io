@@ -1,0 +1,136 @@
+name: One-time complete-disassembly real-photo WebP optimization
+on:
+  push:
+    branches: [perf/cd-case-photos-webp-20261118]
+    paths: ['.github/workflows/cd-case-image-optimize-once-20261118.yml']
+permissions:
+  contents: write
+jobs:
+  optimize:
+    if: github.ref == 'refs/heads/perf/cd-case-photos-webp-20261118'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Install image codec
+        run: python3 -m pip install --quiet --break-system-packages Pillow
+      - name: Compress four original photographs without touching source JPEGs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from PIL import Image,ImageOps,ImageChops,ImageStat,ImageDraw,features
+          from pathlib import Path
+          import math,hashlib,json,re
+          assert features.check("webp"),"Pillow must support WebP"
+          folder=Path("complete-disassembly/case-studies/2026-06-03-sample")
+          files=["before","parts","dirty-water","after"]
+          sources={name:folder/f"{name}.jpg" for name in files}
+          originals={name:hashlib.sha256(p.read_bytes()).hexdigest() for name,p in sources.items()}
+          input_total=sum(p.stat().st_size for p in sources.values())
+          htmlpath=Path("complete-disassembly/index.html")
+          html=htmlpath.read_text(encoding="utf-8")
+          settings=[(2600,88),(2500,85),(2300,83),(2200,81),(2000,80)]
+          report={}
+          selection=None
+          for maxedge,quality in settings:
+            candidate={}
+            total=0
+            for name,p in sources.items():
+              with Image.open(p) as image:
+                original=ImageOps.exif_transpose(image).convert("RGB")
+                srcdims=original.size
+                icc=image.info.get("icc_profile")
+                scaled=original.copy()
+                scaled.thumbnail((maxedge,maxedge),Image.Resampling.LANCZOS)
+                q=folder/f"{name}-optimized.webp"
+                kw={"format":"WEBP","quality":quality,"method":6}
+                if icc:kw["icc_profile"]=icc
+                scaled.save(q,**kw)
+                with Image.open(q) as decompressed:
+                  decoded=decompressed.convert("RGB")
+                  assert decoded.size==scaled.size,(name,scaled.size,decoded.size)
+                  # Fidelity on a realistic display resolution, without cropping.
+                  tw=min(600,scaled.width)
+                  th=max(1,round(tw*scaled.height/scaled.width))
+                  original_view=scaled.resize((tw,th),Image.Resampling.LANCZOS)
+                  compressed_view=decoded.resize((tw,th),Image.Resampling.LANCZOS)
+                  rms=ImageStat.Stat(ImageChops.difference(original_view,compressed_view)).rms
+                  rmse=math.sqrt(sum(x*x for x in rms)/3)
+                  psnr=99 if rmse==0 else round(20*math.log10(255/rmse),2)
+                size=q.stat().st_size
+                total+=size
+                candidate[name]={"original_bytes":p.stat().st_size,"optimized_bytes":size,"source_size":list(srcdims),"optimized_size":list(scaled.size),"display_psnr_db":psnr,"quality":quality}
+            print(f"PHOTO_ATTEMPT long_edge={maxedge} quality={quality} total={total} minimum_psnr={min(x['display_psnr_db'] for x in candidate.values())}",flush=True)
+            if total<=4*1024*1024 and all(x["display_psnr_db"]>=31 for x in candidate.values()):
+              selection=(maxedge,quality,total)
+              report=candidate
+              break
+          assert selection,"No WebP setting met total < 4MiB and PSNR >=31dB; source left untouched"
+          # Keep exact original photos and all existing captions, prices, links and tracking.
+          for name in files:
+            old=f'case-studies/2026-06-03-sample/{name}.jpg'
+            new=f'case-studies/2026-06-03-sample/{name}-optimized.webp'
+            pat=re.compile(r'<img\b[^>]*\bsrc="'+re.escape(old)+r'"[^>]*>')
+            matches=pat.findall(html)
+            assert len(matches)==1,(name,len(matches))
+            oldtag=matches[0]
+            newtag=oldtag.replace('src="'+old+'"','src="'+new+'"')
+            w,h=report[name]["optimized_size"]
+            newtag=re.sub(r'\bwidth="\d+"',f'width="{w}"',newtag)
+            newtag=re.sub(r'\bheight="\d+"',f'height="{h}"',newtag)
+            if 'decoding=' not in newtag:newtag=newtag[:-1]+' decoding="async">'
+            html=html.replace(oldtag,newtag,1)
+          assert all(f'case-studies/2026-06-03-sample/{n}-optimized.webp' in html for n in files)
+          assert all(originals[n]==hashlib.sha256(sources[n].read_bytes()).hexdigest() for n in files)
+          htmlpath.write_text(html,encoding="utf-8")
+          proof=Path("qa-photo-opt")
+          proof.mkdir(exist_ok=True)
+          cw,ch=700,400
+          collage=Image.new("RGB",(cw*2,ch*len(files)),(245,248,252))
+          draw=ImageDraw.Draw(collage)
+          for idx,name in enumerate(files):
+            with Image.open(sources[name]) as orig,Image.open(folder/f"{name}-optimized.webp") as comp:
+              a=ImageOps.exif_transpose(orig).convert("RGB");b=comp.convert("RGB")
+              a.thumbnail((cw-24,ch-38),Image.Resampling.LANCZOS)
+              b.thumbnail((cw-24,ch-38),Image.Resampling.LANCZOS)
+              for col,img,lab in [(0,a,"ORIGINAL JPEG"),(1,b,"OPTIMIZED WEBP")]:
+                ox=col*cw+(cw-img.width)//2
+                oy=idx*ch+24+(ch-38-img.height)//2
+                collage.paste(img,(ox,oy))
+                draw.text((col*cw+12,idx*ch+6),f"{name}: {lab}",fill=(25,42,68))
+          collage.save(proof/"before-after-contact.jpg",quality=88,optimize=True)
+          results={"source_total_bytes":input_total,"optimized_total_bytes":selection[2],"reduction_percent":round(100*(1-selection[2]/input_total),1),"selected_long_edge":selection[0],"selected_quality":selection[1],"photos":report,"source_sha256":originals,"originals_preserved":True}
+          (proof/"compression-report.json").write_text(json.dumps(results,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+          print("PHOTO_OPTIMIZATION_SUCCESS "+json.dumps(results,ensure_ascii=False),flush=True)
+          PY
+      - name: Verify only expected files changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --check
+          test "$(git diff --name-only)" = "complete-disassembly/index.html"
+          test "$(git status --short | grep '^?? complete-disassembly/case-studies/' | wc -l)" = "4"
+          for name in before parts dirty-water after; do
+            test -s "complete-disassembly/case-studies/2026-06-03-sample/$name-optimized.webp"
+            git diff --quiet -- "complete-disassembly/case-studies/2026-06-03-sample/$name.jpg"
+          done
+      - name: Commit WebP assets and HTML only to feature branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = "perf/cd-case-photos-webp-20261118"
+          git add complete-disassembly/index.html complete-disassembly/case-studies/2026-06-03-sample/*-optimized.webp
+          test "$(git diff --cached --name-only | wc -l)" = "5"
+          git -c user.name="BC Services LP QA" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "Optimize four real case-study images as WebP; preserve original JPEGs"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+      - name: Upload compression report and photo comparison
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: complete-disassembly-case-photo-compression-review
+          path: qa-photo-opt/
+          if-no-files-found: ignore
