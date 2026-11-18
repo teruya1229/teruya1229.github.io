@@ -1362,6 +1362,27 @@
       .sec-line-photo .line-photo-card { padding:18px 12px; }
       .sec-line-photo .line-photo-list-wrap { padding:12px; }
     }
+
+    /* Keep authentic evidence, shorten the case gallery on narrow screens */
+    .sec-case-studies .case-study-photos {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      align-items:stretch;
+    }
+    .sec-case-studies .case-study-photo-item { min-width:0; margin:0; }
+    .sec-case-studies .cd-case-photo-link { display:block; cursor:zoom-in; border-radius:8px; overflow:hidden; }
+    .sec-case-studies .cd-case-photo-link:focus-visible { outline:3px solid #2563eb; outline-offset:3px; }
+    .sec-case-studies .case-study-photo-item .cd-case-photo-link img {
+      display:block; width:100%; height:clamp(136px,43vw,330px);
+      object-fit:contain; background:#f1f5f9; border-radius:8px;
+    }
+    .sec-case-studies .case-study-photo-caption { margin-top:5px; font-size:.82rem; font-weight:700; color:#29435d; }
+    .sec-case-studies .cd-case-photo-hint { color:#43566e; font-size:.85rem; line-height:1.6; text-align:center; margin:0 0 12px; }
+    @media(max-width:420px) {
+      .sec-case-studies .case-study-photos {gap:8px;}
+      .sec-case-studies .case-study-photo-caption {font-size:.76rem;}
+    }
   </style>
 
   <!-- 構造化データ: LocalBusiness / Service / BreadcrumbList -->
@@ -1968,21 +1989,22 @@
               <p class="case-study-comment">
                 通常分解では見えにくいドレンパン・送風ファン周辺まで取り外し、内部の汚れを洗浄しました。作業前後は写真でご確認いただけます。
               </p>
+              <p class="cd-case-photo-hint">施工写真4枚。タップすると大きく確認できます。</p>
               <div class="case-study-photos" aria-label="施工写真">
                 <figure class="case-study-photo-item">
-                  <img src="case-studies/2026-06-03-sample/before-optimized.webp" alt="南城市で実施したエアコン完全分解クリーニング前の内部汚れ" width="1950" height="2600" loading="lazy" decoding="async">
+                  <a class="cd-proof-photo-link cd-case-photo-link" href="case-studies/2026-06-03-sample/before-optimized.webp" target="_blank" rel="noopener noreferrer" aria-label="施工事例の写真を拡大して見る"><img src="case-studies/2026-06-03-sample/before-optimized.webp" alt="南城市で実施したエアコン完全分解クリーニング前の内部汚れ" width="1950" height="2600" loading="lazy" decoding="async"></a>
                   <figcaption class="case-study-photo-caption">施工前</figcaption>
                 </figure>
                 <figure class="case-study-photo-item">
-                  <img src="case-studies/2026-06-03-sample/parts-optimized.webp" alt="完全分解で取り外したエアコン部品の洗浄前の状態" width="1950" height="2600" loading="lazy" decoding="async">
+                  <a class="cd-proof-photo-link cd-case-photo-link" href="case-studies/2026-06-03-sample/parts-optimized.webp" target="_blank" rel="noopener noreferrer" aria-label="施工事例の写真を拡大して見る"><img src="case-studies/2026-06-03-sample/parts-optimized.webp" alt="完全分解で取り外したエアコン部品の洗浄前の状態" width="1950" height="2600" loading="lazy" decoding="async"></a>
                   <figcaption class="case-study-photo-caption">分解中</figcaption>
                 </figure>
                 <figure class="case-study-photo-item">
-                  <img src="case-studies/2026-06-03-sample/dirty-water-optimized.webp" alt="エアコン完全分解クリーニングで出た黒い汚水" width="1950" height="2600" loading="lazy" decoding="async">
+                  <a class="cd-proof-photo-link cd-case-photo-link" href="case-studies/2026-06-03-sample/dirty-water-optimized.webp" target="_blank" rel="noopener noreferrer" aria-label="施工事例の写真を拡大して見る"><img src="case-studies/2026-06-03-sample/dirty-water-optimized.webp" alt="エアコン完全分解クリーニングで出た黒い汚水" width="1950" height="2600" loading="lazy" decoding="async"></a>
                   <figcaption class="case-study-photo-caption">汚水</figcaption>
                 </figure>
                 <figure class="case-study-photo-item">
-                  <img src="case-studies/2026-06-03-sample/after-optimized.webp" alt="完全分解クリーニング後のきれいになったエアコン内部" width="2600" height="1950" loading="lazy" decoding="async">
+                  <a class="cd-proof-photo-link cd-case-photo-link" href="case-studies/2026-06-03-sample/after-optimized.webp" target="_blank" rel="noopener noreferrer" aria-label="施工事例の写真を拡大して見る"><img src="case-studies/2026-06-03-sample/after-optimized.webp" alt="完全分解クリーニング後のきれいになったエアコン内部" width="2600" height="1950" loading="lazy" decoding="async"></a>
                   <figcaption class="case-study-photo-caption">施工後</figcaption>
                 </figure>
               </div>
