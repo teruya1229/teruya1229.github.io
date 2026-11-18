@@ -383,6 +383,8 @@
 }
 .biz3 .biz4-review-grid .bc-biz-voice { min-width:0; margin:0; }
 .biz3 .biz4-floor-proof {
+  grid-column:1 / -1;
+  width:100%;
   max-width:940px;
   margin-top:30px;
   padding-top:27px;
