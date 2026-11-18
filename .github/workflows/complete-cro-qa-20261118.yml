@@ -113,6 +113,9 @@ jobs:
                 const baseline=await baselineContext.newPage();
                 await baseline.route('**/*',r=>r.request().url().startsWith('http://127.0.0.1:8766/')?r.continue():r.abort('blockedbyclient'));
                 await baseline.goto('http://127.0.0.1:8766/complete-disassembly/',{waitUntil:'domcontentloaded',timeout:30000});
+                await baseline.locator('img').evaluateAll(images=>images.forEach(img=>img.loading='eager'));
+                await baseline.locator('img').evaluateAll(async images=>{await Promise.all(images.map(async img=>{try{await img.decode()}catch(e){}}));});
+
                 for(const [label,selector] of [['hero','.hero'],['photos','.sec-beforeafter-refresh'],['review','.sec-trust-compact'],['price','.sec-price']]){
                   await baseline.locator(selector).screenshot({path:'qa-cro/main-'+width+'-'+label+'.png',timeout:45000});
                 }
