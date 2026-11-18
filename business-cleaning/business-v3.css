@@ -816,22 +816,39 @@
   background:transparent;
 }
 .biz3 .biz3-proof-main figcaption { margin-top:auto; }
-.biz3 .biz3-proof { align-items:start; }
+.biz3 .biz3-proof {
+  grid-template-columns:minmax(0,1fr);
+  gap:clamp(14px,2vw,22px);
+  align-items:stretch;
+}
 .biz3 .biz3-proof-side {
-  grid-template-rows:repeat(2,minmax(0,1fr));
-  align-self:start;
+  display:grid;
+  width:100%;
+  max-width:980px;
+  justify-self:center;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-rows:minmax(0,1fr);
+  gap:clamp(14px,2vw,22px);
+  align-self:stretch;
 }
 .biz3 .biz3-proof-side figure {
-  grid-template-columns:minmax(0,1fr) minmax(112px,1.08fr);
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  height:100%;
 }
 .biz3 .biz3-proof-side img {
   display:block;
+  flex:0 0 auto;
   width:100%;
-  height:170px;
+  height:auto;
   max-height:none;
-  object-fit:cover;
+  aspect-ratio:3 / 4;
+  object-fit:contain;
+  object-position:center;
   background:transparent;
 }
+.biz3 .biz3-proof-side figcaption { padding:14px 17px; }
 .biz3 .biz7-aircon-action {
   display:flex;
   flex-wrap:wrap;
@@ -854,24 +871,25 @@
 }
 @media (min-width:768px) and (max-width:1023px) {
   .biz3 .biz3-proof-side {
-    grid-template-rows:repeat(2,minmax(0,1fr));
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-rows:minmax(0,1fr);
   }
   .biz3 .biz3-proof-side figure {
-    grid-template-columns:minmax(0,1fr);
-    grid-template-rows:minmax(0,1fr) auto;
+    display:flex;
+    flex-direction:column;
   }
-  .biz3 .biz3-proof-side img { height:140px; }
+  .biz3 .biz3-proof-side img { height:auto; aspect-ratio:3 / 4; }
 }
 @media (max-width:767px) {
   .biz3 .biz6-aircon-beforeafter .biz6-ba-photo img {
     height:auto;
     aspect-ratio:1600 / 602;
   }
-  .biz3 .biz3-proof { align-items:stretch; }
+  .biz3 .biz3-proof { grid-template-columns:minmax(0,1fr); align-items:stretch; }
   .biz3 .biz3-proof-main img { height:auto; aspect-ratio:1600 / 602; }
-  .biz3 .biz3-proof-side { grid-template-rows:none; }
-  .biz3 .biz3-proof-side figure { grid-template-columns:minmax(112px,.85fr) minmax(0,1fr); }
-  .biz3 .biz3-proof-side img { height:165px; object-fit:contain; }
+  .biz3 .biz3-proof-side { grid-template-columns:minmax(0,1fr); grid-template-rows:none; }
+  .biz3 .biz3-proof-side figure { display:flex; flex-direction:column; }
+  .biz3 .biz3-proof-side img { height:auto; aspect-ratio:3 / 4; object-fit:contain; }
   .biz3 .biz7-aircon-action {
     flex-direction:column;
     align-items:stretch;
@@ -881,7 +899,7 @@
   .biz3 .biz7-aircon-action .biz3-line-primary { width:100%; }
 }
 @media (max-width:380px) {
-  .biz3 .biz3-proof-side img { height:140px; }
+  .biz3 .biz3-proof-side img { height:auto; }
   .biz3 .biz7-aircon-action .biz3-line-primary { font-size:13px; }
 }
 
