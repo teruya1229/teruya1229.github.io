@@ -175,7 +175,7 @@ jobs:
                 if(!row.modalOpen||!row.modalClosed)issues.push('PHOTO_MODAL');
                 if(width<768 && row.heroHeight>720)issues.push('HERO_TOO_TALL');
                 if(!row.priceCtaAfterCards)issues.push('PRICE_CTA_POSITION');
-                if(row.photoLinks.length!==6||row.photoDisplayWidths.some(w=>w<Math.min(280,width-40)))issues.push('PHOTO_VISIBILITY');
+                if(row.photoLinks.length!==10||row.photoDisplayWidths.some(w=>w<Math.min(280,width-40)))issues.push('PHOTO_VISIBILITY');
                 if(!row.galleryAllTwoColumns)issues.push('PARTS_GALLERY_COLUMNS');
                 if(!row.areaInitiallyClosed||!row.areaExpanded||!row.areaLinksVisible||!row.finalCtaPhotoCount||!row.finalCtaCopy)issues.push('AREA_OR_FINAL_CTA');
                 if(!row.technicalInitiallyClosed||!row.technicalExpanded||row.technicalSixIcons!==6||!row.videoInitiallyClosed||!row.videoExpanded||!row.videoIframePresent)issues.push('TECH_AND_VIDEO_DETAILS');
