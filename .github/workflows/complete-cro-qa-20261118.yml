@@ -1,7 +1,7 @@
 name: Complete-disassembly CRO review QA (pre-publish)
 on:
   push:
-    branches: [fix/cd-lp-final-line-20261118]
+    branches: [perf/cd-case-photos-webp-20261118]
     paths:
       - 'complete-disassembly/**'
       - '.github/workflows/complete-cro-qa-20261118.yml'
@@ -41,6 +41,13 @@ jobs:
           const fs = require('fs');
           const {chromium} = require('playwright');
           const widths=[1440,820,390,320];
+          const caseNames=['before','parts','dirty-water','after'];
+          const caseDir='complete-disassembly/case-studies/2026-06-03-sample/';
+          const sourceBytes=caseNames.reduce((sum,n)=>sum+fs.statSync(caseDir+n+'.jpg').size,0);
+          const optimizedBytes=caseNames.reduce((sum,n)=>sum+fs.statSync(caseDir+n+'-optimized.webp').size,0);
+          if(optimizedBytes>4*1024*1024 || optimizedBytes>=sourceBytes)throw new Error('PHOTO_SIZE_BUDGET '+sourceBytes+' '+optimizedBytes);
+          for(const n of caseNames){if(!fs.existsSync(caseDir+n+'.jpg')||!fs.existsSync(caseDir+n+'-optimized.webp'))throw new Error('MISSING_IMAGE '+n)}
+          console.log('PHOTO_SIZE_REPORT '+JSON.stringify({sourceBytes,optimizedBytes,savedPct:+(100*(1-optimizedBytes/sourceBytes)).toFixed(1)}));
           const results=[];
           const failures=[];
           fs.mkdirSync('qa-cro', {recursive:true});
@@ -133,6 +140,8 @@ jobs:
                     phone:document.querySelector('.header-tel')?.getAttribute('href'),
                     booking:document.querySelector('.hero .air-reserve-subcta')?.getAttribute('href'),
                     faq:document.querySelectorAll('.sec-faq details').length,
+                    actualCaseSources:[...document.querySelectorAll('.sec-case-studies .case-study-photos img')].map(i=>i.getAttribute('src')),
+                    actualCaseRendered:[...document.querySelectorAll('.sec-case-studies .case-study-photos img')].every(i=>i.naturalWidth>0&&i.naturalHeight>0),
                     finalCtaPhotoCount:document.querySelectorAll('.sec-line-photo .line-photo-list li').length===2,
                     finalCtaCopy:document.querySelector('.sec-line-photo .line-cta')?.textContent.includes('無料相談'),
                     galleryAllTwoColumns:(()=>{let a=document.querySelector('.cd-parts-gallery .services-grid'); return a&&getComputedStyle(a).gridTemplateColumns.split(' ').length===2&&a.querySelectorAll('figure').length===4})(),
@@ -149,6 +158,7 @@ jobs:
                 if(!row.heroPrice || row.reviewsCount!==1)issues.push('HERO_OR_REVIEW');
                 if(row.headings[1]!=='こんなお悩み、ありませんか？'||!row.headings[2].includes('写真で見る')||!row.headings[3].includes('お客様の声'))issues.push('FLOW_ORDER');
                 if(row.brokenImages.length)issues.push('IMAGE_DECODE_OR_MISSING');
+                if(!row.actualCaseRendered||row.actualCaseSources.length!==4||row.actualCaseSources.some(src=>!src.endsWith('-optimized.webp')))issues.push('CASE_WEBP_RENDER');
                 if(width<768 && (!row.menuStatus.visible||!row.menuStatus.linksFit||!row.menuStatus.closed))issues.push('MOBILE_NAV');
                 if(!row.modalOpen||!row.modalClosed)issues.push('PHOTO_MODAL');
                 if(width<768 && row.heroHeight>720)issues.push('HERO_TOO_TALL');
@@ -181,7 +191,7 @@ jobs:
                 await baselineContext.close();
               }
             }finally{
-              fs.writeFileSync('qa-cro/report.json',JSON.stringify({branch:'fix/cd-lp-final-line-20261118',baseline:'origin/main',results,failures},null,2));
+              fs.writeFileSync('qa-cro/report.json',JSON.stringify({branch:'perf/cd-case-photos-webp-20261118',baseline:'origin/main',results,failures},null,2));
               await browser.close();
             }
             console.log('COMPLETE_CRO_QA '+JSON.stringify({status:failures.length?'FAIL':'PASS',results,failures}));
