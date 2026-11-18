@@ -28,6 +28,8 @@ jobs:
         run: node washing-machine-cleaning/tests/diagnosis-browser-qa.cjs
       - name: New early CTA and review-link test
         run: node washing-machine-cleaning/tests/early-diagnosis-cro-qa-20261118.cjs
+      - name: Buying reasons, evidence and sticky CTA browser QA
+        run: node washing-machine-cleaning/tests/washer-buying-reasons-qa-20261118.cjs
       - name: Archive QA evidence
         if: always()
         uses: actions/upload-artifact@v4
