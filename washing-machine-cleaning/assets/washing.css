@@ -95,3 +95,31 @@
   .flow-card__header{min-height:82px}
   .flow-card__icon{width:90px;height:90px;margin:-9px -8px 0 0}
 }
+
+/* 2026-11-18: Make the intentionally early 3-question diagnosis discoverable
+   from the first screen without moving the diagnosis or changing GA4/LINE. */
+.hero__diagnosis-jump{
+  display:flex;align-items:center;gap:12px;max-width:460px;min-height:69px;
+  padding:12px 14px;margin-top:16px;text-decoration:none;
+  color:#123c53;background:#fff;border:2px solid #15999a;border-radius:14px;
+  box-shadow:0 8px 22px rgba(14,105,106,.10);
+}
+.hero__diagnosis-jump:focus-visible{outline:3px solid #167f9e;outline-offset:3px}
+.hero__diagnosis-time{flex:0 0 auto;font-size:11px;font-weight:900;color:#fff;background:#0d7780;padding:7px 9px;border-radius:8px;white-space:nowrap}
+.hero__diagnosis-copy{display:flex;flex-direction:column;min-width:0;line-height:1.4;gap:3px}
+.hero__diagnosis-copy strong{font-size:15px;font-weight:900}
+.hero__diagnosis-copy small{font-size:11px;color:#506c76;line-height:1.45}
+.hero__diagnosis-arrow{margin-left:auto;font-size:24px;line-height:1;color:#0c8186;font-weight:900}
+@media (hover:hover){.hero__diagnosis-jump:hover{background:#f0faf7}}
+@media(max-width:720px){
+  .hero__diagnosis-jump{order:2;max-width:none;width:100%;min-height:64px;margin-top:-8px;padding:10px 12px;gap:10px}
+  .hero__diagnosis-copy strong{font-size:14px}
+  .hero__diagnosis-copy small{font-size:10px}
+  .hero__diagnosis-time{font-size:10px;padding:6px 8px}
+  .hero__diagnosis-arrow{font-size:22px}
+}
+@media(max-width:374px){
+  .hero__diagnosis-jump{gap:8px;padding:10px}
+  .hero__diagnosis-copy strong{font-size:13px}
+  .hero__diagnosis-time{font-size:9px;padding:6px}
+}
