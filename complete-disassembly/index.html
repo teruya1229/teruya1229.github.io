@@ -1280,6 +1280,28 @@
       .hero-inner { padding-inline:10px; }
       .hero-subcta-row .air-reserve-subcta,.hero-subcta-row .cd-hero-phone-link { font-size:.8rem; padding-inline:5px; }
     }
+
+    /* CRO: move decision point before the technical details; retain every evidence image. */
+    .cd-parts-gallery .cd-parts-lead { max-width:680px; text-align:center; margin:0 auto 18px; font-size:.95rem; line-height:1.7; color:#435166; }
+    .cd-parts-gallery .services-grid { display:grid!important; grid-template-columns:repeat(2,minmax(0,1fr))!important; gap:12px; max-width:900px; margin:0 auto; }
+    .cd-parts-gallery figure.svc-card { min-width:0; min-height:0; margin:0; padding:8px; overflow:hidden; }
+    .cd-parts-gallery .cd-proof-photo-link { display:block; cursor:zoom-in; }
+    .cd-parts-gallery .svc-card-img { display:block; width:100%; height:auto!important; aspect-ratio:4/3; max-height:none!important; object-fit:contain!important; background:#f1f5fa; border-radius:6px; }
+    .cd-parts-gallery .svc-card figcaption { margin-top:7px; text-align:center; font-size:.86rem; line-height:1.5; font-weight:700; }
+    .cd-parts-gallery .cd-proof-photo-link:focus-visible { outline:3px solid #2563eb; outline-offset:3px; }
+    .sec-price .cd-price-time-teaser { margin:12px auto 0; max-width:680px; font-size:.87rem; line-height:1.6; text-align:center; font-weight:700; color:#29425d; }
+    .sec-price .cd-price-details { max-width:680px; margin:18px auto 0; background:#fff; border:1px solid #cbdcf0; border-radius:10px; }
+    .sec-price .cd-price-details summary { list-style:none; position:relative; min-height:48px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; font-size:.93rem; font-weight:700; line-height:1.5; color:#16436d; padding:12px 16px; }
+    .sec-price .cd-price-details summary::-webkit-details-marker { display:none; }
+    .sec-price .cd-price-details summary span { color:#16436d; font-size:1.2rem; font-weight:700; }
+    .sec-price .cd-price-details[open] summary span { transform:rotate(45deg); }
+    .sec-price .cd-price-details .price-included-card { border:0; border-top:1px solid #dbeafe; box-shadow:none; border-radius:0 0 10px 10px; margin:0; }
+    @media(max-width:420px) {
+      .cd-parts-gallery .services-grid { gap:8px; }
+      .cd-parts-gallery figure.svc-card { padding:5px; }
+      .cd-parts-gallery .svc-card figcaption { font-size:.78rem; }
+      .sec-price .cd-price-details summary { padding:11px 12px; font-size:.88rem; }
+    }
   </style>
 
   <!-- 構造化データ: LocalBusiness / Service / BreadcrumbList -->
@@ -1552,535 +1574,538 @@
 
   <main>
     <section class="hero">
-      <img src="../cursor-test/images/hero-fv.jpg" alt="完全分解クリーニング作業イメージ" class="hero-bg" width="1400" height="900">
-      <div class="hero-overlay"></div>
-      <div class="hero-inner">
-        <h1 class="hero-title">沖縄中南部のエアコン<br>完全分解クリーニング</h1>
-        <p class="hero-lead">エアコンのニオイや奥の黒い汚れが気になる方へ。<br>通常洗浄では届きにくい送風ファン・ドレンパンを取り外して洗浄します。</p>
-        <p class="cd-hero-price">完全分解 税込14,000円〜（通常機）／23,000円〜（お掃除機能付き）</p>
-        <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="hero">LINEで機種写真を送って無料相談</a>
-        <p class="cd-hero-hint">型番・設置写真から、対応可否と料金目安をご案内。</p>
-        <div class="hero-subcta-row">
-          <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="hero" aria-label="Airリザーブで空き状況を見て仮予約する">空き状況・仮予約</a>
-          <a href="tel:05017241338" class="cd-hero-phone-link" data-cta="tel" data-cta-location="hero">電話で相談</a>
-        </div>
-        <p class="air-reserve-note">※Airリザーブは仮予約です。内容確認後に正式確定します。</p>
-      </div>
-    </section>
-
+          <img src="../cursor-test/images/hero-fv.jpg" alt="完全分解クリーニング作業イメージ" class="hero-bg" width="1400" height="900">
+          <div class="hero-overlay"></div>
+          <div class="hero-inner">
+            <h1 class="hero-title">沖縄中南部のエアコン<br>完全分解クリーニング</h1>
+            <p class="hero-lead">エアコンのニオイや奥の黒い汚れが気になる方へ。<br>通常洗浄では届きにくい送風ファン・ドレンパンを取り外して洗浄します。</p>
+            <p class="cd-hero-price">完全分解 税込14,000円〜（通常機）／23,000円〜（お掃除機能付き）</p>
+            <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="hero">LINEで機種写真を送って無料相談</a>
+            <p class="cd-hero-hint">型番・設置写真から、対応可否と料金目安をご案内。</p>
+            <div class="hero-subcta-row">
+              <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="hero" aria-label="Airリザーブで空き状況を見て仮予約する">空き状況・仮予約</a>
+              <a href="tel:05017241338" class="cd-hero-phone-link" data-cta="tel" data-cta-location="hero">電話で相談</a>
+            </div>
+            <p class="air-reserve-note">※Airリザーブは仮予約です。内容確認後に正式確定します。</p>
+          </div>
+        </section>
+    
     <section class="section section-light sec-worries">
-      <div class="container">
-        <h2 class="section-title">こんなお悩み、ありませんか？</h2>
-        <p class="cd-worries-lead">見えない場所の汚れが気になるから、洗浄する範囲を写真で確かめたい方へ。</p>
-        <ul>
-          <li class="card">エアコンをつけると、ニオイが気になる</li>
-          <li class="card">通常洗浄後も、奥に黒い汚れが見える</li>
-          <li class="card">寝室や子ども部屋だから、内部まで丁寧に洗ってほしい</li>
-        </ul>
-      </div>
-    </section>
-
+          <div class="container">
+            <h2 class="section-title">こんなお悩み、ありませんか？</h2>
+            <p class="cd-worries-lead">見えない場所の汚れが気になるから、洗浄する範囲を写真で確かめたい方へ。</p>
+            <ul>
+              <li class="card">エアコンをつけると、ニオイが気になる</li>
+              <li class="card">通常洗浄後も、奥に黒い汚れが見える</li>
+              <li class="card">寝室や子ども部屋だから、内部まで丁寧に洗ってほしい</li>
+            </ul>
+          </div>
+        </section>
+    
     <section class="section sec-beforeafter-refresh">
-      <div class="container">
-        <h2 class="section-title">写真で見る、洗浄前と洗浄後の違い</h2>
-        <p class="cd-zoom-hint">BCサービスの実際の施工写真です。写真をタップすると拡大できます。</p>
-        <div class="services-grid">
-          <figure class="svc-card card">
-            <a class="cd-proof-photo-link" href="./assets/photos/coil-before-after.webp" target="_blank" rel="noopener noreferrer" aria-label="施工写真を拡大して見る"><img src="./assets/photos/coil-before-after.webp" alt="エアコン熱交換器の洗浄前と洗浄後の比較写真" width="1200" height="475" loading="lazy" decoding="async" class="svc-card-img"></a>
-            <figcaption>熱交換器のビフォーアフター</figcaption>
-          </figure>
-          <figure class="svc-card card">
-            <a class="cd-proof-photo-link" href="./assets/photos/fan-before-after.webp" target="_blank" rel="noopener noreferrer" aria-label="施工写真を拡大して見る"><img src="./assets/photos/fan-before-after.webp" alt="エアコン送風ファン内部の洗浄前と洗浄後の比較写真" width="1200" height="560" loading="lazy" decoding="async" class="svc-card-img"></a>
-            <figcaption>送風ファン・内部のビフォーアフター</figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
+          <div class="container">
+            <h2 class="section-title">写真で見る、洗浄前と洗浄後の違い</h2>
+            <p class="cd-zoom-hint">BCサービスの実際の施工写真です。写真をタップすると拡大できます。</p>
+            <div class="services-grid">
+              <figure class="svc-card card">
+                <a class="cd-proof-photo-link" href="./assets/photos/coil-before-after.webp" target="_blank" rel="noopener noreferrer" aria-label="施工写真を拡大して見る"><img src="./assets/photos/coil-before-after.webp" alt="エアコン熱交換器の洗浄前と洗浄後の比較写真" width="1200" height="475" loading="lazy" decoding="async" class="svc-card-img"></a>
+                <figcaption>熱交換器のビフォーアフター</figcaption>
+              </figure>
+              <figure class="svc-card card">
+                <a class="cd-proof-photo-link" href="./assets/photos/fan-before-after.webp" target="_blank" rel="noopener noreferrer" aria-label="施工写真を拡大して見る"><img src="./assets/photos/fan-before-after.webp" alt="エアコン送風ファン内部の洗浄前と洗浄後の比較写真" width="1200" height="560" loading="lazy" decoding="async" class="svc-card-img"></a>
+                <figcaption>送風ファン・内部のビフォーアフター</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+    
     <section class="section sec-trust-compact">
-      <div class="container">
-        <h2 class="section-title">完全分解を依頼されたお客様の声</h2>
-        <div class="trust-compact-inner">
-          <div class="voice-item card">
-            <p class="voice-meta">★★★★★ &nbsp;匿名カズさん・2026年4月22日</p>
-            <p class="voice-text">3台、完全分解を依頼しました。<br>他の業者の方が届かない場所まで綺麗にして頂き、ありがとうございました。</p>
-            <p class="voice-meta voice-meta--sub">エアコンクリーニング / 壁掛けタイプ</p>
-          </div>
-          <div class="cd-google-rating" aria-label="BCサービスのGoogleマップ総合評価">
-            <p class="trust-rating">Google口コミ総合評価 <strong>★★★★★ 5.0（13件）</strong></p>
-            <p class="cd-review-source"><a href="https://www.google.com/maps/search/?api=1&amp;query=BC%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%20%E6%B2%96%E7%B8%84%E7%9C%8C%E5%8D%97%E5%9F%8E%E5%B8%82" target="_blank" rel="noopener noreferrer">Googleマップで口コミを見る</a></p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-light sec-about">
-      <div class="container">
-        <h2 class="section-title">完全分解とは</h2>
-        <p class="about-lead">通常洗浄では取り外さないことが多い送風ファンやドレンパンを、機種・設置条件を確認して取り外し洗浄します。どこまで違うか、下の比較表で確認できます。</p>
-
-        <div class="about-range-card card">
-          <p class="about-range-title">洗浄が届く範囲のイメージ</p>
-          <div class="about-range-item">
-            <div class="about-range-item-head">
-              <span class="about-range-name">通常洗浄</span>
-              <span class="about-range-note">表面が中心</span>
-            </div>
-            <div class="about-range-track">
-              <div class="about-range-fill about-range-fill--normal" aria-hidden="true"></div>
+          <div class="container">
+            <h2 class="section-title">完全分解を依頼されたお客様の声</h2>
+            <div class="trust-compact-inner">
+              <div class="voice-item card">
+                <p class="voice-meta">★★★★★ &nbsp;匿名カズさん・2026年4月22日</p>
+                <p class="voice-text">3台、完全分解を依頼しました。<br>他の業者の方が届かない場所まで綺麗にして頂き、ありがとうございました。</p>
+                <p class="voice-meta voice-meta--sub">エアコンクリーニング / 壁掛けタイプ</p>
+              </div>
+              <div class="cd-google-rating" aria-label="BCサービスのGoogleマップ総合評価">
+                <p class="trust-rating">Google口コミ総合評価 <strong>★★★★★ 5.0（13件）</strong></p>
+                <p class="cd-review-source"><a href="https://www.google.com/maps/search/?api=1&amp;query=BC%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%20%E6%B2%96%E7%B8%84%E7%9C%8C%E5%8D%97%E5%9F%8E%E5%B8%82" target="_blank" rel="noopener noreferrer">Googleマップで口コミを見る</a></p>
+              </div>
             </div>
           </div>
-          <div class="about-range-item about-range-item--full">
-            <div class="about-range-item-head">
-              <span class="about-range-name">完全分解</span>
-              <span class="about-range-note">内部の奥まで</span>
-            </div>
-            <div class="about-range-track">
-              <div class="about-range-fill about-range-fill--full" aria-hidden="true"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="about-compare-wrap">
-          <h3 class="section-title">通常洗浄では届かない、ファン・ドレンパンまで外します</h3>
-          <p class="about-compare-lead">BCサービスの完全分解は、ドレンパンと送風ファンを取り外し、ニオイやカビの原因になりやすい奥の汚れまで洗浄します。</p>
-          <div class="about-compare-table-card card">
-            <table class="about-compare-table">
-              <thead>
-                <tr>
-                  <th scope="col">項目</th>
-                  <th scope="col">通常洗浄</th>
-                  <th scope="col">完全分解</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">外装カバー</th>
-                  <td>洗浄</td>
-                  <td>洗浄</td>
-                </tr>
-                <tr>
-                  <th scope="row">フィルター</th>
-                  <td>洗浄</td>
-                  <td>洗浄</td>
-                </tr>
-                <tr>
-                  <th scope="row">熱交換器</th>
-                  <td>表面中心</td>
-                  <td>奥まで洗浄</td>
-                </tr>
-                <tr>
-                  <th scope="row">送風ファン</th>
-                  <td>取り外さず洗浄</td>
-                  <td>取り外して洗浄</td>
-                </tr>
-                <tr>
-                  <th scope="row">ドレンパン</th>
-                  <td>基本そのまま</td>
-                  <td>取り外して洗浄</td>
-                </tr>
-                <tr>
-                  <th scope="row">ニオイの原因</th>
-                  <td>残る場合あり</td>
-                  <td>原因部分まで確認しやすい</td>
-                </tr>
-                <tr>
-                  <th scope="row">作業時間</th>
-                  <td>短め</td>
-                  <td>長め</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <p class="about-case-wrap">
-          <a href="#case-studies" class="about-case-btn">施工事例を見る →</a>
-        </p>
-
-        <ul class="about-feature-list">
-          <li class="about-feature-card card">
-            <span class="about-feature-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/04-feature-drainpan-fan.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
-            <div class="about-feature-body">
-              <h3>ドレンパン・ファンまで分解</h3>
-              <p>本体から部品を取り外し、奥まで洗浄します。</p>
-            </div>
-          </li>
-          <li class="about-feature-card card">
-            <span class="about-feature-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/05-feature-deep-dirt.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
-            <div class="about-feature-body">
-              <h3>内部の汚れまで対応</h3>
-              <p>通常洗浄では届きにくい内部の汚れもしっかり。</p>
-            </div>
-          </li>
-          <li class="about-feature-card card">
-            <span class="about-feature-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/06-feature-circuit.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
-            <div class="about-feature-body">
-              <h3>基板周辺まで対応</h3>
-              <p>機種によっては基板周辺まで分解して対応します。</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="section section-light">
-      <div class="container">
-        <h2 class="section-title">ここまで分解して洗浄します</h2>
-        <div class="services-grid">
-          <figure class="svc-card card">
-            <img src="./assets/photos/parts-ready-560.webp" alt="完全分解で取り外したエアコンの送風ファン・ドレンパンなどの部品" width="560" height="373" loading="lazy" decoding="async" class="svc-card-img">
-            <figcaption>分解部品</figcaption>
-          </figure>
-          <figure class="svc-card card">
-            <img src="./fan-before-after-optimized.jpg" alt="ファン内部のビフォーアフター" width="600" height="400" loading="lazy" class="svc-card-img">
-            <figcaption>ファン内部の汚れ</figcaption>
-          </figure>
-          <figure class="svc-card card">
-            <img src="./drainpan-before-after-optimized.jpg" alt="ドレンパンのビフォーアフター" width="600" height="400" loading="lazy" class="svc-card-img">
-            <figcaption>ドレンパンの汚れ</figcaption>
-          </figure>
-          <figure class="svc-card card">
-            <img src="./dirty-water-optimized.jpg" alt="洗浄後に出た汚水" width="600" height="400" loading="lazy" class="svc-card-img">
-            <figcaption>洗浄後に出た汚水</figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <section class="section sec-reason">
-      <div class="container">
-        <span class="reason-eyebrow">REASONS</span>
-        <h2 class="section-title">完全分解を選ばれる理由</h2>
-        <p class="reason-lead">「ここまでやるの？」という分解だからこそ、仕上がりに納得していただけます。</p>
-        <ul class="reason-cards">
-          <li class="reason-card-item card">
-            <span class="reason-card-num" aria-hidden="true">01</span>
-            <span class="reason-card-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/07-reason-deep.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
-            <div class="reason-card-body">
-              <span class="reason-card-label">REASON 1</span>
-              <h3>奥の汚れまで洗いやすい</h3>
-              <p>ファンやドレンパンまで外すから、奥に溜まった汚れまでしっかり洗えます。</p>
-            </div>
-          </li>
-          <li class="reason-card-item card">
-            <span class="reason-card-num" aria-hidden="true">02</span>
-            <span class="reason-card-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/08-reason-odor.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
-            <div class="reason-card-body">
-              <span class="reason-card-label">REASON 2</span>
-              <h3>ニオイの原因まで確認</h3>
-              <p>ニオイの原因になりやすい部分まで、目で確認しながら洗浄します。</p>
-            </div>
-          </li>
-          <li class="reason-card-item card">
-            <span class="reason-card-num" aria-hidden="true">03</span>
-            <span class="reason-card-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/09-reason-clean.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
-            <div class="reason-card-body">
-              <span class="reason-card-label">REASON 3</span>
-              <h3>通常洗浄後も内部汚れが気になる方にも</h3>
-              <p>通常洗浄では届きにくい部分の汚れが気になる場合に検討できる方法です。</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </section>
-
+        </section>
+    
     <section class="section section-light sec-price" id="price-section">
-      <div class="container">
-        <h2 class="section-title">完全分解クリーニング料金</h2>
-        <div class="price-cards-grid">
-          <div class="card price-card-item">
-            <p class="price-card-type">通常エアコン</p>
-            <p class="price-card-title">完全分解クリーニング</p>
-            <p class="price-card-amount">14,000円〜</p>
-          </div>
-          <div class="card price-card-item">
-            <p class="price-card-type">お掃除機能付き</p>
-            <p class="price-card-title">完全分解クリーニング</p>
-            <p class="price-card-amount">23,000円〜</p>
-          </div>
-        </div>
-        <p class="price-card-note">通常エアコンの完全分解は、南部7市町が14,000円（税込）、中部・浦添が15,000円（税込）〜です。</p>
-        <p class="price-card-note">2台以上の同時予約で、2台目以降は1台につき1,000円引き</p>
-        <p class="price-card-note">※内部までしっかり洗いたい方向けの料金です。設置状況や機種により追加対応が必要な場合があります</p>
-        <div class="sec-mid-cta cd-price-action">
-          <div class="mid-cta-card card">
-            <h3 class="mid-cta-title">料金が分かったら、LINEで機種を確認</h3>
-            <p class="mid-cta-lead">完全分解が可能か、写真と型番から事前にご案内します。</p>
-            <div class="mid-cta-buttons">
-              <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="mid-cta-line" data-cta="line" data-cta-location="mid"><span class="mid-cta-line-icon" aria-hidden="true">💬</span>LINEで相談する</a>
-              <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="mid-cta-air" data-cta="air_reserve" data-cta-location="mid" aria-label="Airリザーブで空き状況を見る"><span class="mid-cta-air-icon" aria-hidden="true">📅</span>空き状況を見る</a>
+          <div class="container">
+            <h2 class="section-title">完全分解クリーニング料金</h2>
+            <div class="price-cards-grid">
+              <div class="card price-card-item">
+                <p class="price-card-type">通常エアコン</p>
+                <p class="price-card-title">完全分解クリーニング</p>
+                <p class="price-card-amount">14,000円〜</p>
+              </div>
+              <div class="card price-card-item">
+                <p class="price-card-type">お掃除機能付き</p>
+                <p class="price-card-title">完全分解クリーニング</p>
+                <p class="price-card-amount">23,000円〜</p>
+              </div>
+            </div>
+            <p class="price-card-note">通常エアコンの完全分解は、南部7市町が14,000円（税込）、中部・浦添が15,000円（税込）〜です。</p>
+            <p class="price-card-note">2台以上の同時予約で、2台目以降は1台につき1,000円引き</p>
+            <p class="price-card-note">※内部までしっかり洗いたい方向けの料金です。設置状況や機種により追加対応が必要な場合があります</p>
+            <div class="sec-mid-cta cd-price-action">
+              <div class="mid-cta-card card">
+                <h3 class="mid-cta-title">料金が分かったら、LINEで機種を確認</h3>
+                <p class="mid-cta-lead">完全分解が可能か、写真と型番から事前にご案内します。</p>
+                <div class="mid-cta-buttons">
+                  <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="mid-cta-line" data-cta="line" data-cta-location="mid"><span class="mid-cta-line-icon" aria-hidden="true">💬</span>LINEで相談する</a>
+                  <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="mid-cta-air" data-cta="air_reserve" data-cta-location="mid" aria-label="Airリザーブで空き状況を見る"><span class="mid-cta-air-icon" aria-hidden="true">📅</span>空き状況を見る</a>
+                </div>
+              </div>
+            </div>
+            <p class="cd-price-time-teaser">作業時間の目安：通常90〜150分／お掃除機能付き120〜180分</p>
+            <details class="cd-price-details">
+              <summary>作業内容・時間・ご注意事項を確認する <span aria-hidden="true">＋</span></summary>
+            <div class="price-included-card card">
+              <h3 class="price-included-title">料金に含まれる作業内容</h3>
+              <div class="price-included-grid">
+                <div class="price-included-block">
+                  <h4>作業内容</h4>
+                  <ul class="price-included-list">
+                    <li>分解作業</li>
+                    <li>取り外した部品の洗浄</li>
+                    <li>熱交換器・送風口まわりの高圧洗浄</li>
+                    <li>ドレンパン・送風ファンの洗浄</li>
+                    <li>作業後の動作確認</li>
+                  </ul>
+                </div>
+                <div class="price-included-block">
+                  <h4>作業時間目安</h4>
+                  <ul class="price-time-list">
+                    <li>通常エアコン完全分解：90〜150分</li>
+                    <li>お掃除機能付き完全分解：120〜180分</li>
+                  </ul>
+                </div>
+                <div class="price-included-block">
+                  <h4>注意事項</h4>
+                  <ul class="price-note-list">
+                    <li>機種・設置状況・年式によっては完全分解できない場合があります</li>
+                    <li>10年以上経過した機種は、部品劣化や破損リスクを確認しながら対応します</li>
+                    <li>ニオイ・水漏れ・冷え不良は、汚れ以外が原因の場合もあります</li>
+                    <li>作業前に機種と設置状況を確認します</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            </details>
+            <div class="price-insurance-card card">
+              <h3 class="price-insurance-title">最大1億円の損害賠償保険に加入</h3>
+              <p class="price-insurance-lead">施工前に機種・年式・設置条件を確認。万一の破損・不具合にも、メーカー修理の手配を含めて対応します。</p>
+              <div class="price-insurance-points" aria-label="万一時の対応方針">
+                <div class="price-insurance-point">
+                  <img class="cd-assurance-icon" src="./assets/icons/10-assurance-insurance.webp" alt="" width="52" height="52" loading="lazy" decoding="async">
+                  <h4 class="price-insurance-point-title"><span>1</span>保険加入</h4>
+                  <p>作業中の万一に備え、損害賠償保険に加入しています。</p>
+                </div>
+                <div class="price-insurance-point">
+                  <img class="cd-assurance-icon" src="./assets/icons/11-assurance-check.webp" alt="" width="52" height="52" loading="lazy" decoding="async">
+                  <h4 class="price-insurance-point-title"><span>2</span>事前確認</h4>
+                  <p>機種・年式・設置状況を確認し、リスクがある場合は事前にご説明します。</p>
+                </div>
+                <div class="price-insurance-point">
+                  <img class="cd-assurance-icon" src="./assets/icons/12-assurance-repair.webp" alt="" width="52" height="52" loading="lazy" decoding="async">
+                  <h4 class="price-insurance-point-title"><span>3</span>修理手配</h4>
+                  <p>作業中の破損や不具合が発生した場合は、メーカー修理の手配を含めて対応します。</p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="price-included-card card">
-          <h3 class="price-included-title">料金に含まれる作業内容</h3>
-          <div class="price-included-grid">
-            <div class="price-included-block">
-              <h4>作業内容</h4>
-              <ul class="price-included-list">
-                <li>分解作業</li>
-                <li>取り外した部品の洗浄</li>
-                <li>熱交換器・送風口まわりの高圧洗浄</li>
-                <li>ドレンパン・送風ファンの洗浄</li>
-                <li>作業後の動作確認</li>
-              </ul>
+        </section>
+    
+    <section class="section section-light sec-about">
+          <div class="container">
+            <h2 class="section-title">完全分解とは</h2>
+            <p class="about-lead">通常洗浄では取り外さないことが多い送風ファンやドレンパンを、機種・設置条件を確認して取り外し洗浄します。どこまで違うか、下の比較表で確認できます。</p>
+    
+            <div class="about-range-card card">
+              <p class="about-range-title">洗浄が届く範囲のイメージ</p>
+              <div class="about-range-item">
+                <div class="about-range-item-head">
+                  <span class="about-range-name">通常洗浄</span>
+                  <span class="about-range-note">表面が中心</span>
+                </div>
+                <div class="about-range-track">
+                  <div class="about-range-fill about-range-fill--normal" aria-hidden="true"></div>
+                </div>
+              </div>
+              <div class="about-range-item about-range-item--full">
+                <div class="about-range-item-head">
+                  <span class="about-range-name">完全分解</span>
+                  <span class="about-range-note">内部の奥まで</span>
+                </div>
+                <div class="about-range-track">
+                  <div class="about-range-fill about-range-fill--full" aria-hidden="true"></div>
+                </div>
+              </div>
             </div>
-            <div class="price-included-block">
-              <h4>作業時間目安</h4>
-              <ul class="price-time-list">
-                <li>通常エアコン完全分解：90〜150分</li>
-                <li>お掃除機能付き完全分解：120〜180分</li>
-              </ul>
+    
+            <div class="about-compare-wrap">
+              <h3 class="section-title">通常洗浄では届かない、ファン・ドレンパンまで外します</h3>
+              <p class="about-compare-lead">BCサービスの完全分解は、ドレンパンと送風ファンを取り外し、ニオイやカビの原因になりやすい奥の汚れまで洗浄します。</p>
+              <div class="about-compare-table-card card">
+                <table class="about-compare-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">項目</th>
+                      <th scope="col">通常洗浄</th>
+                      <th scope="col">完全分解</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">外装カバー</th>
+                      <td>洗浄</td>
+                      <td>洗浄</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">フィルター</th>
+                      <td>洗浄</td>
+                      <td>洗浄</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">熱交換器</th>
+                      <td>表面中心</td>
+                      <td>奥まで洗浄</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">送風ファン</th>
+                      <td>取り外さず洗浄</td>
+                      <td>取り外して洗浄</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">ドレンパン</th>
+                      <td>基本そのまま</td>
+                      <td>取り外して洗浄</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">ニオイの原因</th>
+                      <td>残る場合あり</td>
+                      <td>原因部分まで確認しやすい</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">作業時間</th>
+                      <td>短め</td>
+                      <td>長め</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div class="price-included-block">
-              <h4>注意事項</h4>
-              <ul class="price-note-list">
-                <li>機種・設置状況・年式によっては完全分解できない場合があります</li>
-                <li>10年以上経過した機種は、部品劣化や破損リスクを確認しながら対応します</li>
-                <li>ニオイ・水漏れ・冷え不良は、汚れ以外が原因の場合もあります</li>
-                <li>作業前に機種と設置状況を確認します</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="price-insurance-card card">
-          <h3 class="price-insurance-title">最大1億円の損害賠償保険に加入</h3>
-          <p class="price-insurance-lead">施工前に機種・年式・設置条件を確認。万一の破損・不具合にも、メーカー修理の手配を含めて対応します。</p>
-          <div class="price-insurance-points" aria-label="万一時の対応方針">
-            <div class="price-insurance-point">
-              <img class="cd-assurance-icon" src="./assets/icons/10-assurance-insurance.webp" alt="" width="52" height="52" loading="lazy" decoding="async">
-              <h4 class="price-insurance-point-title"><span>1</span>保険加入</h4>
-              <p>作業中の万一に備え、損害賠償保険に加入しています。</p>
-            </div>
-            <div class="price-insurance-point">
-              <img class="cd-assurance-icon" src="./assets/icons/11-assurance-check.webp" alt="" width="52" height="52" loading="lazy" decoding="async">
-              <h4 class="price-insurance-point-title"><span>2</span>事前確認</h4>
-              <p>機種・年式・設置状況を確認し、リスクがある場合は事前にご説明します。</p>
-            </div>
-            <div class="price-insurance-point">
-              <img class="cd-assurance-icon" src="./assets/icons/12-assurance-repair.webp" alt="" width="52" height="52" loading="lazy" decoding="async">
-              <h4 class="price-insurance-point-title"><span>3</span>修理手配</h4>
-              <p>作業中の破損や不具合が発生した場合は、メーカー修理の手配を含めて対応します。</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-
-    <section class="section sec-case-studies" id="case-studies">
-      <div class="container">
-        <h2 class="section-title">完全分解クリーニングの施工事例</h2>
-        <p class="case-study-lead">
-          南城市での実際の施工例。取り外した部品・洗浄前後・汚水まで、作業の流れを写真と動画で確認できます。
-        </p>
-        <article class="card case-study-card" data-case-id="2026-06-03-sample">
-          <div class="case-study-head">
-            <p class="case-study-work-type">完全分解クリーニング</p>
-            <p class="case-study-price-main">
-              <span class="case-study-price-label">料金目安</span>
-              <span class="case-study-price-amount">14,000円</span>
+    
+            <p class="about-case-wrap">
+              <a href="#case-studies" class="about-case-btn">施工事例を見る →</a>
             </p>
+    
+            <ul class="about-feature-list">
+              <li class="about-feature-card card">
+                <span class="about-feature-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/04-feature-drainpan-fan.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
+                <div class="about-feature-body">
+                  <h3>ドレンパン・ファンまで分解</h3>
+                  <p>本体から部品を取り外し、奥まで洗浄します。</p>
+                </div>
+              </li>
+              <li class="about-feature-card card">
+                <span class="about-feature-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/05-feature-deep-dirt.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
+                <div class="about-feature-body">
+                  <h3>内部の汚れまで対応</h3>
+                  <p>通常洗浄では届きにくい内部の汚れもしっかり。</p>
+                </div>
+              </li>
+              <li class="about-feature-card card">
+                <span class="about-feature-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/06-feature-circuit.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
+                <div class="about-feature-body">
+                  <h3>基板周辺まで対応</h3>
+                  <p>機種によっては基板周辺まで分解して対応します。</p>
+                </div>
+              </li>
+            </ul>
           </div>
-          <dl class="case-study-info-grid">
-            <div class="case-study-info-item">
-              <dt>地域</dt>
-              <dd>南城市</dd>
+        </section>
+    
+    <section class="section section-light cd-parts-gallery">
+          <div class="container">
+            <h2 class="section-title">ここまで分解して洗浄します</h2>
+            <p class="cd-parts-lead">ここまで取り外して洗うから、内部の奥まで確認できます。写真をタップして拡大できます。</p>
+            <div class="services-grid">
+              <figure class="svc-card card">
+                <a class="cd-proof-photo-link" href="./assets/photos/parts-ready-560.webp" target="_blank" rel="noopener noreferrer" aria-label="施工部品の写真を拡大して見る"><img src="./assets/photos/parts-ready-560.webp" alt="完全分解で取り外したエアコンの送風ファン・ドレンパンなどの部品" width="560" height="373" loading="lazy" decoding="async" class="svc-card-img"></a>
+                <figcaption>分解部品</figcaption>
+              </figure>
+              <figure class="svc-card card">
+                <a class="cd-proof-photo-link" href="./fan-before-after-optimized.jpg" target="_blank" rel="noopener noreferrer" aria-label="施工部品の写真を拡大して見る"><img src="./fan-before-after-optimized.jpg" alt="ファン内部のビフォーアフター" width="600" height="400" loading="lazy" class="svc-card-img"></a>
+                <figcaption>ファン内部の汚れ</figcaption>
+              </figure>
+              <figure class="svc-card card">
+                <a class="cd-proof-photo-link" href="./drainpan-before-after-optimized.jpg" target="_blank" rel="noopener noreferrer" aria-label="施工部品の写真を拡大して見る"><img src="./drainpan-before-after-optimized.jpg" alt="ドレンパンのビフォーアフター" width="600" height="400" loading="lazy" class="svc-card-img"></a>
+                <figcaption>ドレンパンの汚れ</figcaption>
+              </figure>
+              <figure class="svc-card card">
+                <a class="cd-proof-photo-link" href="./dirty-water-optimized.jpg" target="_blank" rel="noopener noreferrer" aria-label="施工部品の写真を拡大して見る"><img src="./dirty-water-optimized.jpg" alt="洗浄後に出た汚水" width="600" height="400" loading="lazy" class="svc-card-img"></a>
+                <figcaption>洗浄後に出た汚水</figcaption>
+              </figure>
             </div>
-            <div class="case-study-info-item case-study-info-item--model">
-              <dt>機種</dt>
-              <dd>ダイキン ノーマルエアコン</dd>
-            </div>
-            <div class="case-study-info-item">
-              <dt>時間</dt>
-              <dd>約2時間</dd>
-            </div>
-          </dl>
-          <p class="case-study-consult">
-            <span class="case-study-consult-label">ご相談：</span>通常分解では落ちない奥の汚れが気になる
-          </p>
-          <p class="case-study-comment">
-            通常分解では見えにくいドレンパン・送風ファン周辺まで取り外し、内部の汚れを洗浄しました。作業前後は写真でご確認いただけます。
-          </p>
-          <div class="case-study-photos" aria-label="施工写真">
-            <figure class="case-study-photo-item">
-              <img src="case-studies/2026-06-03-sample/before.jpg" alt="南城市で実施したエアコン完全分解クリーニング前の内部汚れ" width="600" height="400" loading="lazy">
-              <figcaption class="case-study-photo-caption">施工前</figcaption>
-            </figure>
-            <figure class="case-study-photo-item">
-              <img src="case-studies/2026-06-03-sample/parts.jpg" alt="完全分解で取り外したエアコン部品の洗浄前の状態" width="600" height="400" loading="lazy">
-              <figcaption class="case-study-photo-caption">分解中</figcaption>
-            </figure>
-            <figure class="case-study-photo-item">
-              <img src="case-studies/2026-06-03-sample/dirty-water.jpg" alt="エアコン完全分解クリーニングで出た黒い汚水" width="600" height="400" loading="lazy">
-              <figcaption class="case-study-photo-caption">汚水</figcaption>
-            </figure>
-            <figure class="case-study-photo-item">
-              <img src="case-studies/2026-06-03-sample/after.jpg" alt="完全分解クリーニング後のきれいになったエアコン内部" width="600" height="400" loading="lazy">
-              <figcaption class="case-study-photo-caption">施工後</figcaption>
-            </figure>
           </div>
-        </article>
-
-        <article class="card case-study-card" data-case-id="youtube-short-smkg3bl1ew">
-          <h3>動画で見るエアコン完全分解クリーニング</h3>
-          <p class="case-study-comment">
-            送風ファンやドレンパンを取り外し、内部の汚れを洗浄する様子を短い動画で確認できます。沖縄中南部でエアコンの風のにおいや内部汚れが気になる方は、完全分解クリーニングの検討材料としてご覧ください。
-          </p>
-          <div class="youtube-short-wrap">
-            <iframe
-              src="https://www.youtube.com/embed/SMKg-3BL1ew"
-              title="エアコン完全分解クリーニングの作業動画｜BCサービス"
-              loading="lazy"
-              playsinline
-              allowfullscreen
-              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </section>
+    
+    <section class="section sec-reason">
+          <div class="container">
+            <span class="reason-eyebrow">REASONS</span>
+            <h2 class="section-title">完全分解を選ばれる理由</h2>
+            <p class="reason-lead">「ここまでやるの？」という分解だからこそ、仕上がりに納得していただけます。</p>
+            <ul class="reason-cards">
+              <li class="reason-card-item card">
+                <span class="reason-card-num" aria-hidden="true">01</span>
+                <span class="reason-card-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/07-reason-deep.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
+                <div class="reason-card-body">
+                  <span class="reason-card-label">REASON 1</span>
+                  <h3>奥の汚れまで洗いやすい</h3>
+                  <p>ファンやドレンパンまで外すから、奥に溜まった汚れまでしっかり洗えます。</p>
+                </div>
+              </li>
+              <li class="reason-card-item card">
+                <span class="reason-card-num" aria-hidden="true">02</span>
+                <span class="reason-card-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/08-reason-odor.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
+                <div class="reason-card-body">
+                  <span class="reason-card-label">REASON 2</span>
+                  <h3>ニオイの原因まで確認</h3>
+                  <p>ニオイの原因になりやすい部分まで、目で確認しながら洗浄します。</p>
+                </div>
+              </li>
+              <li class="reason-card-item card">
+                <span class="reason-card-num" aria-hidden="true">03</span>
+                <span class="reason-card-icon" aria-hidden="true"><img class="cd-card-icon" src="./assets/icons/09-reason-clean.webp" alt="" width="48" height="48" loading="lazy" decoding="async"></span>
+                <div class="reason-card-body">
+                  <span class="reason-card-label">REASON 3</span>
+                  <h3>通常洗浄後も内部汚れが気になる方にも</h3>
+                  <p>通常洗浄では届きにくい部分の汚れが気になる場合に検討できる方法です。</p>
+                </div>
+              </li>
+            </ul>
           </div>
-          <p class="case-study-ig-link"><a href="https://www.instagram.com/bcservicenanjyo/" target="_blank" rel="noopener noreferrer">Instagramでも施工事例を見る</a></p>
-        </article>
-        <p class="related-link"><a href="../cursor-test/cases.html">通常分解も含めた施工事例一覧を見る</a></p>
-      </div>
-    </section>
-
+        </section>
+    
+    <section class="section sec-case-studies" id="case-studies">
+          <div class="container">
+            <h2 class="section-title">完全分解クリーニングの施工事例</h2>
+            <p class="case-study-lead">
+              南城市での実際の施工例。取り外した部品・洗浄前後・汚水まで、作業の流れを写真と動画で確認できます。
+            </p>
+            <article class="card case-study-card" data-case-id="2026-06-03-sample">
+              <div class="case-study-head">
+                <p class="case-study-work-type">完全分解クリーニング</p>
+                <p class="case-study-price-main">
+                  <span class="case-study-price-label">料金目安</span>
+                  <span class="case-study-price-amount">14,000円</span>
+                </p>
+              </div>
+              <dl class="case-study-info-grid">
+                <div class="case-study-info-item">
+                  <dt>地域</dt>
+                  <dd>南城市</dd>
+                </div>
+                <div class="case-study-info-item case-study-info-item--model">
+                  <dt>機種</dt>
+                  <dd>ダイキン ノーマルエアコン</dd>
+                </div>
+                <div class="case-study-info-item">
+                  <dt>時間</dt>
+                  <dd>約2時間</dd>
+                </div>
+              </dl>
+              <p class="case-study-consult">
+                <span class="case-study-consult-label">ご相談：</span>通常分解では落ちない奥の汚れが気になる
+              </p>
+              <p class="case-study-comment">
+                通常分解では見えにくいドレンパン・送風ファン周辺まで取り外し、内部の汚れを洗浄しました。作業前後は写真でご確認いただけます。
+              </p>
+              <div class="case-study-photos" aria-label="施工写真">
+                <figure class="case-study-photo-item">
+                  <img src="case-studies/2026-06-03-sample/before.jpg" alt="南城市で実施したエアコン完全分解クリーニング前の内部汚れ" width="600" height="400" loading="lazy">
+                  <figcaption class="case-study-photo-caption">施工前</figcaption>
+                </figure>
+                <figure class="case-study-photo-item">
+                  <img src="case-studies/2026-06-03-sample/parts.jpg" alt="完全分解で取り外したエアコン部品の洗浄前の状態" width="600" height="400" loading="lazy">
+                  <figcaption class="case-study-photo-caption">分解中</figcaption>
+                </figure>
+                <figure class="case-study-photo-item">
+                  <img src="case-studies/2026-06-03-sample/dirty-water.jpg" alt="エアコン完全分解クリーニングで出た黒い汚水" width="600" height="400" loading="lazy">
+                  <figcaption class="case-study-photo-caption">汚水</figcaption>
+                </figure>
+                <figure class="case-study-photo-item">
+                  <img src="case-studies/2026-06-03-sample/after.jpg" alt="完全分解クリーニング後のきれいになったエアコン内部" width="600" height="400" loading="lazy">
+                  <figcaption class="case-study-photo-caption">施工後</figcaption>
+                </figure>
+              </div>
+            </article>
+    
+            <article class="card case-study-card" data-case-id="youtube-short-smkg3bl1ew">
+              <h3>動画で見るエアコン完全分解クリーニング</h3>
+              <p class="case-study-comment">
+                送風ファンやドレンパンを取り外し、内部の汚れを洗浄する様子を短い動画で確認できます。沖縄中南部でエアコンの風のにおいや内部汚れが気になる方は、完全分解クリーニングの検討材料としてご覧ください。
+              </p>
+              <div class="youtube-short-wrap">
+                <iframe
+                  src="https://www.youtube.com/embed/SMKg-3BL1ew"
+                  title="エアコン完全分解クリーニングの作業動画｜BCサービス"
+                  loading="lazy"
+                  playsinline
+                  allowfullscreen
+                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin"></iframe>
+              </div>
+              <p class="case-study-ig-link"><a href="https://www.instagram.com/bcservicenanjyo/" target="_blank" rel="noopener noreferrer">Instagramでも施工事例を見る</a></p>
+            </article>
+            <p class="related-link"><a href="../cursor-test/cases.html">通常分解も含めた施工事例一覧を見る</a></p>
+          </div>
+        </section>
+    
     <section class="section consultation-flow section-light">
-      <div class="container">
-        <h2 class="section-title">相談から作業までの流れ（3ステップ）</h2>
-        <p class="flow-lead">はじめての方でも、LINEで簡単にご相談いただけます。</p>
-        <ul class="flow-list">
-          <li class="flow-item card">
-            <img class="cd-flow-icon" src="./assets/icons/01-step-line.webp" alt="" width="80" height="80" loading="lazy" decoding="async">
-            <span class="flow-step">① LINEでエアコンの写真・型番を送る</span>
-            <span class="flow-desc">エアコンの型番や設置状況を確認します</span>
-          </li>
-          <li class="flow-item card">
-            <img class="cd-flow-icon" src="./assets/icons/02-step-quote.webp" alt="" width="80" height="80" loading="lazy" decoding="async">
-            <span class="flow-step">② 完全分解が必要か・料金目安を確認</span>
-            <span class="flow-desc">状態を確認して適した方法をご案内します。通常分解で十分な場合もあります</span>
-          </li>
-          <li class="flow-item card">
-            <img class="cd-flow-icon" src="./assets/icons/03-step-visit.webp" alt="" width="80" height="80" loading="lazy" decoding="async">
-            <span class="flow-step">③ 日程を決めて訪問・施工</span>
-            <span class="flow-desc">通常エアコンの完全分解は90〜150分が目安です</span>
-          </li>
-        </ul>
-        <p class="flow-note">相談だけでも大丈夫です。無理な営業は行いません。</p>
-      </div>
-    </section>
-
+          <div class="container">
+            <h2 class="section-title">相談から作業までの流れ（3ステップ）</h2>
+            <p class="flow-lead">はじめての方でも、LINEで簡単にご相談いただけます。</p>
+            <ul class="flow-list">
+              <li class="flow-item card">
+                <img class="cd-flow-icon" src="./assets/icons/01-step-line.webp" alt="" width="80" height="80" loading="lazy" decoding="async">
+                <span class="flow-step">① LINEでエアコンの写真・型番を送る</span>
+                <span class="flow-desc">エアコンの型番や設置状況を確認します</span>
+              </li>
+              <li class="flow-item card">
+                <img class="cd-flow-icon" src="./assets/icons/02-step-quote.webp" alt="" width="80" height="80" loading="lazy" decoding="async">
+                <span class="flow-step">② 完全分解が必要か・料金目安を確認</span>
+                <span class="flow-desc">状態を確認して適した方法をご案内します。通常分解で十分な場合もあります</span>
+              </li>
+              <li class="flow-item card">
+                <img class="cd-flow-icon" src="./assets/icons/03-step-visit.webp" alt="" width="80" height="80" loading="lazy" decoding="async">
+                <span class="flow-step">③ 日程を決めて訪問・施工</span>
+                <span class="flow-desc">通常エアコンの完全分解は90〜150分が目安です</span>
+              </li>
+            </ul>
+            <p class="flow-note">相談だけでも大丈夫です。無理な営業は行いません。</p>
+          </div>
+        </section>
+    
     <section class="section profile section-light">
-      <div class="container">
-        <h2 class="section-title">作業はすべて代表の私が対応します</h2>
-        <img src="../cursor-test/images/teruya-profile.png" alt="代表 照屋昴" width="360" height="360" loading="lazy" class="profile-img">
-        <p class="profile-title">子育て家庭応援クリーニング 代表</p>
-        <p class="profile-name"><strong>照屋 昴</strong></p>
-        <p class="profile-message">私自身も子どもを育てる親として、安心して任せられる作業を大切にしています。<br>南城市を拠点に、沖縄中南部で完全分解が必要なご家庭にも丁寧に対応します。</p>
-        <p style="margin:18px 0 0"><a href="/aircon-story/" style="color:#185975;font-weight:700;text-decoration:underline;text-underline-offset:4px">代表の想い「エアコン一台で、人を幸せにできる。」を読む →</a></p>
-      </div>
-    </section>
-
+          <div class="container">
+            <h2 class="section-title">作業はすべて代表の私が対応します</h2>
+            <img src="../cursor-test/images/teruya-profile.png" alt="代表 照屋昴" width="360" height="360" loading="lazy" class="profile-img">
+            <p class="profile-title">子育て家庭応援クリーニング 代表</p>
+            <p class="profile-name"><strong>照屋 昴</strong></p>
+            <p class="profile-message">私自身も子どもを育てる親として、安心して任せられる作業を大切にしています。<br>南城市を拠点に、沖縄中南部で完全分解が必要なご家庭にも丁寧に対応します。</p>
+            <p style="margin:18px 0 0"><a href="/aircon-story/" style="color:#185975;font-weight:700;text-decoration:underline;text-underline-offset:4px">代表の想い「エアコン一台で、人を幸せにできる。」を読む →</a></p>
+          </div>
+        </section>
+    
     <section class="section section-light sec-faq" id="faq">
-      <div class="container">
-        <h2 class="section-title">よくある質問</h2>
-        <p class="faq-page-intro">初めて完全分解クリーニングをご検討の方からよくいただく質問です。沖縄中南部・南城市の現場で実際に施工している内容をもとに、子育て家庭の方にもわかりやすくまとめています。</p>
-        <div class="faq-list plan-compare--single">
-          <details class="faq-details">
-            <summary>完全分解クリーニングとは何ですか？</summary>
-            <div class="faq-details-body">
-              <p>通常の分解洗浄よりも部品を多く取り外し、送風ファンやドレンパンなど、汚れが残りやすい内部まで洗浄する方法です。機種や設置状況によって分解できる範囲は変わりますが、通常分解では届きにくい奥の汚れまで確認しながら作業します。</p>
+          <div class="container">
+            <h2 class="section-title">よくある質問</h2>
+            <p class="faq-page-intro">初めて完全分解クリーニングをご検討の方からよくいただく質問です。沖縄中南部・南城市の現場で実際に施工している内容をもとに、子育て家庭の方にもわかりやすくまとめています。</p>
+            <div class="faq-list plan-compare--single">
+              <details class="faq-details">
+                <summary>完全分解クリーニングとは何ですか？</summary>
+                <div class="faq-details-body">
+                  <p>通常の分解洗浄よりも部品を多く取り外し、送風ファンやドレンパンなど、汚れが残りやすい内部まで洗浄する方法です。機種や設置状況によって分解できる範囲は変わりますが、通常分解では届きにくい奥の汚れまで確認しながら作業します。</p>
+                </div>
+              </details>
+              <details class="faq-details">
+                <summary>通常のエアコンクリーニングとの違いは何ですか？</summary>
+                <div class="faq-details-body">
+                  <p>通常分解はカバーやフィルター周辺を中心に洗浄します。完全分解は、さらに内部部品を外して、カビ・ホコリ・汚水の原因になりやすい場所まで洗いやすくするのが違いです。においや内部汚れが気になる方、赤ちゃんや小さなお子さまがいるご家庭に選ばれています。</p>
+                </div>
+              </details>
+              <details class="faq-details">
+                <summary>どんな人に完全分解がおすすめですか？</summary>
+                <div class="faq-details-body">
+                  <p>エアコンの風のにおいが気になる方、吹き出し口の奥に黒い汚れが見える方、寝室や子ども部屋で使っている方、前回のクリーニングから年数が経っている方におすすめです。特に南城市・八重瀬町・豊見城市など沖縄中南部の子育て家庭からのご相談が多いです。</p>
+                </div>
+              </details>
+              <details class="faq-details">
+                <summary>お掃除機能付きエアコンも完全分解できますか？</summary>
+                <div class="faq-details-body">
+                  <p>対応可能です。ただし、お掃除機能付きエアコンは構造が複雑なため、メーカーや機種によって作業時間・料金・分解範囲が変わります。事前に型番や写真を送っていただけると、対応可否や目安を確認しやすくなります。</p>
+                </div>
+              </details>
+              <details class="faq-details">
+                <summary>作業時間はどれくらいですか？</summary>
+                <div class="faq-details-body">
+                  <p>1台あたり、通常エアコンの完全分解は90〜150分、お掃除機能付き完全分解は120〜180分が目安です。機種・汚れ・設置状況により前後します。</p>
+                </div>
+              </details>
+              <details class="faq-details">
+                <summary>料金はどれくらいですか？</summary>
+                <div class="faq-details-body">
+                  <p>通常エアコンの完全分解は、南部7市町が14,000円（税込）、中部・浦添が15,000円（税込）〜です。お掃除機能付き完全分解は23,000円（税込）〜です。機種・汚れ・設置状況によって変わる場合があるため、写真や型番を確認したうえで事前にご案内します。2台以上を同時にご予約の場合は、2台目以降を1台につき1,000円引きします。</p>
+                </div>
+              </details>
+              <details class="faq-details">
+                <summary>作業中は立ち会いが必要ですか？</summary>
+                <div class="faq-details-body">
+                  <p>作業前後の確認はお願いしていますが、作業中ずっと見ていただく必要はありません。小さなお子さまがいるご家庭でも、できるだけ負担が少ないように流れを説明しながら進めます。</p>
+                </div>
+              </details>
+              <details class="faq-details">
+                <summary>対応エリアはどこですか？</summary>
+                <div class="faq-details-body">
+                  <p>南城市を拠点に、南城市・八重瀬町・豊見城市・糸満市・那覇市・南風原町・与那原町・浦添市・西原町・宜野湾市・中城村・北中城村・北谷町・沖縄市・読谷村・うるま市の沖縄中南部16市町村へ対応しています。完全分解クリーニングは作業時間が長くなるため、エリアや日程によって調整が必要な場合があります。通常分解の南部エリア詳細は<a href="../cursor-test/south.html">沖縄南部の対応エリアまとめ</a>もご確認ください。</p>
+                </div>
+              </details>
             </div>
-          </details>
-          <details class="faq-details">
-            <summary>通常のエアコンクリーニングとの違いは何ですか？</summary>
-            <div class="faq-details-body">
-              <p>通常分解はカバーやフィルター周辺を中心に洗浄します。完全分解は、さらに内部部品を外して、カビ・ホコリ・汚水の原因になりやすい場所まで洗いやすくするのが違いです。においや内部汚れが気になる方、赤ちゃんや小さなお子さまがいるご家庭に選ばれています。</p>
-            </div>
-          </details>
-          <details class="faq-details">
-            <summary>どんな人に完全分解がおすすめですか？</summary>
-            <div class="faq-details-body">
-              <p>エアコンの風のにおいが気になる方、吹き出し口の奥に黒い汚れが見える方、寝室や子ども部屋で使っている方、前回のクリーニングから年数が経っている方におすすめです。特に南城市・八重瀬町・豊見城市など沖縄中南部の子育て家庭からのご相談が多いです。</p>
-            </div>
-          </details>
-          <details class="faq-details">
-            <summary>お掃除機能付きエアコンも完全分解できますか？</summary>
-            <div class="faq-details-body">
-              <p>対応可能です。ただし、お掃除機能付きエアコンは構造が複雑なため、メーカーや機種によって作業時間・料金・分解範囲が変わります。事前に型番や写真を送っていただけると、対応可否や目安を確認しやすくなります。</p>
-            </div>
-          </details>
-          <details class="faq-details">
-            <summary>作業時間はどれくらいですか？</summary>
-            <div class="faq-details-body">
-              <p>1台あたり、通常エアコンの完全分解は90〜150分、お掃除機能付き完全分解は120〜180分が目安です。機種・汚れ・設置状況により前後します。</p>
-            </div>
-          </details>
-          <details class="faq-details">
-            <summary>料金はどれくらいですか？</summary>
-            <div class="faq-details-body">
-              <p>通常エアコンの完全分解は、南部7市町が14,000円（税込）、中部・浦添が15,000円（税込）〜です。お掃除機能付き完全分解は23,000円（税込）〜です。機種・汚れ・設置状況によって変わる場合があるため、写真や型番を確認したうえで事前にご案内します。2台以上を同時にご予約の場合は、2台目以降を1台につき1,000円引きします。</p>
-            </div>
-          </details>
-          <details class="faq-details">
-            <summary>作業中は立ち会いが必要ですか？</summary>
-            <div class="faq-details-body">
-              <p>作業前後の確認はお願いしていますが、作業中ずっと見ていただく必要はありません。小さなお子さまがいるご家庭でも、できるだけ負担が少ないように流れを説明しながら進めます。</p>
-            </div>
-          </details>
-          <details class="faq-details">
-            <summary>対応エリアはどこですか？</summary>
-            <div class="faq-details-body">
-              <p>南城市を拠点に、南城市・八重瀬町・豊見城市・糸満市・那覇市・南風原町・与那原町・浦添市・西原町・宜野湾市・中城村・北中城村・北谷町・沖縄市・読谷村・うるま市の沖縄中南部16市町村へ対応しています。完全分解クリーニングは作業時間が長くなるため、エリアや日程によって調整が必要な場合があります。通常分解の南部エリア詳細は<a href="../cursor-test/south.html">沖縄南部の対応エリアまとめ</a>もご確認ください。</p>
-            </div>
-          </details>
-        </div>
-        <p class="related-link">実際の分解写真は、<a href="#case-studies">施工事例</a>をご覧ください。</p>
-        <p class="faq-cta">通常のエアコンクリーニングは<a href="../cursor-test/">家庭向けLP</a>、南部の通常分解情報は<a href="../cursor-test/south.html">沖縄南部まとめ</a>、詳しいFAQ一覧は<a href="../cursor-test/faq.html">こちら</a>をご覧ください。</p>
-      </div>
-    </section>
-
+            <p class="related-link">実際の分解写真は、<a href="#case-studies">施工事例</a>をご覧ください。</p>
+            <p class="faq-cta">通常のエアコンクリーニングは<a href="../cursor-test/">家庭向けLP</a>、南部の通常分解情報は<a href="../cursor-test/south.html">沖縄南部まとめ</a>、詳しいFAQ一覧は<a href="../cursor-test/faq.html">こちら</a>をご覧ください。</p>
+          </div>
+        </section>
+    
     <section class="section ai-summary-section section-light">
-      <div class="container">
-        <h2 class="section-title">沖縄中南部でエアコン完全分解クリーニングを検討している方へ</h2>
-        <p>南城市を拠点に、八重瀬町・豊見城市・糸満市・那覇市・南風原町・与那原町・浦添市・西原町・宜野湾市・中城村・北中城村・北谷町・沖縄市・読谷村・うるま市など沖縄中南部16市町村へ対応しています。</p>
-        <p>機種・年式・設置状況によって、完全分解ができない場合や別の方法が適切な場合があります。LINEで型番・設置写真を確認し、作業内容・料金目安をご案内します。</p>
-        <p>通常分解は<a href="../cursor-test/">家庭向けエアコンクリーニング</a>、洗浄・修理・買い替えで迷う方は<a href="/aircon/">エアコン総合案内</a>、新品設置は<a href="/mi-bcs/aircon-replacement/">新品エアコンの販売・取付</a>もご覧ください。</p>
-        <div class="card" style="margin-top:20px;padding:20px 18px;text-align:center;">
-          <h3 style="font-size:1.0625rem;font-weight:700;color:var(--brand,#1a56db);margin:0 0 10px;">通常分解をご検討の方へ（地域別ページ）</h3>
-          <p style="font-size:0.875rem;line-height:1.7;color:#4b5563;margin:0 0 14px;">完全分解は沖縄中南部16市町村へ対応しています。通常分解クリーニングの料金・対応エリアを地域別に確認したい方は、以下もご覧ください。</p>
-          <p style="margin:0;font-size:0.875rem;line-height:1.8;">
-            <a href="../cursor-test/south.html" style="color:var(--brand,#1a56db);font-weight:600;text-decoration:underline;">南部エリアのエアコンクリーニング</a>
-            <span style="color:#9ca3af;margin:0 8px;">｜</span>
-            <a href="../cursor-test/central.html" style="color:var(--brand,#1a56db);font-weight:600;text-decoration:underline;">中部エリアのエアコンクリーニング</a>
-            <span style="color:#9ca3af;margin:0 8px;">｜</span>
-            <a href="../cursor-test/urasoe.html" style="color:var(--brand,#1a56db);font-weight:600;text-decoration:underline;">浦添市のエアコンクリーニング</a>
-          </p>
-        </div>
-        <p class="related-link">店舗・事務所・業務用エアコン清掃をご検討の方は、<a href="../business-cleaning/">法人・店舗向け清掃はこちら</a></p>
-      </div>
-    </section>
-
+          <div class="container">
+            <h2 class="section-title">沖縄中南部でエアコン完全分解クリーニングを検討している方へ</h2>
+            <p>南城市を拠点に、八重瀬町・豊見城市・糸満市・那覇市・南風原町・与那原町・浦添市・西原町・宜野湾市・中城村・北中城村・北谷町・沖縄市・読谷村・うるま市など沖縄中南部16市町村へ対応しています。</p>
+            <p>機種・年式・設置状況によって、完全分解ができない場合や別の方法が適切な場合があります。LINEで型番・設置写真を確認し、作業内容・料金目安をご案内します。</p>
+            <p>通常分解は<a href="../cursor-test/">家庭向けエアコンクリーニング</a>、洗浄・修理・買い替えで迷う方は<a href="/aircon/">エアコン総合案内</a>、新品設置は<a href="/mi-bcs/aircon-replacement/">新品エアコンの販売・取付</a>もご覧ください。</p>
+            <div class="card" style="margin-top:20px;padding:20px 18px;text-align:center;">
+              <h3 style="font-size:1.0625rem;font-weight:700;color:var(--brand,#1a56db);margin:0 0 10px;">通常分解をご検討の方へ（地域別ページ）</h3>
+              <p style="font-size:0.875rem;line-height:1.7;color:#4b5563;margin:0 0 14px;">完全分解は沖縄中南部16市町村へ対応しています。通常分解クリーニングの料金・対応エリアを地域別に確認したい方は、以下もご覧ください。</p>
+              <p style="margin:0;font-size:0.875rem;line-height:1.8;">
+                <a href="../cursor-test/south.html" style="color:var(--brand,#1a56db);font-weight:600;text-decoration:underline;">南部エリアのエアコンクリーニング</a>
+                <span style="color:#9ca3af;margin:0 8px;">｜</span>
+                <a href="../cursor-test/central.html" style="color:var(--brand,#1a56db);font-weight:600;text-decoration:underline;">中部エリアのエアコンクリーニング</a>
+                <span style="color:#9ca3af;margin:0 8px;">｜</span>
+                <a href="../cursor-test/urasoe.html" style="color:var(--brand,#1a56db);font-weight:600;text-decoration:underline;">浦添市のエアコンクリーニング</a>
+              </p>
+            </div>
+            <p class="related-link">店舗・事務所・業務用エアコン清掃をご検討の方は、<a href="../business-cleaning/">法人・店舗向け清掃はこちら</a></p>
+          </div>
+        </section>
+    
     <section class="section sec-line-photo">
-      <div class="container">
-        <div class="line-photo-card card">
-          <h2 class="section-title">LINEで写真を送るだけで、事前に確認できます</h2>
-          <p class="line-photo-lead">完全分解が必要か、対応できそうな機種かを確認するために、LINEで写真を送っていただけるとスムーズです。</p>
-          <div class="line-photo-list-wrap">
-            <p class="line-photo-list-title">送ってほしい写真</p>
-            <ol class="line-photo-list">
-              <li>エアコン正面</li>
-              <li>型番シール</li>
-              <li>左右・上部のすき間</li>
-              <li>汚れ・水漏れ・ニオイが気になる部分</li>
-            </ol>
+          <div class="container">
+            <div class="line-photo-card card">
+              <h2 class="section-title">LINEで写真を送るだけで、事前に確認できます</h2>
+              <p class="line-photo-lead">完全分解が必要か、対応できそうな機種かを確認するために、LINEで写真を送っていただけるとスムーズです。</p>
+              <div class="line-photo-list-wrap">
+                <p class="line-photo-list-title">送ってほしい写真</p>
+                <ol class="line-photo-list">
+                  <li>エアコン正面</li>
+                  <li>型番シール</li>
+                  <li>左右・上部のすき間</li>
+                  <li>汚れ・水漏れ・ニオイが気になる部分</li>
+                </ol>
+              </div>
+              <div class="line-cta-wrap">
+                <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="bottom">LINEで機種写真を送って相談する</a>
+              </div>
+            </div>
           </div>
-          <div class="line-cta-wrap">
-            <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="bottom">LINEで機種写真を送って相談する</a>
-          </div>
-        </div>
-      </div>
-    </section>
+        </section>
   </main>
   <!-- Image zoom: keeps the original linked images as a fallback -->
   <dialog id="cd-photo-dialog" class="cd-photo-dialog" aria-label="実際の施工写真の拡大表示">
