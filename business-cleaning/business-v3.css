@@ -485,3 +485,127 @@
   .biz3 .biz4-aircon-extra img { height:130px; }
 }
 
+
+/* Business visual polish v5 2026-11-18
+   Scoped to this LP; no changes to shared CSS, data, or analytics.
+   One visual hierarchy: service photography > proof > testimonial > contact.
+*/
+.biz3 .biz3-kicker { letter-spacing:.09em; font-size:12px; font-weight:850; }
+.biz3 .biz3-hero-visual { isolation:isolate; margin-right:19px; margin-bottom:27px; }
+.biz3 .biz3-hero-visual > img { box-shadow:0 15px 44px rgba(0,0,0,.25); }
+.biz3 .biz5-hero-floor {
+  position:absolute;
+  z-index:3;
+  width:min(49%,240px);
+  right:-22px;
+  bottom:-34px;
+  display:block;
+  text-decoration:none;
+  background:#fff;
+  padding:7px;
+  border-radius:11px;
+  box-shadow:0 17px 32px rgba(4,24,31,.35);
+  transform:rotate(1deg);
+  transition:transform .18s,box-shadow .18s;
+}
+.biz3 .biz5-hero-floor:hover { transform:translateY(-3px) rotate(0); box-shadow:0 21px 37px rgba(4,24,31,.4); }
+.biz3 .biz5-hero-floor img {
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:3 / 2;
+  object-fit:cover;
+  border-radius:5px;
+}
+.biz3 .biz5-hero-floor span {
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+  padding:7px 5px 3px;
+  font-size:11px;
+  line-height:1.4;
+  color:#203f48;
+  font-weight:850;
+}
+.biz3 .biz5-hero-floor span strong { font-size:12px; color:#0a5b61; }
+.biz3 .biz5-hero-floor span small { font-size:10px; font-weight:500; color:#586c74; }
+.biz3 .biz3-line-primary {
+  background:#087c43;
+  color:#fff;
+  border:1px solid #087c43;
+  box-shadow:0 6px 16px rgba(6,74,49,.18);
+  border-radius:9px;
+}
+.biz3 .biz3-line-primary:hover { background:#056538; border-color:#056538; }
+.biz3 .biz3-mobile-actions .biz3-mobile-line { background:#087c43; }
+.biz3 .biz3-mobile-actions .biz3-mobile-line:hover { background:#056538; }
+.biz3 .biz5-floor-feature-label {
+  display:inline-block;
+  margin:0 0 10px;
+  border-left:3px solid #19676b;
+  padding:3px 0 3px 10px;
+  color:#315860;
+  font-size:12px;
+  font-weight:850;
+}
+.biz3 .biz3-floor-feature > figure img {
+  border-radius:8px;
+  box-shadow:0 18px 42px rgba(24,47,50,.14);
+}
+.biz3 .biz4-review-grid { align-items:stretch; }
+.biz3 .bc-biz-voice {
+  border:1px solid #e0e7e4;
+  background:#fff;
+  border-radius:11px;
+  box-shadow:0 4px 14px rgba(20,45,59,.035);
+  padding:29px 27px 22px;
+  height:100%;
+}
+.biz3 .bc-biz-voice-tags span { font-size:10px; letter-spacing:.02em; padding:4px 8px; }
+.biz3 .bc-biz-voice blockquote { font-size:15px; line-height:2.05; letter-spacing:.012em; font-weight:500; }
+.biz3 .bc-biz-voice figcaption { margin-top:23px; gap:10px; padding-top:16px; }
+.biz3 .biz3-proof { grid-template-columns:minmax(0,1.45fr) minmax(0,1fr); gap:16px; }
+.biz3 .biz3-proof-main { border-radius:11px; }
+.biz3 .biz3-proof-main img { object-fit:contain; background:#e9edeb; min-height:300px; max-height:395px; }
+.biz3 .biz3-proof-side { gap:12px; }
+.biz3 .biz3-proof-side figure { border-radius:11px; }
+.biz3 .biz3-proof-side img { object-fit:cover; }
+.biz3 .biz3-proof figcaption { font-size:12px; letter-spacing:.01em; }
+.biz3 .biz3-insurance-proof {
+  border:1px solid rgba(227,201,162,.85);
+  border-radius:12px;
+  background:rgba(232,207,160,.11);
+  padding:23px 24px;
+  box-shadow:inset 0 1px rgba(255,255,255,.07);
+}
+.biz3 .biz3-insurance-proof h3 { font-size:17px; }
+.biz3 .biz3-insurance-proof .biz3-insurance-amount strong { font-size:29px; }
+.biz3 .biz3-insurance-proof .biz3-insurance-note { color:#dae7e6; }
+.biz3 .biz4-context-proof,
+.biz3 .biz4-floor-proof { scroll-margin-top:96px; }
+.biz3 .biz5-cta-arrow { display:inline-block; margin-left:4px; font-size:14px; }
+.biz3 .biz3-contact-phone { border-radius:9px; }
+@media(max-width:900px) and (min-width:768px) {
+  .biz3 .biz5-hero-floor { width:45%; right:-12px; }
+  .biz3 .biz3-hero-grid { gap:24px; }
+}
+@media(max-width:767px) {
+  .biz3 .biz3-hero-visual { width:calc(100% - 21px); margin:0 17px 28px 4px; }
+  .biz3 .biz3-hero-visual > img { height:300px; }
+  .biz3 .biz5-hero-floor { width:min(46%,200px); right:-18px; bottom:-25px; padding:5px; }
+  .biz3 .biz5-hero-floor span { font-size:10px; padding:5px 4px 2px; }
+  .biz3 .biz5-hero-floor span strong { font-size:11px; }
+  .biz3 .biz5-hero-floor span small { font-size:9px; }
+  .biz3 .bc-biz-voice { padding:23px 20px 19px; }
+  .biz3 .bc-biz-voice blockquote { font-size:14px; line-height:2; }
+  .biz3 .biz3-proof-main img { min-height:0; height:auto; max-height:none; }
+  .biz3 .biz3-insurance-proof { padding:20px 16px; }
+  .biz3 .biz3-insurance-proof h3 { font-size:15px; }
+  .biz3 .biz3-insurance-proof .biz3-insurance-amount strong { font-size:25px; }
+  .biz3 .biz5-floor-feature-label { font-size:11px; }
+}
+@media(max-width:380px) {
+  .biz3 .biz3-hero-visual > img { height:260px; }
+  .biz3 .biz5-hero-floor { width:48%; }
+}
+
