@@ -114,6 +114,25 @@
       age === '7to8' ? '清掃と買い替えの費用を比べましょう。' :
       age === '9plus' ? '故障が疑われる場合は買い替えも強く検討します。' : 'まずは汚れ・症状の確認から進めます。';
     text('washer-diagnosis-age-note', ageNote);
+    // 表示用の根拠リンクだけを切替。判定・安全条件・GA4イベントは不変。
+    var proofLink = document.getElementById('washer-diagnosis-proof-link');
+    if (proofLink) {
+      var proofHref = '#why';
+      var proofText = '機種別の分解洗浄の流れを見る →';
+      if (['error', 'spin', 'vibration', 'leak'].indexOf(symptom) !== -1) {
+        proofHref = '#faq'; proofText = '洗浄の限界・修理の考え方を確認する →';
+      } else if (age === 'under1') {
+        proofHref = '#faq'; proofText = '保証・清掃時期について確認する →';
+      } else if (symptom === 'flakes') {
+        proofHref = '#symptom-flakes'; proofText = '黒いカスに関する実際の洗浄前後写真を見る →';
+      } else if (symptom === 'odor') {
+        proofHref = '#symptom-odor'; proofText = '洗濯槽の内部汚れを施工写真で見る →';
+      } else if (symptom === 'drying' && type === 'drum') {
+        proofHref = '#symptom-drying'; proofText = 'ドラム式の分解洗浄写真を見る →';
+      }
+      proofLink.setAttribute('href', proofHref);
+      proofLink.textContent = proofText;
+    }
     result.hidden = false;
     resultShown = true;
     event('diagnosis_result_view', {
@@ -123,6 +142,15 @@
     });
     result.scrollIntoView({ behavior: window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
     result.focus({ preventScroll: true });
+  }
+  // 本文の診断結果LINEが表示される間、固定LINEを隠して重なりを防止。
+  var inlineLine = result.querySelector('a[data-cta-location="diagnosis_result"]');
+  if (inlineLine && 'IntersectionObserver' in window) {
+    var inlineObserver = new IntersectionObserver(function (entries) {
+      var visible = entries.some(function (entry) { return entry.isIntersecting; });
+      document.documentElement.classList.toggle('washer-diagnosis-inline-line-visible', visible && !result.hidden);
+    }, { rootMargin: '0px 0px 84px 0px', threshold: 0 });
+    inlineObserver.observe(inlineLine);
   }
   var typeInputs = form.querySelectorAll('input[name="washer_type"]');
   typeInputs.forEach(function (input) {
