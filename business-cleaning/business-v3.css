@@ -265,3 +265,62 @@
 @media (prefers-reduced-motion:reduce) {
   .biz3 *, .biz3 *::before, .biz3 *::after { transition-duration:.01ms!important; animation-duration:.01ms!important; }
 }
+
+
+/* Verified insurance membership | business assurance (2026-11-18) */
+.biz3 .biz3-insurance-proof {
+  display:flex;
+  gap:15px;
+  align-items:flex-start;
+  margin:18px 0 25px;
+  padding:19px 22px 18px;
+  border:1px solid rgba(220,197,162,.6);
+  border-radius:11px;
+  background:rgba(255,255,255,.075);
+}
+.biz3 .biz3-insurance-mark {
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  border:1px solid rgba(220,197,162,.9);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:#e9d1aa;
+  font-size:20px;
+  font-weight:800;
+  line-height:1;
+}
+.biz3 .biz3-insurance-proof h3 {
+  color:#fff;
+  font-size:16px;
+  font-weight:850;
+  line-height:1.65;
+  margin:0 0 6px;
+}
+.biz3 .biz3-insurance-proof .biz3-insurance-amount {
+  color:#f3e6d2;
+  font-size:14px;
+  font-weight:700;
+  line-height:1.55;
+  margin:0 0 7px;
+}
+.biz3 .biz3-insurance-amount strong {
+  font-size:23px;
+  font-weight:900;
+  color:#f3d7a9;
+  letter-spacing:.02em;
+  margin-left:4px;
+}
+.biz3 .biz3-insurance-proof .biz3-insurance-note {
+  color:#d1e1e3;
+  font-size:11px;
+  line-height:1.75;
+  margin:0;
+}
+@media (max-width:767px) {
+  .biz3 .biz3-insurance-proof { padding:16px 14px; gap:11px; margin:15px 0 22px; }
+  .biz3 .biz3-insurance-mark { width:28px; height:28px; flex-basis:28px; font-size:17px; }
+  .biz3 .biz3-insurance-proof h3 { font-size:14px; }
+  .biz3 .biz3-insurance-amount strong { font-size:21px; }
+}
