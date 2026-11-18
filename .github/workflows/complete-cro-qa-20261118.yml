@@ -1,7 +1,7 @@
 name: Complete-disassembly CRO review QA (pre-publish)
 on:
   push:
-    branches: [fix/cd-lp-mobile-cro-20261118]
+    branches: [fix/cd-lp-early-price-gallery-20261118]
     paths:
       - 'complete-disassembly/**'
       - '.github/workflows/complete-cro-qa-20261118.yml'
@@ -88,6 +88,13 @@ jobs:
                 await page.locator('#cd-photo-dialog').screenshot({path:'qa-cro/stage-'+width+'-photo-modal.png',timeout:45000});
                 await page.keyboard.press('Escape');
                 const modalClosed=await page.locator('#cd-photo-dialog').evaluate(e=>!e.open);
+                const infoDetails=page.locator('.sec-price .cd-price-details');
+                const priceDetailInitiallyClosed=await infoDetails.evaluate(el=>!el.open);
+                await infoDetails.locator('summary').click();
+                const priceDetailExpanded=await infoDetails.evaluate(el=>el.open);
+                const priceDetailsVisible=await infoDetails.locator('.price-included-card').isVisible();
+                await page.locator('.sec-price').screenshot({path:'qa-cro/stage-'+width+'-price-open.png',timeout:45000});
+                await infoDetails.locator('summary').click();
                 const data=await page.evaluate(()=>{
                   const sections=[...document.querySelectorAll('main > section')];
                   const proof=[...document.querySelectorAll('.cd-proof-photo-link')];
@@ -106,12 +113,13 @@ jobs:
                     phone:document.querySelector('.header-tel')?.getAttribute('href'),
                     booking:document.querySelector('.hero .air-reserve-subcta')?.getAttribute('href'),
                     faq:document.querySelectorAll('.sec-faq details').length,
+                    galleryAllTwoColumns:(()=>{let a=document.querySelector('.cd-parts-gallery .services-grid'); return a&&getComputedStyle(a).gridTemplateColumns.split(' ').length===2&&a.querySelectorAll('figure').length===4})(),
                     priceCtaAfterCards:(()=>{const a=document.querySelector('.sec-price .price-cards-grid'), b=document.querySelector('.sec-price .cd-price-action'); return !!a&&!!b&&a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING ? !!b.querySelector('a[href="https://lin.ee/tsilra6"]') : false})()
                   };
                 });
                 await page.locator('.hero .line-cta').click();
                 const events=await page.evaluate(()=>window.dataLayer?.filter(x=>x?.[0]==='event').map(x=>x[1])||[]);
-                const row={width,http:response.status(),...data,heroHeight,menuStatus,modalOpen,modalClosed,loaded:pictureReport.length,brokenImages:pictureReport.filter(i=>!i.ready),errors,badLocal,events};
+                const row={width,http:response.status(),...data,heroHeight,menuStatus,modalOpen,modalClosed,priceDetailInitiallyClosed,priceDetailExpanded,priceDetailsVisible,loaded:pictureReport.length,brokenImages:pictureReport.filter(i=>!i.ready),errors,badLocal,events};
                 const issues=[];
                 if(row.http!==200)issues.push('HTTP');
                 if(row.sections!==14)issues.push('SECTION_COUNT');
@@ -123,7 +131,10 @@ jobs:
                 if(!row.modalOpen||!row.modalClosed)issues.push('PHOTO_MODAL');
                 if(width<768 && row.heroHeight>720)issues.push('HERO_TOO_TALL');
                 if(!row.priceCtaAfterCards)issues.push('PRICE_CTA_POSITION');
-                if(row.photoLinks.length!==2||row.photoDisplayWidths.some(w=>w<Math.min(280,width-40)))issues.push('PHOTO_VISIBILITY');
+                if(row.photoLinks.length!==6||row.photoDisplayWidths.some(w=>w<Math.min(280,width-40)))issues.push('PHOTO_VISIBILITY');
+                if(!row.galleryAllTwoColumns)issues.push('PARTS_GALLERY_COLUMNS');
+                if(!row.priceDetailInitiallyClosed||!row.priceDetailExpanded||!row.priceDetailsVisible)issues.push('PRICE_DETAILS_TOGGLE');
+                if(row.headings[4]!=='完全分解クリーニング料金')issues.push('PRICE_NOT_BEFORE_DETAILS');
                 if(row.priceCards.join('|')!=='14,000円〜|23,000円〜')issues.push('PRICE');
                 if(!row.insurance||row.faq!==8)issues.push('INSURANCE_OR_FAQ');
                 if(row.line!=='https://lin.ee/tsilra6'||row.phone!=='tel:05017241338'||row.booking!=='https://airrsv.net/bc-servicesokinawa/calendar')issues.push('CONTACT_URL');
@@ -146,7 +157,7 @@ jobs:
                 await baselineContext.close();
               }
             }finally{
-              fs.writeFileSync('qa-cro/report.json',JSON.stringify({branch:'fix/cd-lp-mobile-cro-20261118',baseline:'origin/main',results,failures},null,2));
+              fs.writeFileSync('qa-cro/report.json',JSON.stringify({branch:'fix/cd-lp-early-price-gallery-20261118',baseline:'origin/main',results,failures},null,2));
               await browser.close();
             }
             console.log('COMPLETE_CRO_QA '+JSON.stringify({status:failures.length?'FAIL':'PASS',results,failures}));
