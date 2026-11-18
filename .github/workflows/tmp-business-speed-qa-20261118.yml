@@ -1,0 +1,85 @@
+name: One-time Business LP speed and CTA smoke QA
+on:
+  push:
+    branches:
+      - feat/business-lp-speed-20261118
+    paths:
+      - .github/workflows/tmp-business-speed-qa-20261118.yml
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Test LP local layout and CTA dataLayer safely
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 > /tmp/bc-lp-qa-http.log 2>&1 &
+          node <<'JS'
+          const {chromium}=require('playwright');
+          const fs=require('fs');
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const results=[];
+            try {
+              for(const width of [1440,768,390,320]) {
+                const ctx=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:1});
+                const page=await ctx.newPage();
+                const pageErrors=[];
+                page.on('pageerror',err=>pageErrors.push(err.message));
+                await page.route('**/*',route=>
+                  route.request().url().startsWith('http://127.0.0.1:8765/')?
+                  route.continue():route.abort('blockedbyclient')
+                );
+                const resp=await page.goto('http://127.0.0.1:8765/business-cleaning/',{waitUntil:'domcontentloaded',timeout:30000});
+                if(resp.status()!==200)throw Error('STATUS '+resp.status());
+                const result=await page.evaluate(async()=>{
+                  const hero=document.querySelector('.biz3-hero-visual > img');
+                  if(!hero)throw Error('missing hero image');
+                  await hero.decode();
+                  document.addEventListener('click',e=>{
+                    if(e.target.closest('a[href^="https://lin.ee/"],a[href^="tel:"]'))e.preventDefault();
+                  },true);
+                  const heroCTA=document.querySelector('a[href^="https://lin.ee/"][data-cta-location="hero"]');
+                  const phoneCTA=document.querySelector('a[href^="tel:"][data-cta-location="sticky"]');
+                  if(!heroCTA||!phoneCTA)throw Error('missing CTA');
+                  heroCTA.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
+                  phoneCTA.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true}));
+                  const recorded=Array.from(window.dataLayer).filter(x=>x[0]==='event'&&x[1]==='cta_click').map(x=>x[2]);
+                  return {
+                    width:innerWidth,scrollWidth:document.documentElement.scrollWidth,
+                    hero:{source:hero.getAttribute('src'),width:hero.naturalWidth,height:hero.naturalHeight},
+                    recorded:recorded.map(x=>({target:x.cta_target,location:x.cta_location,pageType:x.page_type,pageSlug:x.page_slug})),
+                    reviews:document.querySelectorAll('figure.bc-biz-voice').length,
+                    ga4:document.querySelector('script[src*="G-X8LKLFDL3G"]')?.src,
+                    insurance:document.body.textContent.includes('1億円')
+                  };
+                });
+                if(result.scrollWidth>result.width)throw Error('OVERFLOW '+JSON.stringify(result));
+                if(result.hero.source!=='./business-work-scene-960.webp'||result.hero.width!==960||result.hero.height!==1280)throw Error('HERO_INVALID '+JSON.stringify(result));
+                if(result.recorded.length!==2||result.recorded[0].target!=='line'||result.recorded[0].location!=='hero'||result.recorded[1].target!=='tel'||result.recorded[1].location!=='sticky'||result.recorded.some(x=>x.pageSlug!=='/business-cleaning/'))throw Error('CTA_INVALID '+JSON.stringify(result));
+                if(result.reviews!==6||!result.insurance||!result.ga4||pageErrors.length)throw Error('REGRESSION '+JSON.stringify({result,pageErrors}));
+                fs.mkdirSync('qa-biz-speed',{recursive:true});
+                await page.screenshot({path:'qa-biz-speed/first-view-'+width+'.png'});
+                results.push({width,overflow:0,hero:result.hero,recorded:result.recorded,errors:pageErrors});
+                await ctx.close();
+              }
+              console.log('BUSINESS_SPEED_CTA_QA '+JSON.stringify({status:'PASS',sizes:results}));
+            } finally { await browser.close(); }
+          })().catch(e=>{console.error(e.stack||e);process.exit(1)});
+          JS
+      - name: Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: business-lp-speed-cta-qa
+          path: qa-biz-speed/
+          if-no-files-found: ignore
