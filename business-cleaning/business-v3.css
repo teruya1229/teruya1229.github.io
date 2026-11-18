@@ -903,3 +903,57 @@
   .biz3 .biz7-aircon-action .biz3-line-primary { font-size:13px; }
 }
 
+
+/* Customer-supplied before/after photography, 2026-11-18.
+   Compare real images without retouching, cropping or layout letterboxing. */
+.biz3 .biz8-compare {
+  margin:0 auto;
+  width:100%;
+  max-width:1040px;
+  border:1px solid #dfe6e4;
+  background:#fff;
+  overflow:hidden;
+  border-radius:12px;
+}
+.biz3 .biz8-compare .biz6-ba-photo {
+  position:relative;
+  width:100%;
+  margin:0;
+  background:transparent;
+}
+.biz3 .biz8-compare .biz6-ba-photo img {
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:none;
+  min-height:0;
+  aspect-ratio:1410 / 525;
+  object-fit:contain;
+  background:transparent;
+}
+.biz3 .biz8-compare .biz6-ba-labels {
+  position:absolute;
+  bottom:12px;
+  left:0;
+  right:0;
+}
+.biz3 .biz6-aircon-beforeafter .biz6-ba-photo img {
+  width:100%;
+  height:auto;
+  aspect-ratio:1410 / 525;
+  object-fit:contain;
+}
+.biz3 .biz8-compare figcaption {
+  padding:14px 18px;
+  color:#526472;
+  font-size:13px;
+  font-weight:750;
+  line-height:1.65;
+}
+@media (max-width:767px) {
+  .biz3 .biz6-aircon-beforeafter .biz6-ba-photo img {
+    aspect-ratio:1410 / 525;
+  }
+  .biz3 .biz8-compare .biz6-ba-labels { bottom:8px; }
+  .biz3 .biz8-compare figcaption { padding:12px 13px; font-size:12px; }
+}
