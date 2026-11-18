@@ -1,7 +1,7 @@
 name: Complete-disassembly CRO review QA (pre-publish)
 on:
   push:
-    branches: [fix/cd-lp-early-price-gallery-20261118]
+    branches: [fix/cd-lp-postprice-condense-20261118]
     paths:
       - 'complete-disassembly/**'
       - '.github/workflows/complete-cro-qa-20261118.yml'
@@ -88,6 +88,19 @@ jobs:
                 await page.locator('#cd-photo-dialog').screenshot({path:'qa-cro/stage-'+width+'-photo-modal.png',timeout:45000});
                 await page.keyboard.press('Escape');
                 const modalClosed=await page.locator('#cd-photo-dialog').evaluate(e=>!e.open);
+                const technical=page.locator('.sec-about .cd-technical-details');
+                const videoDetails=page.locator('.sec-case-studies .cd-case-video');
+                const technicalInitiallyClosed=await technical.evaluate(el=>!el.open);
+                await technical.locator('summary').click();
+                const technicalExpanded=await technical.evaluate(el=>el.open);
+                const technicalSixIcons=await technical.locator('img.cd-card-icon').count();
+                await page.locator('.sec-about').screenshot({path:'qa-cro/stage-'+width+'-technical-open.png',timeout:45000});
+                await technical.locator('summary').click();
+                const videoInitiallyClosed=await videoDetails.evaluate(el=>!el.open);
+                await videoDetails.locator('summary').click();
+                const videoExpanded=await videoDetails.evaluate(el=>el.open);
+                const videoIframePresent=await videoDetails.locator('iframe[src*="SMKg-3BL1ew"]').count()===1;
+                await videoDetails.locator('summary').click();
                 const infoDetails=page.locator('.sec-price .cd-price-details');
                 const priceDetailInitiallyClosed=await infoDetails.evaluate(el=>!el.open);
                 await infoDetails.locator('summary').click();
@@ -119,10 +132,10 @@ jobs:
                 });
                 await page.locator('.hero .line-cta').click();
                 const events=await page.evaluate(()=>window.dataLayer?.filter(x=>x?.[0]==='event').map(x=>x[1])||[]);
-                const row={width,http:response.status(),...data,heroHeight,menuStatus,modalOpen,modalClosed,priceDetailInitiallyClosed,priceDetailExpanded,priceDetailsVisible,loaded:pictureReport.length,brokenImages:pictureReport.filter(i=>!i.ready),errors,badLocal,events};
+                const row={width,http:response.status(),...data,heroHeight,menuStatus,modalOpen,modalClosed,priceDetailInitiallyClosed,priceDetailExpanded,priceDetailsVisible,technicalInitiallyClosed,technicalExpanded,technicalSixIcons,videoInitiallyClosed,videoExpanded,videoIframePresent,loaded:pictureReport.length,brokenImages:pictureReport.filter(i=>!i.ready),errors,badLocal,events};
                 const issues=[];
                 if(row.http!==200)issues.push('HTTP');
-                if(row.sections!==14)issues.push('SECTION_COUNT');
+                if(row.sections!==13)issues.push('SECTION_COUNT');
                 if(row.scrollWidth>row.windowWidth+1)issues.push('HORIZONTAL_OVERFLOW');
                 if(!row.heroPrice || row.reviewsCount!==1)issues.push('HERO_OR_REVIEW');
                 if(row.headings[1]!=='こんなお悩み、ありませんか？'||!row.headings[2].includes('写真で見る')||!row.headings[3].includes('お客様の声'))issues.push('FLOW_ORDER');
@@ -133,6 +146,7 @@ jobs:
                 if(!row.priceCtaAfterCards)issues.push('PRICE_CTA_POSITION');
                 if(row.photoLinks.length!==6||row.photoDisplayWidths.some(w=>w<Math.min(280,width-40)))issues.push('PHOTO_VISIBILITY');
                 if(!row.galleryAllTwoColumns)issues.push('PARTS_GALLERY_COLUMNS');
+                if(!row.technicalInitiallyClosed||!row.technicalExpanded||row.technicalSixIcons!==6||!row.videoInitiallyClosed||!row.videoExpanded||!row.videoIframePresent)issues.push('TECH_AND_VIDEO_DETAILS');
                 if(!row.priceDetailInitiallyClosed||!row.priceDetailExpanded||!row.priceDetailsVisible)issues.push('PRICE_DETAILS_TOGGLE');
                 if(row.headings[4]!=='完全分解クリーニング料金')issues.push('PRICE_NOT_BEFORE_DETAILS');
                 if(row.priceCards.join('|')!=='14,000円〜|23,000円〜')issues.push('PRICE');
@@ -157,7 +171,7 @@ jobs:
                 await baselineContext.close();
               }
             }finally{
-              fs.writeFileSync('qa-cro/report.json',JSON.stringify({branch:'fix/cd-lp-early-price-gallery-20261118',baseline:'origin/main',results,failures},null,2));
+              fs.writeFileSync('qa-cro/report.json',JSON.stringify({branch:'fix/cd-lp-postprice-condense-20261118',baseline:'origin/main',results,failures},null,2));
               await browser.close();
             }
             console.log('COMPLETE_CRO_QA '+JSON.stringify({status:failures.length?'FAIL':'PASS',results,failures}));
