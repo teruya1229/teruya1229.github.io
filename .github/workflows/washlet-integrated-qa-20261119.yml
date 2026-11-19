@@ -1,0 +1,64 @@
+name: Washlet LP integrated live Chrome QA
+on:
+  push:
+    branches: [qa/washlet-integrated-20261119]
+    paths: [.github/workflows/washlet-integrated-qa-20261119.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare Japanese fonts and browser
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk >/dev/null
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+      - name: Inspect public washlet LP at three screen widths
+        run: |
+          mkdir -p /tmp/washlet-qa
+          node <<'JS'
+          const fs=require('fs'),{chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({channel:'chrome',headless:true});
+            const report=[];
+            try{
+              for(const width of [1440,390,320]){
+                const ctx=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:'reduce'});
+                const page=await ctx.newPage(), bad=[], errors=[];
+                page.on('pageerror',e=>errors.push(e.message));
+                page.on('response',r=>{if(r.url().startsWith('https://teruya1229.github.io/')&&r.status()>=400)bad.push(r.status()+' '+r.url())});
+                await page.route('**/*',route=>{const u=route.request().url();return u.startsWith('https://teruya1229.github.io/')||u.startsWith('data:')?route.continue():route.abort('blockedbyclient')});
+                const response=await page.goto('https://teruya1229.github.io/washlet/',{waitUntil:'domcontentloaded',timeout:45000});
+                await page.locator('img').evaluateAll(imgs=>imgs.forEach(i=>i.loading='eager'));
+                await page.evaluate(async()=>{await Promise.all([...document.images].map(i=>i.decode().catch(()=>{})));for(let y=0;y<document.documentElement.scrollHeight;y+=650){scrollTo(0,y);await new Promise(r=>setTimeout(r,15))};scrollTo(0,0)});
+                await page.waitForTimeout(350);
+                const m=await page.evaluate(()=>{
+                  const outside=[...document.querySelectorAll('h1,h2,h3,p,a,button,summary')].filter(e=>e.getClientRects().length).map(e=>({text:(e.innerText||'').slice(0,40),rect:e.getBoundingClientRect()})).filter(x=>x.rect.width>0&&(x.rect.left<-3||x.rect.right>innerWidth+3)).slice(0,10);
+                  return {width:innerWidth,scrollWidth:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight,images:[...document.images].map(i=>({src:i.getAttribute('src'),ok:i.complete&&i.naturalWidth>0})),faq:document.querySelectorAll('#faq details').length,line:document.querySelectorAll('a[href*="lin.ee"]').length,tel:document.querySelectorAll('a[href^="tel:"]').length,price:document.querySelector('.fv__price-hero-num')?.innerText,headline:document.querySelector('h1')?.innerText,fonts:document.fonts.check('16px "Noto Sans CJK JP"','日本語'),outside};
+                });
+                await page.screenshot({path:'/tmp/washlet-qa/live-'+width+'-full.png',fullPage:true,animations:'disabled',timeout:60000});
+                const faqs=page.locator('#faq details');
+                for(let i=0;i<await faqs.count();i++){const e=faqs.nth(i),before=await e.evaluate(e=>e.open);await e.locator('summary').click();if((await e.evaluate(e=>e.open))===before)errors.push('FAQ_NOT_TOGGLED_'+i);await e.locator('summary').click();if((await e.evaluate(e=>e.open))!==before)errors.push('FAQ_NOT_RESTORED_'+i)}
+                report.push({http:response.status(),...m,bad,errors});
+                await ctx.close();
+              }
+              fs.writeFileSync('/tmp/washlet-qa/report.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
+              if(report.some(x=>x.http!==200||x.scrollWidth!==x.width||x.images.some(i=>!i.ok)||x.faq!==10||x.line!==8||x.tel!==6||x.bad.length||x.errors.length||x.outside.length))process.exitCode=1;
+            }finally{await browser.close()}
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - name: Archive screenshots and metrics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: washlet-live-qa-20261119
+          path: /tmp/washlet-qa/
+          if-no-files-found: warn
