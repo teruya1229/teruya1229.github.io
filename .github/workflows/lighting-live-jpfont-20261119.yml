@@ -1,0 +1,71 @@
+name: Lighting LP production Chrome QA with isolated Noto JP font
+on:
+  push:
+    branches: [qa/lighting-live-final-20261119]
+    paths: [.github/workflows/lighting-live-jpfont-20261119.yml]
+permissions:
+  contents: read
+jobs:
+  live:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Japanese fonts and Chrome automation
+        run: |
+          sudo mkdir -p /usr/local/share/fonts/qa-japanese
+          sudo curl -fLsS --retry 2 --max-time 75 -o /usr/local/share/fonts/qa-japanese/NotoSansCJKjp-Regular.otf https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/Japanese/NotoSansCJKjp-Regular.otf
+          test "$(stat -c %s /usr/local/share/fonts/qa-japanese/NotoSansCJKjp-Regular.otf)" -gt 10000000
+          sudo fc-cache -f >/dev/null
+          fc-match ':lang=ja' family | head -1
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+      - name: Verify real deployed LP across screens
+        run: |
+          mkdir -p /tmp/lighting-live
+          node <<'JS'
+          const fs=require('fs'),{chromium}=require('playwright');
+          (async()=>{
+            const b=await chromium.launch({channel:'chrome',headless:true}),out=[];
+            try{
+              for(const width of [1440,390,320]){
+                const ctx=await b.newContext({viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:'reduce'});
+                const p=await ctx.newPage(),bad=[],errors=[];
+                p.on('pageerror',e=>errors.push(e.message));
+                p.on('response',r=>{if(r.url().startsWith('https://teruya1229.github.io/')&&r.status()>=400)bad.push(r.status()+' '+r.url())});
+                await p.route('**/*',r=>{const u=r.request().url();return u.startsWith('https://teruya1229.github.io/')||u.startsWith('data:')?r.continue():r.abort('blockedbyclient')});
+                let status=0;
+                for(let i=0;i<6;i++){
+                  const r=await p.goto('https://teruya1229.github.io/lighting/',{waitUntil:'domcontentloaded',timeout:45000});
+                  status=r.status();
+                  if(await p.locator('.hero-person-photo').count())break;
+                  if(i<5)await p.waitForTimeout(3500);
+                }
+                await p.locator('img').evaluateAll(els=>els.forEach(i=>i.loading='eager'));
+                await p.evaluate(async()=>{await Promise.all([...document.images].map(i=>i.decode().catch(()=>{})));for(let y=0;y<document.documentElement.scrollHeight;y+=600){scrollTo(0,y);await new Promise(r=>setTimeout(r,15))};scrollTo(0,0)});
+                await p.waitForTimeout(400);
+                const metrics=await p.evaluate(()=>{
+                  const xs=[...document.querySelectorAll('h1,h2,h3,p,a,button,summary')].filter(e=>e.getClientRects().length>0).map(e=>({text:(e.innerText||'').slice(0,40),r:e.getBoundingClientRect()})).filter(x=>x.r.width>0&&(x.r.left<-3||x.r.right>innerWidth+3)).slice(0,10);
+                  return{width:innerWidth,scrollWidth:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight,images:[...document.images].map(i=>({src:i.getAttribute('src'),ready:i.complete&&i.naturalWidth>0})),photo:document.querySelector('.hero-person-photo')?.getAttribute('src'),caption:document.querySelector('.hero-person-caption strong')?.textContent,updatedLead:document.querySelector('.hero-lead')?.textContent.includes('照明がつかない'),line:document.querySelectorAll('a[href*="lin.ee"]').length,phone:document.querySelectorAll('a[href^="tel:"]').length,faq:document.querySelectorAll('details').length,font:document.fonts.check('16px "Noto Sans CJK JP"','日本語'),outside:xs};
+                });
+                await p.screenshot({path:'/tmp/lighting-live/live-'+width+'-full.png',fullPage:true,animations:'disabled',timeout:60000});
+                const fsq=p.locator('details');for(let i=0;i<await fsq.count();i++){const el=fsq.nth(i),bef=await el.evaluate(e=>e.open);await el.locator('summary').click();if((await el.evaluate(e=>e.open))===bef)errors.push('FAQ '+i);await el.locator('summary').click();if((await el.evaluate(e=>e.open))!==bef)errors.push('FAQ restore '+i)}
+                out.push({width,status,...metrics,bad,errors});
+                await ctx.close();
+              }
+              fs.writeFileSync('/tmp/lighting-live/report.json',JSON.stringify(out,null,2));console.log(JSON.stringify(out,null,2));
+              if(out.some(x=>x.status!==200||x.scrollWidth!==x.width||x.images.length!==1||x.images.some(i=>!i.ready)||!x.photo?.includes('rep-teruya.webp')||!x.updatedLead||x.line!==5||x.phone!==5||x.faq!==9||!x.font||x.outside.length||x.bad.length||x.errors.length))process.exitCode=1;
+            }finally{await b.close()}
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - name: Save screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighting-live-jpfont-20261119
+          path: /tmp/lighting-live/
+          if-no-files-found: warn
