@@ -122,6 +122,29 @@ async function useEngine(engine, label, widths) {
       check(wholePage.notesText.includes('2026年11月30日まで')&&wholePage.notesText.includes('背面ボルト式')&&wholePage.notesText.includes('故障は洗浄で改善しない'),label+' '+width+': pricing conditions missing');
       check(wholePage.price==='25,000',label+' '+width+': drum price changed');
       check(wholePage.quoteLinks.length===3&&wholePage.quoteLinks.every(x=>x.text==='口コミの掲載元を確認 ↗'&&x.href.includes('curama.jp/washer/')),label+' '+width+': review source wrong');
+
+      const desktopState=await page.evaluate(()=>({
+        container:document.querySelector('main .container').getBoundingClientRect().width,
+        heroPhoto:document.querySelector('.hero__photo').getBoundingClientRect().width,
+        proofGrid:document.querySelector('.proof__grid').getBoundingClientRect().width,
+        faqDisplay:getComputedStyle(document.querySelector('.faq-list')).display,
+        faqColumns:getComputedStyle(document.querySelector('.faq-list')).gridTemplateColumns,
+        reviewColumns:getComputedStyle(document.querySelector('.reviews__grid')).gridTemplateColumns,
+        whyFont:getComputedStyle(document.querySelector('#why .split-intro h2')).fontSize,
+        cssVersion:[...document.querySelectorAll('link[rel="stylesheet"]')].map(x=>x.getAttribute('href'))
+      }));
+      if(width===1440){
+        check(desktopState.container>=1279,label+' desktop container still narrow '+desktopState.container);
+        check(desktopState.heroPhoto>=545,label+' desktop hero photo still narrow '+desktopState.heroPhoto);
+        check(desktopState.proofGrid>=1100,label+' desktop proof still narrow '+desktopState.proofGrid);
+        check(desktopState.faqDisplay==='grid'&&desktopState.faqColumns.split(' ').length===2,label+' desktop FAQ not two columns');
+        check(desktopState.reviewColumns.split(' ').length===3,label+' desktop testimonials not three columns');
+        check(desktopState.whyFont==='38.88px'||parseFloat(desktopState.whyFont)<=39.1,label+' desktop Japanese headline size not optimized');
+        check(desktopState.cssVersion.some(x=>x.includes('washing.css?v=20261119pc2')),label+' stale desktop CSS cache');
+      }else if(width===820||width===390||width===320){
+        check(desktopState.faqDisplay==='block',label+' mobile/tablet FAQ was changed');
+      }
+
       await page.locator('#price .price-notes summary').click();
       check(await page.locator('#price .price-notes').evaluate(el=>el.open),label+' '+width+': price notes fail to expand');
       await page.locator('#price .price-notes summary').click();
