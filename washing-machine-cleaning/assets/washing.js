@@ -120,4 +120,21 @@
     }
     window.gtag('event', isLine ? 'line_click' : 'phone_click', common);
   }, true);
+
+  // Visual-only: do not let the fixed mobile LINE bar cover an in-page LINE CTA.
+  // This observes visibility and does not change tracking, destinations or clicks.
+  if ('IntersectionObserver' in window && window.matchMedia &&
+      window.matchMedia('(max-width: 720px)').matches) {
+    var inView = new Set();
+    var inlineCtas = document.querySelectorAll('main a.btn--line');
+    var ctaObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) inView.add(entry.target);
+        else inView.delete(entry.target);
+      });
+      document.documentElement.classList.toggle('washer-body-line-visible', inView.size > 0);
+    }, { rootMargin: '0px 0px 70px 0px', threshold: 0 });
+    inlineCtas.forEach(function (anchor) { ctaObserver.observe(anchor); });
+  }
+
 })();
