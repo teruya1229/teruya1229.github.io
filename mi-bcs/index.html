@@ -783,29 +783,47 @@
     .faq-list {
       margin: 0;
       padding: 0;
-      list-style: none;
       display: grid;
-      gap: 14px;
+      gap: 8px;
     }
 
     .faq-item {
       background: var(--white);
       border: 1px solid var(--border);
-      border-radius: var(--card-radius);
-      padding: 22px 24px;
-      box-shadow: var(--card-shadow);
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: none;
     }
 
-    .faq-item h3 {
-      margin: 0 0 10px;
+    .faq-item summary {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      cursor: pointer;
+      list-style: none;
       font-size: 1.08rem;
       font-weight: 800;
       color: var(--brand);
       line-height: 1.55;
     }
 
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: '+';
+      flex: none;
+      font-size: 1.2rem;
+      line-height: 1.35;
+      font-weight: 600;
+    }
+    .faq-item[open] summary::after { content: '\2212'; }
+    .faq-item summary:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 5px;
+    }
+
     .faq-item p {
-      margin: 0;
+      margin: 12px 0 0;
       font-size: 1rem;
       color: var(--text-secondary);
       line-height: 1.8;
@@ -1615,7 +1633,7 @@
     <div class="container">
       <p class="hero-label">沖縄中南部｜エアコン本体＋標準取付工事込み</p>
       <h1 class="hero-title">工事費まで、最初から分かる。沖縄のエアコン販売。</h1>
-      <p class="hero-lead">6畳用88,800円〜（本体＋標準取付工事）。設置場所の写真をLINEで送るだけで、取外し・処分・追加工事まで含めた最終総額をご案内します。古いエアコンの取外し・処分まで込みの買替え一式は、99,800円〜の買替え専門ページへ。</p>
+      <p class="hero-lead">6畳用88,800円〜（本体＋標準取付工事）。設置場所の写真から取外し・処分・追加工事の要否を確認し、総額の目安をご案内します。写真だけで判断できない場合は追加で確認します。古いエアコンの取外し・処分まで込みの買替え一式は、99,800円〜の買替え専門ページへ。</p>
       <ul class="hero-pills">
         <li>6畳用 88,800円〜</li>
         <li>本体＋標準取付工事込み</li>
@@ -1918,48 +1936,48 @@
   <section class="section section-light" id="faq">
     <div class="container">
       <h2 class="section-title">よくある質問</h2>
-      <ul class="faq-list">
-        <li class="faq-item">
-          <h3>Q. 表示価格には何が含まれていますか？</h3>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Q. 表示価格には何が含まれていますか？</summary>
           <p>A. 表示価格（税込）は、エアコン本体と標準取付工事を含んだ目安です。標準設置条件の場合の価格で、在庫・仕入状況により提案機種は変わります。取外し、リサイクル、収集運搬、配管延長などの標準工事外の作業は別料金です。</p>
-        </li>
-        <li class="faq-item">
-          <h3>Q. どのメーカーのエアコンになりますか？</h3>
+        </details>
+        <details class="faq-item">
+          <summary>Q. どのメーカーのエアコンになりますか？</summary>
           <p>A. その時点の在庫・仕入価格・設置環境・必要な機能・お手入れのしやすさを比較し、ご家庭に合う新品エアコンをご提案します。期間・数量・在庫状況により提案機種は変わります。メーカー・型番指定は別途お見積りします。</p>
-        </li>
-        <li class="faq-item">
-          <h3>Q. 沖縄の設置環境に合わせた機種はありますか？</h3>
+        </details>
+        <details class="faq-item">
+          <summary>Q. 沖縄の設置環境に合わせた機種はありますか？</summary>
           <p>A. 海に近い地域やヤモリの侵入が気になる沖縄の設置環境を考慮し、その時点の在庫に合う機種をご提案します。耐塩害仕様の室外機やヤモリ対策を備えた対象商品がある場合はご案内します。すべての製品が耐塩害・ヤモリ対策というわけではなく、対象商品・在庫状況により異なります。</p>
-        </li>
-        <li class="faq-item">
-          <h3>Q. メーカーや型番を指定できますか？</h3>
+        </details>
+        <details class="faq-item">
+          <summary>Q. メーカーや型番を指定できますか？</summary>
           <p>A. ご指定いただけます。メーカー・型番指定は別途お見積りします。在庫・仕入状況によりご用意できない場合があるため、代替機種も含めてご案内します。</p>
-        </li>
-        <li class="faq-item">
-          <h3>Q. 標準取付工事には何が含まれますか？</h3>
+        </details>
+        <details class="faq-item">
+          <summary>Q. 標準取付工事には何が含まれますか？</summary>
           <p>A. 冷媒配管4mまで、連絡電線、ドレンホース、室外機の平地・ベランダ置き、真空引き、試運転です。穴あけ、化粧カバー、専用回路、電圧切替、高所作業などは標準工事に含まれません。</p>
-        </li>
-        <li class="faq-item">
-          <h3>Q. 追加料金が発生するのはどんな場合ですか？</h3>
+        </details>
+        <details class="faq-item">
+          <summary>Q. 追加料金が発生するのはどんな場合ですか？</summary>
           <p>A. 既設エアコンの取外し、別階等の取外し、屋根置き・壁面・天吊り等の取外し、リサイクル料、収集運搬料、エレベーターのない3階以上への階段搬入作業（3F +2,200円、4F +3,300円、5F +4,400円、6F以上要見積）のほか、配管延長、化粧カバー、高所作業、壁面・天吊り・二段置き、別階での取付作業、専用回路、コンセント交換、電圧切替、特殊穴あけ、特殊搬入（狭い階段・大型機など）、遠方料金などが該当します。追加料金が必要な場合は、作業前に内容と金額をご説明し、ご了承いただいてから進めます。</p>
-        </li>
-        <li class="faq-item">
-          <h3>Q. 写真だけで総額を確認できますか？</h3>
+        </details>
+        <details class="faq-item">
+          <summary>Q. 写真だけで総額を確認できますか？</summary>
           <p>A. 設置場所の写真をLINEで送っていただければ、取外し・処分・追加工事を含めた総額の目安をご案内できます。写真だけでは判断できない場合は、追加写真または現地確認をお願いすることがあります。</p>
-        </li>
-        <li class="faq-item">
-          <h3>Q. 古いエアコンの取外し・処分もできますか？</h3>
+        </details>
+        <details class="faq-item">
+          <summary>Q. 古いエアコンの取外し・処分もできますか？</summary>
           <p>A. 既設エアコンの取外し、リサイクル、収集運搬もご相談いただけます。取外しは5,500円〜7,700円、リサイクル料550円、収集運搬料3,300円が目安です。設置場所により料金が変わる場合があります。</p>
-        </li>
-        <li class="faq-item">
-          <h3>Q. 100Vから200Vへの変更も相談できますか？</h3>
+        </details>
+        <details class="faq-item">
+          <summary>Q. 100Vから200Vへの変更も相談できますか？</summary>
           <p>A. ご相談いただけます。コンセント、専用回路、電圧切替などは標準工事に含まれず、別途お見積りです。写真または現地確認後に対応内容をご案内します。施工はBCサービスが選定した協力施工者が担当する場合があります。施工管理・工事保証・購入後の相談窓口はBCサービスが一括して対応します。</p>
-        </li>
-        <li class="faq-item">
-          <h3>Q. 購入後に故障した場合はどうなりますか？</h3>
+        </details>
+        <details class="faq-item">
+          <summary>Q. 購入後に故障した場合はどうなりますか？</summary>
           <p>A. 製品本体の故障はメーカー保証・メーカー修理の対象です。工事に起因する不具合は、BCサービスが相談窓口となって対応します。保証内容・保証期間はメーカーおよび工事内容の規定によります。詳しい保証条件は、お見積り・ご契約前にご案内します。</p>
-        </li>
-      </ul>
+        </details>
+      </div>
       <div class="contact-box mid-cta">
         <h3>工事込みの総額を確認したい方へ</h3>
         <p class="section-lead">設置場所の写真をLINEで送るだけで、本体・標準工事・取外し・追加工事を含めた総額の目安をご案内します。</p>
