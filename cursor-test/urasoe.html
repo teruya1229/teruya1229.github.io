@@ -244,6 +244,11 @@
     }
     @media(max-width:767px){
       .header-tel-wrap{display:none !important;}
+      .header { padding:10px 12px; }
+      .header-inner { flex-wrap:wrap; justify-content:center; gap:5px 8px; }
+      .header .logo { flex:0 0 100%; justify-content:center; }
+      .header-nav { flex:0 0 100%; max-width:100%; flex-wrap:wrap; justify-content:center; gap:4px 9px; }
+      .header-nav a { display:inline-flex; align-items:center; min-height:40px; font-size:0.79rem; padding:6px 2px; }
     }
     /* 地域の決めつけではなく、実際の確認事項を編集的な一覧で表示 */
     .urasoe-conditions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:26px; row-gap:0; max-width:1000px; margin:0 auto; }
