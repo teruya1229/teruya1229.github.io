@@ -1,0 +1,41 @@
+name: Washer LP design quality visual QA
+on:
+  push:
+    branches:
+      - fix/washer-design-polish-20261119
+    paths:
+      - 'washing-machine-cleaning/**'
+      - '.github/workflows/washer-design-quality-qa-20261119.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  design-and-regression:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated real Chrome
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+          npx playwright install --with-deps chromium
+      - name: Verify existing 80 diagnostic cases and GA4 event creation
+        run: node washing-machine-cleaning/tests/diagnosis-browser-qa.cjs
+      - name: Verify evidence, review, LINE and overlap regressions
+        run: node washing-machine-cleaning/tests/washer-buying-reasons-qa-20261118.cjs
+      - name: Verify preserved washer prices and five viewport layouts
+        run: node washing-machine-cleaning/tests/washer-price-value-qa-20261118.cjs
+      - name: Compare before and after visual screenshots in real Chrome
+        run: node washing-machine-cleaning/tests/washer-design-quality-qa-20261119.cjs
+      - name: Save visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: washer-design-quality-before-after
+          path: /tmp/washer-design-quality-qa/
+          if-no-files-found: warn
