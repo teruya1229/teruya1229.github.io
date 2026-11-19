@@ -1,0 +1,44 @@
+name: Lighting LP production live smoke without package installs
+on:
+  push:
+    branches: [qa/lighting-live-final-20261119]
+    paths: [.github/workflows/lighting-live-smoke-20261119.yml]
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Verify production HTML and assets directly
+        shell: bash
+        run: |
+          set -eu
+          mkdir -p /tmp/lighting-smoke
+          page=/tmp/lighting-smoke/production.html
+          for attempt in 1 2 3 4 5 6; do
+            curl --fail --silent --show-error --max-time 25 \
+              -H 'Cache-Control: no-cache' \
+              -o "$page" \
+              "https://teruya1229.github.io/lighting/?qa=20261119-pr49-$GITHUB_RUN_ID-$attempt" || true
+            if grep -q 'hero-person-photo' "$page" && grep -q '照明がつかない' "$page"; then break; fi
+            sleep 4
+          done
+          grep -q 'hero-person-photo' "$page"
+          grep -q '写真の相談から、お引き渡しまでの窓口' "$page"
+          grep -q '照明がつかない' "$page"
+          curl --fail --silent --show-error --max-time 25 -o /tmp/lighting-smoke/representative.webp \
+            https://teruya1229.github.io/assets/rep-teruya.webp
+          curl --fail --silent --show-error --max-time 25 -o /tmp/lighting-smoke/style.css \
+            https://teruya1229.github.io/lighting/style.css
+          grep -q '.hero-frame--person' /tmp/lighting-smoke/style.css
+          printf 'LIVE_HTML=PASS\nLIVE_PHOTO=PASS\nLIVE_STYLES=PASS\n'
+          printf 'photo_bytes='; wc -c </tmp/lighting-smoke/representative.webp
+          printf 'actual_page_bytes='; wc -c <"$page"
+      - name: Archive fetched live proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighting-live-html-smoke-20261119
+          path: /tmp/lighting-smoke/
+          if-no-files-found: warn
