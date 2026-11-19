@@ -2,7 +2,7 @@ name: Central LP before after Japanese Chrome 20261119
 on:
   push:
     branches: [improve/central-two-axis-20261119]
-    paths: [.github/workflows/central-preview-20261119.yml, cursor-test/central.html]
+    paths: [.github/workflows/central-preview-20261119.yml, cursor-test/central.html, qa/central-preview-20261119.cjs]
 permissions:
   contents: read
 jobs:
