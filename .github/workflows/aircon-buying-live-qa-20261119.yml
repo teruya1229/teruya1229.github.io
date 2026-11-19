@@ -1,0 +1,86 @@
+name: Aircon replacement LP live Chrome integrated QA
+on:
+  push:
+    branches: [qa/aircon-buying-live-20261119]
+    paths: [.github/workflows/aircon-buying-live-qa-20261119.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install isolated Japanese QA font and Chrome library
+        run: |
+          sudo mkdir -p /usr/local/share/fonts/qa-japanese
+          sudo curl -fLsS --retry 2 --max-time 75 -o /usr/local/share/fonts/qa-japanese/NotoSansCJKjp-Regular.otf https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/Japanese/NotoSansCJKjp-Regular.otf
+          test "$(stat -c %s /usr/local/share/fonts/qa-japanese/NotoSansCJKjp-Regular.otf)" -gt 10000000
+          sudo fc-cache -f >/dev/null
+          fc-match ':lang=ja' family | head -1
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+      - name: Inspect public page and estimator without touching external CTA
+        run: |
+          mkdir -p /tmp/buying-qa
+          node <<'JS'
+          const fs=require('fs'),{chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({channel:'chrome',headless:true});
+            const result=[];
+            try{
+              for(const width of [1440,390,320]){
+                const ctx=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:'reduce'});
+                const page=await ctx.newPage(),errors=[],bad=[];
+                page.on('pageerror',e=>errors.push(e.message));
+                page.on('response',r=>{if(r.url().startsWith('https://teruya1229.github.io/')&&r.status()>=400)bad.push(r.status()+' '+r.url())});
+                await page.route('**/*',r=>{const u=r.request().url();return u.startsWith('https://teruya1229.github.io/')||u.startsWith('data:')?r.continue():r.abort('blockedbyclient')});
+                const http=await page.goto('https://teruya1229.github.io/mi-bcs/aircon-replacement/',{waitUntil:'domcontentloaded',timeout:45000});
+                await page.locator('img').evaluateAll(imgs=>imgs.forEach(i=>i.loading='eager'));
+                await page.evaluate(async()=>{await Promise.all([...document.images].map(i=>i.decode().catch(()=>{})));for(let y=0;y<document.documentElement.scrollHeight;y+=700){scrollTo(0,y);await new Promise(r=>setTimeout(r,16))};scrollTo(0,0)});
+                await page.waitForTimeout(450);
+                const initial=await page.evaluate(()=>{
+                  const ids=new Set([...document.querySelectorAll('[id]')].map(el=>el.id));
+                  const missing=[...document.querySelectorAll('a[href^="#"]')].map(a=>a.getAttribute('href').slice(1)).filter(i=>i&&!ids.has(i));
+                  return {
+                    width:innerWidth,scrollWidth:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight,
+                    images:[...document.images].map(i=>({src:i.getAttribute('src'),loaded:i.complete&&i.naturalWidth>0})),
+                    line:[...document.querySelectorAll('a[href*="lin.ee"]')].map(a=>a.href),
+                    tel:[...document.querySelectorAll('a[href^="tel:"]')].map(a=>a.href),
+                    faqs:document.querySelectorAll('#faq .faq-item').length,missingAnchors:missing,
+                    companyName:document.querySelector('#company .overview-table')?.innerText.slice(0,300),
+                    price:document.querySelector('#ae-total')?.innerText,
+                    fonts:document.fonts.check('16px "Noto Sans CJK JP"','日本語'),
+                    outOfBounds:[...document.querySelectorAll('h1,h2,h3,p,a,button,summary')].filter(e=>e.getClientRects().length).map(e=>({t:e.innerText?.slice(0,35),r:e.getBoundingClientRect()})).filter(x=>x.r.width>0&&(x.r.left<-3||x.r.right>innerWidth+3)).slice(0,12)
+                  };
+                });
+                await page.screenshot({path:'/tmp/buying-qa/live-'+width+'-full.png',fullPage:true,animations:'disabled',timeout:60000});
+                await page.locator('#ae-size').selectOption('14');
+                await page.locator('#ae-stairs').selectOption('3');
+                let scenario1=await page.locator('#ae-total').innerText();
+                await page.locator('#ae-pipe').check();
+                let scenario2=await page.locator('#ae-quote').innerText();
+                await page.locator('#ae-stairs').selectOption('6plus');
+                let scenario3=await page.locator('#ae-extra').innerText();
+                let scenario4=await page.locator('#ae-total').innerText();
+                await page.locator('#aircon-estimator').screenshot({path:'/tmp/buying-qa/estimator-'+width+'.png',timeout:60000});
+                if(!scenario1.includes('152,000円')||!scenario2.includes('配管4m')||!scenario3.includes('要見積')||!scenario4.includes('階段費は別途'))errors.push('ESTIMATOR_BEHAVIOR');
+                result.push({width,http:http.status(),...initial,scenario1,scenario2,scenario3,scenario4,errors,bad});
+                await ctx.close();
+              }
+              fs.writeFileSync('/tmp/buying-qa/report.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result,null,2));
+              if(result.some(x=>x.http!==200||x.width!==x.scrollWidth||x.images.length<7||x.images.some(i=>!i.loaded)||x.line.length!==9||x.tel.length!==4||x.faqs!==16||x.missingAnchors.length||x.outOfBounds.length||x.errors.length||x.bad.length))process.exitCode=1;
+            }finally{await browser.close()}
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - name: Archive QA proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aircon-buying-live-20261119
+          path: /tmp/buying-qa/
+          if-no-files-found: warn
