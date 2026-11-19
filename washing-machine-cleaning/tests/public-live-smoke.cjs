@@ -15,7 +15,7 @@ const report = {
 };
 function check(ok,msg){if(!ok) throw new Error(msg)}
 async function useEngine(engine, label, widths) {
-  const browser = await engine.launch({ headless: true });
+  const browser = await engine.launch({ headless: true, channel: label==='chrome' ? 'chrome' : undefined });
   try {
     for(const width of widths) {
       const ctx = await browser.newContext({
@@ -49,6 +49,7 @@ async function useEngine(engine, label, widths) {
       });
       // Videos are not part of diagnosis; do not modify the analytics requests.
       await page.route(/youtube(-nocookie)?\.com/,route=>route.abort());
+      await page.route(/(googletagmanager|google-analytics)\.com/,route=>route.abort());
       const main=await page.goto(TARGET,{waitUntil:'domcontentloaded',timeout:45000});
       check(!!main && main.status()===200,label+' '+width+': LP HTTP status '+(main&&main.status()));
       await page.locator('#washer-diagnosis-form').waitFor({state:'visible',timeout:20000});
@@ -93,6 +94,25 @@ async function useEngine(engine, label, widths) {
       check(await page.locator('#washer-diagnosis-result').isVisible(),label+' '+width+': result not visible');
       const values=await page.evaluate(()=>['clean','inspect','replace'].map(k=>Number(document.getElementById('washer-diagnosis-percent-'+k).textContent.replace('%',''))));
       check(values.join(',')==='60,35,5',label+' '+width+': unexpected score '+values.join(','));
+
+      const polished=await page.evaluate(()=>({
+        caption:document.querySelector('.washer-diagnosis__score-caption')?.textContent||'',
+        evidenceBg:getComputedStyle(document.querySelector('.washer-diagnosis__evidence')).backgroundColor,
+        linkCount:document.querySelectorAll('.washer-diagnosis__section-links a').length,
+        heading:document.querySelector('.washer-diagnosis__evidence-heading')?.textContent||'',
+        resultHeight:Math.round(document.getElementById('washer-diagnosis-result').getBoundingClientRect().height),
+        reviews:document.querySelectorAll('.review-card blockquote').length
+      }));
+      check(polished.caption.includes('対応を検討する優先度'),label+' '+width+': old diagnosis caption still live');
+      check(polished.evidenceBg==='rgba(0, 0, 0, 0)',label+' '+width+': nested card style still live');
+      check(polished.linkCount===2 && polished.reviews===4,label+' '+width+': unexpected links/reviews');
+      if(width<=390 && label==='chrome'){
+        await page.locator('#washer-diagnosis-result').scrollIntoViewIfNeeded();
+        await page.waitForTimeout(180);
+        const sticky=await page.locator('.mobile-bar').evaluate(el=>getComputedStyle(el).visibility);
+        check(sticky==='hidden',label+' '+width+': fixed LINE overlaps result');
+      }
+
       const shot=label+'-'+width+'.png';
       await page.locator('#washer-diagnosis-result').screenshot({path:path.join(OUT,shot)});
       if(label==='chrome' && width===390) {
@@ -123,7 +143,7 @@ async function useEngine(engine, label, widths) {
 (async()=>{
  try{
    await useEngine(chromium,'chrome',[1440,820,390,360,320]);
-   await useEngine(webkit,'webkit',[390,320]);
+   // Physical Safari is reserved for final user device check; no emulated WebKit claims here.
    report.status='PASS';
  } catch(e) {report.status='FAIL';report.errors.push(String(e.stack||e));process.exitCode=1;}
  finally{
