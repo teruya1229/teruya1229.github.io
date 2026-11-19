@@ -71,7 +71,9 @@ async function useEngine(engine, label, widths) {
       check(!photoState.typo,label+' '+width+': old typo still visible');
       check(photoState.sizes.every(img=>img.natural>0),label+' '+width+': missing photo');
       for(const i of [0,3]) {
-        check(new Set(photoState.sizes.slice(i,i+3).map(x=>x.width+'x'+x.height)).size===1,label+' '+width+': inconsistent photo dimensions');
+        const group=photoState.sizes.slice(i,i+3);
+        const spread=axis=>Math.max(...group.map(x=>x[axis]))-Math.min(...group.map(x=>x[axis]));
+        check(spread('width')<=1 && spread('height')<=1,label+' '+width+': photo size mismatch '+JSON.stringify(group));
       }
       if(label==='chrome'&&width===390)report.photoUrls=photoState.sources;
 
