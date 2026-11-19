@@ -1212,6 +1212,12 @@ body.is-fixed-cta { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)
   .fv__title,
   .fv__lead,
   .fv__note { color: #fff; }
+  .fv__ok {
+    justify-self: start;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(12, 39, 56, 0.94);
+  }
 }
 @media (max-width: 767px) {
   .sec-fv {
@@ -1283,7 +1289,8 @@ body.is-fixed-cta { padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)
     min-height: 720px;
     width: 42%;
     max-width: 520px;
-    padding: 28px 0 36px 6vw;
+    padding: 28px 24px 36px 6vw;
+    background: rgba(12, 39, 56, 0.92);
   }
   .fv__diagram {
     width: 240px;
