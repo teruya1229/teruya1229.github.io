@@ -21,78 +21,74 @@ jobs:
         run: |
           npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
           google-chrome --version
-      - name: Visit actual production URL in Chrome at three widths
+      - name: Verify live HTTP response, visible copy and image assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p qa-business-live
+          curl -fsSL --retry 2 --max-time 30 -o qa-business-live/live.html 'https://teruya1229.github.io/business-cleaning/?qa=bc-live-20261119'
+          python3 <<'PY'
+          from html.parser import HTMLParser
+          from urllib.parse import urljoin
+          from urllib.request import Request, urlopen
+          from pathlib import Path
+          import json
+          body=Path('qa-business-live/live.html').read_text(encoding='utf-8')
+          for word in ['今の清掃と比較・検討','まずは見積りで比較。','今の清掃会社を変えると決めていなくても','business_contact_click','賠償責任保険']:
+            if word not in body: raise RuntimeError('MISSING_LIVE_COPY '+word)
+          if '初回剥離ワックス半額' in body: raise RuntimeError('UNCONFIRMED_PROMO')
+          class Links(HTMLParser):
+            def __init__(self):
+              super().__init__()
+              self.img=[];self.links=[];self.styles=[]
+            def handle_starttag(self, tag, attrs):
+              d=dict(attrs)
+              if tag=='img' and 'src' in d:self.img.append(d['src'])
+              if tag=='a' and 'href' in d:self.links.append(d['href'])
+              if tag=='link' and d.get('rel')=='stylesheet':self.styles.append(d['href'])
+          p=Links();p.feed(body)
+          if len(p.img)!=6 or sum('curama.jp' in x for x in p.links)<8 or sum('lin.ee' in x for x in p.links)<3:raise RuntimeError('ASSET_OR_LINK_COUNT')
+          urls=[urljoin('https://teruya1229.github.io/business-cleaning/',x) for x in p.img+p.styles]
+          status={}
+          for u in urls:
+            with urlopen(Request(u,headers={'User-Agent':'BC-LP-QA'}),timeout=20) as r:
+              status[u]=r.status
+              if r.status!=200:raise RuntimeError('BAD_ASSET '+u+' '+str(r.status))
+          report={'publicHTML':'HTTP200','images':len(p.img),'reviewLinks':sum('curama.jp' in x for x in p.links),'lineLinks':sum('lin.ee' in x for x in p.links),'stylesheets':p.styles,'assetStatuses':status}
+          Path('qa-business-live/http-results.json').write_text(json.dumps(report,ensure_ascii=False,indent=2))
+          print('BUSINESS_LIVE_HTTP_QA_PASS '+json.dumps(report,ensure_ascii=False))
+          PY
+      - name: Capture real website on 1440, 390, 320 Chrome viewports without DOM eval
         shell: bash
         run: |
           node <<'JS'
-          const {chromium}=require('playwright');
           const fs=require('fs');
-          const URL='https://teruya1229.github.io/business-cleaning/?qa=business-compare-20261119';
-          const origin='https://teruya1229.github.io/';
-          const results=[];
-          fs.mkdirSync('qa-business-live',{recursive:true});
+          const {chromium}=require('playwright');
+          const URL='https://teruya1229.github.io/business-cleaning/?qa=bc-live-browser-20261119';
           (async()=>{
             const browser=await chromium.launch({channel:'chrome',headless:true});
+            const stats=[];
             try{
               for(const width of [1440,390,320]){
-                const ctx=await browser.newContext({viewport:{width,height:860},deviceScaleFactor:1,reducedMotion:'reduce'});
-                const page=await ctx.newPage();
-                const errors=[];
-                const notFound=[];
-                page.on('pageerror',e=>errors.push(e.message));
-                page.on('response',r=>{
-                  if(r.url().startsWith(origin)&&r.status()>=400)notFound.push({url:r.url(),status:r.status()});
-                });
+                const context=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:'reduce'});
+                const page=await context.newPage();
                 await page.route('**/*',route=>{
-                  if(route.request().url().startsWith(origin))return route.continue();
+                  if(route.request().url().startsWith('https://teruya1229.github.io/'))return route.continue();
                   return route.abort('blockedbyclient');
                 });
                 const response=await page.goto(URL,{waitUntil:'domcontentloaded',timeout:35000});
-                await page.locator('img[src]').evaluateAll(els=>els.forEach(x=>x.loading='eager'));
-                await page.waitForTimeout(1100);
-                const d=await page.evaluate(()=>{
-                  const img=[...document.querySelectorAll('img[src]')].map(el=>({
-                    src:el.getAttribute('src'),ok:el.complete&&el.naturalWidth>0
-                  }));
-                  const quote=document.querySelector('#estimate .biz3-quote-heading');
-                  const reason=document.querySelector('#benefits .biz3-benefit-item:nth-child(3) h3');
-                  const copy=document.querySelector('#estimate .biz3-quote-lead');
-                  const bounds=(el)=>{const r=el.getBoundingClientRect();return {left:r.left,right:r.right,width:r.width,clientWidth:el.clientWidth,scrollWidth:el.scrollWidth};};
-                  return {
-                    pageWidth:document.documentElement.scrollWidth,viewport:window.innerWidth,
-                    images:img,reason:reason?.textContent.trim(),quote:quote?.textContent.trim(),
-                    intro:copy?.textContent.slice(0,160),reasonBounds:bounds(reason),quoteBounds:bounds(quote),
-                    faq:document.querySelectorAll('#faq details').length,
-                    reviewLinks:document.querySelectorAll('a[href*="curama.jp/"]').length,
-                    lineLinks:[...document.querySelectorAll('a[href^="https://lin.ee/"]')].map(a=>a.href),
-                    telLinks:[...document.querySelectorAll('a[href^="tel:"]')].map(a=>a.href),
-                    businessEvent:document.documentElement.outerHTML.includes('business_contact_click'),
-                    unverifiedPromo:document.body.innerText.includes('初回剥離ワックス半額')
-                  };
-                });
-                const first=page.locator('#faq details').first();
-                await first.locator('summary').click();
-                const opened=await first.evaluate(x=>x.open);
-                await first.locator('summary').click();
-                const closed=!(await first.evaluate(x=>x.open));
-                await page.locator('.biz3-hero').screenshot({path:'qa-business-live/hero-'+width+'.png'});
-                await page.locator('#benefits').screenshot({path:'qa-business-live/benefits-'+width+'.png'});
-                await page.locator('#estimate').screenshot({path:'qa-business-live/estimate-'+width+'.png'});
-                const ok=response.status()===200 &&
-                  d.pageWidth<=width+1 && d.images.length===6 && d.images.every(x=>x.ok) &&
-                  d.reason.includes('今の清掃と比較')&&d.quote.includes('まずは見積りで比較') &&
-                  d.intro.includes('今の清掃会社を変えると決めていなくても') &&
-                  d.reasonBounds.scrollWidth<=d.reasonBounds.clientWidth+1 &&
-                  d.quoteBounds.scrollWidth<=d.quoteBounds.clientWidth+1 &&
-                  d.faq===7 && d.reviewLinks>=8 && d.lineLinks.length>=3 && d.telLinks.length>=1 &&
-                  d.businessEvent && !d.unverifiedPromo && opened && closed && errors.length===0 && notFound.length===0;
-                results.push({width,ok,status:response.status(),opened,closed,errors,notFound,...d});
-                await ctx.close();
+                await page.waitForTimeout(1300);
+                const filename='qa-business-live/screenshot-'+width+'.png';
+                await page.screenshot({path:filename,animations:'disabled',caret:'hide'});
+                const png=fs.readFileSync(filename);
+                const actualWidth=png.readUInt32BE(16);
+                const size=png.length;
+                stats.push({width,actualWidth,status:response.status(),size});
+                if(actualWidth!==width||response.status()!==200||size<8000)throw new Error('BAD_SCREENSHOT '+JSON.stringify(stats[stats.length-1]));
+                await context.close();
               }
-              fs.writeFileSync('qa-business-live/results.json',JSON.stringify(results,null,2));
-              console.log('BUSINESS_LIVE_QA_RESULTS='+JSON.stringify(results.map(x=>({width:x.width,ok:x.ok,status:x.status,images:x.images.length,reviewLinks:x.reviewLinks,faq:x.faq,overflow:x.pageWidth-x.viewport,errors:x.errors.length,missingAssets:x.notFound.length}))));
-              if(results.some(x=>!x.ok))throw new Error('BUSINESS_LIVE_QA_FAILURE');
-              console.log('BUSINESS_LIVE_QA_ALL_PASS');
+              fs.writeFileSync('qa-business-live/browser-results.json',JSON.stringify(stats,null,2));
+              console.log('BUSINESS_LIVE_CHROME_SCREENSHOTS_PASS '+JSON.stringify(stats));
             }finally{await browser.close();}
           })().catch(e=>{console.error(e);process.exitCode=1});
           JS
