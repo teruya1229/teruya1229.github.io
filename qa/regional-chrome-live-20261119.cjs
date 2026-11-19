@@ -10,13 +10,13 @@ const p=await ctx.newPage(),errors=[],bad=[];
 p.on('pageerror',e=>errors.push(e.message));p.on('response',r=>{if(r.url().startsWith('https://teruya1229.github.io/')&&r.status()>=400)bad.push(r.status()+' '+r.url())});
 await p.route('**/*',route=>{const u=route.request().url();return u.startsWith('https://teruya1229.github.io/')||u.startsWith('data:')?route.continue():route.abort('blockedbyclient')});
 let res=await p.goto(url,{waitUntil:'domcontentloaded',timeout:45000});
-for(let i=0;i<5&&!(await p.locator('body').innerText()).includes(cfg.check);i++){await p.waitForTimeout(2400);res=await p.reload({waitUntil:'domcontentloaded',timeout:45000})}
+for(let i=0;i<5&&!(await p.locator('body').textContent()).includes(cfg.check);i++){await p.waitForTimeout(2400);res=await p.reload({waitUntil:'domcontentloaded',timeout:45000})}
 await p.locator('img').evaluateAll(es=>es.forEach(e=>e.loading='eager'));
 await p.evaluate(async()=>{await Promise.all([...document.images].map(e=>e.decode().catch(()=>{})));for(let y=0;y<document.documentElement.scrollHeight;y+=850){scrollTo(0,y);await new Promise(r=>setTimeout(r,10))}scrollTo(0,0)});
 const info=await p.evaluate(()=>{
 const ids=new Set([...document.querySelectorAll('[id]')].map(e=>e.id));
 return {width:innerWidth,scrollWidth:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight,
-h1:document.querySelector('h1')?.innerText||'',h1WordBreak:getComputedStyle(document.querySelector('h1')).wordBreak,h1Wbr:document.querySelector('h1 wbr')!==null,allText:document.body.innerText,
+h1:document.querySelector('h1')?.innerText||'',h1WordBreak:getComputedStyle(document.querySelector('h1')).wordBreak,h1Wbr:document.querySelector('h1 wbr')!==null,allText:document.body.textContent,
 images:[...document.images].map(e=>({src:e.getAttribute('src'),loaded:e.complete&&e.naturalWidth>0})),
 line:[...document.querySelectorAll('a[href*="lin.ee"]')].map(e=>e.getAttribute('href')),
 tel:[...document.querySelectorAll('a[href^="tel:"]')].map(e=>e.getAttribute('href')),
