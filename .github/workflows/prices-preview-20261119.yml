@@ -2,7 +2,7 @@ name: Prices LP 20261119 before after Chrome QA
 on:
   push:
     branches: [improve/prices-two-axis-20261119]
-    paths: [.github/workflows/prices-preview-20261119.yml]
+    paths: [.github/workflows/prices-preview-20261119.yml, qa/prices-preview-20261119.cjs]
 permissions:
   contents: read
 jobs:
