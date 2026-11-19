@@ -106,6 +106,27 @@ async function useEngine(engine, label, widths) {
       check(polished.caption.includes('対応を検討する優先度'),label+' '+width+': old diagnosis caption still live');
       check(polished.evidenceBg==='rgba(0, 0, 0, 0)',label+' '+width+': nested card style still live');
       check(polished.linkCount===2 && polished.reviews===4,label+' '+width+': unexpected links/reviews');
+
+      const wholePage=await page.evaluate(()=>({
+        sections:document.querySelectorAll('main section').length,
+        painCopy:document.querySelector('#concerns h2')?.textContent?.trim()||'',
+        notes:document.querySelector('#price .price-notes')?.tagName,
+        notesText:document.querySelector('#price .price-notes')?.textContent||'',
+        notesOpen:document.querySelector('#price .price-notes')?.open,
+        price:document.querySelector('.price-card--featured .price-card__price strong')?.textContent?.trim(),
+        quoteLinks:[...document.querySelectorAll('.review-card__citation a')].map(x=>({text:x.textContent.trim(),href:x.getAttribute('href')}))
+      }));
+      check(wholePage.sections===13,label+' '+width+': section count changed');
+      check(wholePage.painCopy.includes('黒いカス・ニオイ')&&wholePage.painCopy.includes('乾燥の遅さ'),label+' '+width+': new full page copy not live');
+      check(wholePage.notes==='DETAILS'&&!wholePage.notesOpen,label+' '+width+': duplicate notes not collapsed');
+      check(wholePage.notesText.includes('2026年11月30日まで')&&wholePage.notesText.includes('背面ボルト式')&&wholePage.notesText.includes('故障は洗浄で改善しない'),label+' '+width+': pricing conditions missing');
+      check(wholePage.price==='25,000',label+' '+width+': drum price changed');
+      check(wholePage.quoteLinks.length===3&&wholePage.quoteLinks.every(x=>x.text==='口コミの掲載元を確認 ↗'&&x.href.includes('curama.jp/washer/')),label+' '+width+': review source wrong');
+      await page.locator('#price .price-notes summary').click();
+      check(await page.locator('#price .price-notes').evaluate(el=>el.open),label+' '+width+': price notes fail to expand');
+      await page.locator('#price .price-notes summary').click();
+      check(!(await page.locator('#price .price-notes').evaluate(el=>el.open)),label+' '+width+': price notes fail to close');
+
       if(width<=390 && label==='chrome'){
         await page.locator('#washer-diagnosis-result').scrollIntoViewIfNeeded();
         await page.waitForTimeout(180);
