@@ -1,0 +1,65 @@
+name: Toilet LP integrated live Chrome QA
+on:
+  push:
+    branches: [qa/toilet-integrated-20261119]
+    paths: [.github/workflows/toilet-integrated-qa-20261119.yml]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 17
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Japanese fonts and Chrome automation
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk >/dev/null
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+      - name: Inspect live toilet LP at desktop and mobile widths
+        run: |
+          mkdir -p /tmp/toilet-qa
+          node <<'JS'
+          const fs=require('fs');
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({headless:true,channel:'chrome'});
+            const report=[];
+            try{
+              for(const width of [1440,390,320]){
+                const ctx=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:'reduce'});
+                const page=await ctx.newPage(),bad=[],errors=[];
+                page.on('pageerror',e=>errors.push(e.message));
+                page.on('response',r=>{if(r.url().startsWith('https://teruya1229.github.io/')&&r.status()>=400)bad.push(r.status()+' '+r.url())});
+                await page.route('**/*',r=>{const url=r.request().url();return url.startsWith('https://teruya1229.github.io/')||url.startsWith('data:')?r.continue():r.abort()});
+                const response=await page.goto('https://teruya1229.github.io/toilet/',{waitUntil:'domcontentloaded',timeout:45000});
+                await page.locator('img').evaluateAll(imgs=>imgs.forEach(i=>i.loading='eager'));
+                await page.evaluate(async()=>{await Promise.all([...document.images].map(i=>i.decode().catch(()=>{})));for(let y=0;y<document.documentElement.scrollHeight;y+=650){scrollTo(0,y);await new Promise(r=>setTimeout(r,20))};scrollTo(0,0)});
+                await page.waitForTimeout(450);
+                const metrics=await page.evaluate(()=>{
+                  let out=[...document.querySelectorAll('h1,h2,h3,p,a,button,summary')].filter(e=>e.getClientRects().length).map(e=>({text:(e.innerText||'').slice(0,35),r:e.getBoundingClientRect()})).filter(x=>x.r.width && (x.r.left<-3||x.r.right>innerWidth+3)).slice(0,10);
+                  return {width:innerWidth,scrollWidth:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight,images:[...document.images].map(i=>({src:i.getAttribute('src'),loaded:i.complete&&i.naturalWidth>0})),faqs:document.querySelectorAll('#faq details').length,line:document.querySelectorAll('a[href*="lin.ee"]').length,telephone:document.querySelectorAll('a[href^="tel:"]').length,prices:[...document.querySelectorAll('.fv__price-num')].map(e=>e.innerText.trim()),outOfBounds:out,font:document.fonts.check('16px "Noto Sans CJK JP"','日本語'),head:document.querySelector('h1')?.innerText};
+                });
+                await page.screenshot({path:'/tmp/toilet-qa/live-'+width+'-full.png',fullPage:true,animations:'disabled',timeout:60000});
+                const faq=page.locator('#faq details');
+                for(let i=0;i<await faq.count();i++){await faq.nth(i).locator('summary').click();if(!(await faq.nth(i).evaluate(e=>e.open)))errors.push('FAQ '+i);await faq.nth(i).locator('summary').click()}
+                report.push({http:response.status(),...metrics,bad,errors});
+                await ctx.close();
+              }
+              fs.writeFileSync('/tmp/toilet-qa/report.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
+              if(report.some(x=>x.http!==200||x.width!==x.scrollWidth||x.images.some(i=>!i.loaded)||x.bad.length||x.errors.length||x.outOfBounds.length||x.faqs!==14||x.line<6))process.exitCode=1;
+            }finally{await browser.close()}
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - name: Save visual proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: toilet-live-qa-20261119
+          path: /tmp/toilet-qa/
+          if-no-files-found: warn
