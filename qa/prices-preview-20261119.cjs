@@ -25,10 +25,10 @@ await page.route('**/*',r=>r.request().url().startsWith('http://127.0.0.1:'+port
 const resp=await page.goto('http://127.0.0.1:'+port+'/prices/',{waitUntil:'domcontentloaded',timeout:45000});
 await page.locator('img').evaluateAll(els=>els.forEach(e=>e.loading='eager'));
 await page.evaluate(async()=>{await Promise.all([...document.images].map(e=>e.decode().catch(()=>{})))});
-const home=await page.evaluate(()=>({cards:[...document.querySelectorAll('#panel-home .price-card')].map(e=>e.innerText.trim()),selected:document.querySelector('#tab-home').getAttribute('aria-selected')}));
+const home=await page.evaluate(()=>({cards:[...document.querySelectorAll('#panel-home .price-card')].map(e=>[e.querySelector('h4')?.textContent,e.querySelector('.price')?.textContent,e.querySelector('.price-note')?.textContent,e.querySelector('.detail-link')?.textContent].join('|').trim()),selected:document.querySelector('#tab-home').getAttribute('aria-selected')}));
 await page.screenshot({path:path.join(out,(old?'old':'new')+'-home-'+width+'.png'),fullPage:true,animations:'disabled',timeout:60000});
 await page.locator('#tab-business').click();
-const biz=await page.evaluate(()=>({cards:[...document.querySelectorAll('#panel-business .price-card')].map(e=>e.innerText.trim()),selected:document.querySelector('#tab-business').getAttribute('aria-selected'),homeHidden:document.querySelector('#panel-home').hidden,businessVisible:!document.querySelector('#panel-business').hidden}));
+const biz=await page.evaluate(()=>({cards:[...document.querySelectorAll('#panel-business .price-card')].map(e=>[e.querySelector('h4')?.textContent,e.querySelector('.price')?.textContent,e.querySelector('.price-note')?.textContent,e.querySelector('.detail-link')?.textContent].join('|').trim()),selected:document.querySelector('#tab-business').getAttribute('aria-selected'),homeHidden:document.querySelector('#panel-home').hidden,businessVisible:!document.querySelector('#panel-business').hidden}));
 await page.screenshot({path:path.join(out,(old?'old':'new')+'-business-'+width+'.png'),fullPage:true,animations:'disabled',timeout:60000});
 await page.locator('#tab-business').focus();await page.keyboard.press('ArrowLeft');
 const keyboard=await page.locator('#tab-home').getAttribute('aria-selected');
