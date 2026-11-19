@@ -131,3 +131,46 @@
 .price-card__value ol{margin:8px 0 9px 18px;padding:0;list-style:decimal}
 .price-card__value li{font-size:12px;line-height:1.75;color:#46626c;margin:0 0 2px}
 .price-card__value a{font-size:12px;line-height:1.55;font-weight:850;color:#12697b;text-decoration:underline;text-underline-offset:3px}
+
+
+/* 2026-11-19 visual polish: trust the actual photos, simplify decoration.
+   Prices, evidence, original copy, CTA and section order remain unchanged. */
+.hero__trust{gap:7px 12px}
+.hero__trust span{background:transparent;border:0;border-radius:0;border-left:2px solid #a7cbcb;padding:0 0 0 9px;color:#315b66;font-size:12px;line-height:1.6}
+.hero__trust span:first-child{border-left:0;padding-left:0}
+.hero__prices>div{box-shadow:none;border-color:#cadfdd;border-radius:11px}
+.hero__scope{background:transparent;padding:6px 0 6px 12px;border-left:2px solid #65afa9;font-size:13px;line-height:1.7}
+.micro-note{font-size:12px;line-height:1.75}
+.hero__diagnosis-jump{box-shadow:0 4px 12px rgba(14,105,106,.06);border-radius:11px}
+.section{padding-block:76px}
+.sec-head{margin-bottom:30px}
+.sec-head>p:last-child{margin-top:9px}
+.symptom{box-shadow:none;border-color:#dce8e8;border-radius:14px}
+.step-cards>div{box-shadow:none;border-color:#e0eae8;border-radius:12px}
+.review-card:not(.review-card--featured){background:transparent;box-shadow:none;border:0;border-bottom:1px solid #c5dedb;border-radius:0;padding:22px 9px}
+.review-card__citation,.review-card__source{font-size:12px;line-height:1.7}
+.review-card__citation a{overflow-wrap:anywhere}
+.price-card__value{margin:12px 0;padding:12px 0 12px 15px;border:0;border-left:3px solid #b9dcd4;border-radius:0;background:transparent}
+.price-card__value>strong{font-size:14px}
+.price-card__value li{font-size:13px;line-height:1.7}
+.price-card__value a{font-size:13px}
+.flow-grid>div{background:transparent;border:0;border-top:1px solid rgba(174,222,223,.36);border-radius:0;padding:23px 18px 20px}
+.flow-grid>div:first-child{border-top-color:rgba(174,222,223,.63)}
+.related-service{background:transparent;box-shadow:none;border:0;border-bottom:1px solid #d8e4e8;border-radius:0;padding:19px 10px;transition:border-color .15s}
+.related-service:hover,.related-service:focus-visible{transform:none;border-color:#16858b}
+html.washer-body-line-visible .mobile-bar{visibility:hidden;opacity:0;pointer-events:none}
+@media(max-width:720px){
+ .section{padding-block:56px}
+ .sec-head{margin-bottom:24px}
+ .hero__trust{gap:6px 9px}
+ .hero__trust span{font-size:11.5px}
+ .hero__prices>div{border-radius:10px}
+ .hero__scope{font-size:12.5px;line-height:1.65}
+ .micro-note{font-size:12px;line-height:1.7}
+ .hero__diagnosis-copy small{font-size:11px}
+ .step-cards>div{padding:17px 18px}
+ .flow-grid>.flow-card{padding:15px 7px 16px}
+ .flow-grid>.flow-card:first-child{padding-top:16px}
+ .related-service{padding:16px 5px}
+ .price-card__value{padding:10px 0 10px 13px}
+}
