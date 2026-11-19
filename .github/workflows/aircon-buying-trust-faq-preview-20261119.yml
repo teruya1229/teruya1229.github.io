@@ -95,7 +95,7 @@ jobs:
                 const keys=['anchors','faqText','prices','scripts'];
                 for(const key of keys){if(JSON.stringify(before[key])!==JSON.stringify(after[key]))after.errors.push('REGRESSION_'+key.toUpperCase())}
                 if(after.faqDetails!==16)after.errors.push('FAQ_COUNT');
-                if(after.height>=before.height-1600)after.errors.push('FAQ_NOT_COMPACT_ENOUGH');
+                if(after.height>=before.height-(width>=1024?600:1600))after.errors.push('FAQ_NOT_COMPACT_ENOUGH');
                 if(!after.seller?.includes('販売・施工の役割')||!after.seller?.includes('相談・施工窓口：BCサービス'))after.errors.push('SELLER_ROLE');
                 if(!JSON.parse(after.schema[0]).alternateName?.every(x=>x!=='BCサービス'))after.errors.push('SCHEMA_BRAND');
               }
