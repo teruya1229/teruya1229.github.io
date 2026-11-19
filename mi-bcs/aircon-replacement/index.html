@@ -1445,6 +1445,50 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
+  
+    /* Keep all FAQ answers accessible, without forcing sixteen open cards into the page. */
+    #faq .faq-item {
+      padding: 0;
+      overflow: clip;
+      box-shadow: none;
+      border-radius: 10px;
+    }
+    #faq .faq-item summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      min-height: 56px;
+      padding: 17px 20px;
+      margin: 0;
+      color: var(--brand);
+      font-size: 1.01rem;
+      font-weight: 800;
+      line-height: 1.65;
+      list-style: none;
+      cursor: pointer;
+    }
+    #faq .faq-item summary::-webkit-details-marker { display: none; }
+    #faq .faq-item summary::after {
+      content: "＋";
+      flex: 0 0 auto;
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--brand);
+    }
+    #faq .faq-item[open] summary::after { content: "−"; }
+    #faq .faq-item summary:focus-visible {
+      outline: 3px solid var(--brand);
+      outline-offset: -4px;
+    }
+    #faq .faq-item p {
+      border-top: 1px solid var(--border);
+      padding: 16px 20px 19px;
+      color: var(--text-secondary);
+      font-size: 0.975rem;
+      line-height: 1.75;
+    }
+
   </style>
   <link rel="stylesheet" href="./aircon-estimator.css">
   <script defer src="./aircon-estimator.js"></script>
