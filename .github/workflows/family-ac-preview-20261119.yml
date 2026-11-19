@@ -2,7 +2,7 @@ name: Family AC LP two-axis Chrome preview QA 20261119
 on:
   push:
     branches: [improve/aircon-family-proof-20261119]
-    paths: [.github/workflows/family-ac-preview-20261119.yml]
+    paths: [.github/workflows/family-ac-preview-20261119.yml, qa/family-ac-preview-20261119.cjs]
 permissions:
   contents: read
 jobs:
