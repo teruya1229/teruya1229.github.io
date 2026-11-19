@@ -50,10 +50,9 @@ jobs:
                 const response=await page.goto(URL,{waitUntil:'domcontentloaded',timeout:35000});
                 await page.locator('img[src]').evaluateAll(els=>els.forEach(x=>x.loading='eager'));
                 await page.waitForTimeout(1100);
-                const d=await page.evaluate(async()=>{
-                  const img=await Promise.all([...document.querySelectorAll('img[src]')].map(async el=>{
-                    try{await el.decode();}catch(e){}
-                    return {src:el.getAttribute('src'),ok:el.complete&&el.naturalWidth>0};
+                const d=await page.evaluate(()=>{
+                  const img=[...document.querySelectorAll('img[src]')].map(el=>({
+                    src:el.getAttribute('src'),ok:el.complete&&el.naturalWidth>0
                   }));
                   const quote=document.querySelector('#estimate .biz3-quote-heading');
                   const reason=document.querySelector('#benefits .biz3-benefit-item:nth-child(3) h3');
