@@ -47,7 +47,7 @@ jobs:
                 });
                 await page.screenshot({path:'/tmp/toilet-qa/live-'+width+'-full.png',fullPage:true,animations:'disabled',timeout:60000});
                 const faq=page.locator('#faq details');
-                for(let i=0;i<await faq.count();i++){await faq.nth(i).locator('summary').click();if(!(await faq.nth(i).evaluate(e=>e.open)))errors.push('FAQ '+i);await faq.nth(i).locator('summary').click()}
+                for(let i=0;i<await faq.count();i++){const node=faq.nth(i),before=await node.evaluate(e=>e.open);await node.locator('summary').click();const after=await node.evaluate(e=>e.open);if(after===before)errors.push('FAQ_NO_TOGGLE '+i);await node.locator('summary').click();if((await node.evaluate(e=>e.open))!==before)errors.push('FAQ_NO_RESTORE '+i)}
                 report.push({http:response.status(),...metrics,bad,errors});
                 await ctx.close();
               }
