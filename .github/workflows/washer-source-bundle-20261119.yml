@@ -1,0 +1,23 @@
+name: Washer design QA source bundle
+on:
+  push:
+    branches: [fix/washer-design-polish-20261119]
+    paths: ['.github/workflows/washer-source-bundle-20261119.yml']
+permissions:
+  contents: read
+jobs:
+  bundle:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Archive page and shared assets without running changes
+        run: |
+          tar -czf "${RUNNER_TEMP}/washer-design-source.tgz" washing-machine-cleaning cursor-test/images assets
+      - name: Save source archive for independent visual review
+        uses: actions/upload-artifact@v4
+        with:
+          name: washer-design-source-bundle
+          path: ${{ runner.temp }}/washer-design-source.tgz
