@@ -45,7 +45,7 @@ jobs:
               a:(el.querySelector('p')?.textContent||'').trim()
             })),
             faqDetails:document.querySelectorAll('#faq details.faq-item').length,
-            prices:(document.body.innerText.match(/[\d,]+円/g)||[]),
+            prices:(document.body.textContent.match(/[\d,]+円/g)||[]),
             scripts:document.querySelectorAll('script').length,
             seller:document.querySelector('#company .overview-table')?.innerText,
             schema:[...document.querySelectorAll('script[type="application/ld+json"]')].map(x=>x.textContent),
