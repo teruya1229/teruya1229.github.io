@@ -47,6 +47,7 @@ assert(JSON.stringify(before.line)===JSON.stringify(after.line)&&JSON.stringify(
 assert(JSON.stringify(before.links)===JSON.stringify(after.links),'Links changed '+w);
 assert(before.images.length===after.images.length&&after.images.every(x=>x.loaded),'Images missing '+w);
 assert(after.faq===9&&after.detail===12,'FAQ/details regression '+w);
+if(after.missingAnchors.length||after.outOfBounds.length||after.errors.length||after.bad.length)console.log('FAMILY_AIRCON_QA_DIAG '+JSON.stringify({width:w,old:{missingAnchors:before.missingAnchors,outOfBounds:before.outOfBounds,errors:before.errors,bad:before.bad},after:{missingAnchors:after.missingAnchors,outOfBounds:after.outOfBounds,errors:after.errors,bad:after.bad}}));
 assert(!after.missingAnchors.length&&!after.outOfBounds.length&&!after.errors.length&&!after.bad.length,'layout/js/local '+w);
 results.push({width:w,http:after.http,oldHeight:before.height,newHeight:after.height,images:after.images.length,faq:after.faq,details:after.detail,line:after.line.length,tel:after.tel.length,pass:true});}
 console.log('FAMILY_AIRCON_PREVIEW_PASS '+JSON.stringify(results));fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(results,null,2));
