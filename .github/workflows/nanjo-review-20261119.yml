@@ -2,7 +2,7 @@ name: Nanjo LP before after Chrome review 20261119
 on:
   push:
     branches: [improve/nanjo-trust-20261119]
-    paths: [.github/workflows/nanjo-review-20261119.yml]
+    paths: [.github/workflows/nanjo-review-20261119.yml, cursor-test/nanjo.html]
 permissions:
   contents: read
 jobs:
