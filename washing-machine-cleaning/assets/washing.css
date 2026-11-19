@@ -343,3 +343,8 @@ html.washer-body-line-visible .mobile-bar{visibility:hidden;opacity:0;pointer-ev
   .end-cta__inner>p:not(.section-kicker){font-size:17px}
   .end-cta__buttons{max-width:880px}
 }
+
+/* The existing manual line break in the washing explanation should not split a Japanese word on desktop. */
+@media (min-width:1200px) {
+  #why .split-intro h2{font-size:clamp(34px,2.7vw,39px);line-height:1.42}
+}
