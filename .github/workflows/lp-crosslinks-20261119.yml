@@ -1,0 +1,22 @@
+name: BC LP complete crosslink audit 20261119
+on:
+  push:
+    branches: [qa/lp-crosslinks-20261119]
+    paths: [.github/workflows/lp-crosslinks-20261119.yml]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Audit all internal link targets and LP graph
+        run: node qa/lp-crosslinks-20261119.cjs
+      - name: Save link audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with: {name: lp-crosslinks-20261119, path: qa-link-audit-20261119/, if-no-files-found: warn}
