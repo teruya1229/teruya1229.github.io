@@ -22,7 +22,7 @@ await page.locator('img').evaluateAll(es=>es.forEach(e=>e.loading='eager'));
 await page.evaluate(async()=>{await Promise.all([...document.images].map(x=>x.decode().catch(()=>{})));for(let y=0;y<document.documentElement.scrollHeight;y+=900){scrollTo(0,y);await new Promise(r=>setTimeout(r,7))}scrollTo(0,0)});
 const result=await page.evaluate(()=>{
 const grid=document.querySelector('.central-area-list'),cs=grid?getComputedStyle(grid):null; const heroEl=document.querySelector('.hero'),middleEl=document.getElementById('mid-cta');
-return {scroll:document.documentElement.scrollWidth,width:innerWidth,height:document.documentElement.scrollHeight,heroTop:heroEl?heroEl.getBoundingClientRect().top+scrollY:-1,midTop:middleEl?middleEl.getBoundingClientRect().top+scrollY:-1,hero:document.querySelector('.hero-inner')?.innerText||'',trust:document.querySelector('.trust-block')?.innerText||'',google:!!document.querySelector('.central-review-link[href*="google.com/maps/"]'),
+return {scroll:document.documentElement.scrollWidth,width:innerWidth,height:document.documentElement.scrollHeight,heroTop:heroEl?heroEl.getBoundingClientRect().top+scrollY:-1,midTop:middleEl?middleEl.getBoundingClientRect().top+scrollY:-1,hero:document.querySelector('.hero-inner')?.innerText||'',firstLineHeight:document.querySelector('h1 span')?.getBoundingClientRect().height,firstLineCss:parseFloat(getComputedStyle(document.querySelector('h1 span')).lineHeight),trust:document.querySelector('.trust-block')?.innerText||'',google:!!document.querySelector('.central-review-link[href*="google.com/maps/"]'),
 areas:grid?.querySelectorAll('.reason-item').length||0,columns:cs?.gridTemplateColumns?.split(' ').length||0,faqs:document.querySelectorAll('#faq details.faq-details').length,
 imgs:[...document.images].map(x=>({src:x.getAttribute('src'),ok:x.complete&&x.naturalWidth>0})),
 line:[...document.querySelectorAll('a[href*="lin.ee"]')].map(x=>x.getAttribute('href')),
@@ -47,6 +47,7 @@ must(x.quotes.length===y.quotes.length&&JSON.stringify(x.quotes)===JSON.stringif
 must(y.google&&y.tracking&&y.hero.includes('通常分解か完全分解か迷ったら'),'trust and GA4 '+width);
 must(y.areas===8&&y.columns===(width>720?2:1),'regional grid '+width+' '+y.columns);
 must(y.heroTop>=0&&y.heroTop<180&&y.midTop>y.heroTop+500,'hero must be first and mid CTA must be later '+width+' '+JSON.stringify({heroTop:y.heroTop,midTop:y.midTop}));
+must(y.firstLineHeight<=y.firstLineCss+2,'H1 first line must not wrap '+width+' '+JSON.stringify({actual:y.firstLineHeight,css:y.firstLineCss}));
 must(y.scroll<=width&&!y.overflow.length&&!y.errors.length&&!y.bad.length,'layout '+width+' '+JSON.stringify({overflow:y.overflow,errors:y.errors,bad:y.bad}));
 output.push({width,http:y.http,img:y.imgs.length,faq:y.faqs,regions:y.areas,columns:y.columns,line:y.line.length,tel:y.tel.length,reserve:y.reserve.length,reviews:y.quotes.length,overflow:0,errors:0,pass:true});}
 console.log('CENTRAL_PREVIEW_PASS '+JSON.stringify(output));fs.writeFileSync(path.join(out,'report.json'),JSON.stringify(output,null,2));
