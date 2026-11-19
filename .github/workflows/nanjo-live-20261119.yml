@@ -2,7 +2,7 @@ name: Nanjo LP postdeploy Chrome live QA 20261119
 on:
   push:
     branches: [qa/nanjo-live-20261119]
-    paths: [.github/workflows/nanjo-live-20261119.yml]
+    paths: [.github/workflows/nanjo-live-20261119.yml, qa/regional-chrome-live-20261119.cjs]
 permissions:
   contents: read
 jobs:
