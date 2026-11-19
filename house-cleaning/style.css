@@ -1463,3 +1463,51 @@ a.header-cta.btn-line {
 .text-center {
   text-align: center;
 }
+
+
+/* A single sourced customer quote, set apart without another card grid. */
+.floor-review {
+  margin: 26px auto 0;
+  max-width: 880px;
+  padding: 22px 26px;
+  border-left: 4px solid var(--warm);
+  background: #fff;
+  text-align: left;
+}
+.floor-review__eyebrow {
+  color: var(--brand-deep);
+  font-weight: 850;
+  font-size: 0.94rem;
+  margin: 0 0 10px;
+}
+.floor-review blockquote {
+  margin: 0;
+  color: var(--brand-deepest);
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  font-weight: 650;
+  line-height: 1.8;
+}
+.floor-review__source {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 16px;
+  justify-content: space-between;
+  margin: 16px 0 0;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+}
+.floor-review__source a {
+  color: var(--primary);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.floor-review__fine {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  margin: 12px 0 0;
+}
+@media (max-width: 480px) {
+  .floor-review { padding: 20px 17px; }
+}
