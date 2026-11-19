@@ -4,6 +4,7 @@ on:
     branches: [improve/mi-bcs-sales-faq-trust-20261119]
     paths:
       - .github/workflows/mi-bcs-ubuntu-qa-20261119.yml
+      - qa/mi-bcs-20261119.cjs
 permissions:
   contents: read
 jobs:
