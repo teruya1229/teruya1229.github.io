@@ -31,11 +31,12 @@ faq:document.querySelectorAll('#faq details.faq-details').length,
 detail:document.querySelectorAll('details').length,
 links:[...document.querySelectorAll('a[href]')].map(e=>e.getAttribute('href')),
 missingAnchors:[...document.querySelectorAll('a[href^="#"]')].map(e=>e.getAttribute('href').slice(1)).filter(x=>x&&!ids.has(x)),
-outOfBounds:[...document.querySelectorAll('h1,h2,h3,h4,p,a,summary')].filter(e=>e.getClientRects().length).map(e=>({t:(e.textContent||'').slice(0,25),r:e.getBoundingClientRect()})).filter(x=>x.r.width>0&&(x.r.left < -5||x.r.right>innerWidth+5)).slice(0,10),
+outOfBounds:[...document.querySelectorAll('h1,h2,h3,h4,p,a,summary')].filter(e=>e.getClientRects().length&&!e.closest('.header-nav')).map(e=>({t:(e.textContent||'').slice(0,25),r:e.getBoundingClientRect()})).filter(x=>x.r.width>0&&(x.r.left < -5||x.r.right>innerWidth+5)).slice(0,10),
 stale:canCount.map(term=>({term,exists:document.body.innerText.includes(term)})),
 campaignPresent:document.body.innerText.includes('200世帯達成まで')};});
 delete d.markupText;
 await page.screenshot({path:path.join(out,label+'-'+width+'.png'),fullPage:true,animations:'disabled',timeout:60000});
+if(width===320&&label==='after'){const nav=page.locator('.header-nav');const stat=await nav.evaluate(e=>{const prev=e.scrollLeft;e.scrollLeft=e.scrollWidth;const last=e.querySelector('a:last-of-type');return {scrollable:e.scrollWidth>e.clientWidth,lastWithin:e.scrollLeft+e.clientWidth>=last.offsetLeft+last.offsetWidth-3}});assert(stat.scrollable&&stat.lastWithin,'320px navigation cannot reach last link '+JSON.stringify(stat));}
 if(label==='after'){const faq=page.locator('#faq details.faq-details');for(let i=0;i<await faq.count();i++){const e=faq.nth(i),x=await e.evaluate(y=>y.open);await e.locator('summary').click();assert(await e.evaluate(y=>y.open)!==x,'FAQ toggle '+i+' width '+width);await e.locator('summary').click();assert(await e.evaluate(y=>y.open)===x,'FAQ restore '+i+' width '+width)}}
 await ctx.close();return {http:http.status(),...d,errors,bad}}
 (async()=>{let s0,s1,b;try{s0=await serve(false,8766);s1=await serve(true,8765);b=await chromium.launch({channel:'chrome',headless:true});const results=[];
