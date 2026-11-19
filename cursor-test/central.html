@@ -581,6 +581,13 @@
         font-size:0.875rem;
       }
     }
+    /* 中部8エリアの過剰なカードをコンパクトな一覧に */
+    .central-area-list { display:grid!important; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:24px; row-gap:0; max-width:1000px; margin:0 auto; }
+    .central-area-list .reason-item.card { margin:0!important; padding:18px 8px!important; background:transparent!important; border:0!important; border-bottom:1px solid #d6e0e6!important; border-radius:0!important; box-shadow:none!important; text-align:left!important; }
+    .central-area-list .reason-item::before { display:none!important; }
+    .central-area-list .reason-item p { margin-bottom:0!important; }
+    .central-review-link { color:#0b5275; font-weight:650; text-decoration:underline; text-underline-offset:3px; }
+    @media(max-width:720px) { .central-area-list { grid-template-columns:1fr; } .central-area-list .reason-item.card { padding:16px 4px!important; } }
   </style>
 </head>
 <body>
@@ -614,9 +621,9 @@
       <div class="hero-overlay"></div>
       <div class="hero-inner">
         <h1 class="hero-title"><span>沖縄中部の子育て家庭向け</span><span>エアコンクリーニング</span></h1>
-        <p class="hero-lead">まずはLINEで写真を送るだけ。17年経験の職人が料金目安をお伝えします。</p>
-        <p class="hero-intro">沖縄市・宜野湾市・うるま市など、中部エリアのご家庭向けにエアコンクリーニングを行っています。南城市からお伺いします。作業内容や料金目安は事前にお伝えします。</p>
-        <p class="hero-price-badge">料金目安を事前案内・追加費用は作業前に説明 <strong>9,000円〜</strong>（税込）</p>
+        <p class="hero-lead">通常分解か完全分解か迷ったら。清掃・現場経験17年の代表が、LINEの写真・型番から作業内容と料金目安をご案内します。</p>
+        <p class="hero-intro">南城市を拠点に沖縄市・宜野湾市・うるま市などへ訪問。機種・設置状況によって洗浄できる範囲を確認し、追加費用が生じる場合は作業前にご説明します。</p>
+        <p class="hero-price-badge">通常分解 <strong>9,000円〜</strong>（税込）</p>
         <p style="font-size: 0.85em; color: rgba(255,255,255,0.82); margin-bottom: 0.5em;">
   料金目安や追加料金の有無は、LINEで先に確認できます。
 </p>
@@ -626,7 +633,7 @@
         <a href="tel:05017241338" class="phone-subcta">急ぎの方は電話で相談</a>
         <p class="phone-subcta-note">作業中は電話に出られない場合があります。写真で確認できるLINE相談がスムーズです。</p>
         <p class="air-reserve-note">※Airリザーブでの受付は仮予約です。内容確認後、LINEまたはお電話にて正式確定となります。</p>
-        <p style="margin-top:10px;background:#fff7e6;border:1px solid #f5d28a;border-radius:10px;padding:10px 12px;font-size:0.9rem;line-height:1.6;color:#5b3b00;">LINEで写真を送ってもらえれば、料金目安と空き状況をお伝えします。急ぎの方はお電話でも。</p>
+        <p style="margin-top:10px;background:#fff7e6;border:1px solid #f5d28a;border-radius:10px;padding:10px 12px;font-size:0.9rem;line-height:1.6;color:#5b3b00;">写真・型番の確認後、作業内容と料金目安をご案内します。</p>
         <p class="hero-area">対象：沖縄市・宜野湾市・うるま市・北谷町・嘉手納町・読谷村・北中城村・中城村</p>
       </div>
     </section>
@@ -666,11 +673,11 @@
           </div>
           <div class="trust-item card">
             <strong>地域密着対応</strong>
-            沖縄中部8エリアを中心に迅速対応します。
+            南城市を拠点にご訪問。日程は予約状況と作業条件を確認してご案内します。
           </div>
           <div class="trust-item card">
-            <strong>実績あり</strong>
-            Google口コミ 5.0 ★★★★★（13件）の実績があります。
+            <strong>実際の口コミを確認できます</strong>
+            最新の投稿は<a class="central-review-link" href="https://www.google.com/maps/search/?api=1&amp;query=BC%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%20%E6%B2%96%E7%B8%84%E7%9C%8C%E5%8D%97%E5%9F%8E%E5%B8%82" target="_blank" rel="noopener noreferrer">Googleマップで確認</a>できます。
           </div>
         </div>
       </div>
@@ -758,39 +765,39 @@
     <section class="section" id="area">
       <div class="container">
         <h2 class="section-title">対応エリア</h2>
-        <p style="text-align:center;margin-bottom:20px;line-height:1.7;font-size:0.9375rem;color:#4b5563;">沖縄中部の各市町村ごとに、地域特性に合わせたエアコンクリーニングをご案内しています。</p>
-        <div class="reason-list plan-compare--single">
+        <p style="text-align:center;margin-bottom:20px;line-height:1.7;font-size:0.9375rem;color:#4b5563;">沖縄中部8市町村でご相談を受け付けています。地域名だけで洗浄の必要性を決めず、写真・型番と使用状況を確認します。</p>
+        <div class="reason-list plan-compare--single central-area-list">
           <div class="reason-item card" style="text-align:center;">
             <p style="color:var(--brand);font-weight:700;font-size:1.0625rem;">沖縄市のエアコンクリーニング</p>
-            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">市街地と住宅地が混在し、集合住宅でのエアコン使用頻度が高いエリア</p>
+            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">戸建て・集合住宅へ。機種と設置写真を確認して洗浄方法をご案内します。</p>
           </div>
           <div class="reason-item card" style="text-align:center;">
             <p style="color:var(--brand);font-weight:700;font-size:1.0625rem;">宜野湾市のエアコンクリーニング</p>
-            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">住宅密集地で室内干し・湿気がこもりやすいエリア</p>
+            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">集合住宅の駐車場や搬入経路も事前に確認。設置条件をご相談いただけます。</p>
           </div>
           <div class="reason-item card" style="text-align:center;">
             <p style="color:var(--brand);font-weight:700;font-size:1.0625rem;">うるま市のエアコンクリーニング</p>
-            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">中部最大のベッドタウン、長時間稼働で内部汚れが蓄積しやすい地域</p>
+            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">ニオイや黒ずみなど、気になる症状からご相談できます。</p>
           </div>
           <div class="reason-item card" style="text-align:center;">
             <p style="color:var(--brand);font-weight:700;font-size:1.0625rem;">北谷町のエアコンクリーニング</p>
-            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">米軍基地近傍の潮風と砂塵の影響を受けやすいエリア</p>
+            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">海沿い・内陸など条件により汚れ方は異なります。写真・型番からご案内します。</p>
           </div>
           <div class="reason-item card" style="text-align:center;">
             <p style="color:var(--brand);font-weight:700;font-size:1.0625rem;">嘉手納町のエアコンクリーニング</p>
-            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">道路沿いの住宅と新興住宅地が広がるエリア</p>
+            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">機種や設置条件を確認し、可能な洗浄範囲をご案内します。</p>
           </div>
           <div class="reason-item card" style="text-align:center;">
             <p style="color:var(--brand);font-weight:700;font-size:1.0625rem;">読谷村のエアコンクリーニング</p>
-            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">西海岸沿いで塩害・湿気の影響を受けやすい地域</p>
+            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">潮風の影響は建物や位置によって異なります。地域名だけで清掃の必要性は決めません。</p>
           </div>
           <div class="reason-item card" style="text-align:center;">
             <p style="color:var(--brand);font-weight:700;font-size:1.0625rem;">北中城村のエアコンクリーニング</p>
-            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">丘陵地で風通しは良いが梅雨時の湿気対策が重要なエリア</p>
+            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">建物や使用状況に合わせ、洗浄方法をご案内します。</p>
           </div>
           <div class="reason-item card" style="text-align:center;">
             <p style="color:var(--brand);font-weight:700;font-size:1.0625rem;">中城村のエアコンクリーニング</p>
-            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">宜野湾湾に面し、海風による塩分付着に注意が必要な地域</p>
+            <p style="margin-top:6px;font-size:0.875rem;line-height:1.6;color:#4b5563;">機種と設置環境を確認して作業内容をご案内します。</p>
           </div>
         </div>
         <p style="text-align:center;margin-top:20px;font-size:0.875rem;line-height:1.65;color:#4b5563;">那覇・浦添など中部・那覇寄りの近隣エリアの方は、<a href="urasoe.html" style="color:var(--brand);font-weight:600;text-decoration:underline;">浦添市のエアコンクリーニング</a>もご覧ください。</p>
@@ -811,13 +818,13 @@
             <h3 class="plan-card-heading">完全分解（根リセット）</h3>
             <p class="plan-card-price">中部エリア 15,000<span>円（税込）</span></p>
             <p class="plan-card-desc">通常分解では届きにくい内部まで洗浄する完全分解クリーニング</p>
-            <p class="plan-card-desc">送風ファンまで取り外して内部パーツを完全分解。<br>汚れの原因まで除去するため、内部までしっかり洗浄したい方におすすめです。</p>
-            <p class="plan-card-desc">最近は、カビの再発防止のため完全分解を選ばれるご家庭が増えています。</p>
+            <p class="plan-card-desc">送風ファンなどを機種・設置状況に応じて取り外し、通常分解では届きにくい部分を洗浄します。<br>分解できる範囲は事前に確認します。</p>
+            <p class="plan-card-desc">通常分解で十分な場合もあります。写真・型番から洗浄方法をご案内します。</p>
             <div class="plan-detail-stack" aria-label="完全分解プラン詳細">
               <section class="plan-detail-card plan-detail-card--primary">
                 <h4 class="plan-detail-title">【中部エリア】</h4>
                 <p class="plan-detail-price">税込 15,000円</p>
-                <p>送風ファンまで取り外して内部パーツを完全分解し、汚れの原因まで徹底洗浄します。<br>通常分解では届きにくい内部まで洗浄するプレミアム施工です。</p>
+                <p>機種・設置状況に応じて部品を取り外し、通常分解では届きにくい内部まで洗浄します。<br>対応できる範囲は事前に確認します。</p>
                 <ul class="plan-detail-list">
                   <li>送風ファンまで取り外して洗浄</li>
                   <li>見えない部分まで徹底清掃</li>
@@ -825,8 +832,8 @@
                 </ul>
               </section>
               <p class="plan-detail-note">通常の分解洗浄では、内部のカビや汚れが残る場合があります。</p>
-              <p class="plan-detail-note">完全分解クリーニングは、内部パーツまで取り外して洗浄するため、汚れの原因までしっかり除去できます。</p>
-              <p class="plan-detail-note">⚠️ 完全分解は1日対応できる台数が限られます</p>
+              <p class="plan-detail-note">完全分解クリーニングは、機種・設置状況に応じて部品を取り外し、通常分解では届きにくい汚れを洗浄します。</p>
+              <p class="plan-detail-note">※完全分解の可否と作業時間は、機種・設置状況を確認してご案内します。</p>
               <p class="plan-detail-note">※機種・設置状況により対応できない場合があります。</p>
             </div>
             <p class="premium-detail-subcta"><a href="https://teruya1229.github.io/complete-disassembly/?from=home_lp_kansetubunkai" target="_blank" rel="noopener noreferrer">沖縄中部で、通常分解では届きにくい内部汚れが気になる方は、完全分解クリーニングの詳しい説明もご覧ください</a></p>
@@ -1098,7 +1105,7 @@
 
     <!-- LINE CTA: 料金表直下 -->
     <div id="primary-cta" class="line-cta-wrap">
-      <p>完全分解は枠が限られています。『やっておけば良かった』となる前に、まずは日程だけ確保しておくのがおすすめです。</p>
+      <p>通常分解と完全分解で迷っている方も、写真と型番からご相談いただけます。必要な洗浄方法を確認してから日程を決められます。</p>
       <p>作業可否や料金目安は、<br>LINEで写真を送っていただければ事前に確認できます。</p>
       <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="price">中部9,000円で予約する</a>
       <p class="cta-note">🎁 LINE友だち限定特典あり（エアコンご依頼の方）</p>
@@ -1190,7 +1197,7 @@
         <div class="voice-item card" style="max-width:680px;margin:0 auto;">
           <p class="voice-meta">★★★★★ &nbsp;匿名カズさん・2026年4月22日</p>
           <p class="voice-text">3台、完全分解を依頼しました。<br>他の業者の方が届かない場所まで綺麗にして頂き、ありがとうございました。</p>
-          <p class="voice-meta" style="margin-top:8px;font-size:0.82rem;">エアコンクリーニング / 壁掛けタイプ</p>
+          <p class="voice-meta" style="margin-top:8px;font-size:0.82rem;">エアコンクリーニング / 壁掛けタイプ　<a class="central-review-link" href="../complete-disassembly/">同じ口コミを掲載している完全分解LPを見る</a></p>
         </div>
       </div>
     </section>
