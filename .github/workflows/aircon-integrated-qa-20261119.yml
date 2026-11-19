@@ -1,0 +1,85 @@
+name: Aircon integrated live Chrome QA
+on:
+  push:
+    branches: [qa/aircon-integrated-20261119]
+    paths: [.github/workflows/aircon-integrated-qa-20261119.yml]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Japanese fonts, browser
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-cjk >/dev/null
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+      - name: Check current public LP rendering, interactions and real images
+        shell: bash
+        run: |
+          mkdir -p /tmp/aircon-qa
+          node <<'JS'
+          const fs=require('fs');
+          const {chromium}=require('playwright');
+          (async()=>{
+            const browser=await chromium.launch({channel:'chrome',headless:true});
+            let results=[];
+            try {
+              for(const width of [1440,390,320]){
+                const context=await browser.newContext({viewport:{width,height:900},reducedMotion:'reduce',deviceScaleFactor:1});
+                const page=await context.newPage();
+                const errors=[], failedRequests=[];
+                page.on('pageerror',e=>errors.push(e.message));
+                page.on('response',r=>{if(r.url().startsWith('https://teruya1229.github.io/')&&r.status()>=400)failedRequests.push(r.url()+' '+r.status())});
+                await page.route('**/*',route=>{const url=route.request().url();return url.startsWith('https://teruya1229.github.io/')||url.startsWith('data:')?route.continue():route.abort();});
+                const res=await page.goto('https://teruya1229.github.io/aircon/',{waitUntil:'domcontentloaded',timeout:45000});
+                await page.locator('img').evaluateAll(els=>els.forEach(e=>e.loading='eager'));
+                await page.evaluate(async()=>{
+                  await Promise.all([...document.images].map(i=>i.decode().catch(()=>{})));
+                  for(let y=0;y<document.documentElement.scrollHeight;y+=500){window.scrollTo(0,y);await new Promise(r=>setTimeout(r,20));}
+                  window.scrollTo(0,0);
+                });
+                await page.waitForTimeout(350);
+                const initial=await page.evaluate(()=>{
+                  const imgs=[...document.images].map(e=>({src:e.currentSrc,ready:e.complete&&e.naturalWidth>0}));
+                  const faq=[...document.querySelectorAll('#faq details')];
+                  const cta=[...document.querySelectorAll('a[href*="lin.ee"]')];
+                  const bounds=[...document.querySelectorAll('h1,h2,h3,p,a,button,summary')].filter(e=>e.getClientRects().length>0).map(e=>({text:(e.textContent||'').trim().slice(0,35),rect:e.getBoundingClientRect()})).filter(x=>x.rect.width>0 && (x.rect.right>innerWidth+3||x.rect.left<-3)).slice(0,12);
+                  return {scrollWidth:document.documentElement.scrollWidth,viewport:innerWidth,height:document.documentElement.scrollHeight,imgs,faq:faq.length,cta:cta.length,diagnosis:!!document.getElementById('bc-form'),outOfBounds:bounds,font:document.fonts.check('16px "Noto Sans CJK JP"','確認'),text:document.querySelector('h1')?.innerText};
+                });
+                await page.screenshot({path:'/tmp/aircon-qa/live-'+width+'-full.png',fullPage:true,animations:'disabled',timeout:60000});
+                const details=page.locator('#faq details');
+                for(let i=0;i<await details.count();i++){await details.nth(i).locator('summary').click();if(!(await details.nth(i).evaluate(e=>e.open)))errors.push('FAQ_'+i);await details.nth(i).locator('summary').click();}
+                const q=page.locator('#q-age'); await q.selectOption('mid');await page.locator('#q-symptom').selectOption('smell');await page.locator('#q-performance').selectOption('normal');
+                await page.locator('#bc-submit').click();
+                const normalVisible=await page.locator('#bc-result-panel').isVisible();
+                const normalTitle=await page.locator('#bc-result-title').innerText();
+                await page.locator('#bc-result-panel').screenshot({path:'/tmp/aircon-qa/diagnosis-'+width+'.png',timeout:30000});
+                await page.locator('#q-symptom').selectOption('danger');
+                await page.locator('#bc-submit').click();
+                const warningVisible=await page.locator('#bc-warning').isVisible();
+                const barsHidden=await page.locator('#bc-bars').evaluate(e=>e.hidden);
+                const stopTitle=await page.locator('#bc-result-title').innerText();
+                results.push({width,http:res.status(),...initial,normalVisible,normalTitle,warningVisible,barsHidden,stopTitle,errors,failedRequests});
+                await context.close();
+              }
+              fs.writeFileSync('/tmp/aircon-qa/report.json',JSON.stringify(results,null,2));
+              console.log(JSON.stringify(results,null,2));
+              if(results.some(x=>x.http!==200||x.scrollWidth>x.viewport||x.imgs.some(i=>!i.ready)||x.errors.length||x.failedRequests.length||x.outOfBounds.length||!x.normalVisible||!x.warningVisible||!x.barsHidden||x.faq<3||x.cta<3))process.exitCode=1;
+            }finally{await browser.close();}
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - name: Save visual proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aircon-integrated-live-20261119
+          path: /tmp/aircon-qa/
+          if-no-files-found: warn
