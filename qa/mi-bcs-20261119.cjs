@@ -36,7 +36,7 @@ const ids=new Set([...document.querySelectorAll('[id]')].map(e=>e.id));
 const missingAnchors=[...document.querySelectorAll('a[href^="#"]')].map(a=>a.getAttribute('href').slice(1)).filter(s=>s&&!ids.has(s));
 return {width:innerWidth,scrollWidth:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight,
 images:[...document.images].map(i=>({src:i.getAttribute('src'),loaded:i.complete&&i.naturalWidth>0})),
-faqItems:[...document.querySelectorAll('#faq .faq-item')].map(e=>({q:(e.querySelector('h3,summary')?.innerText||'').trim(),a:(e.querySelector('p')?.innerText||'').trim()})),
+faqItems:[...document.querySelectorAll('#faq .faq-item')].map(e=>({q:(e.querySelector('h3,summary')?.textContent||'').trim(),a:(e.querySelector('p')?.textContent||'').trim()})),
 details:document.querySelectorAll('#faq details.faq-item').length,
 line:[...document.querySelectorAll('a[href*="lin.ee"]')].map(a=>a.href),
 tel:[...document.querySelectorAll('a[href^="tel:"]')].map(a=>a.href),
