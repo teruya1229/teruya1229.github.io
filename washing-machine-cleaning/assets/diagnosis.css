@@ -151,3 +151,17 @@
  .washer-diagnosis__section-links{font-size:13px;gap:8px 20px}
  .washer-diagnosis__disclaimer{font-size:12.5px}
 }
+
+
+/* 2026-11-19 Desktop-only diagnosis layout. Unchanged below 1200px. */
+@media (min-width:1200px) {
+  .washer-diagnosis{padding-block:82px 86px}
+  .washer-diagnosis__inner{max-width:1180px}
+  .washer-diagnosis__intro{max-width:900px;margin-bottom:32px}
+  .washer-diagnosis__intro h2{font-size:41px}
+  .washer-diagnosis__intro p:last-child{font-size:16px}
+  .washer-diagnosis__form{padding:33px 38px 30px}
+  .washer-diagnosis__questions{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.1fr);gap:26px}
+  .washer-diagnosis__result{margin-top:32px;padding:31px 38px 29px}
+  .washer-diagnosis__evidence-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:26px}
+}

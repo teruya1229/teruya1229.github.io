@@ -237,3 +237,114 @@ html.washer-body-line-visible .mobile-bar{visibility:hidden;opacity:0;pointer-ev
  .faq-list details p{padding:0 14px 16px}
  .related-services__grid{gap:8px}
 }
+
+
+/* 2026-11-19 Desktop-only editorial layout.
+ * Screens below 1200px retain the approved mobile/tablet styling unchanged.
+ * Widen the actual content, use photography and balanced columns; do not fill
+ * empty space with additional cards, claims or artificially large padding. */
+@media (min-width:1200px) {
+  .container{width:min(1280px,calc(100% - 88px))}
+  .narrow{max-width:1120px}
+
+  /* 01 Hero: use the two halves of the desktop viewport deliberately. */
+  .hero__grid{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(58px,5vw,92px);min-height:700px;padding-block:67px 72px}
+  .hero__copy{max-width:680px}
+  .hero h1{font-size:clamp(49px,4vw,59px);line-height:1.34}
+  .hero__lead{font-size:18px;line-height:1.75}
+  .hero__visual{max-width:555px}
+  .hero__photo{min-height:500px;border-radius:210px 210px 27px 27px}
+  .hero__trust{gap:9px 16px}
+  .hero__trust span{font-size:13px}
+  .hero__prices{max-width:570px;gap:17px;margin-top:23px}
+  .hero__prices>div{padding:15px 14px}
+  .hero__prices strong{font-size:32px}
+  .hero__scope,.hero .micro-note{max-width:610px}
+  .hero__scope{font-size:14px;line-height:1.8}
+  .hero__diagnosis-jump{max-width:570px}
+  .hero .btn--wide{max-width:510px}
+  .hero__bottom .container{gap:clamp(60px,7vw,135px)}
+
+  /* Shared desktop heading rhythm, still restrained and readable. */
+  .section{padding-block:84px}
+  .sec-head,.section .sec-head{max-width:940px;margin-bottom:40px}
+  .sec-head h2,.section h2,.end-cta h2{font-size:clamp(38px,3.2vw,45px);line-height:1.38}
+  .section .sec-head>p:last-child:not(.section-kicker){max-width:790px;font-size:16px;line-height:1.82}
+
+  /* 03 Actual photos: give the 3 examples room to be inspected. */
+  .symptoms__grid{max-width:1260px;margin-inline:auto;gap:26px}
+  .symptom__photo{aspect-ratio:4/3}
+  .symptom__content{padding:24px 25px 27px}
+  .symptom h3{font-size:20px}
+  .symptom p{font-size:15px}
+
+  /* 04 Washing: independent heading/copy columns and three equal photo steps. */
+  .split-intro{grid-template-columns:minmax(0,.93fr) minmax(0,1.07fr);gap:clamp(70px,7vw,110px)}
+  .split-intro>div:nth-child(2){font-size:17px;line-height:1.86}
+  .step-cards{max-width:1260px;margin:47px auto 0;gap:25px}
+  .step-cards>div{padding:23px 24px}
+  .step-cards strong{font-size:20px}
+  .step-cards p{font-size:15px;line-height:1.75}
+
+  /* 05 The real video stays tall; adjacent copy receives usable width. */
+  .proof__grid{max-width:1120px;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:clamp(70px,7vw,115px)}
+  .proof__copy{max-width:560px}
+  .proof__copy h3{font-size:32px}
+  .proof__copy>p{font-size:17px;line-height:1.84}
+  .proof__note{font-size:14px;line-height:1.8}
+
+  /* 06 One wide featured testimony, then three balanced peer testimonials. */
+  .reviews__grid{max-width:1240px;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:start}
+  .review-card--featured{grid-column:1 / -1;padding:30px 36px}
+  .review-card--featured blockquote{max-width:950px;font-size:17px;line-height:1.85}
+  .review-card:not(.review-card--featured){padding:23px 23px 26px}
+  .review-card blockquote{font-size:15px;line-height:1.82}
+  .reviews__note{max-width:1120px;margin-inline:auto}
+
+  /* 07 Keep price columns and the conditions under them aligned. */
+  .price-grid,.drum-policy,.price-notes{max-width:1180px}
+  .price-grid{gap:29px;align-items:start}
+  .price-card{padding:33px 35px}
+  .price-card__value li{font-size:14px}
+  .drum-policy{margin-top:28px;padding:27px 32px}
+  .drum-policy__grid{gap:19px}
+  .price-notes{margin-top:26px}
+
+  /* 08 Founder: sizeable real portrait rather than a tiny thumbnail. */
+  .about__grid{max-width:1120px;grid-template-columns:minmax(0,330px) minmax(0,1fr);gap:85px}
+  .about__photo{height:335px;border-radius:20px}
+  .about__copy>p:not(.section-kicker){font-size:16px;line-height:1.88}
+  .about__chips{gap:11px}
+
+  /* 09 Steps and 10 service area use the available desktop grid. */
+  .flow-grid{gap:30px}
+  .flow-grid>.flow-card{padding:24px 22px 27px}
+  .flow-grid strong{font-size:21px}
+  .flow-grid p{font-size:15px;line-height:1.8}
+  .flow-card__header{min-height:100px}
+  .flow-card__icon{width:104px;height:104px}
+  .area__grid{max-width:1170px;margin-inline:auto;grid-template-columns:minmax(0,1.03fr) minmax(0,.97fr);gap:85px;align-items:start}
+  .area__grid>div:first-child>p:last-child{max-width:570px;font-size:17px;line-height:1.88}
+  .area__call{padding:16px 0 18px 28px}
+  .area__call p{font-size:24px}
+
+  /* 11 FAQs: two scannable columns instead of one long thin list on desktop. */
+  .faq .container.narrow{max-width:1160px}
+  .faq-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:45px;align-items:start;border-top:0}
+  .faq-list details{border-top:1px solid #dae4e7}
+  .faq-list summary{font-size:15px;line-height:1.7}
+
+  /* 12 - 13 Finish with generous, usable CTA widths. */
+  .related-services__grid{gap:26px}
+  .related-service{padding:24px 25px 28px}
+  .related-service strong{font-size:20px}
+  .end-cta{padding-block:88px}
+  .end-cta__inner{max-width:1100px}
+  .end-cta__inner>p:not(.section-kicker){font-size:17px}
+  .end-cta__buttons{max-width:880px}
+}
+
+/* The existing manual line break in the washing explanation should not split a Japanese word on desktop. */
+@media (min-width:1200px) {
+  #why .split-intro h2{font-size:clamp(34px,2.7vw,39px);line-height:1.42}
+}
