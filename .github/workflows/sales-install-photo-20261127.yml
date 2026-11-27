@@ -1,0 +1,83 @@
+name: Sales LP verified installation photos QA
+on:
+  pull_request:
+    branches: [lp/sales-install-photo-20261127]
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    env:
+      QA_MODE: preview
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+      - name: Verify both pages and six viewport cases
+        shell: bash
+        run: |
+          mkdir -p /tmp/sales-photo-qa
+          node <<'JS'
+          const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
+          const root='https://teruya1229.github.io/',dir=process.cwd(),mode=process.env.QA_MODE;
+          const entries=[['mi-bcs/index.html','#okinawa-spec figure'],['mi-bcs/aircon-replacement/index.html','figure.price-install']];
+          const rows=[];
+          const norm=s=>s.replace(/\r\n/g,'\n').trim();
+          async function test(browser,file,selector,width){
+            const ctx=await browser.newContext({viewport:{width,height:900},deviceScaleFactor:1,reducedMotion:'reduce'});
+            const row={file,width,mode,errors:[],bad:[]};
+            try{
+              await ctx.route('**/*',async r=>{
+                const u=new URL(r.request().url());
+                if(['data:','blob:'].includes(u.protocol))return r.continue();
+                if(u.origin!==root.slice(0,-1)||r.request().method()!=='GET')return r.abort('blockedbyclient');
+                if(mode==='live')return r.continue();
+                let fp=path.resolve(dir,'.'+decodeURIComponent(u.pathname));
+                if(fp!==dir&&!fp.startsWith(dir+path.sep))return r.abort();
+                try{if(fs.statSync(fp).isDirectory())fp=path.join(fp,'index.html');return r.fulfill({path:fp})}catch{return r.fulfill({status:404,body:'missing'})}
+              });
+              const p=await ctx.newPage();p.setDefaultTimeout(12000);
+              p.on('pageerror',e=>row.errors.push(e.message));
+              p.on('response',r=>{if(r.url().startsWith(root)&&r.status()>=400)row.bad.push(r.status()+' '+r.url())});
+              let res;for(let t=0;t<(mode==='live'?8:1);t++){
+                res=await p.goto(root+file.replace(/index\.html$/,''),{waitUntil:'domcontentloaded',timeout:35000});
+                row.http=res.status();row.exact=norm(await res.text())===norm(fs.readFileSync(file,'utf8'));
+                if(row.http===200&&row.exact)break;await p.waitForTimeout(2000);
+              }
+              assert.equal(row.http,200);assert(row.exact,'source mismatch');
+              await p.locator('img').evaluateAll(es=>es.forEach(i=>i.loading='eager'));
+              await p.evaluate(async()=>{await Promise.all([...document.images].map(i=>i.decode().catch(()=>{})));await document.fonts.ready});
+              const fig=p.locator(selector);assert.equal(await fig.count(),1);
+              const im=fig.locator('img');assert.equal(await im.count(),1);
+              row.photo=await im.evaluate(e=>{const r=e.getBoundingClientRect();return{src:e.getAttribute('src'),w:r.width,h:r.height,nw:e.naturalWidth,nh:e.naturalHeight,x:r.left,fit:getComputedStyle(e).objectFit}});
+              const g=row.photo;assert.equal(g.src,'/aircon/assets/new-aircon-installed.webp');assert(g.nw>0&&g.nh>0&&Math.abs(g.w/g.h-g.nw/g.nh)<.025&&g.w>=200&&g.x>=0&&g.x+g.w<=width+1,'photo geometry '+JSON.stringify(g));
+              assert((await fig.locator('figcaption').innerText()).includes('ご提案する機種は在庫・設置条件により異なります。'));
+              row.images=await p.locator('img').evaluateAll(es=>es.map(e=>({src:e.getAttribute('src'),ok:e.complete&&e.naturalWidth>0})));assert(row.images.every(i=>i.ok),'missing image');
+              row.overflow=await p.evaluate(()=>document.documentElement.scrollWidth-innerWidth);assert(row.overflow<=1,'overflow '+row.overflow);
+              row.line=await p.locator('a[href*="lin.ee"],a[href*="line.me"]').count();row.phone=await p.locator('a[href^="tel:"]').count();assert(row.line>0&&row.phone>0,'missing CTA');
+              const faqs=p.locator('details').filter({has:p.locator('summary')});row.faq=await faqs.count();
+              for(let i=0;i<row.faq;i++){const el=faqs.nth(i),was=await el.evaluate(e=>e.open);await el.locator('summary').click();assert.notEqual(await el.evaluate(e=>e.open),was);await el.locator('summary').click();assert.equal(await el.evaluate(e=>e.open),was)}
+              row.reel=await p.locator('.bc-reel-media[data-reel-id="DfO5RjhocYu"]').count();assert.equal(row.reel,1);
+              const id=file.replace(/[\/.]/g,'-')+'-'+width;
+              await fig.screenshot({path:'/tmp/sales-photo-qa/'+id+'-figure.png',animations:'disabled'});
+              await p.screenshot({path:'/tmp/sales-photo-qa/'+id+'-full.png',fullPage:true,animations:'disabled'});
+              assert(!row.bad.length,JSON.stringify(row.bad));assert(!row.errors.length,JSON.stringify(row.errors));row.pass=true;
+            }catch(e){row.pass=false;row.errors.push(e.message)}finally{await ctx.close()}
+            rows.push(row);console.log('SALES_CASE '+JSON.stringify(row));
+          }
+          (async()=>{const b=await chromium.launch({channel:'chrome',headless:true,args:['--no-sandbox']});try{for(const [f,s] of entries)for(const w of [1440,390,320])await test(b,f,s,w)}finally{await b.close()}fs.writeFileSync('/tmp/sales-photo-qa/report.json',JSON.stringify(rows,null,2));console.log('SALES_SUMMARY '+JSON.stringify({mode,pass:rows.filter(r=>r.pass).length,total:rows.length,images:rows.reduce((n,r)=>n+(r.images||[]).filter(i=>i.ok).length,0),faq:rows.reduce((n,r)=>n+(r.faq||0),0)}));if(rows.some(r=>!r.pass))process.exitCode=1})().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sales-install-photo-qa
+          path: /tmp/sales-photo-qa/
+          retention-days: 7
