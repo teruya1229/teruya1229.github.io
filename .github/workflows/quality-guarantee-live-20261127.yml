@@ -1,4 +1,4 @@
-name: BC Instagram work reels layout and direct-link QA
+name: BC Instagram reels published layout QA
 on:
   push:
     branches: [qa/quality-guarantee-live-20261127]
@@ -13,18 +13,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0, persist-credentials: false}
-      - name: Verify exact source
+      - name: Verify exact deployed source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
         run: |
-          git worktree add --detach "$RUNNER_TEMP/reel-qa" dbfc4d87ffec2521fd092224cec89c4cb861fd6f
+          git worktree add --detach "$RUNNER_TEMP/reel-qa" fd8d92084cc0bac9c6bcb019275e547dba2bb377
           cd "$RUNNER_TEMP/reel-qa"
           python .github/scripts/render_quality_guarantee.py
+          for attempt in $(seq 1 45); do
+            result=$(gh api "/repos/$REPO/actions/runs/45987907148" --jq '[.head_sha,.status,(.conclusion // "")] | join(" ")')
+            echo "DEPLOY_STATUS $result"
+            if [ "$result" = "fd8d92084cc0bac9c6bcb019275e547dba2bb377 completed success" ]; then exit 0; fi
+            if [[ "$result" == *" completed "* ]]; then exit 1; fi
+            sleep 5
+          done
+          exit 1
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
       - run: npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
       - name: Verify previews, correct direct links and click-to-load controls
         env:
           SOURCE_DIR: ${{ runner.temp }}/reel-qa
-          QA_MODE: preview
+          QA_MODE: live
         run: |
           cat > qa-reel.cjs <<'NODE'
           const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),cp=require('child_process');
