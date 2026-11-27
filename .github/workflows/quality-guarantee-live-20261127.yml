@@ -1,95 +1,105 @@
-name: BC home LP value live QA 20261127
+name: BC LP value batch preview QA 20261127
 on:
   push:
     branches: [qa/quality-guarantee-live-20261127]
     paths: [.github/workflows/quality-guarantee-live-20261127.yml]
 permissions:
   contents: read
-  actions: read
 jobs:
   qa:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 16
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0, persist-credentials: false}
-      - name: Verify exact deployed source
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
+      - name: Verify guarantee manifest on exact preview source
         run: |
-          git worktree add --detach "$RUNNER_TEMP/home-value" 9ac1e3f57a37794b2c5fa2f7604697faac4a936e
-          cd "$RUNNER_TEMP/home-value"
+          git worktree add --detach "$RUNNER_TEMP/lp-value-batch" 88f197b31253a6aad5841869f28fea6b1bf9fa68
+          cd "$RUNNER_TEMP/lp-value-batch"
           python .github/scripts/render_quality_guarantee.py
-          for attempt in $(seq 1 45); do
-            result=$(gh api "/repos/$REPO/actions/runs/45958480742" --jq '[.head_sha,.status,(.conclusion // "")] | join(" ")')
-            echo "DEPLOY_STATUS $result"
-            if [ "$result" = "9ac1e3f57a37794b2c5fa2f7604697faac4a936e completed success" ]; then exit 0; fi
-            if [[ "$result" == *" completed "* ]]; then exit 1; fi
-            sleep 5
-          done
-          exit 1
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
-      - name: Install existing browser QA dependency and Japanese font
+      - name: Existing Chrome and Japanese font
         run: |
           sudo mkdir -p /usr/local/share/fonts/qa-japanese
           sudo curl -fLsS --retry 2 --max-time 75 -o /usr/local/share/fonts/qa-japanese/NotoSansCJKjp-Regular.otf https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/Japanese/NotoSansCJKjp-Regular.otf
           sudo fc-cache -f >/dev/null
           npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
-      - name: Browser QA on live URLs (no external sends)
+      - name: Verify 18 pages and 3 viewport sizes without external sends
         env:
-          DRAFT_DIR: ${{ runner.temp }}/home-value
+          DRAFT_DIR: ${{ runner.temp }}/lp-value-batch
+          QA_MODE: preview
         run: |
-          cat > qa-home-value.cjs <<'NODE'
+          cat > qa-lp-value-batch.cjs <<'NODE'
           const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),cp=require('child_process');
-          const root='https://teruya1229.github.io/',dir=process.env.DRAFT_DIR,out='qa-home-value-live';
-          const base='38b8ce8eafbca7df07013bf7b92317f0d12d7635',head='9ac1e3f57a37794b2c5fa2f7604697faac4a936e';
-          const files=['cursor-test/index.html','complete-disassembly/index.html'];
+          const root='https://teruya1229.github.io/',dir=process.env.DRAFT_DIR,out='qa-lp-value-batch';
+          const base='9ac1e3f57a37794b2c5fa2f7604697faac4a936e',head='88f197b31253a6aad5841869f28fea6b1bf9fa68',mode=process.env.QA_MODE||'preview';
+          const files=["business-cleaning/index.html","cursor-test/central.html","cursor-test/haebaru.html","cursor-test/itoman.html","cursor-test/naha.html","cursor-test/nanjo.html","cursor-test/south.html","cursor-test/tomigusuku.html","cursor-test/urasoe.html","cursor-test/yaese.html","cursor-test/yonabaru.html","house-cleaning/index.html","index.html","lighting/index.html","mi-bcs/index.html","reform/index.html","toilet/index.html","washlet/index.html"];
           const assert=(v,m)=>{if(!v)throw Error(m)};
           const sortTags=(s,r)=>Array.from(s.matchAll(r),m=>m[0]).sort();
-          const eq=(x,y)=>JSON.stringify(x)===JSON.stringify(y);
+          const eq=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
           const norm=s=>s.replace(/\r\n/g,'\n').trim();
           const src=f=>fs.readFileSync(path.join(dir,f),'utf8'),old=f=>cp.execFileSync('git',['show',base+':'+f],{encoding:'utf8',maxBuffer:8*1024*1024});
-          fs.mkdirSync(out,{recursive:true});
+          const cities=files.filter(f=>/^cursor-test\/(?:naha|nanjo|yaese|haebaru|itoman|tomigusuku|yonabaru)\.html$/.test(f));
+          fs.mkdirSync(out,{recursive:true});fs.mkdirSync(out+'/screenshots',{recursive:true});
           assert(eq(cp.execFileSync('git',['diff','--name-only',base,head],{encoding:'utf8'}).trim().split('\n').sort(),[...files].sort()),'changed paths');
-          for(const f of files){const a=old(f),b=src(f);for(const re of [/<img\b[^>]*>/gi,/<script\b[\s\S]*?<\/script>/gi,/<!-- BCQ:(?:CSS|HERO|DETAIL):BEGIN -->[\s\S]*?<!-- BCQ:(?:CSS|HERO|DETAIL):END -->/g,/<a\b[^>]*href=["'](?:https?:\/\/(?:lin\.ee|line\.me|airrsv\.net)|tel:)[^"']*["'][^>]*>[\s\S]*?<\/a>/gi,/<details\b[^>]*>[\s\S]*?<\/details>/gi])assert(eq(sortTags(a,re),sortTags(b,re)),f+' protected '+re);assert(!b.includes('13件'),'stale review count');}
-          console.log('HOME_STATIC '+JSON.stringify({files,protected:true}));
+          for(const f of files){
+           const a=old(f),b=src(f);
+           for(const re of [/<img\b[^>]*>/gi,/<iframe\b[^>]*>/gi,/<script\b[\s\S]*?<\/script>/gi,/<!-- BCQ:(?:CSS|HERO|DETAIL):BEGIN -->[\s\S]*?<!-- BCQ:(?:CSS|HERO|DETAIL):END -->/g,/<a\b[^>]*href=["'](?:https?:\/\/(?:lin\.ee|line\.me|airrsv\.net)|tel:)[^"']*["'][^>]*>[\s\S]*?<\/a>/gi,/<details\b[^>]*>[\s\S]*?<\/details>/gi,/(?:\d{1,3}(?:,\d{3})+|\d+)(?:<[^>]+>)?\s*円(?:〜)?|200世帯|出張費0円|抗菌コート無料|[0-9０-９]+[%％]OFF/g])assert(eq(sortTags(a,re),sortTags(b,re)),f+' protected '+re);
+           const anchor=/<a\b[^>]*href=["'][^"']*["'][^>]*>[\s\S]*?<\/a>/gi;
+           const before=sortTags(a,anchor),after=sortTags(b,anchor);
+           if(cities.includes(f)||f.endsWith('/urasoe.html')){
+            const filtered=after.filter(x=>!x.includes('href="#regional-work-example"')&&!x.includes('href="#work-examples"'));
+            assert(after.length===before.length+1&&eq(before,filtered),f+' existing links changed');
+           }else assert(eq(before,after),f+' existing links changed');
+          }
+          console.log('BATCH_STATIC '+JSON.stringify({files:files.length,protected:true,base,head,mode}));
           const rows=[];
           async function run(browser,file,width){
-           const row={file,width,errors:[],faq:0,cta:[],images:null}; const ctx=await browser.newContext({viewport:{width,height:width===1440?900:width===390?844:568},deviceScaleFactor:1,reducedMotion:'reduce'});
+           const row={file,width,errors:[],faq:0,cta:[],images:null,source:false};const ctx=await browser.newContext({viewport:{width,height:width===1440?900:width===390?844:568},deviceScaleFactor:1,reducedMotion:'reduce'});
            try{
-          await ctx.route('**/*',route=>{const u=route.request().url();return route.request().method()==='GET'&&(u.startsWith(root)||u.startsWith('data:')||u.startsWith('blob:'))?route.continue():route.abort('blockedbyclient')});
+           await ctx.route('**/*',async route=>{const u=new URL(route.request().url());if(u.protocol==='data:'||u.protocol==='blob:')return route.continue();if(u.origin!=='https://teruya1229.github.io'||route.request().method()!=='GET')return route.abort('blockedbyclient');if(mode==='live')return route.continue();let pp=path.resolve(dir,'.'+decodeURIComponent(u.pathname));if(pp!==dir&&!pp.startsWith(dir+path.sep))return route.abort();try{if(fs.statSync(pp).isDirectory())pp=path.join(pp,'index.html');if(!fs.statSync(pp).isFile())return route.fulfill({status:404,body:'missing'});return route.fulfill({path:pp})}catch{return route.fulfill({status:404,body:'missing'})}});
            await ctx.addInitScript(()=>{window.__qaClicks=[];document.addEventListener('click',e=>{const a=e.target.closest?.('a');if(a&&/^(https?:\/\/(?:lin\.ee\/|line\.me\/|airrsv\.net\/)|tel:)/i.test(a.getAttribute('href')||'')){window.__qaClicks.push({href:a.getAttribute('href'),trusted:e.isTrusted});e.preventDefault()}},true)});
-           const p=await ctx.newPage();p.setDefaultTimeout(10000);p.on('pageerror',e=>row.errors.push('JS '+e.message));
-          let res;for(let t=0;t<8;t++){res=await p.goto(root+file.replace(/index\.html$/,''),{waitUntil:'domcontentloaded',timeout:30000});if(res.status()===200&&norm(await res.text())===norm(src(file)))break;await p.waitForTimeout(3000)}assert(res.status()===200&&norm(await res.text())===norm(src(file)),'live source mismatch');
+           const p=await ctx.newPage();p.setDefaultTimeout(8000);p.on('pageerror',e=>row.errors.push('JS '+e.message));
+           const url=root+file.replace(/index\.html$/,'');
+           let res;for(let t=0;t<(mode==='live'?7:1);t++){res=await p.goto(url,{waitUntil:'domcontentloaded',timeout:30000});if(res.status()===200&&norm(await res.text())===norm(src(file)))break;await p.waitForTimeout(2500)}
+           row.http=res.status();row.source=row.http===200&&norm(await res.text())===norm(src(file));assert(row.source,'source mismatch');
            await p.evaluate(async()=>{await Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,1500))]);scrollTo(0,0)});
-           const home=file.startsWith('cursor-test'),key=(home?'home':'complete')+'-'+width;
-           const layout=await p.evaluate(home=>{const y=s=>{const e=document.querySelector(s);if(!e)return null;const r=e.getBoundingClientRect();return {y:r.top+scrollY,bottom:r.bottom+scrollY,left:r.left,right:r.right,visible:r.width>0&&r.height>0}};return {width:innerWidth,scroll:document.documentElement.scrollWidth,h1:y('main h1'),brief:y('.bcq-brief'),detail:y('.bcq-detail'),faq:y('#faq'),hero:y('.hero'),line:y('main a[data-cta="line"],main a[href^="https://lin.ee/"]'),reasons:home?y('main > .reasons'):null,proof:home?y('main > .commitment'):null,review:home?y('main > .review-ext'):null,pricing:home?y('#pricing'):null,priceCta:home?y('#primary-cta'):null};},home);
-           row.layout=layout;
-           assert(layout.width===width&&layout.scroll<=width+1,'horizontal overflow');
-           assert(layout.h1?.visible&&layout.brief?.visible&&layout.h1.y<layout.brief.y,'header/guarantee order');
-           assert(layout.line?.visible,'CTA missing');
-           if(home){const z=layout;assert(z.hero.bottom<=z.reasons.y+2&&z.reasons.y<z.proof.y&&z.proof.y<z.review.y&&z.review.y<z.pricing.y&&z.pricing.y<z.priceCta.y&&z.detail.y<z.faq.y,'section order');if(width===390)assert(z.pricing.y<2700,'390px price position exceeds 2700px: '+z.pricing.y);if(width===320)assert(z.pricing.y<3000,'320px price position exceeds 3000px: '+z.pricing.y);}
-           await p.screenshot({path:out+'/'+key+'-hero.png',animations:'disabled'});
-           if(home){for(const [name,sel] of [['reasons','main > .reasons'],['proof','main > .commitment'],['review','main > .review-ext'],['price','main > #pricing']]){await p.locator(sel).scrollIntoViewIfNeeded();await p.screenshot({path:out+'/'+key+'-'+name+'.png',animations:'disabled'});}}
-           row.images=await p.evaluate(async()=>{const es=[...document.images].filter(i=>{const s=i.getAttribute('src');if(!s)return false;try{return new URL(i.currentSrc||i.src,location.href).origin===location.origin}catch{return false}});es.forEach(i=>i.loading='eager');await Promise.race([Promise.all(es.map(i=>i.decode().catch(()=>{}))),new Promise(r=>setTimeout(r,12000))]);return{count:es.length,ok:es.filter(i=>i.naturalWidth>0).length,bad:es.filter(i=>!i.naturalWidth).map(i=>i.getAttribute('src'))}});assert(!row.images.bad.length,'image decode '+JSON.stringify(row.images.bad));
-           const faqs=p.locator('#faq details,.faq details,.faq-list details,details.faq-details');for(let i=0;i<await faqs.count();i++){const d=faqs.nth(i),s=d.locator(':scope>summary');if(!await s.count()||!await s.isVisible())continue;const was=await d.evaluate(e=>e.open);await s.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await s.click();assert(await d.evaluate(e=>e.open)!==was,'FAQ open '+i);await s.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await s.click();assert(await d.evaluate(e=>e.open)===was,'FAQ close '+i);row.faq++;}
-           assert(row.faq>0,'FAQ missing');
-           if(width===390){const events=()=>p.evaluate(()=>[...(window.dataLayer||[])].filter(x=>x[0]==='event').map(x=>x[1]));for(const [type,sel] of [['line','a[href^="https://lin.ee/"]'],['tel','a[href^="tel:"]'],['reserve','a[href^="https://airrsv.net/"]']]){const loc=p.locator(sel);let a;for(let i=0;i<await loc.count();i++){if(await loc.nth(i).isVisible()){a=loc.nth(i);break}}if(!a)continue;const n=(await events()).length,k=await p.evaluate(()=>window.__qaClicks.length);await a.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await a.click();let cs=await p.evaluate(()=>window.__qaClicks),ev=(await events()).slice(n);assert(cs.length>k&&cs.at(-1).trusted,'CTA '+type);assert(ev.length,'CTA event '+type);row.cta.push({type,events:ev});}
-           if(!home){const link=p.locator('a.cd-proof-photo-link').first(),dialog=p.locator('#cd-photo-dialog');await link.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await link.click();await dialog.waitFor({state:'visible'});assert(await dialog.locator('img').evaluate(async i=>{await i.decode();return i.naturalWidth>0}),'photo dialog decode');await dialog.locator('button').click();assert(await dialog.evaluate(e=>!e.open),'photo dialog close');row.photoDialog=true;}
-           const a=p.locator('a.bcq-link[href^="/quality-guarantee/"]').first();await a.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await a.click();await p.waitForURL('**/quality-guarantee/**');assert(await p.locator(new URL(p.url()).hash).count()===1,'policy anchor');row.policy=true;}
+           const layout=await p.evaluate(()=>{const y=s=>{const e=document.querySelector(s);if(!e)return null;const r=e.getBoundingClientRect();return{y:r.top+scrollY,bottom:r.bottom+scrollY,left:r.left,right:r.right,visible:r.width>0&&r.height>0}};const heading=[...document.querySelectorAll('main h2')].find(x=>x.innerText.includes('LINE友だち追加でもらえる特典'));const perks=heading?heading.getBoundingClientRect().top+scrollY:null;const prices=[...document.querySelectorAll('main h2')].find(x=>x.innerText.includes('子育て家庭応援価格'));return {width:innerWidth,scroll:document.documentElement.scrollWidth,h1:y('main h1'),brief:y('.bcq-brief'),detail:y('.bcq-detail'),faq:y('#faq'),hero:y('.hero'),line:y('main a[data-cta="line"],main a[href^="https://lin.ee/"],main a[href^="https://line.me/"]'),reasons:y('main > .reasons'),proof:y('main > .commitment'),review:y('main > .review-ext'),pricing:y('#pricing'),priceCta:y('#primary-cta'),regional:y('#regional-work-example'),perks,works:y('#works'),housePrice:y('#price-title'),southPrice:prices?prices.getBoundingClientRect().top+scrollY:null};});
+           row.layout={width:layout.width,scroll:layout.scroll,h1:layout.h1?.y,brief:layout.brief?.y,detail:layout.detail?.y,faq:layout.faq?.y,pricing:layout.pricing?.y,regional:layout.regional?.y,perks:layout.perks,works:layout.works?.y,housePrice:layout.housePrice?.y,review:layout.review?.y,southPrice:layout.southPrice};
+           assert(layout.width===width&&layout.scroll<=width+1,'horizontal overflow '+layout.scroll);assert(layout.h1?.visible&&layout.brief?.visible&&layout.h1.y<layout.brief.y,'headline/guarantee order');assert(layout.line?.visible,'main LINE CTA missing');assert(layout.detail?.visible,'guarantee detail missing');
+           if(layout.faq)assert(layout.detail.y<layout.faq.y,'guarantee/FAQ order');
+           if(cities.includes(file))assert(layout.regional?.visible&&layout.perks!==null&&layout.regional.y<layout.perks,'regional proof not before perks');
+           if(file==='cursor-test/south.html')assert(layout.review?.visible&&layout.southPrice!==null&&layout.review.y<layout.southPrice,'south review not before price');
+           if(file==='house-cleaning/index.html')assert(layout.works?.visible&&layout.housePrice?.visible&&layout.works.y<layout.housePrice.y,'house proof not before price');
+           if(file==='cursor-test/central.html'){const z=layout;assert(z.reasons?.visible&&z.proof?.visible&&z.review?.visible&&z.pricing?.visible&&z.priceCta?.visible&&z.hero.bottom<=z.reasons.y+2&&z.reasons.y<z.proof.y&&z.proof.y<z.review.y&&z.review.y<z.pricing.y&&z.pricing.y<z.priceCta.y,'central value/proof/price order');}
+           const slug=file.replace(/\/index\.html$|\.html$/g,'').replace(/\//g,'-')||'home';
+           await p.screenshot({path:out+'/screenshots/'+slug+'-'+width+'-hero.png',animations:'disabled',timeout:20000});
+           row.images=await p.evaluate(async()=>{const es=[...document.images].filter(i=>{const s=i.getAttribute('src');if(!s)return false;try{return new URL(i.currentSrc||i.src,location.href).origin===location.origin}catch{return false}});es.forEach(i=>i.loading='eager');await Promise.race([Promise.all(es.map(i=>i.decode().catch(()=>{}))),new Promise(r=>setTimeout(r,18000))]);return{count:es.length,ok:es.filter(i=>i.naturalWidth>0).length,bad:es.filter(i=>!i.naturalWidth).map(i=>i.getAttribute('src'))}});assert(!row.images.bad.length,'image decode '+JSON.stringify(row.images.bad));
+           if(width===390){
+            const focus=cities.includes(file)?'#regional-work-example':file==='cursor-test/urasoe.html'?'#work-examples':file==='cursor-test/south.html'?'main > .review-ext':file==='cursor-test/central.html'?'main > .commitment':file==='house-cleaning/index.html'?'#works':null;
+            if(focus){const a=p.locator('main a[href="'+focus+'"]').first();if(await a.count()&&await a.isVisible()){await a.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await a.click();assert(await p.locator(focus).count()===1,'work anchor target');row.workLink=true;}await p.locator(focus).evaluate(e=>e.scrollIntoView({block:'start',behavior:'instant'}));await p.screenshot({path:out+'/screenshots/'+slug+'-'+width+'-proof.png',animations:'disabled',timeout:20000});}
+            const events=()=>p.evaluate(()=>Array.from(window.dataLayer||[]).filter(x=>x&&x[0]==='event').map(x=>x[1]));
+            for(const [type,sel] of [['line','a[href^="https://lin.ee/"],a[href^="https://line.me/"]'],['tel','a[href^="tel:"]'],['reserve','a[href^="https://airrsv.net/"]']]){
+             const loc=p.locator(sel);let a;for(let i=0;i<await loc.count();i++){if(await loc.nth(i).isVisible()){a=loc.nth(i);break}}if(!a)continue;const n=(await events()).length,k=await p.evaluate(()=>window.__qaClicks.length);await a.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await a.click({timeout:8000});const cs=await p.evaluate(()=>window.__qaClicks),ev=(await events()).slice(n);assert(cs.length>k&&cs.at(-1).trusted,'CTA '+type);if(file==='business-cleaning/index.html'&&(type==='line'||type==='tel'))assert(ev.includes('business_contact_click'),'business dedicated event '+type);row.cta.push({type,events:ev});
+            }
+            assert(row.cta.some(x=>x.type==='line'),'LINE click missing');
+            const faqs=p.locator('#faq details,.faq details,.faq-list details,.biz3-faq details,details.faq-details,section[aria-labelledby="faq-title"] details');
+            for(let i=0;i<await faqs.count();i++){const d=faqs.nth(i),s=d.locator(':scope > summary');if(!await s.count()||!await s.isVisible())continue;const was=await d.evaluate(e=>e.open);await s.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await s.click({timeout:8000});assert(await d.evaluate(e=>e.open)!==was,'FAQ open '+i);await s.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await s.click({timeout:8000});assert(await d.evaluate(e=>e.open)===was,'FAQ close '+i);row.faq++;}
+            assert(row.faq>0,'FAQ selector found no visible entries');
+            const a=p.locator('a.bcq-link[href^="/quality-guarantee/"]').first();await a.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await a.click({timeout:8000});await p.waitForURL('**/quality-guarantee/**',{timeout:10000});assert(await p.locator(new URL(p.url()).hash).count()===1,'policy anchor missing');row.policy=true;
+           }
            assert(!row.errors.length,row.errors.join(';'));row.pass=true;
-           }catch(e){row.errors.push(e.message.slice(0,500));row.pass=false;}finally{await ctx.close()}rows.push(row);console.log('HOME_CASE '+JSON.stringify(row));
+           }catch(e){row.errors.push(e.message.slice(0,650));row.pass=false;}finally{await ctx.close()}rows.push(row);console.log('BATCH_CASE '+JSON.stringify(row));
           }
-          (async()=>{const b=await chromium.launch({channel:'chrome',headless:true,args:['--no-sandbox']});try{await Promise.all(files.flatMap(f=>[1440,390,320].map(w=>run(b,f,w))))}finally{await b.close()}const summary={cases:rows.length,pass:rows.filter(x=>x.pass).length,faq:rows.reduce((n,x)=>n+x.faq,0),cta:rows.reduce((n,x)=>n+x.cta.length,0),images:rows.reduce((n,x)=>n+(x.images?.count||0),0),imageOK:rows.reduce((n,x)=>n+(x.images?.ok||0),0),failed:rows.filter(x=>!x.pass)};fs.writeFileSync(out+'/result.json',JSON.stringify({base,head,summary,rows},null,2));console.log('HOME_SUMMARY '+JSON.stringify(summary));if(summary.failed.length)process.exitCode=1;})().catch(e=>{console.error(e);process.exit(1)});
+          (async()=>{const b=await chromium.launch({channel:'chrome',headless:true,args:['--no-sandbox']});try{const tasks=files.flatMap(f=>[1440,390,320].map(w=>[f,w]));let ix=0;await Promise.all(Array.from({length:6},async()=>{while(ix<tasks.length){const [f,w]=tasks[ix++];await run(b,f,w)}}))}finally{await b.close()}const summary={pages:files.length,cases:rows.length,pass:rows.filter(x=>x.pass).length,source:rows.filter(x=>x.source).length,faq:rows.reduce((n,x)=>n+x.faq,0),cta:rows.reduce((n,x)=>n+x.cta.length,0),events:rows.reduce((n,x)=>n+x.cta.filter(t=>t.events.length).length,0),images:rows.reduce((n,x)=>n+(x.images?.count||0),0),imageOK:rows.reduce((n,x)=>n+(x.images?.ok||0),0),policy:rows.filter(x=>x.policy).length,workLinks:rows.filter(x=>x.workLink).length,failed:rows.filter(x=>!x.pass).map(x=>({file:x.file,width:x.width,errors:x.errors}))};fs.writeFileSync(out+'/result.json',JSON.stringify({base,head,mode,summary,rows},null,2));console.log('BATCH_SUMMARY '+JSON.stringify(summary));if(summary.failed.length||summary.pass!==files.length*3)process.exitCode=1;})().catch(e=>{console.error(e);process.exit(1)});
           NODE
-          node --check qa-home-value.cjs
-          node qa-home-value.cjs
+          node --check qa-lp-value-batch.cjs
+          node qa-lp-value-batch.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: bc-home-value-live-20261127
-          path: qa-home-value-live/
+          name: bc-lp-value-batch-20261127
+          path: qa-lp-value-batch/
           retention-days: 7
           if-no-files-found: warn
