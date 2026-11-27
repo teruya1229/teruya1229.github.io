@@ -1,0 +1,125 @@
+name: LP benefit first 22-page regression
+on:
+  pull_request:
+    branches: [lp/benefit-first-conversion-20261127]
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      QA_MODE: preview
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Setup existing baseline and browser
+        shell: bash
+        run: |
+          git worktree add --detach "$RUNNER_TEMP/lp-before" 35b92be56c5efd5abcc4f2fff32473af93cbcadd
+          echo "BASE_DIR=$RUNNER_TEMP/lp-before" >> "$GITHUB_ENV"
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+          if ! fc-list :lang=ja | grep -q .; then
+            sudo apt-get install -y -qq fonts-noto-cjk > /dev/null || { sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-cjk > /dev/null; }
+            fc-cache -f
+          fi
+          test -n "$(fc-list :lang=ja)"
+          python .github/scripts/render_quality_guarantee.py
+      - name: Compare original and revised LPs at all three widths
+        shell: bash
+        run: |
+          mkdir -p /tmp/benefit-qa
+          node <<'JS'
+          const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),assert=require('assert/strict');
+          const root='https://teruya1229.github.io/',before=process.env.BASE_DIR,after=process.cwd(),mode=process.env.QA_MODE;
+          const entries=['index.html','cursor-test/index.html','complete-disassembly/index.html','business-cleaning/index.html','house-cleaning/index.html','aircon/index.html','mi-bcs/index.html','mi-bcs/aircon-replacement/index.html','lighting/index.html','reform/index.html','toilet/index.html','washlet/index.html',...['south','central','urasoe','naha','nanjo','yaese','haebaru','itoman','tomigusuku','yonabaru'].map(x=>'cursor-test/'+x+'.html')];
+          const norm=s=>s.replace(/\r\n/g,'\n').trim();
+          const rows=[];
+          const tags=(s,re)=>[...s.matchAll(re)].map(x=>x[0]).sort();
+          const protectedRe=[/<a\b[^>]*>[\s\S]*?<\/a>/gi,/<img\b[^>]*>/gi,/<script\b[\s\S]*?<\/script>/gi,/<style\b[\s\S]*?<\/style>/gi,/<details\b[\s\S]*?<\/details>/gi,/<!-- BCQ:(?:CSS|HERO|DETAIL):BEGIN -->[\s\S]*?<!-- BCQ:(?:CSS|HERO|DETAIL):END -->/g,/[0-9][0-9,]*\s*円/g,/<iframe\b[\s\S]*?<\/iframe>/gi,/<form\b[\s\S]*?<\/form>/gi];
+          for(const file of entries){const a=fs.readFileSync(path.join(before,file),'utf8'),b=fs.readFileSync(path.join(after,file),'utf8');assert.notEqual(a,b,file);for(const re of protectedRe)assert.deepEqual(tags(a,re),tags(b,re),file+' protected '+re);}
+          async function inspect(browser,file,width,original){
+            const dir=original?before:after,live=!original&&mode==='live',errors=[],bad=[];
+            const ctx=await browser.newContext({viewport:{width,height:width===1440?900:width===390?844:568},deviceScaleFactor:1,reducedMotion:'reduce'});
+            try{
+              await ctx.route('**/*',async r=>{
+                const u=new URL(r.request().url());
+                if(['data:','blob:'].includes(u.protocol))return r.continue();
+                if(u.origin!==root.slice(0,-1)||r.request().method()!=='GET')return r.abort('blockedbyclient');
+                if(live)return r.continue();
+                let fp=path.resolve(dir,'.'+decodeURIComponent(u.pathname));
+                if(fp!==dir&&!fp.startsWith(dir+path.sep))return r.abort();
+                try{if(fs.statSync(fp).isDirectory())fp=path.join(fp,'index.html');return r.fulfill({path:fp})}catch{return r.fulfill({status:404,body:'missing'})}
+              });
+              const p=await ctx.newPage();p.setDefaultTimeout(12000);
+              p.on('pageerror',e=>errors.push(e.message));
+              p.on('response',r=>{if(r.url().startsWith(root)&&r.status()>=400)bad.push(r.status()+' '+r.url())});
+              let res,exact=false;
+              for(let t=0;t<(live?8:1);t++){
+                res=await p.goto(root+file.replace(/index\.html$/,''),{waitUntil:'domcontentloaded',timeout:35000});
+                exact=norm(await res.text())===norm(fs.readFileSync(path.join(dir,file),'utf8'));
+                if(res.status()===200&&exact)break;await p.waitForTimeout(1500);
+              }
+              assert.equal(res.status(),200);assert(exact,'source mismatch');
+              await p.locator('img').evaluateAll(es=>es.forEach(i=>i.loading='eager'));
+              await p.evaluate(async()=>{await Promise.all([...document.images].filter(i=>new URL(i.currentSrc||i.src,location.href).origin===location.origin).map(i=>i.decode().catch(()=>{})));await document.fonts.ready});
+              const out=await p.evaluate(()=>{
+                const h=document.querySelector('h1'),q=document.querySelector('.bcq-brief');
+                if(!h||!q)throw Error('missing hero heading or guarantee');
+                let section=h.closest('section')||h.closest('main')||document.body;
+                const visible=e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width>0&&r.height>0&&s.visibility!=='hidden'&&s.display!=='none'&&s.position!=='fixed'};
+                const as=[...section.querySelectorAll('a[href*="lin.ee"],a[href*="line.me"]')].filter(a=>(h.compareDocumentPosition(a)&Node.DOCUMENT_POSITION_FOLLOWING)&&visible(a));
+                const a=as[0];if(!a)throw Error('primary LINE CTA not found');
+                const r=a.getBoundingClientRect(),g=q.getBoundingClientRect(),img=[...document.images].filter(i=>new URL(i.currentSrc||i.src,location.href).origin===location.origin).map(i=>({src:i.getAttribute('src'),ok:i.complete&&i.naturalWidth>0}));
+                return {ctaTop:Math.round(r.top+scrollY),ctaBottom:Math.round(r.bottom+scrollY),ctaHeight:Math.round(r.height),ctaWidth:Math.round(r.width),ctaHref:a.getAttribute('href'),ctaText:a.innerText.trim(),guaranteeTop:Math.round(g.top+scrollY),guaranteeHeight:Math.round(g.height),guaranteeAfter:!!(a.compareDocumentPosition(q)&Node.DOCUMENT_POSITION_FOLLOWING),viewport:innerHeight,overflow:document.documentElement.scrollWidth-innerWidth,images:img.length,broken:img.filter(i=>!i.ok).map(i=>i.src),faq:document.querySelectorAll('details summary').length,line:document.querySelectorAll('a[href*="lin.ee"],a[href*="line.me"]').length,phone:document.querySelectorAll('a[href^="tel:"]').length,reels:document.querySelectorAll('[data-reel-id]').length,head:h.innerText};
+              });
+              if(!original){
+                await p.screenshot({path:'/tmp/benefit-qa/'+file.replace(/[\/.]/g,'-')+'-'+width+'.png',animations:'disabled'});
+                const first=p.locator('details summary:visible').first();
+                if(await first.count()){
+                  const d=first.locator('..'),was=await d.evaluate(e=>e.open);
+                  await first.click({timeout:6000});assert.notEqual(await d.evaluate(e=>e.open),was,'FAQ toggle');await first.click({timeout:6000});assert.equal(await d.evaluate(e=>e.open),was,'FAQ restore');
+                  out.faqTest=1;
+                } else out.faqTest=0;
+              }
+              return {...out,exact,errors,bad};
+            }finally{await ctx.close()}
+          }
+          async function run(browser,file,width){
+            const row={file,width,mode};
+            try{
+              const a=await inspect(browser,file,width,true),b=await inspect(browser,file,width,false);
+              row.before=a;row.after=b;row.gain=a.ctaTop-b.ctaTop;
+              assert.equal(b.ctaHref,a.ctaHref,'primary CTA href changed');
+              assert.equal(b.ctaText,a.ctaText,'primary CTA label changed');
+              assert(b.guaranteeAfter,'guarantee must follow CTA in DOM');
+              assert(b.guaranteeTop>=b.ctaBottom-2,'guarantee visually before/overlapping CTA');
+              assert(row.gain>=-4,'CTA moved lower '+row.gain);
+              assert(b.overflow<=1,'horizontal overflow '+b.overflow);
+              assert.equal(b.images,a.images,'image count changed');
+              assert.deepEqual(b.broken,a.broken,'local image regression');
+              assert.equal(b.faq,a.faq,'FAQ count changed');assert.equal(b.line,a.line,'LINE count changed');assert.equal(b.phone,a.phone,'phone count changed');assert.equal(b.reels,a.reels,'reel count changed');
+              assert.deepEqual(b.errors,a.errors,'JS error regression');assert.deepEqual(b.bad.sort(),a.bad.sort(),'local HTTP regression');row.pass=true;
+            }catch(e){row.pass=false;row.error=e.message}
+            rows.push(row);
+            const {before:a,after:b}=row;
+            console.log('LP_CASE '+JSON.stringify({file,width,pass:row.pass,gain:row.gain,oldY:a?.ctaTop,newY:b?.ctaTop,guaranteeY:b?.guaranteeTop,overflow:b?.overflow,images:b?.images,broken:b?.broken,faq:b?.faq,faqTest:b?.faqTest,errors:b?.errors,bad:b?.bad,error:row.error}));
+          }
+          (async()=>{const browser=await chromium.launch({channel:'chrome',headless:true,args:['--no-sandbox']});const tasks=entries.flatMap(f=>[1440,390,320].map(w=>[f,w]));let i=0;try{await Promise.all(Array.from({length:5},async()=>{while(i<tasks.length){const [f,w]=tasks[i++];await run(browser,f,w)}}))}finally{await browser.close()}
+            fs.writeFileSync('/tmp/benefit-qa/report.json',JSON.stringify(rows,null,2));const good=rows.filter(r=>r.pass),mobile=good.filter(r=>r.width!==1440);console.log('LP_SUMMARY '+JSON.stringify({mode,pass:good.length,total:rows.length,images:good.reduce((n,r)=>n+r.after.images,0),faq:good.reduce((n,r)=>n+r.after.faqTest,0),mobileImproved:mobile.filter(r=>r.gain>0).length,mobileCount:mobile.length,mobileGains:mobile.map(r=>r.gain),failed:rows.filter(r=>!r.pass).map(r=>[r.file,r.width,r.error])}));if(good.length!==rows.length)process.exitCode=1;
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: benefit-first-qa
+          path: /tmp/benefit-qa/
+          retention-days: 7
