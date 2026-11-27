@@ -61,7 +61,7 @@ jobs:
            }else{const t=await p.locator('body').innerText();assert(/延長中/.test(t),'extension missing');assert(!/11月30日まで|11\/30まで/.test(t),'old deadline');row.campaign=true}
            assert(!errors.length,errors.join(';'));rows.push(row);console.log('LIGHTING_CASE '+JSON.stringify(row))
            }finally{await ctx.close()}
-          }}finally{await b.close()}console.log('LIGHTING_SUMMARY '+JSON.stringify({mode,pass:rows.length,images:rows.reduce((n,x)=>n+(x.images||0),0),faq:rows.reduce((n,x)=>n+(x.faq||0),0),cta:rows.reduce((n,x)=>n+(x.cta||0),0),campaign:rows.filter(x=>x.campaign).length}));fs.writeFileSync('qa-lighting-result/result.json',JSON.stringify(rows,null,2))})().catch(e=>{console.error(e);process.exit(1)});
+          }}}finally{await b.close()}console.log('LIGHTING_SUMMARY '+JSON.stringify({mode,pass:rows.length,images:rows.reduce((n,x)=>n+(x.images||0),0),faq:rows.reduce((n,x)=>n+(x.faq||0),0),cta:rows.reduce((n,x)=>n+(x.cta||0),0),campaign:rows.filter(x=>x.campaign).length}));fs.writeFileSync('qa-lighting-result/result.json',JSON.stringify(rows,null,2))})().catch(e=>{console.error(e);process.exit(1)});
           NODE
           node --check qa-lighting.cjs
           node qa-lighting.cjs
