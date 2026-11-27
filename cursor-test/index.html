@@ -923,6 +923,16 @@
 </style>
 <link rel="stylesheet" href="/assets/bc-work-reels.css?v=20261127a">
 <script defer src="/assets/bc-work-reels.js?v=20261127a"></script>
+<style>
+/* Keep company information and map inside narrow mobile viewport. */
+@media (max-width:767px){
+  .company-grid{grid-template-columns:minmax(0,1fr)}
+  .company-grid>.company-card{min-width:0}
+  .company-grid .company-table{table-layout:fixed}
+  .company-grid .company-table td{overflow-wrap:anywhere}
+  .company-grid .company-badge{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+}
+</style>
 </head>
 <body>
   <header class="header">
