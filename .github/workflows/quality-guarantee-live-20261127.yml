@@ -1,0 +1,36 @@
+name: BC quality guarantee live read-only Chrome QA
+on:
+  push:
+    branches: [qa/quality-guarantee-live-20261127]
+    paths: [.github/workflows/quality-guarantee-live-20261127.yml]
+permissions:
+  contents: read
+jobs:
+  qa:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0, persist-credentials: false}
+      - name: Verify approved manifest and exact base
+        run: |
+          git diff --name-only 4abc651e5ec5aaf011a936aa062ae7ce2344de56 HEAD
+          python .github/scripts/render_quality_guarantee.py
+          test -z "$(git diff --name-only 4abc651e5ec5aaf011a936aa062ae7ce2344de56 HEAD -- '*.html' '*.css' '*.js' .github/scripts)"
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Install browser test dependency and Japanese font
+        run: |
+          sudo mkdir -p /usr/local/share/fonts/qa-japanese
+          sudo curl -fLsS --retry 2 --max-time 75 -o /usr/local/share/fonts/qa-japanese/NotoSansCJKjp-Regular.otf https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/Japanese/NotoSansCJKjp-Regular.otf
+          sudo fc-cache -f >/dev/null
+          npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+      - name: Test public URLs without external sends
+        run: node qa/quality-guarantee-live-20261127.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bc-quality-live-20261127
+          path: qa-quality-live/
+          if-no-files-found: warn
+          retention-days: 7
