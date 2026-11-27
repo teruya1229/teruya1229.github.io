@@ -13,18 +13,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0, persist-credentials: false}
-      - name: Verify source
+      - name: Verify source and deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
         run: |
-          git worktree add --detach "$RUNNER_TEMP/lighting-qa" 3c641faf46d1921adeaa37ecd7a47bdb76673a29
+          git worktree add --detach "$RUNNER_TEMP/lighting-qa" f6e66484562f41c8bea95ca534d14dd2b20ad347
           cd "$RUNNER_TEMP/lighting-qa"
           python .github/scripts/render_quality_guarantee.py
+          for attempt in $(seq 1 40); do
+            result=$(gh api "/repos/$REPO/actions/runs/45966664740" --jq '[.head_sha,.status,(.conclusion // "")] | join(" ")')
+            echo "DEPLOY_STATUS $result"
+            if [ "$result" = "f6e66484562f41c8bea95ca534d14dd2b20ad347 completed success" ]; then exit 0; fi
+            if [[ "$result" == *" completed "* ]]; then exit 1; fi
+            sleep 5
+          done
+          exit 1
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
       - run: npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
       - name: Browser test
         env:
           SOURCE_DIR: ${{ runner.temp }}/lighting-qa
-          QA_MODE: preview
+          QA_MODE: live
         run: |
           cat > qa-lighting.cjs <<'NODE'
           const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),crypto=require('crypto');
