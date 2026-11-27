@@ -1,4 +1,4 @@
-name: BC lighting photos and campaign QA
+name: BC portrait geometry QA
 on:
   push:
     branches: [qa/quality-guarantee-live-20261127]
@@ -13,73 +13,47 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0, persist-credentials: false}
-      - name: Verify source and deployment
-        env:
-          GH_TOKEN: ${{ github.token }}
-          REPO: ${{ github.repository }}
+      - name: Verify source
         run: |
-          git worktree add --detach "$RUNNER_TEMP/lighting-qa" f6e66484562f41c8bea95ca534d14dd2b20ad347
-          cd "$RUNNER_TEMP/lighting-qa"
+          git worktree add --detach "$RUNNER_TEMP/portrait-qa" 30f43c2cdcc283859118811f964fac6f9553dbf0
+          cd "$RUNNER_TEMP/portrait-qa"
           python .github/scripts/render_quality_guarantee.py
-          for attempt in $(seq 1 40); do
-            result=$(gh api "/repos/$REPO/actions/runs/45966664740" --jq '[.head_sha,.status,(.conclusion // "")] | join(" ")')
-            echo "DEPLOY_STATUS $result"
-            if [ "$result" = "f6e66484562f41c8bea95ca534d14dd2b20ad347 completed success" ]; then exit 0; fi
-            if [[ "$result" == *" completed "* ]]; then exit 1; fi
-            sleep 5
-          done
-          exit 1
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
       - run: npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
       - name: Browser test
         env:
-          SOURCE_DIR: ${{ runner.temp }}/lighting-qa
-          QA_MODE: live
+          SOURCE_DIR: ${{ runner.temp }}/portrait-qa
+          QA_MODE: preview
         run: |
-          cat > qa-lighting.cjs <<'NODE'
-          const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),crypto=require('crypto');
-          const root='https://teruya1229.github.io/',dir=process.env.SOURCE_DIR,mode=process.env.QA_MODE;
-          const names=['round-cover.webp','round-existing-interior.webp','round-fixture-interior.webp','round-lit.webp','linear-overview.webp','linear-detail.webp'];
-          const pages=['lighting/index.html','washing-machine-cleaning/index.html','cursor-test/index.html','cursor-test/central.html','prices/index.html','cursor-test/faq.html'];
-          const assert=(v,m)=>{if(!v)throw Error(m)};
-          const norm=s=>s.replace(/\r\n/g,'\n').trim();
-          fs.mkdirSync('qa-lighting-result',{recursive:true});
+          cat > qa-portrait.cjs <<'NODE'
+          const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
+          const root='https://teruya1229.github.io/',dir=process.env.SOURCE_DIR,mode=process.env.QA_MODE,assert=(v,m)=>{if(!v)throw Error(m)};
+          const pages=['lighting/','toilet/','washlet/','reform/','mi-bcs/','mi-bcs/aircon-replacement/','moving/','washing-machine-cleaning/','business-cleaning/','aircon/','cursor-test/','complete-disassembly/',''];
+          fs.mkdirSync('portrait-qa',{recursive:true});
           (async()=>{const b=await chromium.launch({channel:'chrome',headless:true,args:['--no-sandbox']});const rows=[];try{
-          for(const file of pages){for(const width of file===pages[0]?[1440,390,320]:[390]){
-           const ctx=await b.newContext({viewport:{width,height:width===1440?900:844},deviceScaleFactor:1});
-           try{
-           await ctx.route('**/*',async route=>{const u=new URL(route.request().url());if(u.origin!=='https://teruya1229.github.io'||route.request().method()!=='GET')return route.abort();if(mode==='live')return route.continue();let pp=path.resolve(dir,'.'+decodeURIComponent(u.pathname));if(!pp.startsWith(dir+path.sep)&&pp!==dir)return route.abort();try{if(fs.statSync(pp).isDirectory())pp=path.join(pp,'index.html');return route.fulfill({path:pp})}catch{return route.fulfill({status:404,body:'missing'})}});
-           await ctx.addInitScript(()=>{window.__qa=[];document.addEventListener('click',e=>{let a=e.target.closest?.('a');if(a&&/^(https:\/\/(?:lin\.ee|line\.me)\/|tel:)/.test(a.getAttribute('href')||'')){window.__qa.push(a.getAttribute('href'));e.preventDefault()}},true)});
-           const p=await ctx.newPage();const errors=[];p.on('pageerror',e=>errors.push(e.message));const url=root+file.replace(/index\.html$/,'');let res;for(let i=0;i<(mode==='live'?8:1);i++){res=await p.goto(url,{waitUntil:'domcontentloaded',timeout:30000});if(res.status()===200&&norm(await res.text())===norm(fs.readFileSync(path.join(dir,file),'utf8')))break;await p.waitForTimeout(2500)}
-           assert(res.status()===200&&norm(await res.text())===norm(fs.readFileSync(path.join(dir,file),'utf8')),'source mismatch '+file);
-           const row={file,width};if(file===pages[0]){
-           const gal=p.locator('#lighting-work-photos');assert(await gal.count()===1,'gallery missing');
-           await gal.evaluate(e=>e.scrollIntoView({block:'start'}));
-           const images=await gal.locator('img').evaluateAll(async es=>{es.forEach(e=>e.loading='eager');await Promise.all(es.map(e=>e.decode()));return es.map(e=>({src:e.getAttribute('src'),w:e.naturalWidth,h:e.naturalHeight,display:e.getBoundingClientRect().width}))});
-           assert(images.length===6&&images.every(e=>e.w>0&&e.h>0&&e.display>0),'image decode');
-           assert(JSON.stringify(images.map(x=>x.src.split('/').at(-1)))===JSON.stringify(names),'image names/order');
-           row.images=images.length;row.gallery=await gal.evaluate(e=>({width:e.getBoundingClientRect().width,top:e.getBoundingClientRect().top+scrollY}));
-           assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'overflow');
-           await p.screenshot({path:'qa-lighting-result/gallery-'+width+'.png',animations:'disabled'});
-           if(width===390){
-           for(const n of names){const local=fs.readFileSync(path.join(dir,'lighting/images',n));if(mode==='live'){const rr=await ctx.request.get(root+'lighting/images/'+n);assert(rr.status()===200,'image HTTP '+n);assert(crypto.createHash('sha256').update(await rr.body()).digest('hex')===crypto.createHash('sha256').update(local).digest('hex'),'image bytes '+n)}}
-           const faqs=p.locator('#faq details');row.faq=0;for(let i=0;i<await faqs.count();i++){const d=faqs.nth(i),s=d.locator('summary');if(!await s.isVisible())continue;const old=await d.evaluate(e=>e.open);await s.click();assert(await d.evaluate(e=>e.open)!==old,'FAQ open');await s.click();assert(await d.evaluate(e=>e.open)===old,'FAQ close');row.faq++;}
-           assert(row.faq>0,'FAQ absent');
-           row.cta=0;for(const sel of ['a[href^="https://lin.ee/"]','a[href^="tel:"]']){const all=p.locator(sel);for(let i=0;i<await all.count();i++){const a=all.nth(i);if(!await a.isVisible())continue;let n=await p.evaluate(()=>window.__qa.length);await a.click();assert(await p.evaluate(()=>window.__qa.length)===n+1,'CTA click');row.cta++;break}}
-           assert(row.cta===2,'CTA absent');
-           }
-           }else{if(file==='cursor-test/faq.html'){const d=p.locator('details').filter({hasText:'延長中'}).first();assert(await d.count()===1,'campaign FAQ missing');const k=d.locator('summary');if(!await d.evaluate(e=>e.open))await k.click();assert(await d.evaluate(e=>e.open),'campaign FAQ not opened');}const t=await p.locator('body').innerText();assert(/延長中/.test(t),'extension missing');assert(!/11月30日まで|11\/30まで/.test(t),'old deadline');row.campaign=true}
-           assert(!errors.length,errors.join(';'));rows.push(row);console.log('LIGHTING_CASE '+JSON.stringify(row))
-           }finally{await ctx.close()}
-          }}}finally{await b.close()}console.log('LIGHTING_SUMMARY '+JSON.stringify({mode,pass:rows.length,images:rows.reduce((n,x)=>n+(x.images||0),0),faq:rows.reduce((n,x)=>n+(x.faq||0),0),cta:rows.reduce((n,x)=>n+(x.cta||0),0),campaign:rows.filter(x=>x.campaign).length}));fs.writeFileSync('qa-lighting-result/result.json',JSON.stringify(rows,null,2))})().catch(e=>{console.error(e);process.exit(1)});
+          for(const page of pages){for(const width of page==='lighting/'?[320,390,768,850,1024,1440]:[390,850,1440]){
+          const ctx=await b.newContext({viewport:{width,height:900},deviceScaleFactor:1});
+          try{await ctx.route('**/*',async route=>{const u=new URL(route.request().url());if(u.origin!=='https://teruya1229.github.io'||route.request().method()!=='GET')return route.abort();if(mode==='live')return route.continue();let pp=path.resolve(dir,'.'+decodeURIComponent(u.pathname));if(!pp.startsWith(dir+path.sep)&&pp!==dir)return route.abort();try{if(fs.statSync(pp).isDirectory())pp=path.join(pp,'index.html');return route.fulfill({path:pp})}catch{return route.fulfill({status:404,body:'missing'})}});
+          const p=await ctx.newPage();const res=await p.goto(root+page,{waitUntil:'domcontentloaded',timeout:30000});assert(res.status()===200,'HTTP '+page);
+          const imgs=p.locator('img[src*="rep-teruya"],img[src*="teruya-profile"],img[src*="profile-teruya"]');
+          const portraits=await imgs.evaluateAll(async es=>{es.forEach(e=>e.loading='eager');await Promise.all(es.map(e=>e.decode().catch(()=>{})));return es.map(e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return {src:e.getAttribute('src'),w:r.width,h:r.height,nw:e.naturalWidth,nh:e.naturalHeight,fit:s.objectFit,display:s.display,position:s.objectPosition,ratio:r.height?r.width/r.height:null}})});
+          const row={page,width,portraits};if(page==='lighting/'){
+          const photo=p.locator('.hero-person-photo');assert(await photo.count()===1,'portrait missing');const g=portraits[0];assert(g.nw>0&&g.nh>0&&g.fit==='contain'&&g.w>=85&&g.w<=157&&Math.abs(g.w-g.h)<2,'portrait cropped or oversize '+JSON.stringify(g));
+          assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'horizontal scroll');
+          const card=p.locator('.hero-frame--person');assert(await card.count()===1,'card missing');const box=await card.boundingBox();assert(box.width<=513,'oversize card '+box.width);await card.screenshot({path:'portrait-qa/lighting-'+width+'.png',animations:'disabled'});
+          if(width===390){const images=await p.locator('#lighting-work-photos img').evaluateAll(async es=>{es.forEach(e=>e.loading='eager');await Promise.all(es.map(e=>e.decode()));return es.map(e=>e.naturalWidth)});assert(images.length===6&&images.every(x=>x>0),'work photos regression');row.workPhotos=6;}
+          }else{row.suspicious=portraits.filter(g=>g.w>0&&g.h>0&&g.fit==='cover'&&g.nw>0&&g.nh>0&&(g.ratio/(g.nw/g.nh)>1.4||g.ratio/(g.nw/g.nh)<0.71));}
+          rows.push(row);console.log('PORTRAIT_CASE '+JSON.stringify(row));
+          }finally{await ctx.close()}
+          }}}finally{await b.close()}fs.writeFileSync('portrait-qa/results.json',JSON.stringify(rows,null,2));console.log('PORTRAIT_SUMMARY '+JSON.stringify({mode,cases:rows.length,lighting:rows.filter(r=>r.page==='lighting/').length,suspicious:rows.filter(r=>r.suspicious?.length).map(r=>({page:r.page,width:r.width,images:r.suspicious}))}))})().catch(e=>{console.error(e);process.exit(1)});
           NODE
-          node --check qa-lighting.cjs
-          node qa-lighting.cjs
+          node --check qa-portrait.cjs
+          node qa-portrait.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: lighting-gallery-qa
-          path: qa-lighting-result/
+          name: portrait-geometry-qa
+          path: portrait-qa/
           retention-days: 7
           if-no-files-found: warn
