@@ -272,7 +272,7 @@
     .service{order:15;}
     .project-counter{order:16;}
     #area{order:17;}
-    .premium-video{order:18;}
+    .premium-video{order:3;}
     .pre-cta-note{order:19;}
     .promise{order:20;}
     .next-campaign{order:21;}
@@ -910,6 +910,17 @@
 <!-- BCQ:CSS:BEGIN -->
 <link rel="stylesheet" href="/assets/bc-quality-guarantee.css">
 <!-- BCQ:CSS:END -->
+<style>
+
+    .bc-work-video-layout{display:grid;grid-template-columns:minmax(0,236px) minmax(0,1fr);gap:24px;align-items:center;max-width:760px;margin-inline:auto}
+    .bc-work-video-player{width:100%;max-width:236px;aspect-ratio:9/16;background:#111;border-radius:10px;overflow:hidden;margin-inline:auto}
+    .bc-work-video-player iframe{display:block;width:100%;height:100%;border:0}
+    .bc-work-video-copy{min-width:0;line-height:1.75}
+    .bc-work-video-copy p{margin:0 0 10px}
+    #premium-video,#normal-work-video,#pricing{scroll-margin-top:90px}
+    @media(max-width:767px){.bc-work-video-layout{grid-template-columns:minmax(0,1fr);gap:12px;text-align:center}.bc-work-video-player{max-width:210px}.bc-work-video-copy{font-size:.9rem}.premium-video.section{padding-top:24px;padding-bottom:24px}}
+
+</style>
 </head>
 <body>
   <header class="header">
@@ -1027,6 +1038,21 @@
     </section>
 
     <!-- 完全分解 代表口コミ -->
+    <!-- 実際の分解洗浄動画 -->
+    <section class="section premium-video section-light" id="premium-video" aria-labelledby="premium-video-heading">
+      <div class="container">
+        <h2 class="section-title" id="premium-video-heading">動画で見る、完全分解洗浄</h2>
+        <div class="bc-work-video-layout">
+          <div class="bc-work-video-player"><iframe src="https://www.youtube.com/embed/45nbeuVxRSk" title="BCサービスの実際のエアコン完全分解洗浄" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+          <div class="bc-work-video-copy">
+            <p>送風ファンやドレンパンを取り外し、通常分解では届きにくい部分まで洗浄する様子をご覧ください。</p>
+            <p><a href="https://www.youtube.com/shorts/45nbeuVxRSk" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;text-underline-offset:3px;font-weight:600">YouTubeで動画を見る</a></p>
+            <p><a href="#pricing" style="color:inherit;text-decoration:underline;font-weight:600">料金・洗浄方法を確認する</a>　<a href="#normal-work-video" style="color:inherit;text-decoration:underline;font-weight:600">通常分解の施工動画を見る</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section review-ext section-light">
       <div class="container">
         <h2 class="section-title">完全分解のご感想（抜粋）</h2>
@@ -1536,25 +1562,7 @@
       </p>
     </section>
 
-    <!-- 実際の分解洗浄動画 -->
-    <section class="section premium-video section-light" id="premium-video">
-      <div class="container">
-        <h2 class="section-title">実際の完全分解洗浄の様子</h2>
-        <p class="premium-video-lead">ここまで分解して内部まで洗浄しています。</p>
-        <div class="premium-video-card card">
-          <h3>完全分解クリーニングの実際の洗浄動画</h3>
-          <p>ここまで分解して、内部まで洗浄しています。</p>
-          <div class="video-embed-wrap video-wrapper">
-            <iframe
-              src="https://www.youtube.com/embed/45nbeuVxRSk"
-              title="エアコン完全分解洗浄"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-          <p>多くのお客様が、完全分解クリーニングを選ばれています。</p>
-        </div>
-      </div>
-    </section>
+
 
     <section class="pre-cta-note" style="background:#fff; border:1px solid #dbe7f3; border-radius:16px;">
       <div class="container" style="text-align:center;">
@@ -1569,7 +1577,7 @@
     </section>
 
     <!-- 通常分解クリーニング Instagram施工事例 -->
-    <section class="section case-study-section section-light">
+    <section class="section case-study-section section-light" id="normal-work-video">
       <div class="container">
         <h2 class="section-title">Instagramで見る通常分解クリーニングの施工事例</h2>
         <p class="case-study-lead">
@@ -1583,7 +1591,7 @@
             style="background:#FFF; border:0; border-radius:12px; margin:0 auto; max-width:540px; min-width:280px; width:100%;">
           </blockquote>
         </div>
-        <p class="case-study-note">※Instagramの投稿が表示されない場合は、Instagramアプリまたはブラウザでご確認ください。</p>
+        <p class="case-study-note"><a href="https://www.instagram.com/reel/DKwmGaGTs48/" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;text-underline-offset:3px;font-weight:600">Instagramでこの施工事例を見る</a></p>
         <p class="related-link"><a href="cases.html">通常分解・完全分解の施工事例をもっと見る</a></p>
       </div>
     </section>
