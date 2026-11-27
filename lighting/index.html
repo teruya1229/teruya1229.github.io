@@ -268,6 +268,17 @@
 <!-- BCQ:CSS:BEGIN -->
 <link rel="stylesheet" href="/assets/bc-quality-guarantee.css">
 <!-- BCQ:CSS:END -->
+  <style>
+    #lighting-work-photos .lighting-work-lead{max-width:720px;margin:0 auto 24px;line-height:1.8}
+    .lighting-work-subtitle{font-size:1.08rem;margin:24px 0 12px}
+    .lighting-work-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .lighting-work-linear{grid-template-columns:repeat(2,minmax(0,1fr));max-width:640px;margin-inline:auto}
+    .lighting-work-photo{margin:0;min-width:0}
+    .lighting-work-photo img{display:block;width:100%;height:auto;aspect-ratio:3/4;object-fit:contain;background:#f1f3f5;border-radius:6px;filter:brightness(1.06)}
+    .lighting-work-photo figcaption{font-size:.85rem;line-height:1.5;margin-top:7px;color:#364152}
+    .lighting-work-note{font-size:.85rem;line-height:1.7;margin:20px 0 0;color:#475569}
+    @media(max-width:767px){.lighting-work-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.lighting-work-subtitle{margin-top:20px}}
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -427,6 +438,27 @@
           </li>
         </ul>
         <p class="note-sky">主力は当社で販売する家庭用100V照明です。200V機器・専用回路の増設などの特殊な電気工事は、現地確認のうえ協力会社と連携して対応します。</p>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="lighting-work-photos" aria-labelledby="lighting-work-title">
+      <div class="wrap">
+        <p class="kicker">現場写真</p>
+        <h2 class="section-title" id="lighting-work-title">照明の交換・設置を、実際の写真で</h2>
+        <p class="lighting-work-lead">丸形照明から直線型の照明まで。器具や設置場所の状態を確認し、必要な交換方法をご提案します。</p>
+        <h3 class="lighting-work-subtitle">丸形照明の作業・点灯の様子</h3>
+        <div class="lighting-work-grid lighting-work-round">
+          <figure class="lighting-work-photo"><img src="images/round-cover.webp" width="820" height="929" loading="lazy" decoding="async" alt="丸形照明の外観"><figcaption>丸形照明の外観</figcaption></figure>
+          <figure class="lighting-work-photo"><img src="images/round-existing-interior.webp" width="820" height="983" loading="lazy" decoding="async" alt="カバーを外した照明器具"><figcaption>カバーを外した照明器具</figcaption></figure>
+          <figure class="lighting-work-photo"><img src="images/round-fixture-interior.webp" width="820" height="991" loading="lazy" decoding="async" alt="照明器具の内部"><figcaption>照明器具の内部</figcaption></figure>
+          <figure class="lighting-work-photo"><img src="images/round-lit.webp" width="820" height="991" loading="lazy" decoding="async" alt="丸形照明の点灯状態"><figcaption>丸形照明の点灯状態</figcaption></figure>
+        </div>
+        <h3 class="lighting-work-subtitle">直線型照明の設置・点灯の様子</h3>
+        <div class="lighting-work-grid lighting-work-linear">
+          <figure class="lighting-work-photo"><img src="images/linear-overview.webp" width="750" height="1000" loading="lazy" decoding="async" alt="直線型照明の設置状況"><figcaption>直線型照明の設置状況</figcaption></figure>
+          <figure class="lighting-work-photo"><img src="images/linear-detail.webp" width="750" height="1000" loading="lazy" decoding="async" alt="直線型照明の点灯状態"><figcaption>直線型照明の点灯状態</figcaption></figure>
+        </div>
+        <p class="lighting-work-note">写真は実際の現場を撮影したものです。器具の種類・設置条件によって対応内容は異なります。</p>
       </div>
     </section>
 
