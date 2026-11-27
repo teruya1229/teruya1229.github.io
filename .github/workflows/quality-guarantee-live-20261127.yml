@@ -58,7 +58,7 @@ jobs:
            row.cta=0;for(const sel of ['a[href^="https://lin.ee/"]','a[href^="tel:"]']){const all=p.locator(sel);for(let i=0;i<await all.count();i++){const a=all.nth(i);if(!await a.isVisible())continue;let n=await p.evaluate(()=>window.__qa.length);await a.click();assert(await p.evaluate(()=>window.__qa.length)===n+1,'CTA click');row.cta++;break}}
            assert(row.cta===2,'CTA absent');
            }
-           }else{const t=await p.locator('body').innerText();assert(/延長中/.test(t),'extension missing');assert(!/11月30日まで|11\/30まで/.test(t),'old deadline');row.campaign=true}
+           }else{if(file==='cursor-test/faq.html'){const d=p.locator('details').filter({hasText:'延長中'}).first();assert(await d.count()===1,'campaign FAQ missing');const k=d.locator('summary');if(!await d.evaluate(e=>e.open))await k.click();assert(await d.evaluate(e=>e.open),'campaign FAQ not opened');}const t=await p.locator('body').innerText();assert(/延長中/.test(t),'extension missing');assert(!/11月30日まで|11\/30まで/.test(t),'old deadline');row.campaign=true}
            assert(!errors.length,errors.join(';'));rows.push(row);console.log('LIGHTING_CASE '+JSON.stringify(row))
            }finally{await ctx.close()}
           }}}finally{await b.close()}console.log('LIGHTING_SUMMARY '+JSON.stringify({mode,pass:rows.length,images:rows.reduce((n,x)=>n+(x.images||0),0),faq:rows.reduce((n,x)=>n+(x.faq||0),0),cta:rows.reduce((n,x)=>n+(x.cta||0),0),campaign:rows.filter(x=>x.campaign).length}));fs.writeFileSync('qa-lighting-result/result.json',JSON.stringify(rows,null,2))})().catch(e=>{console.error(e);process.exit(1)});
