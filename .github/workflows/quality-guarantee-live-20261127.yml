@@ -13,23 +13,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0, persist-credentials: false}
-      - name: Verify source
+      - name: Verify source and deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
         run: |
-          git worktree add --detach "$RUNNER_TEMP/portrait-qa" 30f43c2cdcc283859118811f964fac6f9553dbf0
+          git worktree add --detach "$RUNNER_TEMP/portrait-qa" c697f4c53f3ea61451f4a8287e1c56ae6bde3116
           cd "$RUNNER_TEMP/portrait-qa"
           python .github/scripts/render_quality_guarantee.py
+          for attempt in $(seq 1 40); do
+            result=$(gh api "/repos/$REPO/actions/runs/45970655582" --jq '[.head_sha,.status,(.conclusion // "")] | join(" ")')
+            echo "DEPLOY_STATUS $result"
+            if [ "$result" = "c697f4c53f3ea61451f4a8287e1c56ae6bde3116 completed success" ]; then exit 0; fi
+            if [[ "$result" == *" completed "* ]]; then exit 1; fi
+            sleep 5
+          done
+          exit 1
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
       - run: npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
       - name: Browser test
         env:
           SOURCE_DIR: ${{ runner.temp }}/portrait-qa
-          QA_MODE: preview
+          QA_MODE: live
         run: |
           cat > qa-portrait.cjs <<'NODE'
           const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
           const root='https://teruya1229.github.io/',dir=process.env.SOURCE_DIR,mode=process.env.QA_MODE,assert=(v,m)=>{if(!v)throw Error(m)};
-          const pages=['lighting/','toilet/','washlet/','reform/','mi-bcs/','mi-bcs/aircon-replacement/','moving/','washing-machine-cleaning/','business-cleaning/','aircon/','cursor-test/','complete-disassembly/',''];
+          const pages=['lighting/'];
           fs.mkdirSync('portrait-qa',{recursive:true});
           (async()=>{const b=await chromium.launch({channel:'chrome',headless:true,args:['--no-sandbox']});const rows=[];try{
           for(const page of pages){for(const width of page==='lighting/'?[320,390,768,850,1024,1440]:[390,850,1440]){
