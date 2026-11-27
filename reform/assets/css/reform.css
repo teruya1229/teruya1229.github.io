@@ -3563,3 +3563,12 @@ body.is-fixed-cta {
     scroll-behavior: auto;
   }
 }
+
+/* Existing published equipment case: preserve image proportions */
+.reform-case-proof { max-width: 560px; margin: 24px auto 32px; }
+.reform-case-proof h3 { margin: 0 0 12px; font-size: 18px; }
+.reform-case-proof__photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.reform-case-proof__photos figure { margin: 0; min-width: 0; }
+.reform-case-proof__photos img { display: block; width: 100%; height: auto; }
+.reform-case-proof__photos figcaption { margin-top: 6px; text-align: center; font-size: 14px; }
+.reform-case-proof p { margin: 12px 0 0; font-size: 15px; line-height: 1.65; }
