@@ -14,7 +14,7 @@ jobs:
         with: {fetch-depth: 0, persist-credentials: false}
       - name: Verify draft guarantee manifest without deployment
         run: |
-          git worktree add --detach "$RUNNER_TEMP/home-value" b89dca52aa8ec9097db623475d95350cf2acc41d
+          git worktree add --detach "$RUNNER_TEMP/home-value" d371ae625c2bb1eb8033081c2b81fe6d6f6566bd
           cd "$RUNNER_TEMP/home-value"
           python .github/scripts/render_quality_guarantee.py
       - uses: actions/setup-node@v4
@@ -32,7 +32,7 @@ jobs:
           cat > qa-home-value.cjs <<'NODE'
           const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),cp=require('child_process');
           const root='https://teruya1229.github.io/',dir=process.env.DRAFT_DIR,out='qa-home-value-preview';
-          const base='38b8ce8eafbca7df07013bf7b92317f0d12d7635',head='b89dca52aa8ec9097db623475d95350cf2acc41d';
+          const base='38b8ce8eafbca7df07013bf7b92317f0d12d7635',head='d371ae625c2bb1eb8033081c2b81fe6d6f6566bd';
           const files=['cursor-test/index.html','complete-disassembly/index.html'];
           const assert=(v,m)=>{if(!v)throw Error(m)};
           const sortTags=(s,r)=>Array.from(s.matchAll(r),m=>m[0]).sort();
@@ -58,7 +58,7 @@ jobs:
            assert(layout.width===width&&layout.scroll<=width+1,'horizontal overflow');
            assert(layout.h1?.visible&&layout.brief?.visible&&layout.h1.y<layout.brief.y,'header/guarantee order');
            assert(layout.line?.visible,'CTA missing');
-           if(home){const z=layout;assert(z.hero.bottom<=z.reasons.y+2&&z.reasons.y<z.proof.y&&z.proof.y<z.review.y&&z.review.y<z.pricing.y&&z.pricing.y<z.priceCta.y&&z.detail.y<z.faq.y,'section order');}
+           if(home){const z=layout;assert(z.hero.bottom<=z.reasons.y+2&&z.reasons.y<z.proof.y&&z.proof.y<z.review.y&&z.review.y<z.pricing.y&&z.pricing.y<z.priceCta.y&&z.detail.y<z.faq.y,'section order');if(width===390)assert(z.pricing.y<2700,'390px price position exceeds 2700px: '+z.pricing.y);if(width===320)assert(z.pricing.y<3000,'320px price position exceeds 3000px: '+z.pricing.y);}
            await p.screenshot({path:out+'/'+key+'-hero.png',animations:'disabled'});
            if(home){for(const [name,sel] of [['reasons','main > .reasons'],['proof','main > .commitment'],['review','main > .review-ext'],['price','main > #pricing']]){await p.locator(sel).scrollIntoViewIfNeeded();await p.screenshot({path:out+'/'+key+'-'+name+'.png',animations:'disabled'});}}
            row.images=await p.evaluate(async()=>{const es=[...document.images].filter(i=>{const s=i.getAttribute('src');if(!s)return false;try{return new URL(i.currentSrc||i.src,location.href).origin===location.origin}catch{return false}});es.forEach(i=>i.loading='eager');await Promise.race([Promise.all(es.map(i=>i.decode().catch(()=>{}))),new Promise(r=>setTimeout(r,12000))]);return{count:es.length,ok:es.filter(i=>i.naturalWidth>0).length,bad:es.filter(i=>!i.naturalWidth).map(i=>i.getAttribute('src'))}});assert(!row.images.bad.length,'image decode '+JSON.stringify(row.images.bad));
