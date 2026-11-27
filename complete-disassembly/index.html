@@ -1667,6 +1667,15 @@
 <!-- BCQ:CSS:BEGIN -->
 <link rel="stylesheet" href="/assets/bc-quality-guarantee.css">
 <!-- BCQ:CSS:END -->
+<style>
+
+    .bc-work-video-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:900px;margin:20px auto;scroll-margin-top:90px}
+    .bc-work-video-pair>.case-study-card{min-width:0;margin:0;padding:16px 14px;display:flex;flex-direction:column}
+    .bc-work-video-pair .youtube-short-wrap{max-width:260px;width:100%;margin:12px auto 0}
+    .bc-work-video-pair .case-study-ig-link{margin-top:12px;text-align:center}
+    @media(max-width:767px){.bc-work-video-pair{grid-template-columns:1fr;gap:16px}.bc-work-video-pair .youtube-short-wrap{max-width:235px}}
+
+</style>
 </head>
 <body>
   <header class="header">
@@ -1733,7 +1742,7 @@
 <section class="section sec-beforeafter-refresh">
           <div class="container">
             <h2 class="section-title">写真で見る、洗浄前と洗浄後の違い</h2>
-            <p class="cd-zoom-hint">BCサービスの実際の施工写真です。写真をタップすると拡大できます。</p>
+            <p class="cd-zoom-hint">BCサービスの実際の施工写真です。写真をタップすると拡大できます。 <a href="#work-videos" style="color:inherit;text-decoration:underline;font-weight:600">実際の分解洗浄動画も見る</a></p>
             <div class="services-grid">
               <figure class="svc-card card">
                 <a class="cd-proof-photo-link" href="./assets/photos/coil-before-after.webp" target="_blank" rel="noopener noreferrer" aria-label="施工写真を拡大して見る"><img src="./assets/photos/coil-before-after.webp" alt="エアコン熱交換器の洗浄前と洗浄後の比較写真" width="1200" height="475" loading="lazy" decoding="async" class="svc-card-img"></a>
@@ -2062,8 +2071,7 @@
               </div>
             </article>
     
-            <details class="cd-case-video">
-              <summary>▶ 実際の施工動画を見る <span aria-hidden="true">＋</span></summary>
+            <div class="bc-work-video-pair" id="work-videos" aria-label="実際の完全分解施工動画">
               <article class="card case-study-card" data-case-id="youtube-short-smkg3bl1ew">
               <h3>動画で見るエアコン完全分解クリーニング</h3>
               <p class="case-study-comment">
@@ -2079,9 +2087,16 @@
                   allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerpolicy="strict-origin-when-cross-origin"></iframe>
               </div>
-              <p class="case-study-ig-link"><a href="https://www.instagram.com/bcservicenanjyo/" target="_blank" rel="noopener noreferrer">Instagramでも施工事例を見る</a></p>
+              <p class="case-study-ig-link"><a href="https://www.youtube.com/shorts/SMKg-3BL1ew" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;text-underline-offset:3px;font-weight:600">YouTubeで動画を見る</a> ／ <a href="https://www.instagram.com/bcservicenanjyo/" target="_blank" rel="noopener noreferrer">Instagramでも施工事例を見る</a></p>
             </article>
-            </details>
+            
+              <article class="card case-study-card" data-case-id="youtube-short-6UtKuOaCOZE">
+                <h3>引越しに伴うエアコン完全分解洗浄</h3>
+                <p class="case-study-comment">引越しのタイミングで、使い慣れたエアコンの内部まできれいに。実際の完全分解の様子です。</p>
+                <div class="youtube-short-wrap"><iframe src="https://www.youtube.com/embed/6UtKuOaCOZE" title="引越しに伴うエアコン完全分解クリーニング｜BCサービス" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+                <p class="case-study-ig-link"><a href="https://www.youtube.com/shorts/6UtKuOaCOZE" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;text-underline-offset:3px;font-weight:600">YouTubeで動画を見る</a></p>
+              </article>
+            </div>
             <p class="related-link"><a href="../cursor-test/cases.html">通常分解も含めた施工事例一覧を見る</a></p>
           </div>
         </section>
