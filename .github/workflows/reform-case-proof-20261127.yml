@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     env:
-      QA_MODE: preview
+      QA_MODE: live
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,6 +21,19 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+      - name: Verify Pages deployment of approved merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_SHA: 'aebfc22485eff08de2bc65b141eb282feb879591'
+        shell: bash
+        run: |
+          for attempt in $(seq 1 30); do
+            data=$(gh api "/repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$TARGET_SHA&per_page=30" --jq '.workflow_runs[] | select(.name == "pages build and deployment" or (.path | contains("pages-build-deployment"))) | [.id,.head_sha,.status,(.conclusion // "")] | @tsv')
+            echo "PAGES_DEPLOY $data"
+            if echo "$data" | grep -q "$TARGET_SHA.*completed.*success"; then exit 0; fi
+            sleep 5
+          done
+          exit 1
       - name: Check exact page and image geometry
         shell: bash
         run: |
