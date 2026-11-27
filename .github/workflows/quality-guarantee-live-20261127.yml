@@ -1,10 +1,11 @@
-name: BC home LP value draft QA 20261127
+name: BC home LP value live QA 20261127
 on:
   push:
     branches: [qa/quality-guarantee-live-20261127]
     paths: [.github/workflows/quality-guarantee-live-20261127.yml]
 permissions:
   contents: read
+  actions: read
 jobs:
   qa:
     runs-on: ubuntu-24.04
@@ -12,11 +13,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0, persist-credentials: false}
-      - name: Verify draft guarantee manifest without deployment
+      - name: Verify exact deployed source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
         run: |
-          git worktree add --detach "$RUNNER_TEMP/home-value" d371ae625c2bb1eb8033081c2b81fe6d6f6566bd
+          git worktree add --detach "$RUNNER_TEMP/home-value" 9ac1e3f57a37794b2c5fa2f7604697faac4a936e
           cd "$RUNNER_TEMP/home-value"
           python .github/scripts/render_quality_guarantee.py
+          for attempt in $(seq 1 45); do
+            result=$(gh api "/repos/$REPO/actions/runs/45958480742" --jq '[.head_sha,.status,(.conclusion // "")] | join(" ")')
+            echo "DEPLOY_STATUS $result"
+            if [ "$result" = "9ac1e3f57a37794b2c5fa2f7604697faac4a936e completed success" ]; then exit 0; fi
+            if [[ "$result" == *" completed "* ]]; then exit 1; fi
+            sleep 5
+          done
+          exit 1
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
       - name: Install existing browser QA dependency and Japanese font
@@ -25,14 +37,14 @@ jobs:
           sudo curl -fLsS --retry 2 --max-time 75 -o /usr/local/share/fonts/qa-japanese/NotoSansCJKjp-Regular.otf https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/Japanese/NotoSansCJKjp-Regular.otf
           sudo fc-cache -f >/dev/null
           npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
-      - name: Browser QA on draft content (no external sends)
+      - name: Browser QA on live URLs (no external sends)
         env:
           DRAFT_DIR: ${{ runner.temp }}/home-value
         run: |
           cat > qa-home-value.cjs <<'NODE'
           const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),cp=require('child_process');
-          const root='https://teruya1229.github.io/',dir=process.env.DRAFT_DIR,out='qa-home-value-preview';
-          const base='38b8ce8eafbca7df07013bf7b92317f0d12d7635',head='d371ae625c2bb1eb8033081c2b81fe6d6f6566bd';
+          const root='https://teruya1229.github.io/',dir=process.env.DRAFT_DIR,out='qa-home-value-live';
+          const base='38b8ce8eafbca7df07013bf7b92317f0d12d7635',head='9ac1e3f57a37794b2c5fa2f7604697faac4a936e';
           const files=['cursor-test/index.html','complete-disassembly/index.html'];
           const assert=(v,m)=>{if(!v)throw Error(m)};
           const sortTags=(s,r)=>Array.from(s.matchAll(r),m=>m[0]).sort();
@@ -47,10 +59,10 @@ jobs:
           async function run(browser,file,width){
            const row={file,width,errors:[],faq:0,cta:[],images:null}; const ctx=await browser.newContext({viewport:{width,height:width===1440?900:width===390?844:568},deviceScaleFactor:1,reducedMotion:'reduce'});
            try{
-           await ctx.route('**/*',async route=>{const u=new URL(route.request().url());if(u.origin!=='https://teruya1229.github.io'||route.request().method()!=='GET')return route.abort('blockedbyclient');let pp=path.resolve(dir,'.'+decodeURIComponent(u.pathname));if(pp!==dir&&!pp.startsWith(dir+path.sep))return route.abort();try{if(fs.statSync(pp).isDirectory())pp=path.join(pp,'index.html');if(!fs.statSync(pp).isFile())return route.fulfill({status:404,body:'missing'});return route.fulfill({path:pp})}catch{return route.fulfill({status:404,body:'missing'})}});
+          await ctx.route('**/*',route=>{const u=route.request().url();return route.request().method()==='GET'&&(u.startsWith(root)||u.startsWith('data:')||u.startsWith('blob:'))?route.continue():route.abort('blockedbyclient')});
            await ctx.addInitScript(()=>{window.__qaClicks=[];document.addEventListener('click',e=>{const a=e.target.closest?.('a');if(a&&/^(https?:\/\/(?:lin\.ee\/|line\.me\/|airrsv\.net\/)|tel:)/i.test(a.getAttribute('href')||'')){window.__qaClicks.push({href:a.getAttribute('href'),trusted:e.isTrusted});e.preventDefault()}},true)});
            const p=await ctx.newPage();p.setDefaultTimeout(10000);p.on('pageerror',e=>row.errors.push('JS '+e.message));
-           const res=await p.goto(root+file.replace(/index\.html$/,''),{waitUntil:'domcontentloaded',timeout:30000});assert(res.status()===200&&norm(await res.text())===norm(src(file)),'source mismatch');
+          let res;for(let t=0;t<8;t++){res=await p.goto(root+file.replace(/index\.html$/,''),{waitUntil:'domcontentloaded',timeout:30000});if(res.status()===200&&norm(await res.text())===norm(src(file)))break;await p.waitForTimeout(3000)}assert(res.status()===200&&norm(await res.text())===norm(src(file)),'live source mismatch');
            await p.evaluate(async()=>{await Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,1500))]);scrollTo(0,0)});
            const home=file.startsWith('cursor-test'),key=(home?'home':'complete')+'-'+width;
            const layout=await p.evaluate(home=>{const y=s=>{const e=document.querySelector(s);if(!e)return null;const r=e.getBoundingClientRect();return {y:r.top+scrollY,bottom:r.bottom+scrollY,left:r.left,right:r.right,visible:r.width>0&&r.height>0}};return {width:innerWidth,scroll:document.documentElement.scrollWidth,h1:y('main h1'),brief:y('.bcq-brief'),detail:y('.bcq-detail'),faq:y('#faq'),hero:y('.hero'),line:y('main a[data-cta="line"],main a[href^="https://lin.ee/"]'),reasons:home?y('main > .reasons'):null,proof:home?y('main > .commitment'):null,review:home?y('main > .review-ext'):null,pricing:home?y('#pricing'):null,priceCta:home?y('#primary-cta'):null};},home);
@@ -77,7 +89,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: bc-home-value-preview-20261127
-          path: qa-home-value-preview/
+          name: bc-home-value-live-20261127
+          path: qa-home-value-live/
           retention-days: 7
           if-no-files-found: warn
