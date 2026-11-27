@@ -889,6 +889,23 @@
       #osouji-ac .osouji-card{min-height:auto !important;padding:16px !important;}
       #osouji-ac a.line-cta{max-width:100% !important;}
     }
+
+    /* Early proof: compact, editorial layout; keep the evidence and prices easy to reach. */
+    main > .reasons,main > .commitment,main > .review-ext{padding-top:40px;padding-bottom:40px;}
+    main > .reasons .section-title,main > .commitment .section-title,main > .review-ext .section-title{margin-bottom:20px;}
+    main > .reasons .reason-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;max-width:920px;margin:0 auto;}
+    main > .reasons .reason-item.card{margin:0;padding:14px 0;border:0;border-bottom:1px solid #dce4e9;border-radius:0;box-shadow:none;background:transparent;text-align:left;line-height:1.65;}
+    main > .reasons .reason-item.card::before{content:none;}
+    main > .commitment .commitment-images{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px;margin-bottom:12px;max-width:720px;margin-left:auto;margin-right:auto;}
+    main > .commitment .commitment-inner + .commitment-inner{margin-top:20px !important;}
+    main > .commitment .commitment-text{margin-top:8px;margin-bottom:8px;}
+    main > .commitment .home-case-photos{max-width:920px;margin-left:auto;margin-right:auto;gap:10px;margin-top:12px;}
+    @media(max-width:767px){
+      main > .reasons,main > .commitment,main > .review-ext{padding-top:28px;padding-bottom:28px;}
+      main > .reasons .reason-list{grid-template-columns:1fr;}
+      main > .reasons .reason-item.card{padding:10px 0;font-size:.9rem;}
+      main > .commitment .commitment-text{font-size:.9rem;line-height:1.65;}
+    }
   </style>
 <!-- BCQ:CSS:BEGIN -->
 <link rel="stylesheet" href="/assets/bc-quality-guarantee.css">
@@ -964,29 +981,29 @@
       <div class="container">
         <h2 class="section-title">必要な洗浄を、必要な範囲まで。</h2>
         <ul class="reason-list plan-compare--single">
-          <li class="reason-item card"><strong>汚れに合う洗浄方法を選べる</strong><br>通常分解で十分な場合も、奥まで洗う完全分解が適している場合も。機種や汚れ、設置状況から必要な作業をご提案します。</li>
-          <li class="reason-item card"><strong>構造を理解して、内部まで丁寧に</strong><br>清掃・現場経験17年。送風ファンやドレンパンまで取り外す完全分解洗浄にも対応します。</li>
-          <li class="reason-item card"><strong>料金が分かってから依頼できる</strong><br>LINEの写真相談で作業内容・料金の目安を確認。追加費用が必要な場合も作業前にご説明します。</li>
-          <li class="reason-item card"><strong>洗浄後も、同じ窓口に相談できる</strong><br>エアコンの不調や買い替えもご相談いただけます。子育て家庭にも配慮し、無理な営業は行いません。</li>
+          <li class="reason-item card"><strong>汚れに合う洗浄方法を選べる</strong><br>機種・汚れ・設置状況から、通常分解と完全分解を適切にご提案します。</li>
+          <li class="reason-item card"><strong>構造を理解して、内部まで丁寧に</strong><br>清掃・現場経験17年。ファン・ドレンパンまで外す完全分解にも対応。</li>
+          <li class="reason-item card"><strong>料金が分かってから依頼できる</strong><br>LINEで写真相談。作業内容・料金・追加費用は事前にご案内します。</li>
+          <li class="reason-item card"><strong>洗浄後も、同じ窓口に相談できる</strong><br>洗浄後の不調や買い替えも相談できます。無理な営業は行いません。</li>
         </ul>
       </div>
     </section>
 
     <section class="section commitment">
       <div class="container">
-        <h2 class="section-title">実際の施工写真で見る、分解洗浄の違い</h2>
+        <h2 class="section-title">実際の分解・洗浄の様子</h2>
         <div class="commitment-inner">
           <div class="commitment-images">
             <img src="images/kodawari-disassembly.jpg" alt="エアコン分解作業" width="800" height="500" loading="lazy" class="commitment-img">
             <img src="images/kodawari-fan-clean.jpg" alt="ファン洗浄後の仕上がり" width="800" height="500" loading="lazy" class="commitment-img">
           </div>
-          <p class="commitment-text">エアコンの構造に合わせて分解・洗浄。完全分解では、通常分解で外さない送風ファンやドレンパンも取り外し、奥の汚れまで洗浄します。</p>
+          <p class="commitment-text">完全分解では送風ファンやドレンパンも外し、通常分解では届きにくい汚れまで洗浄します。</p>
         </div>
 
         <!-- 施工事例（現場写真） -->
         <div class="commitment-inner" style="margin-top:40px;">
           <h3 style="font-size:1.25rem;font-weight:700;text-align:center;margin-bottom:12px;">施工事例（現場写真）</h3>
-          <p class="commitment-text">洗浄前の内部の汚れから、分解・洗浄、汚水の状態、施工後の仕上がりまで、現場の流れがわかる写真を掲載しています。</p>
+          <p class="commitment-text">施工前から分解・洗浄、仕上がりまでの実際の作業です。</p>
           <div class="home-case-photos" aria-label="施工事例写真">
             <figure class="home-case-photo-item">
               <img src="case-studies/2026-06-03-sample/before.jpg" alt="エアコンクリーニング施工前" width="600" height="400" loading="lazy">
