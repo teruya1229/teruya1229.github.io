@@ -1,4 +1,4 @@
-name: BC work-video restoration layout and evidence QA
+name: BC Instagram work reels layout and direct-link QA
 on:
   push:
     branches: [qa/quality-guarantee-live-20261127]
@@ -13,70 +13,75 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0, persist-credentials: false}
-      - name: Verify source
+      - name: Verify exact source
         run: |
-          git worktree add --detach "$RUNNER_TEMP/video-qa" 276b4973d2ff2ae73818584cd33bd2e0304c3eca
-          cd "$RUNNER_TEMP/video-qa"
+          git worktree add --detach "$RUNNER_TEMP/reel-qa" dbfc4d87ffec2521fd092224cec89c4cb861fd6f
+          cd "$RUNNER_TEMP/reel-qa"
           python .github/scripts/render_quality_guarantee.py
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
       - run: npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
-      - name: Verify video presence, size, order and direct links (external playback separately)
+      - name: Verify previews, correct direct links and click-to-load controls
         env:
-          SOURCE_DIR: ${{ runner.temp }}/video-qa
+          SOURCE_DIR: ${{ runner.temp }}/reel-qa
           QA_MODE: preview
         run: |
-          cat > qa-video.cjs <<'NODE'
+          cat > qa-reel.cjs <<'NODE'
           const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),cp=require('child_process');
-          const root='https://teruya1229.github.io/',dir=process.env.SOURCE_DIR,mode=process.env.QA_MODE||'preview';
-          const changed=['cursor-test/index.html','cursor-test/central.html','complete-disassembly/index.html','business-cleaning/index.html','moving/index.html','cursor-test/cases.html'];
-          const city={'naha':'45nbeuVxRSk','nanjo':'ETByM3P35jk','yaese':'tY_QGWpMrOM','haebaru':'1ZQZzwoAtJY','itoman':'-pD6oKVSXdY','tomigusuku':'FKww4leiw8o','yonabaru':'ch9F4yll0AE'};
-          const pages=[
-           {file:changed[0],yt:['45nbeuVxRSk','OjCx-B5GCvU'],ig:['DKwmGaGTs48'],section:'#premium-video',home:true},
-           {file:changed[1],yt:['45nbeuVxRSk'],ig:['DKwmGaGTs48'],section:'#premium-video',home:true},
-           {file:changed[2],yt:['SMKg-3BL1ew','6UtKuOaCOZE'],ig:[],section:'#work-videos'},
-           {file:changed[3],yt:[],ig:['DMh62EjPcNu'],section:'#work-video'},
-           {file:changed[4],yt:['6UtKuOaCOZE'],ig:[],section:'#moving-work-video'},
-           {file:changed[5],yt:[],ig:['DKwmGaGTs48','DO-xQ_PkUDL','DVvg1-tCP9I','DMCf9MEx_zN']},
-           {file:'washing-machine-cleaning/index.html',yt:['OjCx-B5GCvU'],ig:[],section:'#movie'},
-           ...Object.entries(city).map(([k,v])=>({file:'cursor-test/'+k+'.html',yt:[v],ig:[],section:'#regional-work-example'}))
+          const dir=process.env.SOURCE_DIR,mode=process.env.QA_MODE,root='https://teruya1229.github.io/';
+          const entries=[
+          ['cursor-test/index.html',['DfO5RjhocYu','DdQn8oRoyz0']],['cursor-test/central.html',['DfO5RjhocYu']],
+          ['complete-disassembly/index.html',['DZpFAieIvhW','DgPXTUEoZ-P','DfO5RjhocYu']],['washing-machine-cleaning/index.html',['DdQn8oRoyz0']],
+          ['moving/index.html',['DgPXTUEoZ-P']],['aircon/index.html',['Db71G_9ITH-','DZpFAieIvhW']],['reform/index.html',['DReZcGyEcBL']],['index.html',['DfO5RjhocYu','DReZcGyEcBL']],
+          ['mi-bcs/index.html',['DfO5RjhocYu']],['mi-bcs/aircon-replacement/index.html',['DfO5RjhocYu']],['house-cleaning/index.html',['DfO5RjhocYu']],
+          ['cursor-test/south.html',['DfO5RjhocYu']],['cursor-test/urasoe.html',['DfO5RjhocYu']],['cursor-test/naha.html',['DfO5RjhocYu']],['business-cleaning/index.html',['DO-xQ_PkUDL']],['cursor-test/cases.html',['DO-xQ_PkUDL']]
           ];
-          const assert=(v,m)=>{if(!v)throw Error(m)},same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
-          const norm=s=>s.replace(/\r\n/g,'\n').trim(),tags=(s,r)=>Array.from(s.matchAll(r),m=>m[0]).sort();
-          const get=f=>fs.readFileSync(path.join(dir,f),'utf8'),old=f=>cp.execFileSync('git',['show','c697f4c53f3ea61451f4a8287e1c56ae6bde3116:'+f],{encoding:'utf8',maxBuffer:8*1024*1024});
-          assert(same(cp.execFileSync('git',['diff','--name-only','c697f4c53f3ea61451f4a8287e1c56ae6bde3116','276b4973d2ff2ae73818584cd33bd2e0304c3eca'],{encoding:'utf8'}).trim().split('\n').sort(),[...changed].sort()),'changed paths');
-          for(const f of changed){
-           const a=old(f),b=get(f);for(const re of [/<img\b[^>]*>/gi,/<script\b[\s\S]*?<\/script>/gi,/<!-- BCQ:(?:CSS|HERO|DETAIL):BEGIN -->[\s\S]*?<!-- BCQ:(?:CSS|HERO|DETAIL):END -->/g,/<a\b[^>]*href=["'](?:https?:\/\/(?:lin\.ee|line\.me|airrsv\.net)|tel:)[^"']*["'][^>]*>[\s\S]*?<\/a>/gi])assert(same(tags(a,re),tags(b,re)),f+' protected '+re);
-           const ids=s=>[...new Set(Array.from(s.matchAll(/(?:youtube(?:-nocookie)?\.com\/(?:embed\/|shorts\/|watch\?v=)|youtu\.be\/)([A-Za-z0-9_-]{11})|instagram\.com\/(?:p|reel|tv)\/([A-Za-z0-9_-]+)/g),m=>m[1]||m[2]))];
-           assert(ids(a).every(v=>ids(b).includes(v)),f+' lost original media');
+          const assert=(v,m)=>{if(!v)throw Error(m)},norm=s=>s.replace(/\r\n/g,'\n').trim(),get=f=>fs.readFileSync(path.join(dir,f),'utf8');
+          const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b),old=f=>cp.execFileSync('git',['show','0e7607cf2f50fff8184f537a977dcf26a54a4c64:'+f],{encoding:'utf8',maxBuffer:8*1024*1024});
+          const tags=(s,r)=>[...s.matchAll(r)].map(x=>x[0]).sort();
+          for(const [f,ids] of entries){const a=old(f),b=get(f);
+           for(const re of [/<!-- BCQ:(?:CSS|HERO|DETAIL):BEGIN -->[\s\S]*?<!-- BCQ:(?:CSS|HERO|DETAIL):END -->/g,/<a\b[^>]*href=["'](?:https?:\/\/(?:lin\.ee|line\.me|airrsv\.net)|tel:)[^"']*["'][^>]*>[\s\S]*?<\/a>/gi,/<details\b[^>]*>[\s\S]*?<\/details>/gi])assert(same(tags(a,re),tags(b,re)),f+' protected '+re);
+           for(const re of [/<img\b[^>]*>/gi,/<script\b[\s\S]*?<\/script>/gi]){const now=tags(b,re);for(const x of tags(a,re)){const i=now.indexOf(x);assert(i>=0,f+' removed original '+x.slice(0,100));now.splice(i,1)}}
+           assert(same([...b.matchAll(/class="bc-reel-media" data-reel-id="([^"]+)"/g)].map(x=>x[1]),ids),f+' reel IDs');
           }
-          console.log('VIDEO_STATIC_PASS '+JSON.stringify({changed:changed.length,protected:true,mode}));
-          fs.mkdirSync('video-qa/screenshots',{recursive:true});
-          const rows=[];
-          async function check(b,entry,width){
-           const row={file:entry.file,width,errors:[],yt:0,ig:0,links:0,hidden:[]};const ctx=await b.newContext({viewport:{width,height:width===1440?900:844},deviceScaleFactor:1,reducedMotion:'reduce'});
+          const preserved=['nanjo','yaese','haebaru','itoman','tomigusuku','yonabaru'];for(const k of preserved)assert(get('cursor-test/'+k+'.html')===old('cursor-test/'+k+'.html'),'existing city case changed '+k);
+          console.log('REEL_STATIC '+JSON.stringify({pages:entries.length,protected:true,unchangedRegional:preserved.length}));
+          fs.mkdirSync('reel-qa/screenshots',{recursive:true});const rows=[];
+          async function check(b,[file,ids],width){
+           const row={file,width,ids,errors:[],images:0,links:0,inline:0,source:false};const ctx=await b.newContext({viewport:{width,height:width===1440?960:844},deviceScaleFactor:1});
            try{
-           await ctx.route('**/*',async route=>{const u=new URL(route.request().url());if(u.protocol==='data:'||u.protocol==='blob:')return route.continue();if(u.origin!==root.slice(0,-1)||route.request().method()!=='GET')return route.abort('blockedbyclient');if(mode==='live')return route.continue();let pp=path.resolve(dir,'.'+decodeURIComponent(u.pathname));if(pp!==dir&&!pp.startsWith(dir+path.sep))return route.abort();try{if(fs.statSync(pp).isDirectory())pp=path.join(pp,'index.html');return route.fulfill({path:pp})}catch{return route.fulfill({status:404,body:'missing'})}});
-           const p=await ctx.newPage();p.setDefaultTimeout(10000);p.on('pageerror',e=>row.errors.push('JS '+e.message));
-           const url=root+entry.file.replace(/index\.html$/,'');let res;for(let t=0;t<(mode==='live'?6:1);t++){res=await p.goto(url,{waitUntil:'domcontentloaded',timeout:30000});if(res.status()===200&&norm(await res.text())===norm(get(entry.file)))break;await p.waitForTimeout(2500)}
-           assert(res.status()===200&&norm(await res.text())===norm(get(entry.file)),'HTML source mismatch');
-           const media=await p.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,yt:[...document.querySelectorAll('iframe[src*="youtube.com/embed/"],iframe[src*="youtube-nocookie.com/embed/"]')].map(e=>({id:e.getAttribute('src').split('/embed/')[1].split('?')[0],w:e.getBoundingClientRect().width,h:e.getBoundingClientRect().height,closed:!!e.closest('details:not([open])'),title:e.getAttribute('title')})),ig:[...document.querySelectorAll('blockquote.instagram-media')].map(e=>e.getAttribute('data-instgrm-permalink').match(/\/(?:p|reel|tv)\/([^/?]+)/)?.[1]),links:[...document.querySelectorAll('a[href*="youtube.com/shorts/"],a[href*="youtube.com/watch"],a[href*="instagram.com/p/"],a[href*="instagram.com/reel/"]')].map(e=>({href:e.getAttribute('href'),visible:e.getBoundingClientRect().width>0&&e.getBoundingClientRect().height>0,closed:!!e.closest('details:not([open])')}))}));
-           assert(media.width===width&&media.scroll<=width+1,'horizontal overflow '+media.scroll);assert(same(media.yt.map(x=>x.id).sort(),[...entry.yt].sort()),'YouTube IDs mismatch');assert(same(media.ig.sort(),[...entry.ig].sort()),'Instagram IDs mismatch');
-           for(const id of entry.yt){const f=media.yt.find(x=>x.id===id);assert(f.title&&f.w>0&&f.h>0&&!f.closed,'hidden iframe '+id+' '+JSON.stringify(f));assert(f.w>=140&&f.h>=160,'tiny video '+id);row.yt++;if(id!=='OjCx-B5GCvU'||entry.file==='washing-machine-cleaning/index.html'){assert(media.links.some(x=>x.href.includes(id)&&x.visible&&!x.closed),'video fallback missing '+id);row.links++}}
-           for(const id of entry.ig){assert(media.links.some(x=>x.href.includes(id)&&x.visible&&!x.closed),'Instagram fallback missing '+id);row.ig++;row.links++}
-           if(entry.home){const v=await p.evaluate(()=>{let y=s=>document.querySelector(s).getBoundingClientRect().top+scrollY;return{proof:y('main > .commitment'),video:y('#premium-video'),review:y('main > .review-ext'),price:y('#pricing')}});assert(v.proof<v.video&&v.video<v.review&&v.review<v.price,'video sequence');row.order=v}
-           if(entry.section){const loc=p.locator(entry.section);assert(await loc.count()===1&&await loc.isVisible(),'section missing');await loc.evaluate(e=>e.scrollIntoView({block:'start',behavior:'instant'}));await p.screenshot({path:'video-qa/screenshots/'+entry.file.replace(/[\/.]/g,'-')+'-'+width+'.png',animations:'disabled'});}
-           assert(!row.errors.length,row.errors.join(';'));row.pass=true;
-           }catch(e){row.errors.push(e.message.slice(0,600));row.pass=false;}finally{await ctx.close()}rows.push(row);console.log('VIDEO_CASE '+JSON.stringify(row));
+            await ctx.route('**/*',async route=>{const u=new URL(route.request().url());if(['data:','blob:'].includes(u.protocol))return route.continue();
+            if(u.hostname==='www.instagram.com'&&/^\/reel\/[A-Za-z0-9_-]{11}\/embed\/$/.test(u.pathname))return route.fulfill({status:200,contentType:'text/html',body:'<!doctype html><html><body>Instagram embed route test only</body></html>'});
+            if(u.origin!==root.slice(0,-1)||route.request().method()!=='GET')return route.abort('blockedbyclient');if(mode==='live')return route.continue();
+            let fp=path.resolve(dir,'.'+decodeURIComponent(u.pathname));if(fp!==dir&&!fp.startsWith(dir+path.sep))return route.abort();try{if(fs.statSync(fp).isDirectory())fp=path.join(fp,'index.html');return route.fulfill({path:fp})}catch{return route.fulfill({status:404,body:'missing'})}});
+            const p=await ctx.newPage();p.setDefaultTimeout(10000);p.on('pageerror',e=>row.errors.push('JS '+e.message));
+            const url=root+file.replace(/index\.html$/,'');let res;for(let t=0;t<(mode==='live'?6:1);t++){res=await p.goto(url,{waitUntil:'domcontentloaded',timeout:30000});if(res.status()===200&&norm(await res.text())===norm(get(file)))break;await p.waitForTimeout(2000)}
+            row.source=res.status()===200&&norm(await res.text())===norm(get(file));assert(row.source,'source mismatch');
+            await p.waitForFunction(()=>[...document.querySelectorAll('.bc-reel-media [data-reel-open]')].every(x=>!x.hidden));
+            const loc=p.locator('.bc-reel-media');assert(await loc.count()===ids.length,'reel count');assert(await p.locator('.bc-reel-inline iframe').count()===0,'eager external embed');
+            for(let i=0;i<ids.length;i++){
+             const m=loc.nth(i),id=ids[i],img=m.locator('img'),expected='https://www.instagram.com/reel/'+id+'/';assert(await m.getAttribute('data-reel-id')===id,'ID mismatch');
+             await img.evaluate(async e=>{e.loading='eager';e.scrollIntoView({block:'center',behavior:'instant'});await e.decode()});
+             const g=await img.evaluate(e=>{const r=e.getBoundingClientRect();return{w:r.width,h:r.height,nw:e.naturalWidth,nh:e.naturalHeight,fit:getComputedStyle(e).objectFit}});assert(g.nw===338&&g.nh===601&&g.w>=120&&g.w<=241&&Math.abs(g.w/g.h-9/16)<.02&&g.fit==='contain','preview geometry '+JSON.stringify(g));row.images++;
+             const links=m.locator('a');assert(await links.count()===2,'link count');for(let k=0;k<2;k++)assert(await links.nth(k).getAttribute('href')===expected&&await links.nth(k).isVisible(),'direct link');row.links++;
+             if(i===0){await m.screenshot({path:'reel-qa/screenshots/'+file.replace(/[\/.]/g,'-')+'-'+width+'.png',animations:'disabled',timeout:15000})}
+             const btn=m.locator('[data-reel-open]');await btn.click();const frame=m.locator('iframe');assert(await frame.count()===1&&await frame.getAttribute('src')===expected+'embed/'&&await btn.getAttribute('aria-expanded')==='true','embed open');
+             assert(await links.nth(1).isVisible(),'fallback disappeared');const overflow=await p.evaluate(()=>document.documentElement.scrollWidth-innerWidth);assert(overflow<=1,'expanded overflow '+overflow);
+             await btn.click();assert(await frame.count()===0&&await btn.getAttribute('aria-expanded')==='false','embed close');row.inline++;
+            }
+            const overflow=await p.evaluate(()=>({doc:document.documentElement.scrollWidth,w:innerWidth,offenders:[...document.querySelectorAll('body *')].filter(e=>{const b=e.getBoundingClientRect();return b.width>0&&b.right>innerWidth+1}).slice(0,5).map(e=>[e.tagName,e.id,e.className?.baseVal||String(e.className).slice(0,80),e.getBoundingClientRect().right])}));assert(overflow.doc<=width+1,'overflow '+JSON.stringify(overflow));
+            if(file==='cursor-test/naha.html')assert(await p.locator('iframe[src*="/embed/45nbeuVxRSk"]').count()===1,'original regional case removed');
+            assert(!row.errors.length,row.errors.join(';'));row.pass=true;
+           }catch(e){row.errors.push(e.message.slice(0,800));row.pass=false}finally{await ctx.close()}rows.push(row);console.log('REEL_CASE '+JSON.stringify(row));
           }
-          (async()=>{const b=await chromium.launch({channel:'chrome',headless:true,args:['--no-sandbox']});try{const tasks=pages.flatMap(e=>[1440,390,320].map(w=>[e,w]));let n=0;await Promise.all(Array.from({length:5},async()=>{while(n<tasks.length){const [e,w]=tasks[n++];await check(b,e,w)}}))}finally{await b.close()}const summary={mode,cases:rows.length,pass:rows.filter(r=>r.pass).length,yt:rows.reduce((n,r)=>n+r.yt,0),ig:rows.reduce((n,r)=>n+r.ig,0),links:rows.reduce((n,r)=>n+r.links,0),failed:rows.filter(r=>!r.pass)};fs.writeFileSync('video-qa/results.json',JSON.stringify({summary,rows},null,2));console.log('VIDEO_SUMMARY '+JSON.stringify(summary));if(summary.failed.length)process.exitCode=1})().catch(e=>{console.error(e);process.exit(1)});
+          (async()=>{const b=await chromium.launch({channel:'chrome',headless:true,args:['--no-sandbox']});try{const tasks=entries.flatMap(e=>[1440,390,320].map(w=>[e,w]));let n=0;await Promise.all(Array.from({length:6},async()=>{while(n<tasks.length){const [e,w]=tasks[n++];await check(b,e,w)}}))}finally{await b.close()}const summary={mode,cases:rows.length,pass:rows.filter(x=>x.pass).length,images:rows.reduce((n,x)=>n+x.images,0),links:rows.reduce((n,x)=>n+x.links,0),inline:rows.reduce((n,x)=>n+x.inline,0),source:rows.filter(x=>x.source).length,failed:rows.filter(x=>!x.pass)};fs.writeFileSync('reel-qa/result.json',JSON.stringify({summary,rows},null,2));console.log('REEL_SUMMARY '+JSON.stringify(summary));if(summary.failed.length)process.exitCode=1})().catch(e=>{console.error(e);process.exit(1)});
           NODE
-          node --check qa-video.cjs
-          node qa-video.cjs
+          node --check qa-reel.cjs
+          node qa-reel.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: bc-work-video-layout-qa
-          path: video-qa/
+          name: bc-instagram-reels-layout-qa
+          path: reel-qa/
           retention-days: 7
           if-no-files-found: warn
