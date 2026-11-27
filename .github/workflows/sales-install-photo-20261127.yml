@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     env:
-      QA_MODE: preview
+      QA_MODE: live
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,6 +21,19 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
+      - name: Identify Pages deployment of approved merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_SHA: 35b92be56c5efd5abcc4f2fff32473af93cbcadd
+        shell: bash
+        run: |
+          for attempt in $(seq 1 18); do
+            data=$(gh api "/repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$TARGET_SHA&per_page=30" --jq '.workflow_runs[] | [.id,.name,.head_sha,.status,(.conclusion // "")] | @tsv')
+            echo "PAGES_STATUS $data"
+            if echo "$data" | grep -F 'Deploy to GitHub Pages' | grep -q 'completed.*success'; then exit 0; fi
+            sleep 5
+          done
+          echo "Pages metadata not yet confirmed; proceed with exact live source check"
       - name: Verify both pages and six viewport cases
         shell: bash
         run: |
