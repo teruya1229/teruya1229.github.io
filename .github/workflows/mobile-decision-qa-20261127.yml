@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     env:
-      QA_MODE: preview
+      QA_MODE: live
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,6 +33,19 @@ jobs:
           fi
           test -n "$(fc-list :lang=ja)"
           python .github/scripts/render_quality_guarantee.py
+      - name: Confirm deployment of approved source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_SHA: a8eb9383e7ca587fe78290da9ecec74b57ee591b
+        shell: bash
+        run: |
+          for attempt in $(seq 1 24); do
+            data=$(gh api "/repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$TARGET_SHA&per_page=30" --jq '.workflow_runs[] | [.id,.name,.head_sha,.status,(.conclusion // "")] | @tsv')
+            echo "PAGES_STATUS $data"
+            if echo "$data" | grep -F 'Deploy to GitHub Pages' | grep -q 'completed.*success'; then exit 0; fi
+            sleep 5
+          done
+          exit 1
       - name: Compare original and revised LPs at all three widths
         shell: bash
         run: |
