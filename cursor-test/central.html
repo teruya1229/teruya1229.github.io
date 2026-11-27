@@ -257,36 +257,36 @@
     .hero-title span{display:block;}
     .hero-inner .air-reserve-note{color:rgba(255,255,255,0.85);}
     @media(max-width:430px){.hero-title{font-size:1.6rem;}}
-    .consultation-flow{order:2;}
-    #mid-cta{order:24;} /* 中間CTAはFAQの後、こだわりセクションの前。FVより先に表示させない */
-    #pricing{order:3;}
-    #proof-before{order:4;}
-    #proof-dirty{order:5;}
-    #proof-google{order:6;}
-    #proof-profile{order:7;}
-    .case-study-section{order:8;}
-    .ai-summary-section{order:9;}
-    #primary-cta{order:10;}
-    .trust-block{order:11;}
-    .service{order:12;}
-    .project-counter{order:13;}
-    #area{order:14;}
-    .premium-video{order:15;}
-    .pre-cta-note{order:16;}
-    .promise{order:17;}
-    .next-campaign{order:18;}
-    .profile{order:19;}
-    .reasons{order:20;}
-    .voices{order:21;}
-    .review-ext{order:22;}
-    main > .bcq-detail{order:23;}
-    .faq{order:23;}
-    .commitment{order:24;}
-    .cta-visual{order:25;}
-    #contact{order:26;}
-    .company{order:27;}
-    #bottom-cta{order:28;}
-    #footer-area-link{order:29;}
+    .consultation-flow{order:7;}
+    #mid-cta{order:25;} /* 中間CTAはFAQの後、こだわりセクションの前。FVより先に表示させない */
+    #pricing{order:5;}
+    #proof-before{order:8;}
+    #proof-dirty{order:9;}
+    #proof-google{order:10;}
+    #proof-profile{order:11;}
+    .case-study-section{order:12;}
+    .ai-summary-section{order:13;}
+    #primary-cta{order:6;}
+    .trust-block{order:14;}
+    .service{order:15;}
+    .project-counter{order:16;}
+    #area{order:17;}
+    .premium-video{order:18;}
+    .pre-cta-note{order:19;}
+    .promise{order:20;}
+    .next-campaign{order:21;}
+    .profile{order:22;}
+    .reasons{order:2;}
+    .voices{order:23;}
+    .review-ext{order:4;}
+    main > .bcq-detail{order:24;}
+    .faq{order:24;}
+    .commitment{order:3;}
+    .cta-visual{order:26;}
+    #contact{order:27;}
+    .company{order:28;}
+    #bottom-cta{order:29;}
+    #footer-area-link{order:31;}
     .ai-summary-section p{
       font-size:0.95rem;
       line-height:1.85;
@@ -606,7 +606,15 @@
     .central-area-list .reason-item p { margin-bottom:0!important; }
     .central-review-link { color:#0b5275; font-weight:650; text-decoration:underline; text-underline-offset:3px; }
     @media(max-width:720px) { .central-area-list { grid-template-columns:1fr; } .central-area-list .reason-item.card { padding:16px 4px!important; } }
-  </style>
+  
+    main > .reasons,main > .commitment,main > .review-ext{padding-top:36px;padding-bottom:36px;}
+    main > .reasons .reason-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 24px;max-width:920px;margin:0 auto;}
+    main > .reasons .reason-item.card{margin:0;padding:12px 0;border:0;border-bottom:1px solid #dce4e9;border-radius:0;box-shadow:none;background:transparent;text-align:left;line-height:1.65;}
+    main > .reasons .reason-item.card::before{content:none;}
+    main > .commitment .commitment-images{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:10px;margin-bottom:12px;max-width:720px;margin-left:auto;margin-right:auto;}
+    main > .commitment .commitment-inner + .commitment-inner{margin-top:20px !important;}
+    @media(max-width:767px){main > .reasons,main > .commitment,main > .review-ext{padding-top:26px;padding-bottom:26px;}main > .reasons .reason-list{grid-template-columns:1fr;}main > .reasons .reason-item.card{font-size:.9rem;padding:10px 0;}}
+</style>
 <!-- BCQ:CSS:BEGIN -->
 <link rel="stylesheet" href="/assets/bc-quality-guarantee.css">
 <!-- BCQ:CSS:END -->
@@ -642,7 +650,7 @@
       <div class="hero-overlay"></div>
       <div class="hero-inner">
         <h1 class="hero-title"><span>沖縄中部のご家庭へ</span><span>エアコンクリーニング</span></h1>
-        <p class="hero-lead">エアコン内部のカビや汚れを分解洗浄。清掃・現場経験17年の代表が、機種に合った洗浄方法を提案し、LINEで料金目安をご案内します。</p>
+        <p class="hero-lead">家族が毎日使うエアコンを、内部まできれいに。清掃・現場経験17年の代表が、通常分解と完全分解から必要な洗浄をご提案します。</p>
 <!-- BCQ:HERO:BEGIN -->
 <div class="bcq-brief"><svg class="bcq-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg><div class="bcq-brief-copy"><strong class="bcq-title">施工後14日間の安心サポート</strong><span class="bcq-summary">契約範囲内の施工不備は無料で手直し。改善できない場合は該当施工料金を返金します。</span><span class="bcq-note">施工完了日から14日以内のご連絡が対象。経年劣化・契約範囲外などは対象外です。 <a class="bcq-link" href="/quality-guarantee/#scope">返金保証の適用条件について</a></span></div></div>
 <!-- BCQ:HERO:END -->
@@ -661,6 +669,233 @@
         <p class="hero-area">対象：沖縄市・宜野湾市・うるま市・北谷町・嘉手納町・読谷村・北中城村・中城村</p>
       </div>
     </section>
+
+    <section class="section reasons">
+      <div class="container">
+        <h2 class="section-title">必要な洗浄を、必要な範囲まで。</h2>
+        <ul class="reason-list plan-compare--single">
+          <li class="reason-item card"><strong>汚れに合う洗浄方法を選べる</strong><br>機種・汚れ・設置状況から通常分解と完全分解をご提案します。</li>
+          <li class="reason-item card"><strong>構造を理解して、内部まで丁寧に</strong><br>清掃・現場経験17年。完全分解にも対応。</li>
+          <li class="reason-item card"><strong>料金が分かってから依頼できる</strong><br>写真相談で作業内容・料金目安・追加費用を事前にご案内します。</li>
+          <li class="reason-item card"><strong>洗浄後も相談できる</strong><br>エアコンの不調や買い替えも同じ窓口へ。無理な営業は行いません。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section commitment">
+      <div class="container">
+        <h2 class="section-title">実際の分解・洗浄の様子</h2>
+        <div class="commitment-inner">
+          <div class="commitment-images">
+            <img src="images/kodawari-disassembly.jpg" alt="エアコン分解作業" width="800" height="500" loading="lazy" class="commitment-img">
+            <img src="images/kodawari-fan-clean.jpg" alt="ファン洗浄後の仕上がり" width="800" height="500" loading="lazy" class="commitment-img">
+          </div>
+          <p class="commitment-text">一台一台を分解し、見えない内部まで丁寧に。<br>エアコンの構造を理解しているからこそできる、徹底したクリーニングを行っています。</p>
+        </div>
+
+        <!-- 施工事例（現場写真） -->
+        <div class="commitment-inner" style="margin-top:40px;">
+          <h3 style="font-size:1.25rem;font-weight:700;text-align:center;margin-bottom:12px;">施工事例（現場写真）</h3>
+          <p class="commitment-text">洗浄前の内部の汚れから、分解・洗浄、汚水の状態、施工後の仕上がりまで、現場の流れがわかる写真を掲載しています。</p>
+          <div class="home-case-photos" aria-label="施工事例写真">
+            <figure class="home-case-photo-item">
+              <img src="case-studies/2026-06-03-sample/before.jpg" alt="エアコンクリーニング施工前" width="600" height="400" loading="lazy">
+              <figcaption class="home-case-photo-caption">施工前</figcaption>
+            </figure>
+            <figure class="home-case-photo-item">
+              <img src="case-studies/2026-06-03-sample/parts.jpg" alt="エアコン完全分解作業中" width="600" height="400" loading="lazy">
+              <figcaption class="home-case-photo-caption">分解中</figcaption>
+            </figure>
+            <figure class="home-case-photo-item">
+              <img src="case-studies/2026-06-03-sample/dirty-water.jpg" alt="エアコンクリーニング洗浄後の汚水" width="600" height="400" loading="lazy">
+              <figcaption class="home-case-photo-caption">汚水</figcaption>
+            </figure>
+            <figure class="home-case-photo-item">
+              <img src="case-studies/2026-06-03-sample/after.jpg" alt="エアコンクリーニング施工後" width="600" height="400" loading="lazy">
+              <figcaption class="home-case-photo-caption">施工後</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section review-ext section-light">
+      <div class="container">
+        <h2 class="section-title">完全分解のご感想（抜粋）</h2>
+        <div class="voice-item card" style="max-width:680px;margin:0 auto;">
+          <p class="voice-meta">★★★★★ &nbsp;匿名カズさん・2026年4月22日</p>
+          <p class="voice-text">3台、完全分解を依頼しました。<br>他の業者の方が届かない場所まで綺麗にして頂き、ありがとうございました。</p>
+          <p class="voice-meta" style="margin-top:8px;font-size:0.82rem;">エアコンクリーニング / 壁掛けタイプ　<a class="central-review-link" href="../complete-disassembly/">同じ口コミを掲載している完全分解LPを見る</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section pricing section-light">
+      <div class="container">
+        <h2 class="section-title">中部向けエアコンクリーニング料金</h2>
+
+        <!-- 2列比較カード -->
+        <div id="price-section" class="plan-compare">
+
+          <!-- 完全分解（プレミアム）主役カード -->
+          <div id="premium-section" class="plan-card plan-card--featured">
+            <p class="plan-card-badge">⭐おすすめ</p>
+            <h3 class="plan-card-heading">完全分解（根リセット）</h3>
+            <p class="plan-card-price">中部エリア 15,000<span>円（税込）</span></p>
+            <p class="plan-card-desc">通常分解では届きにくい内部まで洗浄する完全分解クリーニング</p>
+            <p class="plan-card-desc">送風ファンなどを機種・設置状況に応じて取り外し、通常分解では届きにくい部分を洗浄します。<br>分解できる範囲は事前に確認します。</p>
+            <p class="plan-card-desc">通常分解で十分な場合もあります。写真・型番から洗浄方法をご案内します。</p>
+            <div class="plan-detail-stack" aria-label="完全分解プラン詳細">
+              <section class="plan-detail-card plan-detail-card--primary">
+                <h4 class="plan-detail-title">【中部エリア】</h4>
+                <p class="plan-detail-price">税込 15,000円</p>
+                <p>機種・設置状況に応じて部品を取り外し、通常分解では届きにくい内部まで洗浄します。<br>対応できる範囲は事前に確認します。</p>
+                <ul class="plan-detail-list">
+                  <li>送風ファンまで取り外して洗浄</li>
+                  <li>見えない部分まで徹底清掃</li>
+                  <li>通常分解では届きにくい内部汚れが気になる方向け</li>
+                </ul>
+              </section>
+              <p class="plan-detail-note">通常の分解洗浄では、内部のカビや汚れが残る場合があります。</p>
+              <p class="plan-detail-note">完全分解クリーニングは、機種・設置状況に応じて部品を取り外し、通常分解では届きにくい汚れを洗浄します。</p>
+              <p class="plan-detail-note">※完全分解の可否と作業時間は、機種・設置状況を確認してご案内します。</p>
+              <p class="plan-detail-note">※機種・設置状況により対応できない場合があります。</p>
+            </div>
+            <p class="premium-detail-subcta"><a href="https://teruya1229.github.io/complete-disassembly/?from=home_lp_kansetubunkai" target="_blank" rel="noopener noreferrer">沖縄中部で、通常分解では届きにくい内部汚れが気になる方は、完全分解クリーニングの詳しい説明もご覧ください</a></p>
+            <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta plan-card-btn" data-cta="line" data-cta-location="price-premium">完全分解について相談・予約する</a>
+            <p class="plan-card-sub-note">ご相談だけでも大丈夫です。<br>返信は原則24時間以内に行います。</p>
+          </div>
+
+          <!-- 通常分解（比較用） -->
+          <div class="plan-card plan-card--standard">
+            <h3 class="plan-card-heading">通常分解（スタンダード）</h3>
+            <p class="plan-card-price">中部エリア 9,000<span>円（税込）〜</span></p>
+            <p class="plan-card-desc">定期的なメンテナンス向けの標準クリーニング</p>
+            <p class="plan-card-desc">内部までしっかり洗浄する標準クリーニングです。<br>カビや汚れを除去し、カバー・フィルター周辺とエアコン内部を洗浄します。</p>
+            <div class="plan-detail-stack" aria-label="通常分解プラン詳細">
+              <section class="plan-detail-card plan-detail-card--primary">
+                <h4 class="plan-detail-title">【中部エリア】</h4>
+                <p class="plan-detail-price">税込 9,000円〜</p>
+                <p>エアコンを分解し、内部まで高圧洗浄でクリーニングします。<br>カビや汚れをしっかり除去し、カバー・フィルター周辺とエアコン内部を洗浄します。</p>
+                <ul class="plan-detail-list">
+                  <li>分解洗浄</li>
+                  <li>内部高圧洗浄</li>
+                  <li>防カビ仕上げ</li>
+                </ul>
+              </section>
+              <p class="plan-choice-note">通常分解は、予約時にご希望の施工内容をお知らせください。</p>
+            </div>
+            <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta plan-card-btn plan-card-btn--sub" data-cta="line" data-cta-location="price-standard">エアコンクリーニングを相談する</a>
+            <p class="plan-card-sub-note">ご相談だけでも大丈夫です。<br>返信は原則24時間以内に行います。</p>
+          </div>
+
+        </div>
+        <p class="pricing-note" style="margin-top: 12px; text-align: center;">中部エリア向け料金（通常分解 9,000円〜 / 完全分解 15,000円）をご案内しています。</p>
+        <p class="pricing-note" style="margin-top: 8px; text-align: center;">2台以上の同時予約で、2台目以降は1台につき1,000円引き</p>
+        <p class="pricing-area-note">※ 中部エリア以外は距離・設置状況により料金が異なる場合があります。お気軽にご相談ください。</p>
+
+        <!-- ▼ お掃除機能付きエアコン（予約ボタン追加 2026-02-15） -->
+        <div id="osouji-ac" class="pricing-block">
+          <h3 class="pricing-block-title">お掃除機能付きエアコン</h3>
+          <p class="pricing-block-lead">お掃除機能付きは内部構造が複雑で、分解・組み立てに時間がかかるため別料金です。<br>台数が多い機種なので、ここから直接予約できるようにしました。</p>
+          <div class="ac-plans">
+            <div class="ac-plan ac-plan--popular osouji-card">
+              <p class="ac-plan-badge">中部対応</p>
+              <p class="ac-plan-name">中部エリア</p>
+              <p class="ac-plan-price">16,000<span>円（税込）〜</span></p>
+              <p style="font-size:.85rem;color:#555;margin:8px 0 0;line-height:1.6;">お掃除機能付きエアコンの標準料金です。</p>
+              <a class="line-cta plan-card-btn" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" aria-label="LINEで予約する（お掃除機能付き・中部エリア）" data-cta="line" data-cta-location="price-osouji-chubu" style="display:block;width:100%;margin-top:12px;padding:12px 18px;border-radius:12px;font-weight:700;text-align:center;text-decoration:none;line-height:1.2;background:#14B85A;color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.12);">LINEで予約する</a>
+              <p style="margin:.35rem 0 0;font-size:.8rem;opacity:.7;">※ LINEでお気軽にご相談ください</p>
+            </div>
+          </div>
+          <p class="pricing-area-note">※ 機種・設置状況により料金が前後する場合があります。写真を送っていただければ事前にご案内します。</p>
+        </div>
+        <!-- ▲ お掃除機能付きエアコン -->
+
+        <!-- 安心文 -->
+        <div class="pricing-assurance">
+          <p>作業前説明・追加費用の事前説明を徹底しています。<br>写真報告もご希望があれば対応いたしますのでご安心ください。</p>
+        </div>
+
+        <div class="pricing-block line-perks">
+          <h3 class="pricing-block-title">LINE友だち追加でもらえる特典（無料）</h3>
+          <div class="line-perks-grid">
+            <article class="line-perk-card">
+              <h4 class="line-perk-title">抗菌コート無料（作業後サービス）</h4>
+              <p class="line-perk-text">カビ・ニオイ対策として、作業後に抗菌コートを無料で施工します（希望者のみ）。</p>
+              <p class="line-perk-note">※機種・状況により施工できない場合があります。その場合は事前にお伝えします。</p>
+            </article>
+            <article class="line-perk-card">
+              <h4 class="line-perk-title">故障かも？セルフチェックリスト（保存版）</h4>
+              <p class="line-perk-text">「これ故障？掃除で直る？」を1分で判定できるチェックリストをLINEでお渡しします。</p>
+              <ul class="line-perk-list">
+                <li>冷えが弱い／効きが悪い</li>
+                <li>変なニオイがする</li>
+                <li>水が垂れる（室内機）</li>
+                <li>運転音がうるさい／異音</li>
+                <li>リモコン操作に反応が遅い</li>
+                <li>エラー表示が出る</li>
+              </ul>
+            </article>
+          </div>
+          <div class="line-perks-cta">
+            <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta plan-card-btn" data-cta="line" data-cta-location="line-perks-index">LINEで特典を受け取る</a>
+            <p class="line-perks-sub">チェックリストの全文はLINEで配布しています（LINEで全文を見る）。</p>
+          </div>
+        </div>
+
+        <!-- 地域ページ導線 -->
+        <div class="pricing-assurance" style="margin-top:16px;">
+          <p>📍 沖縄中部（沖縄市・宜野湾市・うるま市・北谷町・嘉手納町・読谷村・北中城村・中城村）のご家庭向けに、エアコンクリーニングをご案内しています。</p>
+          <p style="margin-top:8px;">📋 作業内容や料金について不安がある方は、<a href="faq.html" style="color:var(--brand);font-weight:600;text-decoration:underline;">よくある質問</a>もご覧ください。</p>
+        </div>
+
+        <!-- 特殊構造エアコン注意書き -->
+        <div class="pricing-block pricing-special-note">
+          <p class="pricing-note">※ 以下の機種は内部構造が特殊なため、別料金となります。</p>
+          <ul class="special-model-list">
+            <li>シャープ　エアレスト<span class="special-model-price">22,000円（税込）</span></li>
+            <li>富士通　ノクリア Xシリーズ<span class="special-model-price">22,000円（税込）</span></li>
+            <li>日立　白くまくん Xシリーズ<span class="special-model-price">22,000円（税込）</span></li>
+            <li>三菱　FZシリーズ<span class="special-model-price">19,000円（税込）</span></li>
+          </ul>
+          <p class="pricing-note">機種が分からない場合は、<br>エアコンの写真を送っていただければ事前に確認いたします。</p>
+        </div>
+
+        <!-- その他クリーニング料金 -->
+        <div class="pricing-block">
+          <h3 class="pricing-block-title">その他クリーニング料金（目安）</h3>
+          <p class="pricing-block-lead">※ 汚れの程度・作業内容により金額が前後する場合があります。<br>※ 事前に写真を確認し、正確なお見積りをご案内します。</p>
+          <table class="price-table">
+            <thead>
+              <tr><th>メニュー</th><th>料金（税込）</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>縦型洗濯機クリーニング</td><td class="price-cell">13,000円<small style="display:block;font-weight:normal;">11/30まで／通常15,000円</small></td></tr>
+              <tr><td>ドラム式洗濯機クリーニング</td><td class="price-cell">25,000円<small style="display:block;font-weight:normal;">11/30まで／通常28,000円</small></td></tr>
+              <tr><td>外壁・駐車場クリーニング</td><td class="price-cell">10㎡ 5,000円〜</td></tr>
+              <tr><td>浴室クリーニング</td><td class="price-cell">18,000円</td></tr>
+              <tr><td>換気扇（レンジフード）</td><td class="price-cell">15,000円</td></tr>
+              <tr><td>ハウスクリーニング（1R〜1K）</td><td class="price-cell">20,000円〜</td></tr>
+            </tbody>
+          </table>
+          <div class="set-menu-note">
+            <p>トイレクリーニングは、<br>浴室・洗面所・換気扇などとの<br>「水回りセット」でのご依頼がお得です。</p>
+            <p class="set-menu-sub">※ 単品での対応は行っておりません。<br>※ ご希望内容に合わせて最適な組み合わせをご提案します。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="primary-cta" class="line-cta-wrap">
+      <p>通常分解と完全分解で迷っている方も、写真と型番からご相談いただけます。必要な洗浄方法を確認してから日程を決められます。</p>
+      <p>作業可否や料金目安は、<br>LINEで写真を送っていただければ事前に確認できます。</p>
+      <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="price">中部9,000円で予約する</a>
+      <p class="cta-note">🎁 LINE友だち限定特典あり（エアコンご依頼の方）</p>
+      <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="price" aria-label="Airリザーブで空き状況を見て仮予約する">空き状況を見て仮予約する</a>
+      <p class="air-reserve-note">Airリザーブから事前決済もご利用いただけます（オンライン決済対応）。</p>
+      <p class="air-reserve-note">※Airリザーブでの受付は仮予約です。内容確認後、LINEまたはお電話にて正式確定となります。機種・台数・設置状況により、日程や料金が変わる場合があります。<br>写真で相談したい方、完全分解できるか確認したい方は、これまで通りLINEに写真を送ってください。</p>
+    </div>
 
     <!-- 相談の流れ3ステップ -->
     <section class="section consultation-flow section-light">
@@ -829,163 +1064,6 @@
     </section>
 
     <!-- 料金表 -->
-    <section id="pricing" class="section pricing section-light">
-      <div class="container">
-        <h2 class="section-title">中部向けエアコンクリーニング料金</h2>
-
-        <!-- 2列比較カード -->
-        <div id="price-section" class="plan-compare">
-
-          <!-- 完全分解（プレミアム）主役カード -->
-          <div id="premium-section" class="plan-card plan-card--featured">
-            <p class="plan-card-badge">⭐おすすめ</p>
-            <h3 class="plan-card-heading">完全分解（根リセット）</h3>
-            <p class="plan-card-price">中部エリア 15,000<span>円（税込）</span></p>
-            <p class="plan-card-desc">通常分解では届きにくい内部まで洗浄する完全分解クリーニング</p>
-            <p class="plan-card-desc">送風ファンなどを機種・設置状況に応じて取り外し、通常分解では届きにくい部分を洗浄します。<br>分解できる範囲は事前に確認します。</p>
-            <p class="plan-card-desc">通常分解で十分な場合もあります。写真・型番から洗浄方法をご案内します。</p>
-            <div class="plan-detail-stack" aria-label="完全分解プラン詳細">
-              <section class="plan-detail-card plan-detail-card--primary">
-                <h4 class="plan-detail-title">【中部エリア】</h4>
-                <p class="plan-detail-price">税込 15,000円</p>
-                <p>機種・設置状況に応じて部品を取り外し、通常分解では届きにくい内部まで洗浄します。<br>対応できる範囲は事前に確認します。</p>
-                <ul class="plan-detail-list">
-                  <li>送風ファンまで取り外して洗浄</li>
-                  <li>見えない部分まで徹底清掃</li>
-                  <li>通常分解では届きにくい内部汚れが気になる方向け</li>
-                </ul>
-              </section>
-              <p class="plan-detail-note">通常の分解洗浄では、内部のカビや汚れが残る場合があります。</p>
-              <p class="plan-detail-note">完全分解クリーニングは、機種・設置状況に応じて部品を取り外し、通常分解では届きにくい汚れを洗浄します。</p>
-              <p class="plan-detail-note">※完全分解の可否と作業時間は、機種・設置状況を確認してご案内します。</p>
-              <p class="plan-detail-note">※機種・設置状況により対応できない場合があります。</p>
-            </div>
-            <p class="premium-detail-subcta"><a href="https://teruya1229.github.io/complete-disassembly/?from=home_lp_kansetubunkai" target="_blank" rel="noopener noreferrer">沖縄中部で、通常分解では届きにくい内部汚れが気になる方は、完全分解クリーニングの詳しい説明もご覧ください</a></p>
-            <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta plan-card-btn" data-cta="line" data-cta-location="price-premium">完全分解について相談・予約する</a>
-            <p class="plan-card-sub-note">ご相談だけでも大丈夫です。<br>返信は原則24時間以内に行います。</p>
-          </div>
-
-          <!-- 通常分解（比較用） -->
-          <div class="plan-card plan-card--standard">
-            <h3 class="plan-card-heading">通常分解（スタンダード）</h3>
-            <p class="plan-card-price">中部エリア 9,000<span>円（税込）〜</span></p>
-            <p class="plan-card-desc">定期的なメンテナンス向けの標準クリーニング</p>
-            <p class="plan-card-desc">内部までしっかり洗浄する標準クリーニングです。<br>カビや汚れを除去し、カバー・フィルター周辺とエアコン内部を洗浄します。</p>
-            <div class="plan-detail-stack" aria-label="通常分解プラン詳細">
-              <section class="plan-detail-card plan-detail-card--primary">
-                <h4 class="plan-detail-title">【中部エリア】</h4>
-                <p class="plan-detail-price">税込 9,000円〜</p>
-                <p>エアコンを分解し、内部まで高圧洗浄でクリーニングします。<br>カビや汚れをしっかり除去し、カバー・フィルター周辺とエアコン内部を洗浄します。</p>
-                <ul class="plan-detail-list">
-                  <li>分解洗浄</li>
-                  <li>内部高圧洗浄</li>
-                  <li>防カビ仕上げ</li>
-                </ul>
-              </section>
-              <p class="plan-choice-note">通常分解は、予約時にご希望の施工内容をお知らせください。</p>
-            </div>
-            <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta plan-card-btn plan-card-btn--sub" data-cta="line" data-cta-location="price-standard">エアコンクリーニングを相談する</a>
-            <p class="plan-card-sub-note">ご相談だけでも大丈夫です。<br>返信は原則24時間以内に行います。</p>
-          </div>
-
-        </div>
-        <p class="pricing-note" style="margin-top: 12px; text-align: center;">中部エリア向け料金（通常分解 9,000円〜 / 完全分解 15,000円）をご案内しています。</p>
-        <p class="pricing-note" style="margin-top: 8px; text-align: center;">2台以上の同時予約で、2台目以降は1台につき1,000円引き</p>
-        <p class="pricing-area-note">※ 中部エリア以外は距離・設置状況により料金が異なる場合があります。お気軽にご相談ください。</p>
-
-        <!-- ▼ お掃除機能付きエアコン（予約ボタン追加 2026-02-15） -->
-        <div id="osouji-ac" class="pricing-block">
-          <h3 class="pricing-block-title">お掃除機能付きエアコン</h3>
-          <p class="pricing-block-lead">お掃除機能付きは内部構造が複雑で、分解・組み立てに時間がかかるため別料金です。<br>台数が多い機種なので、ここから直接予約できるようにしました。</p>
-          <div class="ac-plans">
-            <div class="ac-plan ac-plan--popular osouji-card">
-              <p class="ac-plan-badge">中部対応</p>
-              <p class="ac-plan-name">中部エリア</p>
-              <p class="ac-plan-price">16,000<span>円（税込）〜</span></p>
-              <p style="font-size:.85rem;color:#555;margin:8px 0 0;line-height:1.6;">お掃除機能付きエアコンの標準料金です。</p>
-              <a class="line-cta plan-card-btn" href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" aria-label="LINEで予約する（お掃除機能付き・中部エリア）" data-cta="line" data-cta-location="price-osouji-chubu" style="display:block;width:100%;margin-top:12px;padding:12px 18px;border-radius:12px;font-weight:700;text-align:center;text-decoration:none;line-height:1.2;background:#14B85A;color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.12);">LINEで予約する</a>
-              <p style="margin:.35rem 0 0;font-size:.8rem;opacity:.7;">※ LINEでお気軽にご相談ください</p>
-            </div>
-          </div>
-          <p class="pricing-area-note">※ 機種・設置状況により料金が前後する場合があります。写真を送っていただければ事前にご案内します。</p>
-        </div>
-        <!-- ▲ お掃除機能付きエアコン -->
-
-        <!-- 安心文 -->
-        <div class="pricing-assurance">
-          <p>作業前説明・追加費用の事前説明を徹底しています。<br>写真報告もご希望があれば対応いたしますのでご安心ください。</p>
-        </div>
-
-        <div class="pricing-block line-perks">
-          <h3 class="pricing-block-title">LINE友だち追加でもらえる特典（無料）</h3>
-          <div class="line-perks-grid">
-            <article class="line-perk-card">
-              <h4 class="line-perk-title">抗菌コート無料（作業後サービス）</h4>
-              <p class="line-perk-text">カビ・ニオイ対策として、作業後に抗菌コートを無料で施工します（希望者のみ）。</p>
-              <p class="line-perk-note">※機種・状況により施工できない場合があります。その場合は事前にお伝えします。</p>
-            </article>
-            <article class="line-perk-card">
-              <h4 class="line-perk-title">故障かも？セルフチェックリスト（保存版）</h4>
-              <p class="line-perk-text">「これ故障？掃除で直る？」を1分で判定できるチェックリストをLINEでお渡しします。</p>
-              <ul class="line-perk-list">
-                <li>冷えが弱い／効きが悪い</li>
-                <li>変なニオイがする</li>
-                <li>水が垂れる（室内機）</li>
-                <li>運転音がうるさい／異音</li>
-                <li>リモコン操作に反応が遅い</li>
-                <li>エラー表示が出る</li>
-              </ul>
-            </article>
-          </div>
-          <div class="line-perks-cta">
-            <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta plan-card-btn" data-cta="line" data-cta-location="line-perks-index">LINEで特典を受け取る</a>
-            <p class="line-perks-sub">チェックリストの全文はLINEで配布しています（LINEで全文を見る）。</p>
-          </div>
-        </div>
-
-        <!-- 地域ページ導線 -->
-        <div class="pricing-assurance" style="margin-top:16px;">
-          <p>📍 沖縄中部（沖縄市・宜野湾市・うるま市・北谷町・嘉手納町・読谷村・北中城村・中城村）のご家庭向けに、エアコンクリーニングをご案内しています。</p>
-          <p style="margin-top:8px;">📋 作業内容や料金について不安がある方は、<a href="faq.html" style="color:var(--brand);font-weight:600;text-decoration:underline;">よくある質問</a>もご覧ください。</p>
-        </div>
-
-        <!-- 特殊構造エアコン注意書き -->
-        <div class="pricing-block pricing-special-note">
-          <p class="pricing-note">※ 以下の機種は内部構造が特殊なため、別料金となります。</p>
-          <ul class="special-model-list">
-            <li>シャープ　エアレスト<span class="special-model-price">22,000円（税込）</span></li>
-            <li>富士通　ノクリア Xシリーズ<span class="special-model-price">22,000円（税込）</span></li>
-            <li>日立　白くまくん Xシリーズ<span class="special-model-price">22,000円（税込）</span></li>
-            <li>三菱　FZシリーズ<span class="special-model-price">19,000円（税込）</span></li>
-          </ul>
-          <p class="pricing-note">機種が分からない場合は、<br>エアコンの写真を送っていただければ事前に確認いたします。</p>
-        </div>
-
-        <!-- その他クリーニング料金 -->
-        <div class="pricing-block">
-          <h3 class="pricing-block-title">その他クリーニング料金（目安）</h3>
-          <p class="pricing-block-lead">※ 汚れの程度・作業内容により金額が前後する場合があります。<br>※ 事前に写真を確認し、正確なお見積りをご案内します。</p>
-          <table class="price-table">
-            <thead>
-              <tr><th>メニュー</th><th>料金（税込）</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>縦型洗濯機クリーニング</td><td class="price-cell">13,000円<small style="display:block;font-weight:normal;">11/30まで／通常15,000円</small></td></tr>
-              <tr><td>ドラム式洗濯機クリーニング</td><td class="price-cell">25,000円<small style="display:block;font-weight:normal;">11/30まで／通常28,000円</small></td></tr>
-              <tr><td>外壁・駐車場クリーニング</td><td class="price-cell">10㎡ 5,000円〜</td></tr>
-              <tr><td>浴室クリーニング</td><td class="price-cell">18,000円</td></tr>
-              <tr><td>換気扇（レンジフード）</td><td class="price-cell">15,000円</td></tr>
-              <tr><td>ハウスクリーニング（1R〜1K）</td><td class="price-cell">20,000円〜</td></tr>
-            </tbody>
-          </table>
-          <div class="set-menu-note">
-            <p>トイレクリーニングは、<br>浴室・洗面所・換気扇などとの<br>「水回りセット」でのご依頼がお得です。</p>
-            <p class="set-menu-sub">※ 単品での対応は行っておりません。<br>※ ご希望内容に合わせて最適な組み合わせをご提案します。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section id="proof-before" style="text-align: center; padding: 2em 1em;">
       <h2>クリーニング前のエアコン内部</h2>
       <p style="color: #555; margin-bottom: 1em;">
@@ -1128,15 +1206,7 @@
     </section>
 
     <!-- LINE CTA: 料金表直下 -->
-    <div id="primary-cta" class="line-cta-wrap">
-      <p>通常分解と完全分解で迷っている方も、写真と型番からご相談いただけます。必要な洗浄方法を確認してから日程を決められます。</p>
-      <p>作業可否や料金目安は、<br>LINEで写真を送っていただければ事前に確認できます。</p>
-      <a href="https://lin.ee/tsilra6" target="_blank" rel="noopener noreferrer" class="line-cta" data-cta="line" data-cta-location="price">中部9,000円で予約する</a>
-      <p class="cta-note">🎁 LINE友だち限定特典あり（エアコンご依頼の方）</p>
-      <a href="https://airrsv.net/bc-servicesokinawa/calendar" target="_blank" rel="noopener noreferrer" class="air-reserve-subcta" data-cta="air_reserve" data-cta-location="price" aria-label="Airリザーブで空き状況を見て仮予約する">空き状況を見て仮予約する</a>
-      <p class="air-reserve-note">Airリザーブから事前決済もご利用いただけます（オンライン決済対応）。</p>
-      <p class="air-reserve-note">※Airリザーブでの受付は仮予約です。内容確認後、LINEまたはお電話にて正式確定となります。機種・台数・設置状況により、日程や料金が変わる場合があります。<br>写真で相談したい方、完全分解できるか確認したい方は、これまで通りLINEに写真を送ってください。</p>
-    </div>
+
 
     <!-- 安心のためのお約束 -->
     <section class="section promise">
@@ -1180,18 +1250,7 @@
     </section>
 
     <!-- 当店が選ばれる理由（差し替え時は .reason-item 内のテキストを編集） -->
-    <section class="section reasons">
-      <div class="container">
-        <h2 class="section-title">当店が選ばれる理由</h2>
-        <ul class="reason-list plan-compare--single">
-          <li class="reason-item card">地元密着で、日時やご要望に合わせた小回りのきく対応をしています。</li>
-          <li class="reason-item card">一件一件、丁寧に仕上げることを心がけています。</li>
-          <li class="reason-item card">しつこい営業は一切しません。必要な分だけご提案します。</li>
-          <li class="reason-item card">写真で事前に状況を共有いただければ、内容を確認したうえでお見積もりできます。</li>
-          <li class="reason-item card">見積もり無料。料金のご説明は分かりやすく、明朗にご案内します。</li>
-        </ul>
-      </div>
-    </section>
+
 
     <!-- お客様の声（差し替え時は .voice-item ごとに .voice-meta と .voice-text を編集） -->
     <section class="section voices">
@@ -1215,16 +1274,7 @@
     </section>
 
     <!-- 完全分解 代表口コミ -->
-    <section class="section review-ext section-light">
-      <div class="container">
-        <h2 class="section-title">完全分解のご感想（抜粋）</h2>
-        <div class="voice-item card" style="max-width:680px;margin:0 auto;">
-          <p class="voice-meta">★★★★★ &nbsp;匿名カズさん・2026年4月22日</p>
-          <p class="voice-text">3台、完全分解を依頼しました。<br>他の業者の方が届かない場所まで綺麗にして頂き、ありがとうございました。</p>
-          <p class="voice-meta" style="margin-top:8px;font-size:0.82rem;">エアコンクリーニング / 壁掛けタイプ　<a class="central-review-link" href="../complete-disassembly/">同じ口コミを掲載している完全分解LPを見る</a></p>
-        </div>
-      </div>
-    </section>
+
 
     <!-- よくある質問 -->
     <!-- BCQ:DETAIL:BEGIN -->
@@ -1310,42 +1360,7 @@
     </section>
 
     <!-- こだわり：丁寧さ・養生・道具が伝わる画像 -->
-    <section class="section commitment">
-      <div class="container">
-        <h2 class="section-title">こだわり</h2>
-        <div class="commitment-inner">
-          <div class="commitment-images">
-            <img src="images/kodawari-disassembly.jpg" alt="エアコン分解作業" width="800" height="500" loading="lazy" class="commitment-img">
-            <img src="images/kodawari-fan-clean.jpg" alt="ファン洗浄後の仕上がり" width="800" height="500" loading="lazy" class="commitment-img">
-          </div>
-          <p class="commitment-text">一台一台を分解し、見えない内部まで丁寧に。<br>エアコンの構造を理解しているからこそできる、徹底したクリーニングを行っています。</p>
-        </div>
 
-        <!-- 施工事例（現場写真） -->
-        <div class="commitment-inner" style="margin-top:40px;">
-          <h3 style="font-size:1.25rem;font-weight:700;text-align:center;margin-bottom:12px;">施工事例（現場写真）</h3>
-          <p class="commitment-text">洗浄前の内部の汚れから、分解・洗浄、汚水の状態、施工後の仕上がりまで、現場の流れがわかる写真を掲載しています。</p>
-          <div class="home-case-photos" aria-label="施工事例写真">
-            <figure class="home-case-photo-item">
-              <img src="case-studies/2026-06-03-sample/before.jpg" alt="エアコンクリーニング施工前" width="600" height="400" loading="lazy">
-              <figcaption class="home-case-photo-caption">施工前</figcaption>
-            </figure>
-            <figure class="home-case-photo-item">
-              <img src="case-studies/2026-06-03-sample/parts.jpg" alt="エアコン完全分解作業中" width="600" height="400" loading="lazy">
-              <figcaption class="home-case-photo-caption">分解中</figcaption>
-            </figure>
-            <figure class="home-case-photo-item">
-              <img src="case-studies/2026-06-03-sample/dirty-water.jpg" alt="エアコンクリーニング洗浄後の汚水" width="600" height="400" loading="lazy">
-              <figcaption class="home-case-photo-caption">汚水</figcaption>
-            </figure>
-            <figure class="home-case-photo-item">
-              <img src="case-studies/2026-06-03-sample/after.jpg" alt="エアコンクリーニング施工後" width="600" height="400" loading="lazy">
-              <figcaption class="home-case-photo-caption">施工後</figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- CTA直前ビジュアル：家族の後ろ姿＋メッセージ -->
     <section class="section cta-visual">
