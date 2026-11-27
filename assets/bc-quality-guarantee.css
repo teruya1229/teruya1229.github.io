@@ -1,0 +1,39 @@
+/* BC service quality guarantee: shared, no runtime JavaScript. */
+.bcq-brief,.bcq-detail,.bcq-policy{--bcq-ink:#193b3d;--bcq-muted:#385356;--bcq-line:#bad3cf;--bcq-soft:#f3f8f7;--bcq-accent:#17645b;box-sizing:border-box}
+.bcq-brief *,.bcq-detail *,.bcq-policy *{box-sizing:border-box}
+.bcq-brief{display:flex;align-items:flex-start;gap:8px;max-width:100%;margin:10px 0 12px;padding:9px 12px;background:var(--bcq-soft);border-left:3px solid var(--bcq-accent);border-radius:4px;color:var(--bcq-ink);font-family:inherit;font-size:14px;line-height:1.55;text-align:left;letter-spacing:normal;white-space:normal;overflow-wrap:anywhere}
+.bcq-icon{display:inline-block;flex:none;color:var(--bcq-accent);vertical-align:middle;max-width:22px}
+.bcq-brief-copy{min-width:0;flex:1}
+.bcq-brief .bcq-title{display:block;margin:0 0 2px;font-size:15px;line-height:1.45;font-weight:700;color:var(--bcq-ink)}
+.bcq-summary,.bcq-note{display:block;color:var(--bcq-ink);font-size:inherit;line-height:inherit}
+.bcq-note{font-size:13px;color:var(--bcq-muted);margin-top:3px}
+.bcq-brief .bcq-link,.bcq-detail .bcq-link,.bcq-policy a{color:#075a50;text-decoration:underline;text-underline-offset:3px;font-weight:600;white-space:normal}
+.bcq-brief .bcq-link:focus-visible,.bcq-detail .bcq-link:focus-visible,.bcq-policy a:focus-visible{outline:2px solid #17645b;outline-offset:3px}
+.bcq-detail{padding:28px 16px;background:#f3f8f7;color:var(--bcq-ink);border-block:1px solid var(--bcq-line);margin:0;font-family:inherit;text-align:left;overflow-wrap:anywhere}
+.bcq-detail .bcq-inner{width:100%;max-width:920px;margin:0 auto}
+.bcq-detail .bcq-kicker{display:flex;align-items:center;gap:8px;color:var(--bcq-accent);margin:0 0 8px;font-size:15px;font-weight:700;line-height:1.5}
+.bcq-detail .bcq-heading{font-size:clamp(21px,3vw,29px);font-weight:750;line-height:1.45;letter-spacing:normal;color:var(--bcq-ink);margin:0 0 12px;padding:0;text-align:left;border:0;background:none}
+.bcq-detail .bcq-heading::before,.bcq-detail .bcq-heading::after{content:none}
+.bcq-detail .bcq-body{margin:0 0 10px;color:var(--bcq-ink);font-size:16px;line-height:1.8;max-width:none}
+.bcq-detail .bcq-small,.bcq-detail .bcq-insurance{margin:0 0 10px;color:var(--bcq-muted);font-size:14px;line-height:1.75}
+.bcq-detail .bcq-insurance{border-top:1px solid var(--bcq-line);padding-top:12px;margin-top:12px}
+.bcq-detail .bcq-detail-link{font-size:15px;line-height:1.6;margin:10px 0 0}
+.bcq-policy{margin:0;background:#fff;color:#193b3d;font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;line-height:1.85;overflow-wrap:anywhere}
+.bcq-policy header,.bcq-policy footer{background:#f3f8f7;border-block:1px solid #bad3cf;padding:16px}
+.bcq-policy .bcq-wrap{max-width:860px;margin:0 auto;padding:0 18px}
+.bcq-policy header .bcq-wrap,.bcq-policy footer .bcq-wrap{padding:0}
+.bcq-policy main{padding-block:32px 44px}
+.bcq-policy h1{font-size:clamp(25px,5vw,36px);line-height:1.4;margin:0 0 16px}
+.bcq-policy h2{font-size:clamp(20px,4vw,25px);line-height:1.5;margin:32px 0 12px;border-bottom:1px solid #bad3cf;padding-bottom:8px}
+.bcq-policy h3{font-size:18px;line-height:1.5;margin:20px 0 6px}
+.bcq-policy p,.bcq-policy ul,.bcq-policy ol,.bcq-policy dl{margin:0 0 14px;font-size:16px}
+.bcq-policy li{margin:5px 0}
+.bcq-policy ul,.bcq-policy ol{padding-left:1.5em}
+.bcq-policy dt{font-weight:700;margin-top:10px}
+.bcq-policy dd{margin:0 0 8px}
+.bcq-policy .bcq-lead{background:#f3f8f7;border-left:4px solid #17645b;padding:16px;margin-bottom:18px}
+.bcq-policy .bcq-date,.bcq-policy .bcq-fine{font-size:14px;color:#385356}
+.bcq-policy .bcq-contact{background:#f3f8f7;padding:16px;border:1px solid #bad3cf;border-radius:4px}
+.bcq-policy nav{display:flex;flex-wrap:wrap;gap:14px}
+.bcq-policy section[id]{scroll-margin-top:16px}
+@media(max-width:480px){.bcq-brief{padding:8px 9px;gap:6px;font-size:13px}.bcq-brief .bcq-title{font-size:14px}.bcq-note{font-size:13px}.bcq-detail{padding:24px 16px}.bcq-detail .bcq-body{font-size:15px}.bcq-policy .bcq-wrap{padding-inline:16px}}

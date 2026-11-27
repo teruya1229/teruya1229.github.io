@@ -1,0 +1,223 @@
+{
+  "version": "2026-11-27",
+  "css": "<link rel=\"stylesheet\" href=\"/assets/bc-quality-guarantee.css\">",
+  "fragments": {
+    "cleaning": {
+      "hero": "<div class=\"bcq-brief\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><div class=\"bcq-brief-copy\"><strong class=\"bcq-title\">施工後14日間の安心サポート</strong><span class=\"bcq-summary\">契約範囲内の施工不備は無料で手直し。改善できない場合は該当施工料金を返金します。</span><span class=\"bcq-note\">施工完了日から14日以内のご連絡が対象。経年劣化・契約範囲外などは対象外です。 <a class=\"bcq-link\" href=\"/quality-guarantee/#scope\">返金保証の適用条件について</a></span></div></div>",
+      "detail": "<section class=\"bcq-detail\" aria-label=\"施工品質・返金保証\"><div class=\"bcq-inner\"><p class=\"bcq-kicker\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><span>施工品質・返金保証</span></p><h2 class=\"bcq-heading\">自分たちの仕事に、最後まで責任を持ちます。</h2><p class=\"bcq-body\">契約したエアコンの分解・洗浄範囲が対象です。</p><p class=\"bcq-body\">施工完了日から14日以内にLINEまたは電話でお申し出ください。契約範囲内の当社の施工不備は無料で再施工・手直しします。再施工でも改善できない場合、または改善が不可能な場合は、不備のある施工項目の実支払額を基準に返金します。複数台・複数箇所は原則として該当する台数・箇所のみ対象です。</p><p class=\"bcq-small\">ニオイだけを理由とする無条件返金は行いません。当社の洗浄不足が原因の場合は対象です。 経年劣化・施工範囲外などは対象外です。本制度は法令上のお客様の権利を制限しません。</p><p class=\"bcq-insurance\"><strong>万一の事故にも備えています。</strong> 損害賠償責任保険加入（補償限度額1億円）。保険による補償は契約条件・事故状況によります。施工品質・返金保証とは別制度です。</p><p class=\"bcq-detail-link\"><a class=\"bcq-link\" href=\"/quality-guarantee/#scope\">返金保証の適用条件について</a></p></div></section>"
+    },
+    "complete": {
+      "hero": "<div class=\"bcq-brief\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><div class=\"bcq-brief-copy\"><strong class=\"bcq-title\">施工後14日間の安心サポート</strong><span class=\"bcq-summary\">契約範囲内の施工不備は無料で手直し。改善できない場合は該当施工料金を返金します。</span><span class=\"bcq-note\">施工完了日から14日以内のご連絡が対象。経年劣化・契約範囲外などは対象外です。 <a class=\"bcq-link\" href=\"/quality-guarantee/#scope\">返金保証の適用条件について</a></span></div></div>",
+      "detail": "<section class=\"bcq-detail\" aria-label=\"施工品質・返金保証\"><div class=\"bcq-inner\"><p class=\"bcq-kicker\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><span>施工品質・返金保証</span></p><h2 class=\"bcq-heading\">自分たちの仕事に、最後まで責任を持ちます。</h2><p class=\"bcq-body\">契約した完全分解・洗浄範囲（取外し・再取付は契約した場合）が対象です。</p><p class=\"bcq-body\">施工完了日から14日以内にLINEまたは電話でお申し出ください。契約範囲内の当社の施工不備は無料で再施工・手直しします。再施工でも改善できない場合、または改善が不可能な場合は、不備のある施工項目の実支払額を基準に返金します。複数台・複数箇所は原則として該当する台数・箇所のみ対象です。</p><p class=\"bcq-small\">ニオイだけを理由とする無条件返金は行いません。当社の洗浄不足が原因の場合は対象です。 経年劣化・施工範囲外などは対象外です。本制度は法令上のお客様の権利を制限しません。</p><p class=\"bcq-insurance\"><strong>万一の事故にも備えています。</strong> 損害賠償責任保険加入（補償限度額1億円）。保険による補償は契約条件・事故状況によります。施工品質・返金保証とは別制度です。</p><p class=\"bcq-detail-link\"><a class=\"bcq-link\" href=\"/quality-guarantee/#scope\">返金保証の適用条件について</a></p></div></section>"
+    },
+    "washer": {
+      "hero": "<div class=\"bcq-brief\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><div class=\"bcq-brief-copy\"><strong class=\"bcq-title\">施工後14日間の安心サポート</strong><span class=\"bcq-summary\">契約範囲内の施工不備は無料で手直し。改善できない場合は該当施工料金を返金します。</span><span class=\"bcq-note\">施工完了日から14日以内のご連絡が対象。経年劣化・契約範囲外などは対象外です。 <a class=\"bcq-link\" href=\"/quality-guarantee/#scope\">返金保証の適用条件について</a></span></div></div>",
+      "detail": "<section class=\"bcq-detail\" aria-label=\"施工品質・返金保証\"><div class=\"bcq-inner\"><p class=\"bcq-kicker\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><span>施工品質・返金保証</span></p><h2 class=\"bcq-heading\">自分たちの仕事に、最後まで責任を持ちます。</h2><p class=\"bcq-body\">契約した洗濯機の分解・洗浄範囲が対象です。</p><p class=\"bcq-body\">施工完了日から14日以内にLINEまたは電話でお申し出ください。契約範囲内の当社の施工不備は無料で再施工・手直しします。再施工でも改善できない場合、または改善が不可能な場合は、不備のある施工項目の実支払額を基準に返金します。複数台・複数箇所は原則として該当する台数・箇所のみ対象です。</p><p class=\"bcq-small\">ニオイだけを理由とする無条件返金は行いません。当社の洗浄不足が原因の場合は対象です。機器の経年劣化・破損等に関する補償制度とは区別します。 経年劣化・施工範囲外などは対象外です。本制度は法令上のお客様の権利を制限しません。</p><p class=\"bcq-insurance\"><strong>万一の事故にも備えています。</strong> 損害賠償責任保険加入（補償限度額1億円）。保険による補償は契約条件・事故状況によります。施工品質・返金保証とは別制度です。</p><p class=\"bcq-detail-link\"><a class=\"bcq-link\" href=\"/quality-guarantee/#scope\">返金保証の適用条件について</a></p></div></section>"
+    },
+    "house": {
+      "hero": "<div class=\"bcq-brief\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><div class=\"bcq-brief-copy\"><strong class=\"bcq-title\">施工後14日間の安心サポート</strong><span class=\"bcq-summary\">契約範囲内の施工不備は無料で手直し。改善できない場合は該当施工料金を返金します。</span><span class=\"bcq-note\">施工完了日から14日以内のご連絡が対象。経年劣化・契約範囲外などは対象外です。 <a class=\"bcq-link\" href=\"/quality-guarantee/#scope\">返金保証の適用条件について</a></span></div></div>",
+      "detail": "<section class=\"bcq-detail\" aria-label=\"施工品質・返金保証\"><div class=\"bcq-inner\"><p class=\"bcq-kicker\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><span>施工品質・返金保証</span></p><h2 class=\"bcq-heading\">自分たちの仕事に、最後まで責任を持ちます。</h2><p class=\"bcq-body\">契約した水回り・床・屋外などの清掃箇所、床洗浄・ワックスの施工品質が対象です。</p><p class=\"bcq-body\">施工完了日から14日以内にLINEまたは電話でお申し出ください。契約範囲内の当社の施工不備は無料で再施工・手直しします。再施工でも改善できない場合、または改善が不可能な場合は、不備のある施工項目の実支払額を基準に返金します。複数台・複数箇所は原則として該当する台数・箇所のみ対象です。</p><p class=\"bcq-small\">素材の劣化・除去困難な汚れなど、施工不備によらないものは対象外です。 経年劣化・施工範囲外などは対象外です。本制度は法令上のお客様の権利を制限しません。</p><p class=\"bcq-insurance\"><strong>万一の事故にも備えています。</strong> 損害賠償責任保険加入（補償限度額1億円）。保険による補償は契約条件・事故状況によります。施工品質・返金保証とは別制度です。</p><p class=\"bcq-detail-link\"><a class=\"bcq-link\" href=\"/quality-guarantee/#scope\">返金保証の適用条件について</a></p></div></section>"
+    },
+    "business": {
+      "hero": "<div class=\"bcq-brief\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><div class=\"bcq-brief-copy\"><strong class=\"bcq-title\">施工後14日間の安心サポート</strong><span class=\"bcq-summary\">契約範囲内の施工不備は無料で手直し。改善できない場合は該当施工料金を返金します。</span><span class=\"bcq-note\">施工完了日から14日以内のご連絡が対象。経年劣化・契約範囲外などは対象外です。 <a class=\"bcq-link\" href=\"/quality-guarantee/#scope\">返金保証の適用条件について</a></span></div></div>",
+      "detail": "<section class=\"bcq-detail\" aria-label=\"施工品質・返金保証\"><div class=\"bcq-inner\"><p class=\"bcq-kicker\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><span>施工品質・返金保証</span></p><h2 class=\"bcq-heading\">自分たちの仕事に、最後まで責任を持ちます。</h2><p class=\"bcq-body\">見積書・契約書に記載した業務用エアコン・床・その他の清掃範囲、ワックスの施工品質が対象です。</p><p class=\"bcq-body\">施工完了日から14日以内にLINEまたは電話でお申し出ください。契約範囲内の当社の施工不備は無料で再施工・手直しします。再施工でも改善できない場合、または改善が不可能な場合は、不備のある施工項目の実支払額を基準に返金します。複数台・複数箇所は原則として該当する台数・箇所のみ対象です。</p><p class=\"bcq-small\">複数台・複数箇所の場合は、原則として不備のある台数・箇所の施工料金を返金対象とします。 経年劣化・施工範囲外などは対象外です。本制度は法令上のお客様の権利を制限しません。</p><p class=\"bcq-insurance\"><strong>万一の事故にも備えています。</strong> 損害賠償責任保険加入（補償限度額1億円）。保険による補償は契約条件・事故状況によります。施工品質・返金保証とは別制度です。</p><p class=\"bcq-detail-link\"><a class=\"bcq-link\" href=\"/quality-guarantee/#scope\">返金保証の適用条件について</a></p></div></section>"
+    },
+    "mixed": {
+      "hero": "<div class=\"bcq-brief\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><div class=\"bcq-brief-copy\"><strong class=\"bcq-title\">対象施工の品質・返金保証</strong><span class=\"bcq-summary\">BCサービスが契約上責任を負う対象施工の不備は無料で手直し。改善できない場合は該当施工料金を返金します。</span><span class=\"bcq-note\">施工完了日から14日以内のご連絡が対象。経年劣化・契約範囲外などは対象外です。 <a class=\"bcq-link\" href=\"/quality-guarantee/#contract\">返金保証の適用条件について</a></span></div></div>",
+      "detail": "<section class=\"bcq-detail\" aria-label=\"施工品質・返金保証\"><div class=\"bcq-inner\"><p class=\"bcq-kicker\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><span>施工品質・返金保証</span></p><h2 class=\"bcq-heading\">自分たちの仕事に、最後まで責任を持ちます。</h2><p class=\"bcq-body\">当社が契約上責任を負う清掃などの対象施工に適用します。商品販売・設備工事・協力会社工事は契約主体・作業内容・保証条件に応じて事前にご案内します。</p><p class=\"bcq-body\">施工完了日から14日以内にLINEまたは電話でお申し出ください。契約範囲内の当社の施工不備は無料で再施工・手直しします。再施工でも改善できない場合、または改善が不可能な場合は、不備のある施工項目の実支払額を基準に返金します。複数台・複数箇所は原則として該当する台数・箇所のみ対象です。</p><p class=\"bcq-small\">商品本体代や他社と直接契約した工事に一律の返金保証を適用するものではありません。 経年劣化・施工範囲外などは対象外です。本制度は法令上のお客様の権利を制限しません。</p><p class=\"bcq-insurance\"><strong>万一の事故にも備えています。</strong> 損害賠償責任保険加入（補償限度額1億円）。保険による補償は契約条件・事故状況によります。施工品質・返金保証とは別制度です。</p><p class=\"bcq-detail-link\"><a class=\"bcq-link\" href=\"/quality-guarantee/#contract\">返金保証の適用条件について</a></p></div></section>"
+    },
+    "repair": {
+      "hero": "<div class=\"bcq-brief\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><div class=\"bcq-brief-copy\"><strong class=\"bcq-title\">対象施工の品質・返金保証</strong><span class=\"bcq-summary\">BCサービスが契約上責任を負う対象施工の不備は無料で手直し。改善できない場合は該当施工料金を返金します。</span><span class=\"bcq-note\">施工完了日から14日以内のご連絡が対象。経年劣化・契約範囲外などは対象外です。 <a class=\"bcq-link\" href=\"/quality-guarantee/#contract\">返金保証の適用条件について</a></span></div></div>",
+      "detail": "<section class=\"bcq-detail\" aria-label=\"施工品質・返金保証\"><div class=\"bcq-inner\"><p class=\"bcq-kicker\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><span>施工品質・返金保証</span></p><h2 class=\"bcq-heading\">自分たちの仕事に、最後まで責任を持ちます。</h2><p class=\"bcq-body\">当社が契約上責任を負う洗浄・取付などの対象施工の不備に適用します。修理・点検や協力会社工事は契約内容・保証条件に応じて事前にご案内します。</p><p class=\"bcq-body\">施工完了日から14日以内にLINEまたは電話でお申し出ください。契約範囲内の当社の施工不備は無料で再施工・手直しします。再施工でも改善できない場合、または改善が不可能な場合は、不備のある施工項目の実支払額を基準に返金します。複数台・複数箇所は原則として該当する台数・箇所のみ対象です。</p><p class=\"bcq-small\">機器そのものの故障や診断結果に対する無条件返金ではありません。既存のメーカー保証・工事保証とは別の制度です。 経年劣化・施工範囲外などは対象外です。本制度は法令上のお客様の権利を制限しません。</p><p class=\"bcq-insurance\"><strong>万一の事故にも備えています。</strong> 損害賠償責任保険加入（補償限度額1億円）。保険による補償は契約条件・事故状況によります。施工品質・返金保証とは別制度です。</p><p class=\"bcq-detail-link\"><a class=\"bcq-link\" href=\"/quality-guarantee/#contract\">返金保証の適用条件について</a></p></div></section>"
+    },
+    "replacement": {
+      "hero": "<div class=\"bcq-brief\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><div class=\"bcq-brief-copy\"><strong class=\"bcq-title\">商品保証と施工品質・返金保証を分離</strong><span class=\"bcq-summary\">BCサービスが契約上責任を負う対象施工の不備は無料で手直し。改善できない場合は該当施工料金を返金します。</span><span class=\"bcq-note\">施工完了日から14日以内のご連絡が対象。経年劣化・契約範囲外などは対象外です。 <a class=\"bcq-link\" href=\"/quality-guarantee/#contract\">返金保証の適用条件について</a></span></div></div>",
+      "detail": "<section class=\"bcq-detail\" aria-label=\"施工品質・返金保証\"><div class=\"bcq-inner\"><p class=\"bcq-kicker\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><span>施工品質・返金保証</span></p><h2 class=\"bcq-heading\">自分たちの仕事に、最後まで責任を持ちます。</h2><p class=\"bcq-body\">契約主体と工事内容に応じた施工品質・返金保証です。適用対象となる取付工事の不備は無料で手直しし、再施工でも改善できない場合、または改善が不可能な場合は、該当施工料金を返金します。</p><p class=\"bcq-body\">施工完了日から14日以内にLINEまたは電話でお申し出ください。契約範囲内の当社の施工不備は無料で再施工・手直しします。再施工でも改善できない場合、または改善が不可能な場合は、不備のある施工項目の実支払額を基準に返金します。複数台・複数箇所は原則として該当する台数・箇所のみ対象です。</p><p class=\"bcq-small\">商品本体代はこの自主返金保証の対象ではありません。既存の工事5年保証・メーカー保証は別制度として維持します。 経年劣化・施工範囲外などは対象外です。本制度は法令上のお客様の権利を制限しません。</p><p class=\"bcq-insurance\"><strong>万一の事故にも備えています。</strong> 損害賠償責任保険加入（補償限度額1億円）。保険による補償は契約条件・事故状況によります。施工品質・返金保証とは別制度です。</p><p class=\"bcq-detail-link\"><a class=\"bcq-link\" href=\"/quality-guarantee/#contract\">返金保証の適用条件について</a></p></div></section>"
+    },
+    "sales": {
+      "hero": "<div class=\"bcq-brief\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><div class=\"bcq-brief-copy\"><strong class=\"bcq-title\">商品保証と施工品質・返金保証を分離</strong><span class=\"bcq-summary\">BCサービスが契約上責任を負う対象施工の不備は無料で手直し。改善できない場合は該当施工料金を返金します。</span><span class=\"bcq-note\">施工完了日から14日以内のご連絡が対象。経年劣化・契約範囲外などは対象外です。 <a class=\"bcq-link\" href=\"/quality-guarantee/#contract\">返金保証の適用条件について</a></span></div></div>",
+      "detail": "<section class=\"bcq-detail\" aria-label=\"施工品質・返金保証\"><div class=\"bcq-inner\"><p class=\"bcq-kicker\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><span>施工品質・返金保証</span></p><h2 class=\"bcq-heading\">自分たちの仕事に、最後まで責任を持ちます。</h2><p class=\"bcq-body\">当社が契約上責任を負う対象施工に適用します。商品・工事・協力会社との契約主体、工事内容、保証条件を事前にご案内します。</p><p class=\"bcq-body\">施工完了日から14日以内にLINEまたは電話でお申し出ください。契約範囲内の当社の施工不備は無料で再施工・手直しします。再施工でも改善できない場合、または改善が不可能な場合は、不備のある施工項目の実支払額を基準に返金します。複数台・複数箇所は原則として該当する台数・箇所のみ対象です。</p><p class=\"bcq-small\">商品本体代はこの自主返金保証の対象ではありません。メーカー保証や別途定めた工事保証は維持します。 経年劣化・施工範囲外などは対象外です。本制度は法令上のお客様の権利を制限しません。</p><p class=\"bcq-insurance\"><strong>万一の事故にも備えています。</strong> 損害賠償責任保険加入（補償限度額1億円）。保険による補償は契約条件・事故状況によります。施工品質・返金保証とは別制度です。</p><p class=\"bcq-detail-link\"><a class=\"bcq-link\" href=\"/quality-guarantee/#contract\">返金保証の適用条件について</a></p></div></section>"
+    },
+    "equipment": {
+      "hero": "<div class=\"bcq-brief\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><div class=\"bcq-brief-copy\"><strong class=\"bcq-title\">対象工事の施工品質・返金保証</strong><span class=\"bcq-summary\">BCサービスが契約上責任を負う対象施工の不備は無料で手直し。改善できない場合は該当施工料金を返金します。</span><span class=\"bcq-note\">施工完了日から14日以内のご連絡が対象。経年劣化・契約範囲外などは対象外です。 <a class=\"bcq-link\" href=\"/quality-guarantee/#contract\">返金保証の適用条件について</a></span></div></div>",
+      "detail": "<section class=\"bcq-detail\" aria-label=\"施工品質・返金保証\"><div class=\"bcq-inner\"><p class=\"bcq-kicker\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><span>施工品質・返金保証</span></p><h2 class=\"bcq-heading\">自分たちの仕事に、最後まで責任を持ちます。</h2><p class=\"bcq-body\">住宅設備・照明などの工事は、契約主体・工事内容・保証条件に応じて適用します。対象施工と保証の範囲を事前にご案内します。</p><p class=\"bcq-body\">施工完了日から14日以内にLINEまたは電話でお申し出ください。契約範囲内の当社の施工不備は無料で再施工・手直しします。再施工でも改善できない場合、または改善が不可能な場合は、不備のある施工項目の実支払額を基準に返金します。複数台・複数箇所は原則として該当する台数・箇所のみ対象です。</p><p class=\"bcq-small\">商品本体代や他社と直接契約した工事に一律の返金保証を適用するものではありません。メーカー保証・工事保証とは別制度です。 経年劣化・施工範囲外などは対象外です。本制度は法令上のお客様の権利を制限しません。</p><p class=\"bcq-insurance\"><strong>万一の事故にも備えています。</strong> 損害賠償責任保険加入（補償限度額1億円）。保険による補償は契約条件・事故状況によります。施工品質・返金保証とは別制度です。</p><p class=\"bcq-detail-link\"><a class=\"bcq-link\" href=\"/quality-guarantee/#contract\">返金保証の適用条件について</a></p></div></section>"
+    },
+    "moving": {
+      "hero": "<div class=\"bcq-brief\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><div class=\"bcq-brief-copy\"><strong class=\"bcq-title\">退去・空室清掃の施工品質・返金保証</strong><span class=\"bcq-summary\">契約範囲内の施工不備は無料で手直し。改善できない場合は該当施工料金を返金します。</span><span class=\"bcq-note\">施工完了日から14日以内のご連絡が対象。経年劣化・契約範囲外などは対象外です。 <a class=\"bcq-link\" href=\"/quality-guarantee/#contract\">返金保証の適用条件について</a></span></div></div>",
+      "detail": "<section class=\"bcq-detail\" aria-label=\"施工品質・返金保証\"><div class=\"bcq-inner\"><p class=\"bcq-kicker\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><span>施工品質・返金保証</span></p><h2 class=\"bcq-heading\">自分たちの仕事に、最後まで責任を持ちます。</h2><p class=\"bcq-body\">BCサービスが契約した退去・空室清掃の施工範囲が対象です。運搬・エアコン移設・設備工事等は契約主体・工事内容・保証条件に応じて事前にご案内します。</p><p class=\"bcq-body\">施工完了日から14日以内にLINEまたは電話でお申し出ください。契約範囲内の当社の施工不備は無料で再施工・手直しします。再施工でも改善できない場合、または改善が不可能な場合は、不備のある施工項目の実支払額を基準に返金します。複数台・複数箇所は原則として該当する台数・箇所のみ対象です。</p><p class=\"bcq-small\">運送事業者の運送契約・補償条件、商品保証とは別制度です。荷物の運搬代・商品本体代を無条件で返金するものではありません。 経年劣化・施工範囲外などは対象外です。本制度は法令上のお客様の権利を制限しません。</p><p class=\"bcq-insurance\"><strong>万一の事故にも備えています。</strong> 損害賠償責任保険加入（補償限度額1億円）。保険による補償は契約条件・事故状況によります。施工品質・返金保証とは別制度です。</p><p class=\"bcq-detail-link\"><a class=\"bcq-link\" href=\"/quality-guarantee/#contract\">返金保証の適用条件について</a></p></div></section>"
+    },
+    "support": {
+      "hero": "<div class=\"bcq-brief\"><svg class=\"bcq-icon\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-3.5 8-11V5l-8-3-8 3v6c0 7.5 8 11 8 11Z\"/><path d=\"m9 12 2 2 4-4\"/></svg><div class=\"bcq-brief-copy\"><strong class=\"bcq-title\">施工品質・返金保証</strong><span class=\"bcq-summary\">当社の対象施工は、施工後14日以内の申し出による施工不備に無料で手直し。改善できない場合は該当施工料金を返金します。</span><span class=\"bcq-note\">契約範囲内の施工不備が対象。商品・協力会社工事等は個別の保証条件となります。 <a class=\"bcq-link\" href=\"/quality-guarantee/#scope\">返金保証の適用条件について</a></span></div></div>"
+    }
+  },
+  "pages": [
+    {
+      "path": "index.html",
+      "variant": "mixed",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "complete-disassembly/index.html",
+      "variant": "complete",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "washing-machine-cleaning/index.html",
+      "variant": "washer",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "business-cleaning/index.html",
+      "variant": "business",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "aircon/index.html",
+      "variant": "repair",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "cursor-test/index.html",
+      "variant": "cleaning",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "mi-bcs/aircon-replacement/index.html",
+      "variant": "replacement",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "house-cleaning/index.html",
+      "variant": "house",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "mi-bcs/index.html",
+      "variant": "sales",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "lighting/index.html",
+      "variant": "equipment",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "toilet/index.html",
+      "variant": "equipment",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "washlet/index.html",
+      "variant": "equipment",
+      "placement": "fv__sub",
+      "detail": true
+    },
+    {
+      "path": "reform/index.html",
+      "variant": "equipment",
+      "placement": "fv__fact",
+      "detail": true
+    },
+    {
+      "path": "moving/index.html",
+      "variant": "moving",
+      "placement": "fv__note",
+      "detail": true
+    },
+    {
+      "path": "cursor-test/south.html",
+      "variant": "cleaning",
+      "placement": "hero-lead",
+      "detail": true
+    },
+    {
+      "path": "cursor-test/central.html",
+      "variant": "cleaning",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "cursor-test/urasoe.html",
+      "variant": "cleaning",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "cursor-test/naha.html",
+      "variant": "cleaning",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "cursor-test/nanjo.html",
+      "variant": "cleaning",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "cursor-test/yaese.html",
+      "variant": "cleaning",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "cursor-test/haebaru.html",
+      "variant": "cleaning",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "cursor-test/itoman.html",
+      "variant": "cleaning",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "cursor-test/tomigusuku.html",
+      "variant": "cleaning",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "cursor-test/yonabaru.html",
+      "variant": "cleaning",
+      "placement": "lead",
+      "detail": true
+    },
+    {
+      "path": "prices/index.html",
+      "variant": "support",
+      "placement": "lead",
+      "detail": false
+    },
+    {
+      "path": "cursor-test/faq.html",
+      "variant": "support",
+      "placement": "lead",
+      "detail": false
+    },
+    {
+      "path": "aircon-story/index.html",
+      "variant": "support",
+      "placement": "end",
+      "detail": false
+    },
+    {
+      "path": "representative/index.html",
+      "variant": "support",
+      "placement": "end",
+      "detail": false
+    }
+  ]
+}
