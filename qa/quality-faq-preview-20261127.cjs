@@ -1,0 +1,42 @@
+const fs=require('fs'),path=require('path'),cp=require('child_process'),{chromium}=require('playwright');
+const base='7f53e0b68ce3ef7a063c79c0fa13bef18bb1b007',draft='6d4dd42773f2cea3c7fc9b9b12aadca51cbceb7f',root='https://teruya1229.github.io/';
+const plan=JSON.parse(fs.readFileSync('qa/quality-faq-plan-20261127.json','utf8')),dir=process.env.DRAFT_DIR,out='qa-quality-faq-preview';
+fs.mkdirSync(out,{recursive:true});fs.mkdirSync(out+'/screenshots',{recursive:true});
+const files=[...Object.keys(plan.pages),'quality-guarantee/index.html'].sort(),old=f=>cp.execFileSync('git',['show',base+':'+f],{encoding:'utf8',maxBuffer:8*1024*1024}),newText=f=>fs.readFileSync(path.join(dir,f),'utf8'),fail=(v,msg)=>{if(!v)throw Error(msg)};
+const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b),tags=(s,r)=>[...s.matchAll(r)].map(m=>m[0]);
+const schema=s=>[...s.matchAll(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/g)].flatMap(m=>{const j=JSON.parse(m[1]);return Array.isArray(j)?j:j['@graph']||[j]});
+const expected=(p)=>{const x=plan.pages[p];return x?[...x.add.map(k=>plan.questions[k]),...(x.replaceOdor?[plan.questions.odor]:[])]:[]};
+const changed=cp.execFileSync('git',['diff','--name-only',base,draft],{encoding:'utf8'}).trim().split('\n').sort();
+fail(same(changed,files),'Unexpected changed paths '+JSON.stringify(changed));
+const stat=[];
+for(const f of files){const a=old(f),b=newText(f),pairs=expected(f);for(const re of [/<a\b[^>]*>/gi,/<img\b[^>]*>/gi,/<script\b(?![^>]*type=["']application\/ld\+json)[\s\S]*?<\/script>/gi,/<!-- BCQ:(?:CSS|HERO|DETAIL):BEGIN -->[\s\S]*?<!-- BCQ:(?:CSS|HERO|DETAIL):END -->/g,/<style\b[\s\S]*?<\/style>/gi])fail(same(tags(a,re),tags(b,re)),'Protected content differs '+f+' '+re);
+const n0=schema(a),n1=schema(b),f0=n0.find(j=>j['@type']==='FAQPage'),f1=n1.find(j=>j['@type']==='FAQPage');fail(same(n0.filter(j=>j['@type']!=='FAQPage'),n1.filter(j=>j['@type']!=='FAQPage')),'Other structured data changed '+f);
+if(f0){fail(!!f1&&same(f0.mainEntity,f1.mainEntity.slice(0,f0.mainEntity.length)),'Old FAQ schema changed '+f);fail(f1.mainEntity.length===f0.mainEntity.length+pairs.length,'FAQ schema count '+f);for(const [q,ps] of pairs){const e=f1.mainEntity.filter(x=>x.name===q);fail(e.length===1&&e[0].acceptedAnswer.text===ps.join('\n\n'),'FAQ schema answer '+f+' '+q)}}else fail(!f1,'Unexpected schema added '+f);
+if(f==='quality-guarantee/index.html'){fail(b.includes('<h1>'+plan.policy.title+'</h1>')&&b.includes('<title>'+plan.policy.title+'</title>'),'Policy title');for(const text of [plan.policy.addException,...plan.policy.odorParagraphs])fail(b.includes(text),'Policy copy missing')}
+else{const section=s=>{if(f==='cursor-test/faq.html'){const k=s.indexOf('<h2 class="faq-category-title">症状・時期から調べる</h2>');return s.slice(s.lastIndexOf('<section',k),s.indexOf('</section>',k)+10)}const m=/<section\b[^>]*(?:\bid=["']faq["']|\bclass=["'][^"']*\bfaq\b[^"']*["'])[^>]*>/i.exec(s);fail(!!m,'FAQ section not found '+f);return s.slice(m.index,s.indexOf('</section>',m.index)+10)};const strip=s=>s.replace(/<script\b[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/g,'').replace(section(s),'[[FAQ]]');fail(strip(a)===strip(b),'Diff outside FAQ section/schema '+f);const s0=section(a),s1=section(b);fail(tags(s1,/<details\b[^>]*>/gi).length-tags(s0,/<details\b[^>]*>/gi).length===plan.pages[f].add.length,'FAQ count '+f);}
+stat.push({page:f,questions:pairs.length,schema:!!f1,protected:true});
+}
+fs.writeFileSync(out+'/static.json',JSON.stringify(stat,null,2));console.log('FAQ_STATIC '+JSON.stringify({files:stat.length,questionChanges:stat.reduce((n,r)=>n+r.questions,0),schemaPages:stat.filter(r=>r.schema).length,protected:true}));
+const rows=[];const widths=[1440,390,320],heights={1440:900,390:844,320:568};
+const normalize=s=>s.replace(/\s+/g,' ').trim().replace(/^Q[.\s]+/,'').replace(/\s*＋$/,'');
+async function run(browser,f,w){const row={file:f,width:w,errors:[],tested:0};const ctx=await browser.newContext({viewport:{width:w,height:heights[w]},deviceScaleFactor:1,reducedMotion:'reduce'});
+try{
+ await ctx.route('**/*',async r=>{const u=new URL(r.request().url());if(u.origin!=='https://teruya1229.github.io')return r.abort('blockedbyclient');let pp=path.join(dir,decodeURIComponent(u.pathname));if(!pp.startsWith(path.resolve(dir)+path.sep)&&pp!==path.resolve(dir))return r.abort();try{if(fs.statSync(pp).isDirectory())pp=path.join(pp,'index.html');if(!fs.statSync(pp).isFile())return r.fulfill({status:404,body:'Not found'});return r.fulfill({path:pp})}catch{return r.fulfill({status:404,body:'Not found'})}});
+ const p=await ctx.newPage();p.setDefaultTimeout(8000);const jsErrors=[];p.on('pageerror',e=>jsErrors.push(e.message));
+ const url=root+f.replace(/(^|\/)index\.html$/,'$1'),r=await p.goto(url,{waitUntil:'domcontentloaded',timeout:30000});fail(r.status()===200,'preview HTTP '+r.status());await p.evaluate(async()=>{if(document.fonts)await Promise.race([document.fonts.ready,new Promise(r=>setTimeout(r,1600))])});
+ const k=f.replace(/\/index.html$/,'').replace(/\.html$/,'').replace(/\//g,'-')+'-'+w;
+ if(f==='quality-guarantee/index.html'){fail(await p.locator('h1').innerText()===plan.policy.title,'visible policy title');fail(await p.locator('#exclusions').innerText().then(t=>t.includes(plan.policy.addException)&&plan.policy.odorParagraphs.every(q=>t.includes(q))),'policy exception/odor');await p.screenshot({path:out+'/screenshots/'+k+'.png',animations:'disabled'});for(const id of ['conditions','scope','exclusions','contract','insurance','contact'])fail(await p.locator('#'+id).count()===1,'anchor '+id)}
+ else{
+ const d=p.locator('details');const actual=await d.evaluateAll(es=>es.map(e=>{const s=e.querySelector(':scope>summary');if(!s)return'';const copy=s.cloneNode(true);copy.querySelectorAll('[aria-hidden=true],svg,.faq-q').forEach(e=>e.remove());return copy.textContent||''}));for(const [q,ps] of expected(f)){
+ const indexes=actual.map((s,i)=>normalize(s)===q?i:-1).filter(i=>i>=0);fail(indexes.length===1,'Visible FAQ count '+q+' '+indexes.length);
+ const item=d.nth(indexes[0]),summary=item.locator(':scope>summary');fail(await summary.isVisible(),'hidden summary '+q);await summary.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));if(!await item.evaluate(e=>e.open))await summary.click({timeout:10000});fail(await item.evaluate(e=>e.open),'FAQ did not open '+q);const paras=await item.locator('p').allTextContents();fail(same(paras.map(x=>x.trim().replace(/^A[.\s]+/,'')),ps),'FAQ visible paragraphs differ '+q+' '+JSON.stringify(paras));const info=await item.evaluate(e=>{const r=e.getBoundingClientRect();return{left:r.left,right:r.right,w:innerWidth,scroll:document.documentElement.scrollWidth}});fail(info.scroll<=w+1&&info.left>=-1&&info.right<=w+1,'open FAQ overflow '+q+' '+JSON.stringify(info));row.tested++;
+ if(w===390&&row.tested===1){await p.screenshot({path:out+'/screenshots/'+k+'-faq.png',animations:'disabled'})}
+ await summary.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await summary.click({timeout:10000});fail(!await item.evaluate(e=>e.open),'FAQ did not close '+q);
+ }
+ }
+ const scroll=await p.evaluate(()=>document.documentElement.scrollWidth);fail(scroll<=w+1,'horizontal overflow '+scroll);fail(!jsErrors.length,'runtime '+jsErrors.join(';'));row.pass=true;
+}catch(e){row.pass=false;row.errors.push(e.message.slice(0,500))}finally{await ctx.close()}rows.push(row);console.log('FAQ_PREVIEW_CASE '+JSON.stringify(row))}
+(async()=>{const b=await chromium.launch({channel:'chrome',headless:true,args:['--no-sandbox']});try{let ix=0;const jobs=files.flatMap(f=>widths.map(w=>[f,w]));await Promise.all(Array.from({length:5},async()=>{while(ix<jobs.length){const [f,w]=jobs[ix++];await run(b,f,w)}}))}finally{await b.close()}
+ const summary={pages:files.length,cases:rows.length,pass:rows.filter(x=>x.pass).length,faqClicks:rows.reduce((n,x)=>n+x.tested,0),expectedFaqClicks:stat.reduce((n,x)=>n+x.questions,0)*3,failures:rows.filter(x=>!x.pass)};
+ fs.writeFileSync(out+'/result.json',JSON.stringify({base,draft,summary,rows},null,2));console.log('FAQ_PREVIEW_SUMMARY '+JSON.stringify(summary));if(summary.failures.length||summary.faqClicks!==summary.expectedFaqClicks)process.exitCode=1;
+})().catch(e=>{console.error(e);process.exit(1)});
