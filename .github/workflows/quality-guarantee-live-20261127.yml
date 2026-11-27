@@ -1,10 +1,11 @@
-name: BC LP value batch preview QA 20261127
+name: BC LP value batch live QA 20261127
 on:
   push:
     branches: [qa/quality-guarantee-live-20261127]
     paths: [.github/workflows/quality-guarantee-live-20261127.yml]
 permissions:
   contents: read
+  actions: read
 jobs:
   qa:
     runs-on: ubuntu-24.04
@@ -12,11 +13,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0, persist-credentials: false}
-      - name: Verify guarantee manifest on exact preview source
+      - name: Verify guarantee manifest and exact deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
         run: |
-          git worktree add --detach "$RUNNER_TEMP/lp-value-batch" 88f197b31253a6aad5841869f28fea6b1bf9fa68
+          git worktree add --detach "$RUNNER_TEMP/lp-value-batch" a423100a7f248f9d1ca7a79d422d909290c98de9
           cd "$RUNNER_TEMP/lp-value-batch"
           python .github/scripts/render_quality_guarantee.py
+          for attempt in $(seq 1 45); do
+            result=$(gh api "/repos/$REPO/actions/runs/45959285577" --jq '[.head_sha,.status,(.conclusion // "")] | join(" ")')
+            echo "DEPLOY_STATUS $result"
+            if [ "$result" = "a423100a7f248f9d1ca7a79d422d909290c98de9 completed success" ]; then exit 0; fi
+            if [[ "$result" == *" completed "* ]]; then exit 1; fi
+            sleep 5
+          done
+          exit 1
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
       - name: Existing Chrome and Japanese font
@@ -28,12 +40,12 @@ jobs:
       - name: Verify 18 pages and 3 viewport sizes without external sends
         env:
           DRAFT_DIR: ${{ runner.temp }}/lp-value-batch
-          QA_MODE: preview
+          QA_MODE: live
         run: |
           cat > qa-lp-value-batch.cjs <<'NODE'
           const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),cp=require('child_process');
           const root='https://teruya1229.github.io/',dir=process.env.DRAFT_DIR,out='qa-lp-value-batch';
-          const base='9ac1e3f57a37794b2c5fa2f7604697faac4a936e',head='88f197b31253a6aad5841869f28fea6b1bf9fa68',mode=process.env.QA_MODE||'preview';
+          const base='9ac1e3f57a37794b2c5fa2f7604697faac4a936e',head='a423100a7f248f9d1ca7a79d422d909290c98de9',mode=process.env.QA_MODE||'preview';
           const files=["business-cleaning/index.html","cursor-test/central.html","cursor-test/haebaru.html","cursor-test/itoman.html","cursor-test/naha.html","cursor-test/nanjo.html","cursor-test/south.html","cursor-test/tomigusuku.html","cursor-test/urasoe.html","cursor-test/yaese.html","cursor-test/yonabaru.html","house-cleaning/index.html","index.html","lighting/index.html","mi-bcs/index.html","reform/index.html","toilet/index.html","washlet/index.html"];
           const assert=(v,m)=>{if(!v)throw Error(m)};
           const sortTags=(s,r)=>Array.from(s.matchAll(r),m=>m[0]).sort();
@@ -99,7 +111,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: bc-lp-value-batch-20261127
+          name: bc-lp-value-live-20261127
           path: qa-lp-value-batch/
           retention-days: 7
           if-no-files-found: warn
