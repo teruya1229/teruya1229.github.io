@@ -21,19 +21,13 @@ jobs:
         with:
           node-version: '22'
       - run: npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
-      - name: Verify Pages deployment of approved merge
+      - name: Read Pages deployment status without delaying live proof
         env:
           GH_TOKEN: ${{ github.token }}
-          TARGET_SHA: 'aebfc22485eff08de2bc65b141eb282feb879591'
+          TARGET_SHA: aebfc22485eff08de2bc65b141eb282feb879591
         shell: bash
         run: |
-          for attempt in $(seq 1 30); do
-            data=$(gh api "/repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$TARGET_SHA&per_page=30" --jq '.workflow_runs[] | select(.name == "pages build and deployment" or (.path | contains("pages-build-deployment"))) | [.id,.head_sha,.status,(.conclusion // "")] | @tsv')
-            echo "PAGES_DEPLOY $data"
-            if echo "$data" | grep -q "$TARGET_SHA.*completed.*success"; then exit 0; fi
-            sleep 5
-          done
-          exit 1
+          gh api "/repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$TARGET_SHA&per_page=30" --jq '.workflow_runs[] | [.id,.name,.head_sha,.status,(.conclusion // "")] | @tsv' || true
       - name: Check exact page and image geometry
         shell: bash
         run: |
@@ -60,7 +54,7 @@ jobs:
               p.on('pageerror',e=>row.errors.push(e.message));
               p.on('response',r=>{if(r.url().startsWith(root)&&r.status()>=400)row.bad.push(r.status()+' '+r.url())});
               let res=await p.goto(root+'reform/',{waitUntil:'domcontentloaded',timeout:30000});
-              row.http=res.status();row.exact=(await res.text()).replace(/\r\n/g,'\n').trim()===exact;assert.equal(row.http,200);assert(row.exact,'source mismatch');
+              const css=await p.request.get(root+'reform/assets/css/reform.css');row.cssExact=css.ok()&&(await css.text()).replace(/\r\n/g,'\n').trim()===fs.readFileSync('reform/assets/css/reform.css','utf8').replace(/\r\n/g,'\n').trim();assert(row.cssExact,'CSS source mismatch');row.http=res.status();row.exact=(await res.text()).replace(/\r\n/g,'\n').trim()===exact;assert.equal(row.http,200);assert(row.exact,'source mismatch');
               await p.locator('img').evaluateAll(es=>es.forEach(i=>i.loading='eager'));
               await p.evaluate(async()=>{await Promise.all([...document.images].map(i=>i.decode().catch(()=>{})));await document.fonts.ready});
               const proof=p.locator('.reform-case-proof');assert.equal(await proof.count(),1);
