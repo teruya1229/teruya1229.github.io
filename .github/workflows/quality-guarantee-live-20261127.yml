@@ -1,10 +1,11 @@
-name: BC quality FAQ draft preview 20261127
+name: BC quality FAQ live release QA 20261127
 on:
   push:
     branches: [qa/quality-guarantee-live-20261127]
     paths: [.github/workflows/quality-guarantee-live-20261127.yml]
 permissions:
   contents: read
+  actions: read
 jobs:
   qa:
     runs-on: ubuntu-24.04
@@ -12,29 +13,68 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0, persist-credentials: false}
-      - name: Verify draft manifest without deploying
+      - name: Verify exact released source and deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
         run: |
-          git worktree add --detach "$RUNNER_TEMP/faq-draft" 6d4dd42773f2cea3c7fc9b9b12aadca51cbceb7f
-          cd "$RUNNER_TEMP/faq-draft"
+          set -euo pipefail
+          git worktree add --detach "$RUNNER_TEMP/faq-live" 38b8ce8eafbca7df07013bf7b92317f0d12d7635
+          cd "$RUNNER_TEMP/faq-live"
           python .github/scripts/render_quality_guarantee.py
+          for attempt in $(seq 1 45); do
+            result=$(gh api "/repos/$REPO/actions/runs/45954955517" --jq '[.head_sha,.status,(.conclusion // "")] | join(" ")')
+            echo "DEPLOY_STATUS $result"
+            if [ "$result" = "38b8ce8eafbca7df07013bf7b92317f0d12d7635 completed success" ]; then exit 0; fi
+            if [[ "$result" == *" completed "* ]]; then exit 1; fi
+            sleep 5
+          done
+          exit 1
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
-      - name: Install browser QA dependency and Japanese font
+      - name: Install existing browser QA dependency and Japanese font
         run: |
           sudo mkdir -p /usr/local/share/fonts/qa-japanese
           sudo curl -fLsS --retry 2 --max-time 75 -o /usr/local/share/fonts/qa-japanese/NotoSansCJKjp-Regular.otf https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/Japanese/NotoSansCJKjp-Regular.otf
           sudo fc-cache -f >/dev/null
           npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
-      - name: Review draft static files and browser interactions
-        env:
-          DRAFT_DIR: ${{ runner.temp }}/faq-draft
+      - name: Adapt previously verified tests to live public URLs only
         run: |
-          node qa/quality-faq-preview-20261127.cjs
-          git diff 7f53e0b68ce3ef7a063c79c0fa13bef18bb1b007 6d4dd42773f2cea3c7fc9b9b12aadca51cbceb7f > qa-quality-faq-preview/proposed.patch
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('qa/quality-faq-preview-20261127.cjs')
+          s = p.read_text()
+          assert s.count('6d4dd42773f2cea3c7fc9b9b12aadca51cbceb7f') == 1
+          s = s.replace('6d4dd42773f2cea3c7fc9b9b12aadca51cbceb7f','38b8ce8eafbca7df07013bf7b92317f0d12d7635')
+          old = [line for line in s.splitlines() if "await ctx.route('**/*'" in line]
+          assert len(old)==1 and 'r.fulfill({path:pp})' in old[0]
+          s = s.replace(old[0], """ await ctx.route('**/*',r=>{const u=r.request().url();return (r.request().method()==='GET'||r.request().method()==='HEAD')&&(u.startsWith(root)||u.startsWith('data:')||u.startsWith('blob:')||u.startsWith('https://fonts.googleapis.com/')||u.startsWith('https://fonts.gstatic.com/'))?r.continue():r.abort('blockedbyclient')});""")
+          token="const url=root+f.replace(/(^|\\/)index\\.html$/,'$1'),r=await p.goto(url,{waitUntil:'domcontentloaded',timeout:30000});fail(r.status()===200,'preview HTTP '+r.status());"
+          assert s.count(token)==1
+          replacement="const url=root+f.replace(/(^|\\/)index\\.html$/,'$1');let r;const norm=x=>x.replace(/\\r\\n/g,'\\n').trim();for(let t=0;t<8;t++){r=await p.goto(url,{waitUntil:'domcontentloaded',timeout:30000});if(r.status()===200&&norm(await r.text())===norm(newText(f)))break;await p.waitForTimeout(3000)}row.http=r.status();row.source=row.http===200&&norm(await r.text())===norm(newText(f));fail(row.source,'Live HTTP/source mismatch '+row.http);"
+          s=s.replace(token,replacement).replace('qa-quality-faq-preview','qa-quality-faq-live').replace('FAQ_PREVIEW_CASE','FAQ_LIVE_CASE').replace('FAQ_PREVIEW_SUMMARY','FAQ_LIVE_SUMMARY')
+          Path('qa/quality-faq-live.generated.cjs').write_text(s)
+          p2=Path('qa/quality-guarantee-release-20261127.cjs')
+          t=p2.read_text()
+          assert t.count('7f53e0b68ce3ef7a063c79c0fa13bef18bb1b007')==1
+          t=t.replace('7f53e0b68ce3ef7a063c79c0fa13bef18bb1b007','38b8ce8eafbca7df07013bf7b92317f0d12d7635')
+          Path('qa/quality-guarantee-release.generated.cjs').write_text(t)
+          PY
+          node --check qa/quality-faq-live.generated.cjs
+          node --check qa/quality-guarantee-release.generated.cjs
+      - name: Live 26 page FAQ and policy checks at three widths
+        env:
+          DRAFT_DIR: ${{ runner.temp }}/faq-live
+        run: node qa/quality-faq-live.generated.cjs
+      - name: Live PR68 layout and CTA regression, washer diagnosis
+        if: success()
+        run: node qa/quality-guarantee-release.generated.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: bc-quality-faq-preview-20261127
-          path: qa-quality-faq-preview/
+          name: bc-quality-faq-live-20261127
+          path: |
+            qa-quality-faq-live/
+            qa-quality-release/
           if-no-files-found: warn
           retention-days: 7
