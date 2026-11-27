@@ -15,6 +15,7 @@ jobs:
       - name: Verify approved manifest and exact base
         run: |
           git diff --name-only 4abc651e5ec5aaf011a936aa062ae7ce2344de56 HEAD
+          git cat-file -e 7f53e0b68ce3ef7a063c79c0fa13bef18bb1b007^{commit}
           python .github/scripts/render_quality_guarantee.py
           test -z "$(git diff --name-only 4abc651e5ec5aaf011a936aa062ae7ce2344de56 HEAD -- '*.html' '*.css' '*.js' .github/scripts)"
       - uses: actions/setup-node@v4
@@ -26,11 +27,11 @@ jobs:
           sudo fc-cache -f >/dev/null
           npm install --no-save --no-package-lock --no-audit --no-fund playwright@1.58.2
       - name: Test public URLs without external sends
-        run: node qa/quality-guarantee-recheck-20261127.cjs
+        run: node qa/quality-guarantee-release-20261127.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: bc-quality-recheck-20261127
-          path: qa-quality-recheck/
+          name: bc-quality-release-20261127
+          path: qa-quality-release/
           if-no-files-found: warn
           retention-days: 7
